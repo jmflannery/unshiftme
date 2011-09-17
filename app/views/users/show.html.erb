@@ -1,0 +1,16 @@
+<div id='users_show_top'>
+  <p>
+    <%= @user.full_name %>
+    <% if signed_in? %>
+      <%= link_to "Sign out", signout_path %>
+      <%= link_to "Update Profile", edit_user_path(current_user) %>
+    <% end %>
+  </p>
+</div>
+
+<div id='users_show_main'>
+</div>
+
+<div id='users_show_bottom'>
+</div>
+

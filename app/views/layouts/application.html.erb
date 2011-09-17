@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <%= render 'layouts/head' %>
+</head>
+
+<body>
+
+<div id="user_login">
+  <ul>
+    <li><%= link_to "Sign In", signin_path, :class => "button" %></li>
+    <li><%= link_to "Sign up", signup_path, :class => "button" %></li>
+  </ul>
+</div>
+
+<div id="header">
+  <%= image_tag("cool_amtrak_logo.png") %>
+  <h1 id ="title">Amtrak Chicago Terminal Inter-Office Communication System</h1>
+</div>
+
+<div id="nav">
+  <ul>
+    <li><%= link_to "About", root_path, :id => "link1", :class => "button" %></li>
+    <li><%= link_to "Features", features_path, :id => "link2", :class => "button" %></li>
+    <li><%= link_to "Technology", technology_path, :id => "link3", :class => "button" %></li>
+  </ul>
+</div>
+
+<div id="top">
+</div>
+
+<div id="main">
+  <div id="content">
+    <%= yield %>
+  </div>
+</div>
+
+<div id="bottom">
+</div>
+
+<div id="footer">
+  <ul>
+    <li><%= link_to "About", root_path %></li>
+    <li><%= link_to "Features", features_path %></li>
+    <li><%= link_to "Technology", technology_path %></li>
+    <li>(c) 2011 Flannery Software Systems</li>
+  </ul>
+</div>
+
+<%= debug(params) if Rails.env.development? %>
+
+</body>
+</html>
+
