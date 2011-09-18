@@ -1,5 +1,6 @@
 <div id="edit_user">
   <h1>Edit user</h1>
+  <%= @user.full_name %>
 
   <%= form_for(@user) do |f| %>
     <%= render 'shared/error_messages', :object => f.object %>

@@ -17,6 +17,7 @@ role :db,  "amtrak-intercom.amtrak.ad.nrpc", :primary => true # This is where Ra
 # if you're still using the script/reaper helper you will need
 # these http://github.com/rails/irs_process_scripts
 
+# Passenger
 namespace :deploy do
   desc "Restarting mod_rails with restart.txt"
   task :restart, :roles => :app, :except => { :no_release => true } do
