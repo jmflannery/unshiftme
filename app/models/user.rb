@@ -15,6 +15,8 @@
 class User < ActiveRecord::Base
   attr_accessor :password
   attr_accessible :name, :full_name, :email, :password, :password_confirmation
+  
+  has_many :messages
 
   validates :password, :presence => true,
                        :confirmation => true,

@@ -1,6 +1,7 @@
 Intercom::Application.routes.draw do
   resources :users
   resources :sessions, :only => [:new, :create, :destroy]
+  resources :messages, :only => [:create]
 
   match "/about", :to => "pages#about"
   match "/features", :to => "pages#features"

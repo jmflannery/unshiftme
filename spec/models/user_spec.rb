@@ -98,5 +98,23 @@ describe User do
 
     end
   end
+  
+  describe "message associations" do
+
+    before(:each) do
+      @user = User.create(@attr)
+      @msg2 = Factory(:message, :user => @user, :created_at => 1.minute.ago)
+      @msg1 = Factory(:message, :user => @user, :created_at => 1.hour.ago)
+    end
+
+    it "should have a messages attribute" do
+      @user.should respond_to(:messages)
+    end
+
+    it "should have the right messages in the right order" do
+      @user.messages.should == [@msg1, @msg2]
+    end
+  end
+  
 end
 

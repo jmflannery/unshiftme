@@ -42,6 +42,14 @@ describe UsersController do
       get :show, :id => @user
       response.should have_selector("p", :content => @user.full_name)
     end
+    
+    it "should show the user's messages" do
+      mp1 = Factory(:message, :user => @user, :content => "Foo bar")
+      mp2 = Factory(:message, :user => @user, :content => "Baz quux")
+      get :show, :id => @user
+      response.should have_selector("td.message span.content", :content => mp1.content)
+      response.should have_selector("td.message span.content", :content => mp2.content)
+    end
   end
 
   describe "POST 'create'" do

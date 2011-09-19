@@ -28,6 +28,7 @@ group :test do
   gem 'rspec-rails'
   gem 'webrat'
   gem 'factory_girl_rails'
+  gem 'faker'
 end
 
 # Use unicorn as the web server
