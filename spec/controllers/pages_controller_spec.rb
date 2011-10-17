@@ -12,7 +12,7 @@ describe PagesController do
 
     it "should have the right title" do
       get 'about'
-      response.should have_selector("title", :content => "About")
+      response.body.should have_selector("title", :content => "About")
     end
   end
 
@@ -25,7 +25,7 @@ describe PagesController do
 
     it "should have the right title" do
       get 'features'
-      response.should have_selector("title", :content => "Features")
+      response.body.should have_selector("title", :content => "Features")
     end
   end
 
@@ -38,7 +38,7 @@ describe PagesController do
 
     it "should have the right title" do
       get 'technology'
-      response.should have_selector("title", :content => "Technology")
+      response.body.should have_selector("title", :content => "Technology")
     end
   end
 end

@@ -6,13 +6,13 @@ describe SessionsController do
   describe "GET 'new'" do
 
     it "should be successful" do
-      get :new
+      get 'new'
       response.should be_success
     end
 
     it "should have the right title" do
-      get :new
-      response.should have_selector("title", :content => "Sign in")
+      get 'new'
+      response.body.should have_selector("title", :content => "Sign in")
     end
   end
 
@@ -31,7 +31,7 @@ describe SessionsController do
 
       it "should have the right title" do
         post :create, :session => @attr
-        response.should have_selector("title", :content => "Sign in")
+        response.body.should have_selector("title", :content => "Sign in")
       end
 
       it "should have a flash.now message" do

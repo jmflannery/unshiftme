@@ -14,14 +14,17 @@ class UsersController < ApplicationController
       redirect_to @user
     else
       @title = "Sign Up"
-      render 'new'
+      #render 'new'
+      redirect_to signup_path
     end
   end
 
   def show
     @user = User.find(params[:id])
     @title = @user.full_name
-    @messages = @user.messages
+    #@messages = [Message.last]
+    @messages = []
+    @message = Message.new if signed_in?
   end
 
   def edit

@@ -1,7 +1,7 @@
 Intercom::Application.routes.draw do
-  resources :users
+  resources :users, :only => [:new, :create, :show, :edit, :update]
   resources :sessions, :only => [:new, :create, :destroy]
-  resources :messages, :only => [:create]
+  resources :messages, :only => [:create, :index]
 
   match "/about", :to => "pages#about"
   match "/features", :to => "pages#features"
@@ -12,6 +12,4 @@ Intercom::Application.routes.draw do
   match "/signout", :to => "sessions#destroy"
 
   root :to => "pages#about"
-
 end
-

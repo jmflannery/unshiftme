@@ -20,3 +20,45 @@ $(function() {
   $('#sign_in_out').corner("6px");
   $('#edit_user').corner("6px");
 });
+
+// Open User List Dialog
+//$.fx.speeds._default = 1000;
+$(function() {
+  $('#dialog').dialog({
+    autoOpen: false,
+    show: "blind",
+    hide: "explode"
+  });
+});
+
+$(function() {
+  $('#users_link').click(function() {
+    $('#dialog').dialog("open");
+    return false;
+  });
+});
+
+// Poll Server for more Messages
+$(function() {
+  if ($("#messages").length > 0) {
+    setTimeout(updateMessages, 2000);
+  }
+});
+
+function updateMessages() {
+  var after = $("tr.message:last-child").css("color", "#f5e2a9").attr("data-time");
+  //if (after == undefined) {
+  //  after = $("#messages").attr("data-start");
+  //}
+  $.getScript("/messages.js?after=" + after);
+  setTimeout(updateMessages, 2000);
+}
+
+// Clear the text field after button click
+//$(function() {
+//  $("input[type=submit]").click(clearTextInput);
+//});
+
+function clearTextInput() {
+  $("input[type=text]").val("");
+}

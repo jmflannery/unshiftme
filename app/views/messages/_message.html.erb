@@ -1,8 +1,5 @@
-<tr>
-  <td class="message">
-    <span class="content"><%= message.content %></span>
-    <span class="timestamp">
-      Sent <%= time_ago_in_words(message.created_at) %> ago. 
-    </span>
-  </td>
+<tr class="message" data-time="<%= message.created_at.to_i %>">
+  <td class="sender"><%= User.find(message.user_id).name %>: </td>
+  <td class="content"><%= message.content %></td>
+  <td>...Sent <%= time_ago_in_words(message.created_at) %> ago.</td>
 </tr>

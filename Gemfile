@@ -19,16 +19,16 @@ end
 
 gem 'jquery-rails'
 
-group :development do
+group :development, :test do
   gem 'rspec-rails'
-  gem 'annotate'
-end
-
-group :test do
-  gem 'rspec-rails'
-  gem 'webrat'
+  #gem 'webrat'
+  gem 'capybara'
   gem 'factory_girl_rails'
   gem 'faker'
+  gem 'annotate'
+  gem 'rb-inotify'
+  gem 'libnotify'
+  gem 'guard-rspec'
 end
 
 # Use unicorn as the web server

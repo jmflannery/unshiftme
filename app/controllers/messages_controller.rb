@@ -10,4 +10,11 @@ class MessagesController < ApplicationController
     end
   end
   
+  def index
+    @new_messages = Message.where("created_at > ?", Time.at(params[:after].to_i + 1))
+    #@new_messages = Message.last
+  end
+  
+  def delete
+  end
 end

@@ -1,8 +1,9 @@
 require 'spec_helper'
+include SessionsHelper
 
 describe "Users" do
 
-  describe "signup" do
+  describe "signup", :type => :request do
 
     describe "failure" do
 
@@ -14,8 +15,10 @@ describe "Users" do
           fill_in "Email",        :with => ""
           fill_in "Password",     :with => ""
           fill_in "Password confirmation", :with => ""
-          click_button
-          response.should render_template('users/new')
+          click_button "Sign Up"
+          #response.should render_template('users/new')
+          current_path.should == signup_path
+          #page.should have_content("Sign Up")
           #response.should have_selector("div#error_explanation")
         end.should_not change(User, :count)
       end
@@ -31,10 +34,12 @@ describe "Users" do
           fill_in "Email",        :with => "user@example.com"
           fill_in "Password",     :with => "foobar"
           fill_in "Password confirmation", :with => "foobar"
-          click_button
+          click_button "Sign Up"
           #response.should have_selector("div.flash.success",
            #                             :content => "Welcome")
-          response.should render_template('users/show')
+          #response.should render_template('users/show')
+          #current_path.should == 
+          page.should have_content("Derick Jeter")
         end.should change(User, :count).by(1)
       end
     end
@@ -47,7 +52,7 @@ describe "Users" do
         visit signin_path
         fill_in :name,     :with => ""
         fill_in :password, :with => ""
-        click_button
+        click_button "Sign In"
         #response.should have_selector("div.flash.error", :content => "Invalid")
         controller.should_not be_signed_in
       end
@@ -59,7 +64,7 @@ describe "Users" do
         visit signin_path
         fill_in :name,     :with => user.name
         fill_in :password, :with => user.password
-        click_button
+        click_button "Sign In"
         controller.should be_signed_in
         click_link "Sign out"
         controller.should_not be_signed_in
