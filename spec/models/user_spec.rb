@@ -68,32 +68,22 @@ describe User do
       @user.password_digest.should_not be_blank
     end
 
-    #describe "has_password? method" do
-
-    #  it "should be true if passwords match" do
-    #    @user.has_password?(@attr[:password]).should be_true
-    #  end
-
-    #  it "should be false if the passwords don't match" do
-    #    @user.has_password?("invalid").should be_false
-    #  end
-    #end
-
     describe "authenticate method" do
-
-      it "should return nil on name/password mismatch" do
-        wrong_password_user = User.authenticate(@attr[:name], "wrongpassword")
-        wrong_password_user.should be_nil
+      
+      before(:each) do
+        @user = User.create!(@attr)
+      end
+      
+      it "should have an authenticate method" do
+        @user.should respond_to(:authenticate)
       end
 
-      it "should return nil for an an registered name" do
-        nonexistant_user = User.authenticate("foo@bar.com", @attr[:password])
-        nonexistant_user.should be_nil
+      it "should return false on wrong password" do
+        assert_equal(false, @user.authenticate("wrongpassword"))
       end
 
-      it "should return the user on name/password match" do
-        matching_user = User.authenticate(@attr[:name], @attr[:password])
-        matching_user.should == @user
+      it "should return authencated user given the correct password" do
+        assert_equal(@user, @user.authenticate(@attr[:password]))
       end
 
     end
@@ -115,6 +105,5 @@ describe User do
       @user.messages.should == [@msg1, @msg2]
     end
   end
-  
 end
 

@@ -1,5 +1,5 @@
 class MessagesController < ApplicationController
-  before_filter :authenticate
+  #before_filter :authenticate
   
   def create
     @message = current_user.messages.build(params[:message])

@@ -1,9 +1,8 @@
 require 'spec_helper'
-include SessionsHelper
 
 describe "Users" do
 
-  describe "signup", :type => :request do
+  describe "signup" do
 
     describe "failure" do
 
@@ -16,9 +15,9 @@ describe "Users" do
           fill_in "Password",     :with => ""
           fill_in "Password confirmation", :with => ""
           click_button "Sign Up"
-          #response.should render_template('users/new')
-          current_path.should == signup_path
-          #page.should have_content("Sign Up")
+          response.should render_template('users/new')
+          #current_path.should == signup_path
+          page.has_content?("Sign Up")
           #response.should have_selector("div#error_explanation")
         end.should_not change(User, :count)
       end
@@ -37,9 +36,10 @@ describe "Users" do
           click_button "Sign Up"
           #response.should have_selector("div.flash.success",
            #                             :content => "Welcome")
-          #response.should render_template('users/show')
+          response.should render_template('users/show')
           #current_path.should == 
-          page.should have_content("Derick Jeter")
+          page.has_content?("Derick Jeter")
+          #page.should have_content('Derick Jeter')
         end.should change(User, :count).by(1)
       end
     end
@@ -47,24 +47,26 @@ describe "Users" do
 
   describe "sign in/out" do
 
-    describe "failure" do
+    describe "failure", :type => :request do
       it "should not sign a user in" do
         visit signin_path
         fill_in :name,     :with => ""
         fill_in :password, :with => ""
         click_button "Sign In"
         #response.should have_selector("div.flash.error", :content => "Invalid")
+        #page.should have_content("Sign In")
         controller.should_not be_signed_in
       end
     end
 
-    describe "success" do
+    describe "success", :type => :request do
       it "should sign a user in and out" do
         user = Factory(:user)
         visit signin_path
         fill_in :name,     :with => user.name
         fill_in :password, :with => user.password
         click_button "Sign In"
+        #page.should have_content(user.full_name)
         controller.should be_signed_in
         click_link "Sign out"
         controller.should_not be_signed_in

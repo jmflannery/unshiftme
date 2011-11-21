@@ -16,10 +16,12 @@ class SessionsController < ApplicationController
     
     user = User.find_by_name(params[:name])
     if user && user.authenticate(params[:password])
+      printf "authenicated what!"
       sign_in user
       #redirect_back_or user
       redirect_to user
     else
+      printf "I'm am a nobody"
       flash.now[:error] = "Invalid name and/or password"
       @title = "Sign in"
       render 'new'

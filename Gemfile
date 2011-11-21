@@ -21,7 +21,7 @@ gem 'jquery-rails'
 
 group :development, :test do
   gem 'rspec-rails'
-  #gem 'webrat'
+  gem 'webrat'
   gem 'capybara'
   gem 'factory_girl_rails'
   gem 'faker'
@@ -29,6 +29,7 @@ group :development, :test do
   gem 'rb-inotify'
   gem 'libnotify'
   gem 'guard-rspec'
+  gem 'launchy'
 end
 
 # Use unicorn as the web server
