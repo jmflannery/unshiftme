@@ -1,5 +1,5 @@
 class MessagesController < ApplicationController
-  #before_filter :authenticate
+  before_filter :authenticate
   
   def create
     @message = current_user.messages.build(params[:message])
@@ -12,9 +12,5 @@ class MessagesController < ApplicationController
   
   def index
     @new_messages = Message.where("created_at > ?", Time.at(params[:after].to_i + 1))
-    #@new_messages = Message.last
-  end
-  
-  def delete
   end
 end

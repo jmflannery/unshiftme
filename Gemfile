@@ -21,15 +21,16 @@ gem 'jquery-rails'
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'webrat'
-  gem 'capybara'
-  gem 'factory_girl_rails'
+  #gem 'webrat'
+  gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
+  gem 'factory_girl_rails', "~> 1.4.0"
   gem 'faker'
   gem 'annotate'
   gem 'rb-inotify'
   gem 'libnotify'
   gem 'guard-rspec'
   gem 'launchy'
+  gem 'database_cleaner'
 end
 
 # Use unicorn as the web server

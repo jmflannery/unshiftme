@@ -16,7 +16,7 @@ describe MessagesController do
     before(:each) do
       @user = test_sign_in(Factory(:user))
     end
-
+    
     describe "failure" do
 
       before(:each) do
@@ -28,17 +28,12 @@ describe MessagesController do
           post :create, :message => @attr
         end.should_not change(Message, :count)
       end
-
-      #it "should render the home page" do
-      #  post :create, :message => @attr
-      #  response.should render_template('pages/home')
-      #end
     end
 
     describe "success" do
 
       before(:each) do
-        @attr = { :content => "Lorem ipsum" }
+        @attr = { :content => "i like turtles" }
       end
 
       it "should create a message" do
@@ -46,11 +41,22 @@ describe MessagesController do
           post :create, :message => @attr
         end.should change(Message, :count).by(1)
       end
-
-      #it "should redirect to the home page" do
-      #  post :create, :message => @attr
-      #  response.should redirect_to(root_path)
-      #end
     end
+  end
+  
+  describe "GET 'index'" do
+    
+    before(:each) do 
+      first = Factory(:message)
+      second = Factory(:message, :content => "What the ??")
+      third = Factory(:message, :content => "Who the ???")
+      
+      @some_messages = [first, second, third]
+    end
+    
+    # it "should be success" do
+    #   get :index
+    #   response.should be_success
+    # end
   end
 end

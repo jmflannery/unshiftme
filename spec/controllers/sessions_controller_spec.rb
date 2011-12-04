@@ -25,17 +25,17 @@ describe SessionsController do
       end
   
       it "should re-render the new page" do
-        post :create, :session => @attr
+        post :create, @attr
         response.should render_template('new')
       end
   
       it "should have the right title" do
-        post :create, :session => @attr
+        post :create, @attr
         response.body.should have_selector("title", :content => "Sign in")
       end
   
       it "should have a flash.now message" do
-        post :create, :session => @attr
+        post :create, @attr
         flash.now[:error].should =~ /invalid/i
       end
     end
@@ -48,13 +48,13 @@ describe SessionsController do
       end
   
       it "should sign the user in" do
-        post :create, :session => @attr
-        controller.current_user.should == @user
+        post :create, @attr
+        controller.current_user.should eq(@user)
         controller.should be_signed_in
       end
   
       it "should redirect to the user show page" do
-        post :create, :session => @attr
+        post :create, @attr
         response.should redirect_to(user_path(@user))
       end
     end

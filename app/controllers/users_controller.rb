@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  #before_filter :authenticate, :only => [:show, :edit, :update]
-  #before_filter :correct_user, :only => [:show, :edit, :update]
+  before_filter :authenticate, :only => [:show, :edit, :update]
+  before_filter :correct_user, :only => [:show, :edit, :update]
 
   def new
     @user = User.new
@@ -12,10 +12,11 @@ class UsersController < ApplicationController
     if @user.save
       sign_in @user
       redirect_to @user
+      #redirect_back_or @user
     else
       @title = "Sign Up"
-      #render 'new'
-      redirect_to signup_path
+      render 'new'
+      #redirect_to signup_path
     end
   end
 
