@@ -21,8 +21,8 @@ gem 'jquery-rails'
 
 group :development, :test do
   gem 'rspec-rails'
-  #gem 'webrat'
   gem 'capybara', :git => 'git://github.com/jnicklas/capybara.git'
+  gem 'jasmine'
   gem 'factory_girl_rails', "~> 1.4.0"
   gem 'faker'
   gem 'annotate'

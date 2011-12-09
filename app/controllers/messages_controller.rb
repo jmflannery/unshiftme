@@ -4,7 +4,7 @@ class MessagesController < ApplicationController
   def create
     @message = current_user.messages.build(params[:message])
     if @message.save
-      redirect_to user_path(current_user)
+      #redirect_to user_path(current_user)
     else
       render 'pages/about'
     end
@@ -13,4 +13,4 @@ class MessagesController < ApplicationController
   def index
     @new_messages = Message.where("created_at > ?", Time.at(params[:after].to_i + 1))
   end
-end
+end  
