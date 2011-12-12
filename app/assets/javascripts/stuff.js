@@ -31,34 +31,27 @@ $(function() {
   });
 });
 
-$(function() {
-  $('#users_link').click(function() {
-    $('#dialog').dialog("open");
-    return false;
-  });
-});
+//$(function() {
+//  $('#users_link').click(function() {
+//    $('#dialog').dialog("open");
+//    return false;
+//  });
+//});
 
 // Poll Server for more Messages
 $(function() {
-  if ($("#messages").length > 0) {
-    setTimeout(updateMessages, 2000);
+  if ($("#messages").length > 0) {  
+    setTimeout("updateMessages('Auto Poll')", 2000);
   }
 });
 
-function updateMessages() {
+function updateMessages(message) {
+  console.log(message);
   var after = $("tr.message:last-child").css("color", "#f5e2a9").attr("data-time");
   //if (after == undefined) {
   //  after = $("#messages").attr("data-start");
   //}
   $.getScript("/messages.js?after=" + after);
-  setTimeout(updateMessages, 2000);
-}
-
-// Clear the text field after button click
-//$(function() {
-//  $("input[type=submit]").click(clearTextInput);
-//});
-
-function clearTextInput() {
-  $("input[type=text]").val("");
+  var f = "updateMessages('auto poll')";
+  setTimeout(f, 2000);
 }

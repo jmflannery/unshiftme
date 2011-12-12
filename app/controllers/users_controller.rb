@@ -28,6 +28,15 @@ class UsersController < ApplicationController
     @message = Message.new if signed_in?
   end
 
+  def index
+    @online_users = User.online
+    #users = User.all
+    #users.each do |u|
+    #  @online_users < u if u.signed_in? 
+    #end 
+    #@online_users
+  end
+
   def edit
     @user = User.find(params[:id])
     @title = "Edit user"

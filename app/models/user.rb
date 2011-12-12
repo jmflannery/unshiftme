@@ -27,6 +27,10 @@ class User < ActiveRecord::Base
                        :confirmation => true,
                        :length => { :within => 6..40 }
 
+  def self.online
+    User.all
+  end
+
   #before_save :encrypt_password
 
   #def self.authenticate(name, submitted_password)

@@ -1,5 +1,5 @@
 Intercom::Application.routes.draw do
-  resources :users, :only => [:new, :create, :show, :edit, :update]
+  resources :users, :only => [:new, :create, :show, :index, :edit, :update]
   resources :sessions, :only => [:new, :create, :destroy]
   resources :messages, :only => [:create, :index]
 
