@@ -1,0 +1,19 @@
+***Monday, December 12, 2011***
+-add column to users table 'status:boolean' to flag if a user
+ is online
+-modify sign_in and sign_out methods to update the new status field
+ --db is not updating due to validation error due to missing password,
+   need to investigate what to do because un-encrypted version of user
+   password is unknown 
+
+***Tuesday, December 13, 2011, 11:44 pm***
+-pass :validates => false to user.save in sign_in and sign_out method
+ to solve yesterdays problem
+-add named scope "online" to user model to get all users online, based on
+ user.status flag. TODO - should also check how long the user has been
+ online. Would need to update a timestamp with every user action.
+-add default scope to list users alfabetically.
+-add 2 messages_controller_spec tests for 'get index'.
+-TODO - need tests for users_controller_spec 'get index'.
+-TODO - need integration tests for javascript user index dialog.
+-TODO - need to think about other tests to add 
