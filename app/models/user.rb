@@ -13,13 +13,10 @@
 #
 
 class User < ActiveRecord::Base
-  #attr_accessor :password
-  #attr_accessor :password_digest
-  attr_accessible :name, :full_name, :email, :password, :password_confirmation
-  
-  has_secure_password
-  
-  #validates_presense_of :password, :on => :create
+
+  has_secure_password 
+
+  attr_accessible :name, :full_name, :email, :password, :password_confirmation 
   
   has_many :messages
 
@@ -27,9 +24,9 @@ class User < ActiveRecord::Base
                        :confirmation => true,
                        :length => { :within => 6..40 }
 
-  def self.online
-    User.all
-  end
+  default_scope :order => 'users.full_name ASC'
+
+  scope :online, where("users.status = ?", true)
 
   #before_save :encrypt_password
 

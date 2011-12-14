@@ -23,18 +23,12 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @title = @user.full_name
-    #@messages = [Message.last]
     @messages = []
     @message = Message.new if signed_in?
   end
 
   def index
     @online_users = User.online
-    #users = User.all
-    #users.each do |u|
-    #  @online_users < u if u.signed_in? 
-    #end 
-    #@online_users
   end
 
   def edit

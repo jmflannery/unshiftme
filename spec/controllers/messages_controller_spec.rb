@@ -50,13 +50,19 @@ describe MessagesController do
       first = Factory(:message)
       second = Factory(:message, :content => "What the ??")
       third = Factory(:message, :content => "Who the ???")
-      
       @some_messages = [first, second, third]
+      @user = test_sign_in(Factory(:user))
     end
     
-    # it "should be success" do
-    #   get :index
-    #   response.should be_success
-    # end
+    it "should be success" do
+      get :index, :after => 2.seconds.ago, :format => :js
+      response.should be_success
+    end
+
+    it "should be return the correct messages" do
+      get :index, :format => :js
+      messages = assigns(:new_messages)
+      messages.should == @some_messages 
+    end
   end
 end
