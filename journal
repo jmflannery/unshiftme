@@ -17,3 +17,8 @@
 -TODO - need tests for users_controller_spec 'get index'.
 -TODO - need integration tests for javascript user index dialog.
 -TODO - need to think about other tests to add 
+
+***Wednesday, December 14, 2011, 11:43 pm***
+-add 3 tests for users controller get index
+-add integration test for show online users dialog (pending)
+ --need a test_sign_in method that works in integration tests so I can have several users signed in

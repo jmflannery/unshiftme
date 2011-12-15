@@ -55,12 +55,12 @@ describe MessagesController do
     end
     
     it "should be success" do
-      get :index, :after => 2.seconds.ago, :format => :js
+      get :index, :after => 1.seconds.ago, :format => :js
       response.should be_success
     end
 
     it "should be return the correct messages" do
-      get :index, :format => :js
+      get :index, :after => 1.second.ago, :format => :js
       messages = assigns(:new_messages)
       messages.should == @some_messages 
     end

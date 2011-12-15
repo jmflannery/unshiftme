@@ -45,6 +45,36 @@ describe UsersController do
     
   end
 
+  describe "GET 'index'" do
+
+    before(:each) do
+      @user1 = Factory(:user)
+      @user2 = Factory(:user, :name => "Fred", :full_name => "Fred Mertz")
+      @user3 = Factory(:user, :name => "Sam", :full_name => "Sammy Sosa")
+      test_sign_in(@user2)
+      test_sign_in(@user3)
+    end
+
+    it "should should be success" do
+      get :index, :format => :js
+      response.should be_success
+    end
+
+    it "should not show non-signed in users" do
+      get :index, :format => :js
+      users = assigns(:online_users)
+      users.should_not include(@user1)
+    end
+
+    it "should show signed in users" do
+      get :index, :format => :js
+      users = assigns(:online_users)
+      users.should include(@user2)
+      users.should include(@user3)
+    end
+
+  end
+
   describe "POST 'create'" do
 
     describe "failure" do
