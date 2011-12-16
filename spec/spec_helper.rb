@@ -32,7 +32,15 @@ RSpec.configure do |config|
   def test_sign_in(user)
     controller.sign_in(user)
   end
+
+  def integration_test_sign_in(user)
+    #session[:user_id] = user.id   
+    post signin_path, :name => user.name, :password => user.password
+    user.status = true
+    user.save(:validate => false)
+  end
   
+  # Configuration for databse cleaner
   config.before(:each) do
     DatabaseCleaner.strategy = :truncation
   end

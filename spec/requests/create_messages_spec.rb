@@ -10,12 +10,10 @@ describe "CreateMessages", :type => :request do
       fill_in "Name", :with => user.name
       fill_in "Password", :with  => user.password
       click_button "Sign In"
-      #save_and_open_page
-      m = "this is a message"
-      fill_in "message_content", :with => m
+      message = "this is a message, wassup"
+      fill_in "message_content", :with => message
       click_button "Send"
-      page.should have_content("#{user.name}: #{m}")
-      #page.should have_content(m)
+      page.should have_content("#{user.name}: #{message}")
     end
     
     it "should clear the message input text field" do
@@ -24,8 +22,7 @@ describe "CreateMessages", :type => :request do
       fill_in "Name", :with => user.name
       fill_in "Password", :with  => user.password
       click_button "Sign In"
-      m = "this is a message"
-      fill_in "message_content", :with => m
+      fill_in "message_content", :with => "hello, i love you"
       click_button "Send"
       find_field("message_content").value.should be_blank
     end
