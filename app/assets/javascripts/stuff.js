@@ -14,10 +14,10 @@ $(function() {
 // Round the corners (even ie!)
 $(function() {
   $('.button').corner();
-  $('#users_show_top').corner("6px top");
-  $('#users_show_bottom').corner("6px bottom");
-  $('#sign_up').corner("6px");
-  $('#sign_in_out').corner("6px");
+  //$('#users_show_top').corner("6px top");
+  //$('#users_show_bottom').corner("6px bottom");
+  $('#messages').corner("6px");
+  $('td#send_to').corner("6px");
   $('#edit_user').corner("6px");
 });
 
@@ -47,7 +47,8 @@ $(function() {
 
 function updateMessages(message) {
   console.log(message);
-  var after = $("tr.message:last-child").css("color", "#f5e2a9").attr("data-time");
+  //var after = $("tr.message:last-child").css("color", "#f5e2a9").attr("data-time");
+  var after = $("tr.message:last-child").attr("data-time"); 
   //if (after == undefined) {
   //  after = $("#messages").attr("data-start");
   //}

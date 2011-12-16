@@ -1,15 +1,28 @@
-<div id="users_show_top">
-  <p>
-    <%= @user.full_name %>
+<div id="user_name_area">
+  <ul>
+    <li id='user_name'><%= @user.full_name %></li>
     <% if signed_in? %>
-      <%= link_to("Users", users_path, :id => "users_link", :remote => true, :format => :js) %>
-      <%= link_to "Sign out", signout_path %>
-      <%= link_to "Update Profile", edit_user_path(current_user) %>
+      <!--<%= link_to("Users", users_path, :id => "users_link", :remote => true, :format => :js) %>-->
+      <li id='sign_out'><%= link_to "Sign out", signout_path %></li>
+      <!--<%= link_to "Update Profile", edit_user_path(current_user) %>-->
     <% end %>
-  </p>
+  </ul>
 </div>
 
-<div id="users_show_main">
+<div id='send_to_section'>
+  <table>
+    <tr>
+      <td id='to'>
+        <h1><%= link_to("To:", users_path, :id => "users_link", :remote => true, :format => :js) %></h1>
+      </td>
+      <td id='send_to'>
+        <div id='send_to_box'>
+          <table id='senders_table'>
+          </table>
+        </div>
+      </td>
+  </table>
+</div>
 
   <div id="messages" data-start="<%= Time.now.to_i %>">
     <table id="messages_table">
@@ -27,9 +40,6 @@
     <% end %>
   </div>
 
-</div>
-
-<div id="users_show_bottom">
 </div>
 
 <div id="dialog" title="Select fuckin Users..">

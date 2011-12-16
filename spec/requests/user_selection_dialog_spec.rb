@@ -16,7 +16,7 @@ describe "UserSelectonDialog", :type => :request do
     fill_in "Name", :with => user3.name
     fill_in "Password", :with => user3.password
     click_button "Sign In"
-    click_link "Users"
+    click_link "To:"
     users.each do |u|
       page.should have_selector('li.a_user', :content => u.full_name) 
     end

@@ -63,11 +63,9 @@ describe "Users" do
         fill_in "Name", :with => user.name
         fill_in "Password", :with => user.password
         click_button "Sign In"
-        #follow_redirect!
         page.should have_content(user.full_name)
-        # controller.should be_signed_in
         click_link "Sign out"
-        page.should have_content("Amtrak Chicago Terminal Inter-Office Communication System")
+        page.should have_content("Chatty Pants")
         #controller.should_not be_signed_in
       end
     end

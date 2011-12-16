@@ -4,68 +4,94 @@
 */
 
 body {
-  background: #343425;
-  font-family: 'Jura', sans-serif;
+  background-color: #c7e6ff;
+  font-family: sans-serif;
+  color: #002a4a;
 }
 
-.field {
-  margin-bottom: 10px;
+h1 {
+  font-size: 72px;
+  text-align: right;
+  padding: 0px;
+  margin: 0px;
 }
 
-/* User Area */
-
-/* User area top */
-
-#users_show_top {
-  width: 400px;
-  height: 38px;
-  background: #FFFFFF;
-  padding: 2px 5px 5px 10px;
+/* User show main */
+#user_show_main {
+  width: 900px;
+  margin: 0 auto;
 }
 
-#users_show_top p {
-  font-size: 28px;
+/* User name section */
+
+#user_name_area {
+  margin-top: 10px;
+}
+
+#user_name_area ul {
+  padding: 0px;
+  margin: 0px;
+}
+
+#user_name_area ul li {
+  display: inline;
+  margin: 0px;
+  padding: 0px;
+}
+
+li#user_name {
+  color: #ff9900;
+  font-size: 40px;
   font-weight: bold;
-  padding-top: 2px;
-  margin: 2px;
 }
 
-#users_show_top p a {
-  font-size: 16px;
-  font-weight: normal;
-  margin: 2px;
+li#sign_out a {
+  color: #002a4a;
+  text-decoration: none;
 }
 
-/* User area main */
+/* Send to section */
 
-#users_show_main {
-  width: 400px;
-  height: 300px;
-  color: #FFFFFF;
-  background: #000000;
-  padding: 0px 5px 0px 10px;
+#send_to_section {
+  margin-top: 10px;
+}
+
+td#to {
+  color: #002a4a;
+  width: 115px;
+  padding: 0px;
+  margin: 0px;
+}
+
+td#to h1 a {
+  padding: 0px;
+  margin: 0px;
+  color: #002a4a;
+  text-decoration: none;
+}
+
+td#send_to {
+  width: 785px;
+  height: 80px;
+  background-color: #F1F7E2;
 }
 
 /* Message area */
 
 #messages {
-  width: 380px;
-  height: 270px;
+  margin-top: 10px;
+  width: 900px;
+  height: 500px;
+  background-color: #F1F7E2;
+  padding: 15px;
 }
+
+/* Message input section */
 
 #msg_input {
-  width: 380px;
+  margin-top: 10px;
+  width: 900px;
   height: 30px;
-}
-
-/* User area bottom */
-
-#users_show_bottom {
-  width: 400px;
-  height: 30px;
-  padding-left: 10px;
-  padding-right: 5px;
-  background: #FFFFFF;
 }
 
 /* Sign up */

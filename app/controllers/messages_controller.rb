@@ -6,7 +6,7 @@ class MessagesController < ApplicationController
     if @message.save
       #redirect_to user_path(current_user)
     else
-      render 'pages/about'
+      render 'sessions/new'
     end
   end
   
