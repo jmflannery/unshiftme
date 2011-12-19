@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Intercom::Application.load_tasks
+ChattyPants::Application.load_tasks

@@ -4,6 +4,7 @@ module SessionsHelper
     self.current_user = user
     self.current_user.status = true
     self.current_user.save(:validate => false)
+    self.current_user
   end
 
   def sign_out

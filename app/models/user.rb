@@ -2,14 +2,14 @@
 #
 # Table name: users
 #
-#  id                 :integer         not null, primary key
-#  name               :string(255)
-#  full_name          :string(255)
-#  email              :string(255)
-#  created_at         :datetime
-#  updated_at         :datetime
-#  encrypted_password :string(255)
-#  salt               :string(255)
+#  id              :integer         not null, primary key
+#  name            :string(255)
+#  full_name       :string(255)
+#  email           :string(255)
+#  created_at      :datetime
+#  updated_at      :datetime
+#  password_digest :string(255)
+#  status          :boolean
 #
 
 class User < ActiveRecord::Base
@@ -19,6 +19,8 @@ class User < ActiveRecord::Base
   attr_accessible :name, :full_name, :email, :password, :password_confirmation 
   
   has_many :messages
+  
+  has_many :recipients
 
   validates :password, :presence => true,
                        :confirmation => true,

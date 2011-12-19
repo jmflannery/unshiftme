@@ -22,3 +22,20 @@
 -add 3 tests for users controller get index
 -add integration test for show online users dialog (pending)
  --need a test_sign_in method that works in integration tests so I can have several users signed in
+
+***Friday, December 16, 2011, 1:24 am***
+-implement integration_test_sign_in
+-complete users_selection_dialog integration test
+-migrated to chatty pants project
+-need to figure out html/css issue of message send to section shorter than message stream section
+
+***Saturday, December 17, 2011, 3:21 am***
+-clean up css
+-create Recipient resource and database
+-create user => recipient association
+-create Recipient controller and model tests
+
+***Sunday, December 18, 2011, 11:22 pm - post for last 2 days :( ***
+-create recipient controller create, index and destroy tests
+-implement the Recipient controller create, index and destroy actions
+-refactor the recipient destroy controller tests

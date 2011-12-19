@@ -15,3 +15,8 @@ Factory.define :message do |message|
   message.association :user
 end
 
+Factory.define :recipient do |recipient|
+  recipient.recipient_user_id 23
+  recipient.association :user
+end
+

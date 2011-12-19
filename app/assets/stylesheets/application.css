@@ -16,41 +16,47 @@ h1 {
   margin: 0px;
 }
 
-/* User show main */
-#user_show_main {
+/**************
+ * Main 
+***************/
+
+#main {
   width: 900px;
   margin: 0 auto;
 }
 
-/* User name section */
+/******************** 
+ * User name section 
+ ********************/
 
-#user_name_area {
+#user_name_section {
   margin-top: 10px;
 }
 
-#user_name_area ul {
+#user_name_section ul {
   padding: 0px;
   margin: 0px;
 }
 
-#user_name_area ul li {
+#user_name_section ul li {
   display: inline;
-  margin: 0px;
-  padding: 0px;
 }
 
 li#user_name {
   color: #ff9900;
-  font-size: 40px;
+  font-size: 42px;
   font-weight: bold;
 }
 
 li#sign_out a {
   color: #002a4a;
+  font-size: 16px;
   text-decoration: none;
 }
 
-/* Send to section */
+/******************* 
+ * Send to section 
+ *******************/
 
 #send_to_section {
   margin-top: 10px;
@@ -59,34 +65,58 @@ li#sign_out a {
 td#to {
   color: #002a4a;
   width: 115px;
-  padding: 0px;
   margin: 0px;
 }
 
 td#to h1 a {
-  padding: 0px;
-  margin: 0px;
   color: #002a4a;
   text-decoration: none;
 }
 
 td#send_to {
-  width: 785px;
+  width: 783px;
   height: 80px;
   background-color: #F1F7E2;
 }
 
-/* Message area */
+/******************* 
+ * Messages section 
+ *******************/
 
-#messages {
+#messages_section {
   margin-top: 10px;
   width: 900px;
   height: 500px;
   background-color: #F1F7E2;
-  padding: 15px;
+  /*padding: 15px;*/
 }
 
-/* Message input section */
+/********************
+ * Message Section
+ ********************/
+
+tr.message {
+  padding: 10px;
+}
+
+td.message_sender {
+  /*width: 100px;*/
+  padding: 10px 5px 0px 10px;
+}
+
+td.message_content {
+  width: 700px;
+  padding: 10px 5px 0px 0px;
+}
+
+td.message_timestamp {
+ /* width: 100px;*/
+  padding: 10px 10px 0px 0px;
+}
+
+/************************* 
+ * Message input section 
+ *************************/
 
 #msg_input {
   margin-top: 10px;
@@ -94,7 +124,13 @@ td#send_to {
   height: 30px;
 }
 
-/* Sign up */
+ul#online_users_list {
+  list-style-type: none;
+}
+
+/******************
+ * Sign Up Section
+ ******************/
 
 #sign_up {
   width: 400px;
@@ -122,7 +158,9 @@ td#send_to {
   display: inline;
 }
 
-/* Session sign in, sign out */
+/***************************** 
+ * Sign in, Sign out Section 
+ *****************************/
 
 #sign_in_out {
   width: 400px;

@@ -49,10 +49,8 @@ describe UsersController do
 
     before(:each) do
       @user1 = Factory(:user)
-      @user2 = Factory(:user, :name => "Fred", :full_name => "Fred Mertz")
-      @user3 = Factory(:user, :name => "Sam", :full_name => "Sammy Sosa")
-      test_sign_in(@user2)
-      test_sign_in(@user3)
+      @user2 = test_sign_in(Factory(:user, :name => "Fred", :full_name => "Fred Mertz"))
+      @user3 = test_sign_in(Factory(:user, :name => "Sam", :full_name => "Sammy Sosa"))
     end
 
     it "should should be success" do

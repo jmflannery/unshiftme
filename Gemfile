@@ -25,7 +25,7 @@ group :development, :test do
   gem 'jasmine'
   gem 'factory_girl_rails', "~> 1.4.0"
   gem 'faker'
-  gem 'annotate'
+  gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
   gem 'rb-inotify'
   gem 'libnotify'
   gem 'guard-rspec'

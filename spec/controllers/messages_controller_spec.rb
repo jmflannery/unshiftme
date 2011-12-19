@@ -5,8 +5,13 @@ describe MessagesController do
 
   describe "access control" do
 
-    it "should deny access to 'create'" do
-      post :create
+    it "should deny access to 'create' for non-signed in users" do
+      post :create, :message => { :content => "what the??" }
+      response.should redirect_to(signin_path)
+    end
+
+    it "should deny access to 'index' for non-signed in users" do
+      get :index, :format => :js
       response.should redirect_to(signin_path)
     end
   end
@@ -51,7 +56,7 @@ describe MessagesController do
       second = Factory(:message, :content => "What the ??")
       third = Factory(:message, :content => "Who the ???")
       @some_messages = [first, second, third]
-      @user = test_sign_in(Factory(:user))
+      test_sign_in(Factory(:user))
     end
     
     it "should be success" do
@@ -62,7 +67,7 @@ describe MessagesController do
     it "should be return the correct messages" do
       get :index, :after => 1.second.ago, :format => :js
       messages = assigns(:new_messages)
-      messages.should == @some_messages 
+      messages.should == @some_messages
     end
   end
 end

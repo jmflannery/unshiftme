@@ -16,18 +16,18 @@ $(function() {
   $('.button').corner();
   //$('#users_show_top').corner("6px top");
   //$('#users_show_bottom').corner("6px bottom");
-  $('#messages').corner("6px");
+  $('#messages_section').corner("6px");
   $('td#send_to').corner("6px");
   $('#edit_user').corner("6px");
 });
 
 // Open User List Dialog
-//$.fx.speeds._default = 1000;
+$.fx.speeds._default = 500;
 $(function() {
   $('#dialog').dialog({
     autoOpen: false,
-    show: "blind",
-    hide: "explode"
+    show: "drop",
+    hide: "drop"
   });
 });
 
@@ -40,7 +40,7 @@ $(function() {
 
 // Poll Server for more Messages
 $(function() {
-  if ($("#messages").length > 0) {  
+  if ($("#messages_section").length > 0) {  
     setTimeout("updateMessages('Auto Poll')", 2000);
   }
 });
