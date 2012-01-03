@@ -28,7 +28,8 @@ class User < ActiveRecord::Base
 
   default_scope :order => 'users.full_name ASC'
 
-  scope :online, where("users.status = ?", true)
+  #scope :online, where("users.status = ?", true)
+  scope :online, lambda { |user_id| where("users.status = ? and users.id != ?", true, user_id) }
 
   #before_save :encrypt_password
 

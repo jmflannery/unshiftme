@@ -33,11 +33,11 @@ RSpec.configure do |config|
     controller.sign_in(user)
   end
 
-  def integration_test_sign_in(user)
-    #session[:user_id] = user.id   
+  def integration_test_sign_in(user)   
     post signin_path, :name => user.name, :password => user.password
     user.status = true
     user.save(:validate => false)
+    user
   end
   
   # Configuration for databse cleaner

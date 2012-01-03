@@ -1,4 +1,7 @@
-// Page Links
+//////////////////////////
+// Page Links (not used)
+//////////////////////////
+
 $(function() {
   $('#nav ul li a.current').removeClass("current");
   var title = $(this).attr("title");
@@ -11,7 +14,10 @@ $(function() {
   }
 });
 
+/////////////////////////////////
 // Round the corners (even ie!)
+/////////////////////////////////
+
 $(function() {
   $('.button').corner();
   //$('#users_show_top').corner("6px top");
@@ -21,7 +27,10 @@ $(function() {
   $('#edit_user').corner("6px");
 });
 
+//////////////////////////
 // Open User List Dialog
+//////////////////////////
+
 $.fx.speeds._default = 500;
 $(function() {
   $('#dialog').dialog({
@@ -31,14 +40,24 @@ $(function() {
   });
 });
 
-//$(function() {
-//  $('#users_link').click(function() {
-//    $('#dialog').dialog("open");
-//    return false;
-//  });
-//});
+////////////////////////////
+// X button image rollover
+////////////////////////////
 
+var x_button_roll_in = function() {
+  $(this).attr("src", "/assets/red_x.png");
+  console.log("hovering in!!!");
+};
+
+var x_button_roll_out = function() {
+  console.log("hover boarding out!");
+  $(this).attr("src", "/assets/grey_x.png");
+};
+
+///////////////////////////////////
 // Poll Server for more Messages
+///////////////////////////////////
+
 $(function() {
   if ($("#messages_section").length > 0) {  
     setTimeout("updateMessages('Auto Poll')", 2000);

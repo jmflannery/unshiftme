@@ -1,1 +1,1 @@
-$("tr.message:last-child").after("<%=raw escape_javascript(render(@new_messages)) %>");
+$("tr.message:last-child").after("<%=escape_javascript(render(@new_messages)) %>");

@@ -79,6 +79,36 @@ td#send_to {
   background-color: #F1F7E2;
 }
 
+/**********************
+ * Recipients section
+ **********************/
+
+table#recipients_table {
+  border-collapse: seperate;
+  border-spacing: 8px;
+}
+
+td.recipient_cell {
+  background-color: #ff9900;
+  /*padding: 3px 40px 3px 3px;*/
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+ul.recipient {
+  padding: 0px;
+  margin: 3px 5px;
+}
+
+ul.recipient li {
+  display: inline;
+}
+
+li.x_link {
+  margin-left: 15px;
+}
+
 /******************* 
  * Messages section 
  *******************/

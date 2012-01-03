@@ -1,0 +1,4 @@
+$('#dialog').dialog("close");
+$("#send_to_box").html("<%= j(render('recipients_table', :recipient_lists => @my_recipients)) %>");
+$('img.x_button').hover(x_button_roll_in, x_button_roll_out);
+console.log("Getting recipients list, maybe...");

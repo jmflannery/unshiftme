@@ -9,16 +9,19 @@ class RecipientsController < ApplicationController
     end
     
     user_ids.each do |id|
-      current_user.recipients.create(:recipient_user_id => id)
+      recip = current_user.recipients.create(:recipient_user_id => id)
     end
+
+    redirect_to recipients_path
   end
 
   def index
-    @all_recipients = Recipient.of_user(current_user.id)
+    @my_recipients = Recipient.my_recipients(current_user.id)
   end
 
   def destroy
     @recipient.destroy
+    @my_recipients = Recipient.my_recipients(current_user.id)
   end
 
   private

@@ -28,7 +28,7 @@ class UsersController < ApplicationController
   end
 
   def index
-    @online_users = User.online
+    @online_users = User.online(current_user.id)
   end
 
   def edit

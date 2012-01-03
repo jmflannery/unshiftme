@@ -29,7 +29,7 @@ describe RecipientsController do
 
     it "should be successful" do
       post :create, :format => :js
-      response.should be_success
+      response.should be_redirect
     end
 
     describe "failure" do
@@ -71,19 +71,19 @@ describe RecipientsController do
         recip_user2 = Factory(:user, :name => "Darry", :full_name => "Darryl Strawberry")
         @recip1 = Factory(:recipient, :user => @user, :recipient_user_id => recip_user1.id)
         @recip2 = Factory(:recipient, :user => @user, :recipient_user_id => recip_user2.id)
-        @recips = [@recip1, @recip2]
+        @recips = [[@recip1, @recip2]]
         @non_recip = Factory(:recipient)
       end
 
       it "should include all recipients" do 
         get :index, :format => :js
-        recipients = assigns(:all_recipients) 
+        recipients = assigns(:my_recipients) 
         recipients.should == @recips
       end
 
       it "should not include non-recipients" do
         get :index, :format => :js
-        recipients = assigns(:all_recipients)
+        recipients = assigns(:my_recipients)
         recipients.should_not include(@non_recip)
       end
     end

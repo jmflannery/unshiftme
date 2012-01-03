@@ -39,3 +39,8 @@
 -create recipient controller create, index and destroy tests
 -implement the Recipient controller create, index and destroy actions
 -refactor the recipient destroy controller tests
+
+***Monday, January 2, 2012, 1144 pm***
+-create functionality to add and remove recipients visually
+-need to add integration test of destroying recipients
+-need to add column to messages table to store a comma seperated list of message recipient user ids

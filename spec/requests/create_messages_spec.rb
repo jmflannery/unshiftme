@@ -13,7 +13,8 @@ describe "CreateMessages", :type => :request do
       message = "this is a message, wassup"
       fill_in "message_content", :with => message
       click_button "Send"
-      page.should have_content("#{user.name}: #{message}")
+      #find_field("message_content").value.should be_blank
+      page.should have_content("#{user.name}: #{message}") 
     end
     
     it "should clear the message input text field" do

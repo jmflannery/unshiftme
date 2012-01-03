@@ -51,6 +51,7 @@ describe UsersController do
       @user1 = Factory(:user)
       @user2 = test_sign_in(Factory(:user, :name => "Fred", :full_name => "Fred Mertz"))
       @user3 = test_sign_in(Factory(:user, :name => "Sam", :full_name => "Sammy Sosa"))
+      @user4 = test_sign_in(Factory(:user, :name => "Frank", :full_name => "Frank N Stein"))
     end
 
     it "should should be success" do
