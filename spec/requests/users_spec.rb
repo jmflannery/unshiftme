@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "Users" do
 
-  describe "signup", :type => :request do
+  describe "signup" do
 
     describe "failure" do
 
