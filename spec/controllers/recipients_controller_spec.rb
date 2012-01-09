@@ -128,5 +128,4 @@ describe RecipientsController do
       end
     end
   end
-
 end

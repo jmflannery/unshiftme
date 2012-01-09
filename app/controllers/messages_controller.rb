@@ -4,13 +4,13 @@ class MessagesController < ApplicationController
   def create
     @message = current_user.messages.build(params[:message])
     if @message.save
-      #redirect_to user_path(current_user)
+      @message.set_recievers
     else
       render 'sessions/new'
     end
   end
   
   def index
-    @new_messages = Message.where("created_at > ?", Time.at(params[:after].to_i + 1))
+    @new_messages = Message.since(Time.at(params[:after].to_i + 1))
   end
 end

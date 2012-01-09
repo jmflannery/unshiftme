@@ -11,16 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111216233800) do
+ActiveRecord::Schema.define(:version => 20120109044132) do
 
   create_table "messages", :force => true do |t|
     t.string   "content"
     t.integer  "user_id"
-    t.integer  "reciever"
     t.integer  "read"
     t.datetime "time_read"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "recievers"
+    t.string   "sent"
   end
 
   create_table "recipients", :force => true do |t|
@@ -40,6 +41,9 @@ ActiveRecord::Schema.define(:version => 20111216233800) do
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
+# Could not dump table "sqlite_stat1" because of following StandardError
+#   Unknown type '' for column 'tbl'
+
   create_table "users", :force => true do |t|
     t.string   "name"
     t.string   "full_name"
@@ -48,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20111216233800) do
     t.datetime "updated_at"
     t.string   "password_digest"
     t.boolean  "status"
+    t.integer  "recipient_id"
   end
 
 end

@@ -44,3 +44,14 @@
 -create functionality to add and remove recipients visually
 -need to add integration test of destroying recipients
 -need to add column to messages table to store a comma seperated list of message recipient user ids
+
+***Thursday January 5, 2012, 12:16 am***
+-Start to refactor integration tests. Needs more work.
+-Update gems.
+
+***Monday January 9, 2012, 12:57 am***
+-implement new messaging system that is not based on time, but based on Message.sent
+-implement message.set_recievers
+-implement message.mark_sent_to(user)
+-implement Message.new_messages_for(user)
+-TODO - add Message.sent_all boolean field 

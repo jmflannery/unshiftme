@@ -119,6 +119,9 @@ li.x_link {
   height: 500px;
   background-color: #F1F7E2;
   /*padding: 15px;*/
+  /*overflow: scroll;*/
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /********************

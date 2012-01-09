@@ -48,10 +48,11 @@ describe UsersController do
   describe "GET 'index'" do
 
     before(:each) do
-      @user1 = Factory(:user)
-      @user2 = test_sign_in(Factory(:user, :name => "Fred", :full_name => "Fred Mertz"))
-      @user3 = test_sign_in(Factory(:user, :name => "Sam", :full_name => "Sammy Sosa"))
-      @user4 = test_sign_in(Factory(:user, :name => "Frank", :full_name => "Frank N Stein"))
+      @offline_user = Factory(:user)
+      user1 = test_sign_in(Factory(:user, :name => "Fred", :full_name => "Fred Mertz"))
+      user2 = test_sign_in(Factory(:user, :name => "Sam", :full_name => "Sammy Sosa"))
+      @user = test_sign_in(Factory(:user, :name => "Frank", :full_name => "Frank N Stein"))
+      @users = [user1, user2]
     end
 
     it "should should be success" do
@@ -62,14 +63,19 @@ describe UsersController do
     it "should not show non-signed in users" do
       get :index, :format => :js
       users = assigns(:online_users)
-      users.should_not include(@user1)
+      users.should_not include(@offline_user)
+    end
+
+    it "should not include the current user" do
+      get :index, :format => :js
+      users = assigns(:online_users)
+      users.should_not include(@user)
     end
 
     it "should show signed in users" do
       get :index, :format => :js
       users = assigns(:online_users)
-      users.should include(@user2)
-      users.should include(@user3)
+      users.should == @users
     end
 
   end

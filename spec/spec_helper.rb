@@ -27,7 +27,7 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = false
   
-  #Capybara.default_wait_time = 5
+  #Capybara.default_wait_time = 3
 
   def test_sign_in(user)
     controller.sign_in(user)
