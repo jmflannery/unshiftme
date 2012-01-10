@@ -51,23 +51,35 @@ describe MessagesController do
   
   describe "GET 'index'" do
     
-    before(:each) do 
-      first = Factory(:message)
-      second = Factory(:message, :content => "What the ??")
-      third = Factory(:message, :content => "Who the ???")
-      @some_messages = [first, second, third]
-      test_sign_in(Factory(:user))
+    before(:each) do
+      @user = test_sign_in(Factory(:user)) 
+      msg1 = Factory(:message, :content => "What the ??") 
+      msg2 = Factory(:message, :content => "Who the ???")
+      @messages = [msg1, msg2]
     end
     
     it "should be success" do
-      get :index, :after => 1.seconds.ago, :format => :js
+      get :index, :format => :js
       response.should be_success
     end
 
-    it "should be return the correct messages" do
-      get :index, :after => 1.second.ago, :format => :js
-      messages = assigns(:new_messages)
-      messages.should == @some_messages
+    describe "new_messages array" do
+
+      it "should only include new messages" do
+        get :index, :format => :js
+        messages = assigns(:new_messages)
+        messages.should == @messages
+      end
+
+      it "should not include old messages" do
+        get :index, :format => :js
+        #@sent_message = Factory(:message)
+        get :index, :format => :js
+        messages = assigns(:new_messages)
+        @messages.each do |msg|
+          messages.should_not include msg
+        end
+      end
     end
   end
 end

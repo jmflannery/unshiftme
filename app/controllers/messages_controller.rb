@@ -11,6 +11,10 @@ class MessagesController < ApplicationController
   end
   
   def index
-    @new_messages = Message.since(Time.at(params[:after].to_i + 1))
+    @new_messages = Message.new_messages_for(current_user)
+    @new_messages.each do |message|
+      message.mark_sent_to(current_user)
+      print current_user.full_name + "\n"
+    end
   end
 end

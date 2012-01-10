@@ -66,12 +66,12 @@ $(function() {
 
 function updateMessages(message) {
   console.log(message);
-  //var after = $("tr.message:last-child").css("color", "#f5e2a9").attr("data-time");
-  var after = $("tr.message:last-child").attr("data-time"); 
+  //var after = $("tr.message:last-child").attr("data-time"); 
   //if (after == undefined) {
   //  after = $("#messages").attr("data-start");
   //}
-  $.getScript("/messages.js?after=" + after);
+  var id = $('#user_name_section').attr("class");
+  $.getScript("/messages.js?id=" + id);
   var f = "updateMessages('auto poll')";
   setTimeout(f, 2000);
 }
