@@ -55,3 +55,9 @@
 -implement message.mark_sent_to(user)
 -implement Message.new_messages_for(user)
 -TODO - add Message.sent_all boolean field 
+
+***Tuesday January 10, 2012, 12:18 am***
+-fix message index controller tests
+-make test pass
+-send the users id as a parameter to message index
+-TODO - use respond_to js in messages index action and grab the id param and authenticate the user because current_user is not available
