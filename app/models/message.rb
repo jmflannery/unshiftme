@@ -42,9 +42,11 @@ class Message < ActiveRecord::Base
     if self.sent.blank?
       self.sent = user.id.to_s
     else
-      self.sent << "," + user.id.to_s unless sent.include?(user.id.to_s)
+      #self.sent << "," + user.id.to_s unless sent.include?(user.id.to_s)
+      self.sent = self.sent + "," + user.id.to_s
     end
-    self.save
+
+    self.save 
   end
 
   def self.new_messages_for(user)

@@ -59,22 +59,21 @@ describe MessagesController do
     end
     
     it "should be success" do
-      get :index, :format => :js
+      get :index, :format => :js, :user_id => @user.id
       response.should be_success
     end
 
     describe "new_messages array" do
 
       it "should only include new messages" do
-        get :index, :format => :js
+        get :index, :format => :js, :user_id => @user.id
         messages = assigns(:new_messages)
         messages.should == @messages
       end
 
       it "should not include old messages" do
-        get :index, :format => :js
-        #@sent_message = Factory(:message)
-        get :index, :format => :js
+        get :index, :format => :js, :user_id => @user.id
+        get :index, :format => :js, :user_id => @user.id
         messages = assigns(:new_messages)
         @messages.each do |msg|
           messages.should_not include msg

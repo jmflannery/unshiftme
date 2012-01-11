@@ -11,10 +11,15 @@ class MessagesController < ApplicationController
   end
   
   def index
-    @new_messages = Message.new_messages_for(current_user)
+    user = nil
+    respond_to do |format|
+      format.html {user = current_user}
+      format.js {user = User.find(params[:user_id])}
+    end
+
+    @new_messages = Message.new_messages_for(user)
     @new_messages.each do |message|
-      message.mark_sent_to(current_user)
-      print current_user.full_name + "\n"
+      message.mark_sent_to(user)
     end
   end
 end

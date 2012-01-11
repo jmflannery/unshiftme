@@ -71,7 +71,7 @@ function updateMessages(message) {
   //  after = $("#messages").attr("data-start");
   //}
   var id = $('#user_name_section').attr("class");
-  $.getScript("/messages.js?id=" + id);
+  $.getScript("/messages.js?user_id=" + id);
   var f = "updateMessages('auto poll')";
   setTimeout(f, 2000);
 }
