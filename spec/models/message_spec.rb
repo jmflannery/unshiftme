@@ -65,7 +65,7 @@ describe Message do
       recip2 = Factory(:recipient, :user => @user, :recipient_user_id => recip_user2.id) 
     end
 
-    it "should set the message.recievers to all of the meassage's user's recipients" do
+    it "should set the message.recievers to all of the message's user's recipients" do
       message = @user.messages.create!(@attr)
       message.set_recievers
       recievers = message.recievers.split(/,/)
