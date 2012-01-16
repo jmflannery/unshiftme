@@ -52,10 +52,7 @@ describe MessagesController do
   describe "GET 'index'" do
     
     before(:each) do
-      @user = test_sign_in(Factory(:user)) 
-      msg1 = Factory(:message, :content => "What the ??") 
-      msg2 = Factory(:message, :content => "Who the ???")
-      @messages = [msg1, msg2]
+      @user = test_sign_in(Factory(:user))
     end
     
     it "should be success" do
@@ -63,22 +60,10 @@ describe MessagesController do
       response.should be_success
     end
 
-    describe "new_messages array" do
-
-      it "should only include new messages" do
-        get :index, :format => :js, :user_id => @user.id
-        messages = assigns(:new_messages)
-        messages.should == @messages
-      end
-
-      it "should not include old messages" do
-        get :index, :format => :js, :user_id => @user.id
-        get :index, :format => :js, :user_id => @user.id
-        messages = assigns(:new_messages)
-        @messages.each do |msg|
-          messages.should_not include msg
-        end
-      end
+    it "should have a new messages array" do
+      get :index, :format => :js, :user_id => @user.id
+      messages = assigns(:new_messages)
+      messages.should be_kind_of(Array)
     end
   end
 end

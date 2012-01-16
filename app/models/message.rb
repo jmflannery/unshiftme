@@ -22,11 +22,10 @@ class Message < ActiveRecord::Base
   
   default_scope :order => 'messages.created_at ASC'
 
-  #scope :new_for, lambda { |user_id| where("? not in recievers", user_id) }
+  scope :messages_for, lambda { |user_id| where("recievers like '%#{user_id}%' or user_id = ?", user_id) }
 
   def set_recievers
-    user = self.user
-    recipients = user.recipients
+    recipients = self.user.recipients
     count = 0
     recipient_user_ids = ""
     recipients.each do |recipient|
@@ -51,7 +50,7 @@ class Message < ActiveRecord::Base
 
   def self.new_messages_for(user)
     unsent_messages = []
-    messages = Message.all
+    messages = messages_for(user.id)
     messages.each do |message|
       unless message.sent.blank?
         sent_user_ids = message.sent.split(/,/) 

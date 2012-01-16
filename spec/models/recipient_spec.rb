@@ -24,6 +24,7 @@ describe Recipient do
   end
 
   describe "user associations" do
+
     it "should have a user attribute" do
       @recipient.should respond_to(:user)
     end
