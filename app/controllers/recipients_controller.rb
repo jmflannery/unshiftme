@@ -4,13 +4,11 @@ class RecipientsController < ApplicationController
 
   def create
     user_ids = []
-    params.each do |k,v|
-      user_ids << v if k =~ /user_name_.*/
+    params.each do |key,value|
+      user_ids << value.to_i if key =~ /user_name_.*/
     end
-    
-    user_ids.each do |id|
-      recip = current_user.recipients.create(:recipient_user_id => id)
-    end
+
+    current_user.add_recipients(user_ids)
 
     redirect_to recipients_path
   end

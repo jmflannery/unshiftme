@@ -1,4 +1,4 @@
-<tr class="message" data-time="<%= message.created_at.to_i %>">
+<tr class="message">
   <td class="message_sender"><%= User.find(message.user_id).name %>: </td>
   <td class="message_content"><%= message.content %></td>
   <td class="message_timestamp">...<%= message.created_at.strftime("%T") %></td>

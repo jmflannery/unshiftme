@@ -15,15 +15,16 @@
         <h1><%= link_to("To:", users_path, :id => "users_link", :remote => true, :format => :js) %></h1>
       </td>
       <td id='send_to'>
-        <div id='send_to_box'>       
+        <div id='send_to_box'>
+          <%= render('recipients/recipients_table', :recipient_lists => @my_recipients) %>
         </div>
       </td>
   </table>
 </div>
 
-<div id="messages_section" data-start="<%= Time.now.to_i %>">
+<div id="messages_section">
   <table id="messages_table">
-    <tr class="message" data-time="<%= Time.now.to_i %>"><td></td><td></td></tr>
+    <tr class="message"></tr>
     <%= render @messages %>
   </table>
 </div>

@@ -105,5 +105,70 @@ describe User do
       @user.messages.should == [@msg1, @msg2]
     end
   end
+
+  describe "method" do
+    
+    before(:each) do
+      @user = Factory(:user)
+      @user_attr1 = { :name => "Wally", :full_name => "Wally Wallerson", :status => true }
+      @user_attr2 = { :name => "Sally", :full_name => "Sally Fields", :status => true }
+    end
+
+    describe "available_users" do
+
+      before(:each) do
+        @user3 = Factory(:user, @user_attr1)
+        @user4 = Factory(:user, @user_attr2)
+        @recipient = Factory(:recipient, :user => @user, :recipient_user_id => @user4.id)
+      end
+
+      it "should return an Array of users" do
+        users = User.available_users(@user)
+        users.should be_kind_of(Array)
+        users[0].should be_kind_of(User)        
+      end
+
+      it "should not return the given user" do
+        users = User.available_users(@user)
+        users.should_not include(@user)
+      end
+
+      it "should not return users who are already recipients of the given user" do
+        users = User.available_users(@user)
+        users.should_not include(@user4)
+      end 
+    end
+
+    describe "add_recipients" do
+
+      it "should add the list of user IDs to the user's recipients" do
+        user_ids = [1,2,3]
+        @user.add_recipients(user_ids)
+        recipients = Recipient.of_user(@user.id)
+        recipients.size.should == user_ids.size
+        recipients.each do |recipient|
+          user_ids.should include recipient.recipient_user_id
+        end
+      end
+
+      it "should not add any duplicate recipients" do
+        user_ids = [1,2,3]
+        @user.add_recipients(user_ids)
+        size1 = Recipient.of_user(@user.id).size
+        @user.add_recipients(user_ids)
+        size2 = Recipient.of_user(@user.id).size
+        size1.should == size2
+      end
+    end
+
+    describe "recipient_user_ids" do
+      it "should return an array of the user's recipient's user_ids" do
+        user_ids = [1,2,3]
+        @user.add_recipients(user_ids)
+        recipient_user_ids = @user.recipient_user_ids
+        recipient_user_ids.should == user_ids
+      end
+    end    
+  end
 end
 

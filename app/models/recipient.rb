@@ -11,6 +11,8 @@
 
 class Recipient < ActiveRecord::Base
   belongs_to :user
+  
+  #validates :recipient_user_id, :uniqueness => { :scope => :user_id }
 
   scope :of_user, lambda { |user_id| where("user_id = ?", user_id) }
 
@@ -30,5 +32,14 @@ class Recipient < ActiveRecord::Base
       counter += 1
     end
     recipients_list
+  end
+
+  def self.my_recipient_user_ids(user_id)
+    recipients = of_user(user_id)
+    ids = []
+    recipients.each do |recipient|
+      ids << recipient.recipient_user_id
+    end
+    ids
   end
 end

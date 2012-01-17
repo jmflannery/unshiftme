@@ -22,6 +22,8 @@ class Message < ActiveRecord::Base
   
   default_scope :order => 'messages.created_at ASC'
 
+  scope :since, lambda { |time| where("created_at >= ?", time) } 
+
   scope :messages_for, lambda { |user_id| where("recievers like '%#{user_id}%' or user_id = ?", user_id) }
 
   def set_recievers

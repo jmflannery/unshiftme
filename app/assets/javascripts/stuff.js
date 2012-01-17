@@ -54,6 +54,10 @@ var x_button_roll_out = function() {
   $(this).attr("src", "/assets/grey_x.png");
 };
 
+$(function() {
+  $('img.x_button').hover(x_button_roll_in, x_button_roll_out);
+});
+
 ///////////////////////////////////
 // Poll Server for more Messages
 ///////////////////////////////////

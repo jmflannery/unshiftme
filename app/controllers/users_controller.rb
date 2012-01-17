@@ -25,10 +25,11 @@ class UsersController < ApplicationController
     @title = @user.full_name
     @messages = []
     @message = Message.new if signed_in?
+    @my_recipients = Recipient.my_recipients(@user.id)
   end
 
   def index
-    @online_users = User.online(current_user.id)
+    @online_users = User.available_users(current_user)
   end
 
   def edit
@@ -53,6 +54,5 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
       redirect_to root_path unless current_user?(@user)
     end
-
 end
 

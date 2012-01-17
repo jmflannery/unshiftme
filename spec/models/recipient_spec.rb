@@ -35,28 +35,45 @@ describe Recipient do
     end
   end
 
-  describe "my_recipients method" do
+  describe "method" do
     
     before(:each) do
       x = 0
+      @recipients = [@recipient]
       while x < 16 do
         user = Factory(:user)
-        @sender.recipients.create!(:recipient_user_id => user.id)    
+        @recipients << @sender.recipients.create!(:recipient_user_id => user.id)    
         x += 1
-      end 
+      end
     end
+    
+    describe "my_recipients" do
 
-    it "should return all of the user's recipients as an array of 8 recipient arrays" do
-      recipients = Recipient.my_recipients(@sender.id)
-      recipients.should be_kind_of(Array)
-      recipients.size.should == 3
-      recipients[0].should be_kind_of(Array)
-      recipients[0].size.should == 8
-      recipients[1].should be_kind_of(Array)
-      recipients[1].size.should == 8
-      recipients[2].should be_kind_of(Array)
-      recipients[2].size.should == 1
+      it "should return all of the user's recipients as an array of 8 recipient arrays" do
+        recipients = Recipient.my_recipients(@sender.id)
+        recipients.should be_kind_of(Array)
+        recipients.size.should == 3
+        recipients[0].should be_kind_of(Array)
+        recipients[0].size.should == 8
+        recipients[0][0].should be_kind_of(Recipient)
+        recipients[1].should be_kind_of(Array)
+        recipients[1].size.should == 8
+        recipients[1][0].should be_kind_of(Recipient)
+        recipients[2].should be_kind_of(Array)
+        recipients[2].size.should == 1
+        recipients[2][0].should be_kind_of(Recipient)
+      end
+    end
+  
+    describe "my_recipient_user_ids" do
+
+      it "should return an Array containing all of the user's recipient's user_ids" do
+        recipients = Recipient.my_recipient_user_ids(@sender.id)
+        recipients.size.should == @recipients.size
+        @recipients.each do |recipient|
+          recipients.should include(recipient.recipient_user_id)
+        end
+      end 
     end
   end
 end
-
