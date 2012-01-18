@@ -31,14 +31,14 @@
   
 <div id="msg_input">
   <% if signed_in? %>
-    <%= form_for(@message, :remote => true, :format => :js) do |f| %>
+    <%= form_for(@message, :id => "message_input", :remote => true, :format => :js) do |f| %>
       <%= f.text_field :content %>
       <%= f.submit "Send" %>
     <% end %>
   <% end %>
 </div>
 
-<div id="dialog" title="Select fuckin Users..">
+<div id="dialog" title="Who would you like to message?">
   <%= form_tag recipients_path, :remote => true, :format => :js do %>
     <ul id="online_users_list"> 
     </ul>

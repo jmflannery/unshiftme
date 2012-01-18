@@ -36,7 +36,8 @@ $(function() {
   $('#dialog').dialog({
     autoOpen: false,
     show: "drop",
-    hide: "drop"
+    hide: "drop",
+    width: 350
   });
 });
 
