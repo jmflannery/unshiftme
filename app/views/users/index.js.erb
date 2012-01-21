@@ -1,3 +1,7 @@
-$("ul#online_users_list").html("<%=j(render(@online_users)) %>");
-console.log("Getting users list, I hope...");
+<% if @online_users.nil? || @online_users.empty? %>
+  $("ul#online_users_list").html("<li>Nobody's at the party!</li>");
+<% else %>
+  $("ul#online_users_list").html("<%=j(render(@online_users)) %>");
+<% end %>
+
 $('#dialog').dialog("open");

@@ -22,7 +22,7 @@ end
 gem 'jquery-rails'
 
 group :development, :test do
-  gem 'rspec-rails', "~>2.8.0"
+  gem 'rspec-rails', "~> 2.8.0"
   gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
   gem 'factory_girl_rails', "~> 1.4.0"
   gem 'faker'
