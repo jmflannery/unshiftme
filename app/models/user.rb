@@ -42,17 +42,16 @@ class User < ActiveRecord::Base
 
   def recipient_user_ids
     ids = []
-    self.recipients.each do |recipient|
+    recipients.each do |recipient|
       ids << recipient.recipient_user_id
     end
     ids
   end  
 
   def add_recipients(user_ids)
-    user_recipients = self.recipient_user_ids
+    user_recipients = recipient_user_ids
     user_ids.each do |id|
-      self.recipients.create!(:recipient_user_id => id) unless user_recipients.include?(id)
+      recipients.create!(:recipient_user_id => id) unless user_recipients.include?(id)
     end
   end
 end
-
