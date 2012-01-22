@@ -115,13 +115,13 @@ li.x_link {
 
 #messages_section {
   margin-top: 10px;
-  width: 900px;
+  /*width: 900px;*/
   height: 500px;
+  width: 100%;
   background-color: #F1F7E2;
-  /*padding: 15px;*/
-  /*overflow: scroll;*/
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: auto;
+  /*overflow-y: auto;
+  overflow-x: hidden;*/
 }
 
 /********************

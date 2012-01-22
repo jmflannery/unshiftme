@@ -1,1 +1,4 @@
 $("tr.message:last-child").after("<%=escape_javascript(render(@new_messages)) %>");
+<% unless @new_messages.empty? %>
+  $('#messages_section').scrollTo("max");
+<% end %>

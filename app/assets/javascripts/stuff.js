@@ -1,19 +1,3 @@
-//////////////////////////
-// Page Links (not used)
-//////////////////////////
-
-$(function() {
-  $('#nav ul li a.current').removeClass("current");
-  var title = $(this).attr("title");
-  if (title == "About") {
-    $('#nav ul li a#link1').addClass("current");
-  } else if (title == "Features") {
-    $('#nav ul li a#link2').addClass("current");
-  } else if (title == "Technology") {
-    $('#nav ul li a#link3').addClass("current");
-  }
-});
-
 /////////////////////////////////
 // Round the corners (even ie!)
 /////////////////////////////////
@@ -31,7 +15,7 @@ $(function() {
 // Open User List Dialog
 //////////////////////////
 
-$.fx.speeds._default = 500;
+$.fx.speeds._default = 400;
 $(function() {
   $('#dialog').dialog({
     autoOpen: false,
