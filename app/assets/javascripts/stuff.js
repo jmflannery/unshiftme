@@ -65,18 +65,20 @@ $(function() {
 
 $(function() {
   if ($("#messages_section").length > 0) {  
-    setTimeout("updateMessages('Auto Poll')", 2000);
+    setTimeout("pollForMessages('Auto Poll')", 2000);
   }
 });
 
-function updateMessages(message) {
+var pollForMessages = function(message) {
   console.log(message);
-  //var after = $("tr.message:last-child").attr("data-time"); 
-  //if (after == undefined) {
-  //  after = $("#messages").attr("data-start");
-  //}
   var id = $('#user_name_section').attr("class");
   $.getScript("/messages.js?user_id=" + id);
-  var f = "updateMessages('auto poll')";
+  var f = "pollForMessages('auto poll')";
   setTimeout(f, 2000);
-}
+};
+
+var getMessages = function(message) {
+  console.log(message);
+  var id = $('#user_name_section').attr("class");
+  $.getScript("/messages.js?user_id=" + id); 
+};
