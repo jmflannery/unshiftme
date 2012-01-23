@@ -54,4 +54,32 @@ class User < ActiveRecord::Base
       recipients.create!(:recipient_user_id => id) unless user_recipients.include?(id)
     end
   end
+
+  def timestamp_poll(time)
+    self.lastpoll = time
+    self.save validate: false
+  end
+
+  def set_online
+    self.status = true
+    self.save validate: false
+  end
+
+  def set_offline
+    self.status = false
+    self.save validate: false
+  end
+
+  def remove_stale_recipients
+    stale_recipients = []
+    self.recipients.each do |recipient|
+      r_user = User.find(recipient.recipient_user_id)
+      if r_user.status.nil? || r_user.status == false || (r_user.lastpoll < Time.now - 4 if r_user.lastpoll) 
+        stale_recipients << recipient 
+        r_user.set_offline
+      end
+    end
+    self.recipients = self.recipients - stale_recipients
+    self.save validate: false
+  end
 end

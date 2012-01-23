@@ -4,6 +4,7 @@ Factory.define :user do |user|
   user.email "chesty@sluts.com"
   user.password "dirtysanchez"
   user.password_confirmation "dirtysanchez"
+  user.status false
 end
 
 Factory.sequence :email do |n|

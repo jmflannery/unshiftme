@@ -112,20 +112,26 @@ describe User do
       @user = Factory(:user)
       @user_attr1 = { :name => "Wally", :full_name => "Wally Wallerson", :status => true }
       @user_attr2 = { :name => "Sally", :full_name => "Sally Fields", :status => true }
+      @user_attr3 = { :name => "Jimmy", :full_name => "Jimmy Johnson", :status => true }
     end
 
     describe "available_users" do
 
       before(:each) do
-        @user3 = Factory(:user, @user_attr1)
-        @user4 = Factory(:user, @user_attr2)
-        @recipient = Factory(:recipient, :user => @user, :recipient_user_id => @user4.id)
+        @user1 = Factory(:user, @user_attr1)
+        user2 = Factory(:user, @user_attr2)
+        user3 = Factory(:user, @user_attr3)
+        Factory(:recipient, :user => @user, :recipient_user_id => @user1.id)
       end
 
-      it "should return an Array of users" do
+      it "should return an Array of users with online status" do
         users = User.available_users(@user)
         users.should be_kind_of(Array)
-        users[0].should be_kind_of(User)        
+        users.size.should == 2
+        users.each do |user|
+          user.should be_kind_of(User)
+          user.status.should be_true
+        end
       end
 
       it "should not return the given user" do
@@ -135,7 +141,7 @@ describe User do
 
       it "should not return users who are already recipients of the given user" do
         users = User.available_users(@user)
-        users.should_not include(@user4)
+        users.should_not include(@user1)
       end 
     end
 
@@ -162,13 +168,77 @@ describe User do
     end
 
     describe "recipient_user_ids" do
+
       it "should return an array of the user's recipient's user_ids" do
         user_ids = [1,2,3]
         @user.add_recipients(user_ids)
         recipient_user_ids = @user.recipient_user_ids
         recipient_user_ids.should == user_ids
       end
+    end
+
+    describe "timestamp_poll" do
+
+      it "should set the lastpoll attribute to the given time" do
+        time = Time.now
+        @user.timestamp_poll(time)
+        @user.lastpoll.should == time
+      end
     end    
+
+    describe "set_online" do
+
+      it "should set the user's online status to true" do
+        @user.set_online
+        @user.status.should be_true
+      end
+    end
+
+    describe "set_offline" do
+
+      it "should set the user's online status to false" do
+        @user.set_offline
+        @user.status.should be_false
+      end
+    end
+
+    describe "remove_stale_recipients" do
+      
+      before(:each) do
+        @user3 = Factory(:user, @user_attr1)
+        @user4 = Factory(:user, @user_attr2)
+        @recipient3 = Factory(:recipient, :user => @user, :recipient_user_id => @user3.id)
+        @recipient4 = Factory(:recipient, :user => @user, :recipient_user_id => @user4.id)
+      end
+    
+      it "should remove recipients who have a status of false" do
+        @user3.timestamp_poll(Time.now)
+        @user4.timestamp_poll(Time.now)
+        @user4.set_offline
+        @user.remove_stale_recipients
+        @user.reload
+        @user.recipients.should include(@recipient3)
+        @user.recipients.should_not include(@recipient4)
+      end
+
+      it "should remove recipients who haven't polled for messages in the last 4 seconds" do
+        @user3.timestamp_poll(Time.now)
+        @user4.timestamp_poll(Time.now - 4)
+        @user.remove_stale_recipients
+        @user.reload
+        @user.recipients.should include(@recipient3)
+        @user.recipients.should_not include(@recipient4)
+      end
+
+      it "should set the user's stale recipients to offline status" do
+        @user3.timestamp_poll(Time.now - 4)
+        @user4.timestamp_poll(Time.now - 4)
+        @user.remove_stale_recipients
+        @user3.reload
+        @user4.reload
+        @user3.status.should be_false
+        @user4.status.should be_false
+      end
+    end
   end
 end
-
