@@ -191,7 +191,7 @@ DEPENDENCIES
   jquery-rails
   launchy
   libnotify
-  pg (~> 0.12.2)
+  pg
   rails (= 3.2.0)
   rb-inotify
   rspec-rails (~> 2.8.0)
