@@ -25,7 +25,7 @@ class UsersController < ApplicationController
     @title = @user.full_name
     @messages = []
     @message = Message.new if signed_in?
-    @my_recipients = Recipient.my_recipients(@user.id)
+    @my_recipients = Recipient.recipients_for(@user.id)
   end
 
   def index

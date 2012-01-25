@@ -5,11 +5,12 @@
 #  id         :integer         not null, primary key
 #  content    :string(255)
 #  user_id    :integer
-#  reciever   :integer
 #  read       :integer
 #  time_read  :datetime
 #  created_at :datetime
 #  updated_at :datetime
+#  recievers  :string(255)
+#  sent       :string(255)
 #
 
 class Message < ActiveRecord::Base
@@ -50,6 +51,7 @@ class Message < ActiveRecord::Base
     self.save 
   end
 
+  ## TODO: Fix me! I'm broken!
   def self.new_messages_for(user)
     unsent_messages = []
     messages = messages_for(user.id)

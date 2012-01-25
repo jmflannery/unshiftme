@@ -14,12 +14,12 @@ class RecipientsController < ApplicationController
   end
 
   def index
-    @my_recipients = Recipient.my_recipients(current_user.id)
+    @my_recipients = Recipient.recipients_for(current_user.id)
   end
 
   def destroy
     @recipient.destroy
-    @my_recipients = Recipient.my_recipients(current_user.id)
+    @my_recipients = Recipient.recipients_for(current_user.id)
   end
 
   private

@@ -20,7 +20,7 @@ class MessagesController < ApplicationController
     user.timestamp_poll(Time.now)
     user.remove_stale_recipients
 
-    @my_recipients = Recipient.my_recipients(user.id)
+    @my_recipients = Recipient.recipients_for(user.id)
 
     @new_messages = Message.new_messages_for(user)
     @new_messages.each do |message|

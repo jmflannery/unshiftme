@@ -14,14 +14,13 @@ class Recipient < ActiveRecord::Base
   
   #validates :recipient_user_id, :uniqueness => { :scope => :user_id }
 
-  scope :of_user, lambda { |user_id| where("user_id = ?", user_id) }
+  scope :for_user, lambda { |user_id| where("user_id = ?", user_id) }
 
-  def self.my_recipients(user_id)
-    user_recipients = of_user(user_id)
+  def self.recipients_for(user_id)
     recipients_list = []
     recips = []
     counter = 0
-    user_recipients.each do |r|
+    for_user(user_id).each do |r|
       if counter % 8 == 0 then
         recips = []
         recips << r
@@ -34,12 +33,11 @@ class Recipient < ActiveRecord::Base
     recipients_list
   end
 
-  def self.my_recipient_user_ids(user_id)
-    recipients = of_user(user_id)
-    ids = []
-    recipients.each do |recipient|
-      ids << recipient.recipient_user_id
+  def self.recipient_user_ids_for(user_id)
+    recipient_user_ids = []
+    for_user(user_id).each do |recipient|
+      recipient_user_ids << recipient.recipient_user_id
     end
-    ids
+    recipient_user_ids
   end
 end

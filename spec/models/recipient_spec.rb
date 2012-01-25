@@ -47,10 +47,10 @@ describe Recipient do
       end
     end
     
-    describe "my_recipients" do
+    describe "recipients_for" do
 
       it "should return all of the user's recipients as an array of 8 recipient arrays" do
-        recipients = Recipient.my_recipients(@sender.id)
+        recipients = Recipient.recipients_for(@sender.id)
         recipients.should be_kind_of(Array)
         recipients.size.should == 3
         recipients[0].should be_kind_of(Array)
@@ -65,10 +65,10 @@ describe Recipient do
       end
     end
   
-    describe "my_recipient_user_ids" do
+    describe "recipient_user_ids_for" do
 
       it "should return an Array containing all of the user's recipient's user_ids" do
-        recipients = Recipient.my_recipient_user_ids(@sender.id)
+        recipients = Recipient.recipient_user_ids_for(@sender.id)
         recipients.size.should == @recipients.size
         @recipients.each do |recipient|
           recipients.should include(recipient.recipient_user_id)

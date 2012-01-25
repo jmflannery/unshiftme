@@ -10,6 +10,8 @@
 #  updated_at      :datetime
 #  password_digest :string(255)
 #  status          :boolean
+#  recipient_id    :integer
+#  lastpoll        :datetime
 #
 
 class User < ActiveRecord::Base
@@ -31,11 +33,10 @@ class User < ActiveRecord::Base
   scope :online, lambda { |user_id| where("users.status = ? and users.id != ?", true, user_id) }
 
   def self.available_users(user)
-    recipient_ids = Recipient.my_recipient_user_ids(user.id)
-    users = User.online(user.id) 
+    recipient_user_ids = Recipient.recipient_user_ids_for(user.id)
     available_users = []
-    users.each do |user|
-      available_users << user unless recipient_ids.include?(user.id) 
+    User.online(user.id).each do |user|
+      available_users << user unless recipient_user_ids.include?(user.id) 
     end
     available_users
   end

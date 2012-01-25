@@ -10,6 +10,8 @@
 #  updated_at      :datetime
 #  password_digest :string(255)
 #  status          :boolean
+#  recipient_id    :integer
+#  lastpoll        :datetime
 #
 
 require 'spec_helper'
@@ -150,7 +152,7 @@ describe User do
       it "should add the list of user IDs to the user's recipients" do
         user_ids = [1,2,3]
         @user.add_recipients(user_ids)
-        recipients = Recipient.of_user(@user.id)
+        recipients = Recipient.for_user(@user.id)
         recipients.size.should == user_ids.size
         recipients.each do |recipient|
           user_ids.should include recipient.recipient_user_id
@@ -160,9 +162,9 @@ describe User do
       it "should not add any duplicate recipients" do
         user_ids = [1,2,3]
         @user.add_recipients(user_ids)
-        size1 = Recipient.of_user(@user.id).size
+        size1 = Recipient.for_user(@user.id).size
         @user.add_recipients(user_ids)
-        size2 = Recipient.of_user(@user.id).size
+        size2 = Recipient.for_user(@user.id).size
         size1.should == size2
       end
     end
