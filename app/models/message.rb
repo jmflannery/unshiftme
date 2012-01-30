@@ -25,6 +25,7 @@ class Message < ActiveRecord::Base
 
   scope :since, lambda { |time| where("created_at >= ?", time) } 
 
+  ## TODO: Fix me! I'm broken!
   scope :messages_for, lambda { |user_id| where("recievers like '%#{user_id}%' or user_id = ?", user_id) }
 
   def set_recievers
@@ -51,17 +52,13 @@ class Message < ActiveRecord::Base
     self.save 
   end
 
-  ## TODO: Fix me! I'm broken!
   def self.new_messages_for(user)
     unsent_messages = []
     messages = messages_for(user.id)
     messages.each do |message|
-      unless message.sent.blank?
-        sent_user_ids = message.sent.split(/,/) 
-        unsent_messages << message unless sent_user_ids.include?(user.id.to_s)
-      else
-        unsent_messages << message
-      end
+      delivered_to_user_ids = []
+      delivered_to_user_ids = message.sent.split(/,/) unless message.sent.blank?
+      unsent_messages << message unless delivered_to_user_ids.include?(user.id.to_s)
     end
     unsent_messages
   end
