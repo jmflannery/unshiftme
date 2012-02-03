@@ -1,0 +1,322 @@
+/* 
+*= require_self 
+*= require_tree . 
+*/
+
+$background-blue: #229396; 
+$blue-grey: #8BA88F;
+$grey: #C7C5A7;
+$near-white: #F0DFD0;
+$bright-red: #F23C3C;
+
+@mixin rounded-corners($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -o-border-radius: $radius;
+  border-radius: $radius; 
+}
+
+@mixin box-shadow($r, $g, $b, $a) {
+  -webkit-box-shadow: 0 0 12px 2px rgba($r, $g, $b, $a);
+  -moz-box-shadow: 0 0 12px 2px rgba($r, $g, $b, $a);
+  box-shadow: 0 0 12px 2px rgba($r, $g, $b, $a);
+}
+
+body {
+  background-color: $background-blue;
+  font-family: sans-serif;
+  color: $near-white;
+}
+
+h1 {
+  font-size: 72px;
+  text-align: right;
+  padding: 0px;
+  margin: 0px;
+}
+
+h2 {
+  font-size: 48px;
+  text-align: center;
+  color: $bright-red;
+  padding: 0px;
+  margin: 0px;
+}
+
+/**************
+ * Page 
+***************/
+
+#page {
+  width: 900px;
+  margin: 0 auto;
+}
+
+/******************** 
+ * User name section 
+ ********************/
+
+#user_name_section {
+  margin-top: 10px;
+
+  ul {
+    padding: 0px;
+    margin: 0px;
+    
+    li {
+      display: inline;
+    }
+  }
+
+  li#user_name {
+    color: $bright-red;
+    font-size: 42px;
+    font-weight: bold;
+  }
+
+  li#sign_out a {
+    color: $near-white;
+    font-size: 16px;
+    text-decoration: none;
+  }
+}
+
+/******************* 
+ * Send to section 
+ *******************/
+
+#send_to_section {
+  margin-top: 10px;
+
+  td#to {
+    width: 115px;
+    margin: 0px;
+  }
+  
+  td#to h1 a {
+    color: $near-white;
+    text-decoration: none;
+  }
+
+  td#send_to {
+    width: 783px;
+    height: 80px;
+    background-color: $near-white;
+  }
+}
+ 
+/**********************
+ * Recipients section
+ **********************/
+
+table#recipients_table {
+  border-collapse: seperate;
+  border-spacing: 8px;
+  
+  td.recipient_cell {
+    background-color: $bright-red;
+    @include rounded-corners(10px); 
+    
+    ul.recipient {
+      padding: 0px;
+      margin: 3px 5px;
+      
+      li {
+        display: inline;
+      }
+
+      li.x_link {
+          margin-left: 15px;
+      }
+    }
+  }
+}
+
+/******************* 
+ * Messages section 
+ *******************/
+
+#messages_section {
+  margin-top: 10px;
+  height: 500px;
+  width: 100%;
+  background-color: $near-white;
+  overflow: auto;
+  color: $background-blue;
+
+  tr.message {
+    padding: 10px;
+    font-size: 1.2em;
+  
+    td.message_sender {
+      padding: 10px 5px 0px 10px;
+    }
+    
+    td.message_content {
+      width: 700px;
+      padding: 10px 5px 0px 0px;
+    }
+      
+    td.message_timestamp {
+      padding: 10px 10px 0px 0px;
+    }
+  }
+}
+
+/************************* 
+ * Message input section 
+ *************************/
+
+#msg_input {
+  margin-top: 10px;
+  width: 900px;
+  height: 30px;
+  
+  #new_message input[type="text"] {
+    width: 800px;
+    padding: 5px 8px;
+    font-size: 1.2em;
+    color: #666;
+    border: none;
+    background-color: $near-white;
+    @include rounded-corners(6px);
+  
+    &:hover, &:focus {
+      border: none;
+      outline: none;
+      @include box-shadow(240, 223, 208, 0.5);      
+    }
+  }
+
+  input[type="submit"] {
+    padding: 8px 15px;
+    font-family: Helvetica, Arial, sans-serrif;
+    font-weight: bold;
+    line-height: 1;
+    color: #444;
+    text-shadow: 0 2px 2px rgba(255, 255, 255, 0.85);
+    border: none;
+    background-color: #fff;
+    @include rounded-corners(23px);
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#bbb));
+    background-image: -moz-linear-gradient(0 100% 90deg, #bbb, #fff);
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+
+    &:hover, &:focus {
+      -webkit-box-shadow: 0 2px 4px rgba(240, 223, 208, 0.5);
+      -moz-box-shadow: 0 2px 4px rgba(240, 223, 208, 0.5);
+      box-shadow: 0 2px 4px rgba(240, 223, 208, 0.5);
+      text-shadow: 0 0px 1px rgba(240, 223, 208, 0.5);
+    }
+  }
+}
+
+/**************************
+ * User Selection Dialog
+ **************************/
+
+#dialog {
+  width: 600px;
+  height: 200px;
+  
+  ul#online_users_list {
+    list-style-type: none;
+  }
+} 
+
+/***************************** 
+ * center_spot form 
+ *****************************/
+
+.center_spot {
+  margin: 0 auto;
+  width: 50%;
+  color: $background-blue;
+  background: $grey;
+  padding: 15px;
+  @include rounded-corners(13px);
+
+  p {
+    color: $blue-grey;
+  }
+
+  a {
+    color: $background-blue;
+  }
+
+  .field {
+    margin: 8px 0px;
+  } 
+
+  input[type="text"] {
+    padding: 5px 8px;
+    font-size: 1.2em;
+    color: $blue-grey;
+    border: none;
+    background-color: $near-white;
+    @include rounded-corners(6px);
+  
+    &:hover, &:focus {
+      border: none;
+      outline: none;
+      @include box-shadow(34, 147, 150, 0.5);      
+    }
+  }
+
+  input[type="password"] {
+    padding: 5px 8px;
+    font-size: 1.2em;
+    color: $blue-grey;
+    border: none;
+    background-color: $near-white;
+    @include rounded-corners(6px);
+  
+    &:hover, &:focus {
+      border: none;
+      outline: none;
+      @include box-shadow(34, 147, 150, 0.5);      
+    }
+  }
+
+  input[type="submit"] {
+    padding: 8px 15px;
+    font-family: Helvetica, Arial, sans-serrif;
+    font-weight: bold;
+    line-height: 1;
+    color: #444;
+    text-shadow: 0 2px 2px rgba(255, 255, 255, 0.85);
+    border: none;
+    background-color: #fff;
+    @include rounded-corners(23px);
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#bbb));
+    background-image: -moz-linear-gradient(0 100% 90deg, #bbb, #fff);
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+
+    &:hover, &:focus {
+      -webkit-box-shadow: 0 2px 4px rgba(34, 147, 150, 0.5);
+      -moz-box-shadow: 0 2px 4px rgba(34, 147, 150, 0.5);
+      box-shadow: 0 2px 4px rgba(34, 147, 150, 0.5);
+      text-shadow: 0 0px 1px rgba(34, 147, 150, 0.5);
+    }
+  } 
+}
+
+/* Edit User */
+
+#edit_user {
+  width: 400px;
+  height: 400px;
+  color: #FFFFFF;
+  background: #000000;
+  padding: 5px 5px 5px 10px;
+}
+
+#edit_user h1 {
+  text-align: center;
+  margin: 5px 0px 10px 0px;
+}
+
