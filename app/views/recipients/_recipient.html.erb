@@ -3,12 +3,8 @@
     <li>
       <%= User.find(recipient.recipient_user_id).name %>
     </li>
-    <li id="xx_link">
-      <%= link_to(image_tag("grey_x.png", :class => "x_button"), recipient, :method => :delete,
-                                                                            :remote => true, 
-                                                                            :format => :js,
-                                                                            :class => "x_link",
-                                                                            :alt => "X") %>
+    <li id="x_link">
+      <%= link_to("×", recipient, :method => :delete, :remote => true, :format => :js) %>
     </li>
   </ul>
 </td>

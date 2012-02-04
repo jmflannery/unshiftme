@@ -8,6 +8,7 @@ $blue-grey: #8BA88F;
 $grey: #C7C5A7;
 $near-white: #F0DFD0;
 $bright-red: #F23C3C;
+$dark-text: #323232;
 
 @mixin rounded-corners($radius) {
   -webkit-border-radius: $radius;
@@ -16,10 +17,27 @@ $bright-red: #F23C3C;
   border-radius: $radius; 
 }
 
-@mixin box-shadow($r, $g, $b, $a) {
-  -webkit-box-shadow: 0 0 12px 2px rgba($r, $g, $b, $a);
-  -moz-box-shadow: 0 0 12px 2px rgba($r, $g, $b, $a);
-  box-shadow: 0 0 12px 2px rgba($r, $g, $b, $a);
+@mixin box-shadow($h-shadow, $v-shadow, $blur, $spread, $red, $green, $blue, $alpha) {
+  -webkit-box-shadow: $h-shadow $v-shadow $blur $spread rgba($red, $green, $blue, $alpha);
+  -moz-box-shadow: $h-shadow $v-shadow $blur $spread rgba($red, $green, $blue, $alpha);
+  box-shadow: $h-shadow $v-shadow $blur $spread rgba($red, $green, $blue, $alpha);
+}
+
+@mixin mac-button-style {
+  border: none;
+  background-color: #fff;
+  @include rounded-corners(23px);
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#bbb));
+  background-image: -moz-linear-gradient(0 100% 90deg, #bbb, #fff);
+  @include box-shadow(0px, 1px, 2px, 0px, 0, 0, 0, 0.5);
+}
+
+@mixin mac-button-text-style {
+  text-shadow: 0 2px 2px rgba(255, 255, 255, 0.85);
+  font-family: Helvetica, Arial, sans-serrif;
+  font-weight: bold;
+  line-height: 1;
+  color: #444;
 }
 
 body {
@@ -33,6 +51,7 @@ h1 {
   text-align: right;
   padding: 0px;
   margin: 0px;
+  text-shadow: 1px 1px 6px rgba(240, 223, 208, 0.5);
 }
 
 h2 {
@@ -70,6 +89,7 @@ h2 {
 
   li#user_name {
     color: $bright-red;
+    //text-shadow: 1px 1px 6px rgba(240, 223, 208, 0.5);
     font-size: 42px;
     font-weight: bold;
   }
@@ -91,11 +111,13 @@ h2 {
   td#to {
     width: 115px;
     margin: 0px;
-  }
+    font-size: 72px;
+    font-weight: bold;
   
-  td#to h1 a {
-    color: $near-white;
-    text-decoration: none;
+    a {
+      color: $near-white;
+      text-decoration: none;
+    }
   }
 
   td#send_to {
@@ -114,19 +136,30 @@ table#recipients_table {
   border-spacing: 8px;
   
   td.recipient_cell {
-    background-color: $bright-red;
-    @include rounded-corners(10px); 
+    padding: 4px 6px;
+    @include mac-button-style;
+    @include mac-button-text-style;
     
     ul.recipient {
       padding: 0px;
       margin: 3px 5px;
       
-      li {
+      li {;
         display: inline;
+        padding: 2px;
       }
 
-      li.x_link {
-          margin-left: 15px;
+      li#x_link {
+
+        a {   
+          @include mac-button-text-style;
+          text-decoration: none;
+          display: inline;
+
+          &:hover {
+            color: $bright-red;
+          }
+        }
       }
     }
   }
@@ -176,7 +209,7 @@ table#recipients_table {
     width: 800px;
     padding: 5px 8px;
     font-size: 1.2em;
-    color: #666;
+    color: $dark-text;
     border: none;
     background-color: $near-white;
     @include rounded-corners(6px);
@@ -184,31 +217,23 @@ table#recipients_table {
     &:hover, &:focus {
       border: none;
       outline: none;
-      @include box-shadow(240, 223, 208, 0.5);      
+      @include box-shadow(0px, 0px, 12px, 2px, 240, 223, 208, 0.5);      
     }
   }
 
   input[type="submit"] {
     padding: 8px 15px;
-    font-family: Helvetica, Arial, sans-serrif;
-    font-weight: bold;
-    line-height: 1;
-    color: #444;
-    text-shadow: 0 2px 2px rgba(255, 255, 255, 0.85);
+    @include mac-button-text-style;
     border: none;
     background-color: #fff;
     @include rounded-corners(23px);
     background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#bbb));
     background-image: -moz-linear-gradient(0 100% 90deg, #bbb, #fff);
-    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    @include box-shadow(0px, 1px, 2px, 0px, 0, 0, 0, 0.5);
 
     &:hover, &:focus {
-      -webkit-box-shadow: 0 2px 4px rgba(240, 223, 208, 0.5);
-      -moz-box-shadow: 0 2px 4px rgba(240, 223, 208, 0.5);
-      box-shadow: 0 2px 4px rgba(240, 223, 208, 0.5);
-      text-shadow: 0 0px 1px rgba(240, 223, 208, 0.5);
+      text-shadow: 0 2px 2px rgba(240, 223, 208, 0.5);
+      @include box-shadow(0px, 1px, 6px, 2px, 0, 0, 0, 0.5);
     }
   }
 }
@@ -253,7 +278,7 @@ table#recipients_table {
   input[type="text"] {
     padding: 5px 8px;
     font-size: 1.2em;
-    color: $blue-grey;
+    color: $dark-text;
     border: none;
     background-color: $near-white;
     @include rounded-corners(6px);
@@ -261,14 +286,14 @@ table#recipients_table {
     &:hover, &:focus {
       border: none;
       outline: none;
-      @include box-shadow(34, 147, 150, 0.5);      
+      @include box-shadow(0px, 0px, 12px, 2px, 34, 147, 150, 0.5);      
     }
   }
 
   input[type="password"] {
     padding: 5px 8px;
     font-size: 1.2em;
-    color: $blue-grey;
+    color: $dark-text;
     border: none;
     background-color: $near-white;
     @include rounded-corners(6px);
@@ -276,30 +301,18 @@ table#recipients_table {
     &:hover, &:focus {
       border: none;
       outline: none;
-      @include box-shadow(34, 147, 150, 0.5);      
+      @include box-shadow(0px, 0px, 12px, 2px, 34, 147, 150, 0.5);      
     }
   }
 
   input[type="submit"] {
     padding: 8px 15px;
-    font-family: Helvetica, Arial, sans-serrif;
-    font-weight: bold;
-    line-height: 1;
-    color: #444;
-    text-shadow: 0 2px 2px rgba(255, 255, 255, 0.85);
-    border: none;
-    background-color: #fff;
-    @include rounded-corners(23px);
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#bbb));
-    background-image: -moz-linear-gradient(0 100% 90deg, #bbb, #fff);
-    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    @include mac-button-style;
+    @include mac-button-text-style; 
 
     &:hover, &:focus {
-      -webkit-box-shadow: 0 2px 4px rgba(34, 147, 150, 0.5);
-      -moz-box-shadow: 0 2px 4px rgba(34, 147, 150, 0.5);
-      box-shadow: 0 2px 4px rgba(34, 147, 150, 0.5);
+      //@include box-shadow(0px, 2px, 4px, 0px, 34, 147, 150, 0.5);
+      @include box-shadow(0px, 1px, 6px, 2px, 34, 147, 150, 0.5);
       text-shadow: 0 0px 1px rgba(34, 147, 150, 0.5);
     }
   } 
@@ -319,4 +332,3 @@ table#recipients_table {
   text-align: center;
   margin: 5px 0px 10px 0px;
 }
-
