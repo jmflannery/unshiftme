@@ -1,0 +1,7 @@
+<%= form_for(@attachment) do |form| %>
+
+  Choose a file: <%= form.file_field("uploaded_file") %>
+
+  <%= form.submit "Send file" %>
+
+<% end %>

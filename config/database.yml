@@ -15,7 +15,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   adapter: postgresql
-  database: chatty_pants_testt
+  database: chatty_pants_test
   pool: 5
   username: jack
   password: tke140

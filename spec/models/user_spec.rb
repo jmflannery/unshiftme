@@ -108,6 +108,40 @@ describe User do
     end
   end
 
+  describe "recipient associations" do
+
+    before(:each) do
+      @user = User.create(@attr)
+      @recip1 = Factory(:recipient, :user => @user)
+      @recip2 = Factory(:recipient, :user => @user)
+    end
+
+    it "should have a recipients attribute" do
+      @user.should respond_to(:recipients)
+    end
+
+    it "should have the correct recipients" do
+      @user.recipients.should == [@recip1, @recip2]
+    end
+  end
+
+  describe "attachment associations" do
+
+    before(:each) do
+      @user = User.create(@attr)
+      @attach1 = Factory(:attachment, :user => @user)
+      @attach2 = Factory(:attachment, :user => @user)
+    end
+
+    it "should have an attachements attribute" do
+      @user.should respond_to(:attachments)
+    end
+
+    it "should have the correct attachments" do
+      @user.attachments.should == [@attach1, @attach2]
+    end
+  end
+
   describe "method" do
     
     before(:each) do

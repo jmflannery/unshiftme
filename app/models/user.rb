@@ -24,6 +24,8 @@ class User < ActiveRecord::Base
   
   has_many :recipients
 
+  has_many :attachments
+
   validates :password, :presence => true,
                        :confirmation => true,
                        :length => { :within => 6..40 }

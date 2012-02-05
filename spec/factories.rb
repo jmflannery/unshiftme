@@ -17,7 +17,11 @@ Factory.define :message do |message|
 end
 
 Factory.define :recipient do |recipient|
-  recipient.recipient_user_id 23
+  recipient.recipient_user_id 22
   recipient.association :user
 end
 
+Factory.define :attachment do |attachment|
+  attachment.file Rails.root + "spec/fixtures/files/test_file.txt"
+  attachment.association :user
+end

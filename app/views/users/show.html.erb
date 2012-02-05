@@ -2,6 +2,7 @@
   <ul>
     <li id='user_name'><%= @user.full_name %></li>
     <% if signed_in? %>
+      <li id='send_file'><%= link_to "Send a file", new_attachment_path %></li>
       <li id='sign_out'><%= link_to "Sign out", signout_path %></li>
       <!--<%= link_to "Update Profile", edit_user_path(current_user) %>-->
     <% end %>
