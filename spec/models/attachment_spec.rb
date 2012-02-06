@@ -38,4 +38,20 @@ describe Attachment do
       @attachment.user.should == @user
     end
   end
+
+  describe "method" do
+
+    describe "set_recievers" do
+
+      it "should set attachment.recievers to the recipients user_ids seperated by commas" do
+        @attachment.set_recievers
+        recievers = @attachment.recievers.split(/,/)
+        recipients = @user.recipients
+        recievers.size.should == recipients.size
+        recipients.each do |recipient|
+          recievers.should include recipient.recipient_user_id.to_s
+        end
+      end  
+    end
+  end
 end

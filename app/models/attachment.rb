@@ -23,4 +23,17 @@ class Attachment < ActiveRecord::Base
   def base_part_of(file_name)
     File.basename(file_name).gsub(/[^\w._-]/, '')
   end
+
+  def set_recievers
+    recipients = self.user.recipients
+    count = 0
+    recipient_user_ids = ""
+    recipients.each do |recipient|
+      recipient_user_ids << "," unless count == 0
+      recipient_user_ids << recipient.recipient_user_id.to_s
+      count += 1
+    end
+    self.recievers = recipient_user_ids
+    self.save
+  end 
 end

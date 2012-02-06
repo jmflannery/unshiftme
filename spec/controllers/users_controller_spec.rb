@@ -43,6 +43,11 @@ describe UsersController do
       response.should have_selector("p", :content => @user.full_name)
     end
     
+    it "should create a new attachment (for a subsequent create)" do
+      get :show, :id => @user
+      assigns(:attachment).should be_kind_of(Attachment) 
+    end
+
   end
 
   describe "GET 'index'" do

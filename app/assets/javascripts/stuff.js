@@ -44,6 +44,16 @@ $(function() {
 });
 
 ///////////////////////////////////
+// Upload Section
+///////////////////////////////////
+
+$(function() {
+  $('a#attach_button').click(function() {
+    $('#upload_section').toggle();
+  });
+});
+
+///////////////////////////////////
 // Poll Server for more Messages
 ///////////////////////////////////
 

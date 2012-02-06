@@ -24,7 +24,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @title = @user.full_name
     @messages = []
-    @message = Message.new if signed_in?
+    @message = Message.new
+    @attachment = Attachment.new
     @my_recipients = Recipient.recipients_for(@user.id)
   end
 

@@ -1,2 +1,2 @@
-module UploadHelper
+module AttachmentsHelper
 end

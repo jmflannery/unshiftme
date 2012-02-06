@@ -196,6 +196,14 @@ table#recipients_table {
   }
 }
 
+/*************************
+ * Upload Section
+ ************************/
+ 
+#upload_section {
+  display: none;    
+}
+
 /************************* 
  * Message input section 
  *************************/
@@ -204,9 +212,21 @@ table#recipients_table {
   margin-top: 10px;
   width: 900px;
   height: 30px;
+
+  a#attach_button {
+    padding: 8px 15px;
+    text-decoration: none;
+    @include mac-button-style;
+    @include mac-button-text-style;
+
+    &:hover, &:focus {
+      text-shadow: 0 2px 2px rgba(240, 223, 208, 0.5);
+      @include box-shadow(0px, 1px, 6px, 2px, 0, 0, 0, 0.5);
+    } 
+  }
   
   #new_message input[type="text"] {
-    width: 800px;
+    width: 685px;
     padding: 5px 8px;
     font-size: 1.2em;
     color: $dark-text;
@@ -223,13 +243,8 @@ table#recipients_table {
 
   input[type="submit"] {
     padding: 8px 15px;
+    @include mac-button-style;
     @include mac-button-text-style;
-    border: none;
-    background-color: #fff;
-    @include rounded-corners(23px);
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#bbb));
-    background-image: -moz-linear-gradient(0 100% 90deg, #bbb, #fff);
-    @include box-shadow(0px, 1px, 2px, 0px, 0, 0, 0, 0.5);
 
     &:hover, &:focus {
       text-shadow: 0 2px 2px rgba(240, 223, 208, 0.5);

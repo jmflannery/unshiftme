@@ -2,7 +2,6 @@
   <ul>
     <li id='user_name'><%= @user.full_name %></li>
     <% if signed_in? %>
-      <li id='send_file'><%= link_to "Send a file", new_attachment_path %></li>
       <li id='sign_out'><%= link_to "Sign out", signout_path %></li>
       <!--<%= link_to "Update Profile", edit_user_path(current_user) %>-->
     <% end %>
@@ -30,9 +29,17 @@
   </table>
 </div>
   
+<div id="upload_section">
+  <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
+    Choose a file: <%= f.file_field("uploaded_file") %>
+    <%= f.submit "Send file" %>
+  <% end %>   
+</div>
+
 <div id="msg_input">
   <% if signed_in? %>
-    <%= form_for(@message, :id => "message_input", :remote => true, :format => :js) do |f| %>
+    <%= form_for(@message, :id => "message_input", remote: true, format: :js) do |f| %>
+      <%= link_to("Attachment", "#", id: "attach_button") %>       
       <%= f.text_field :content %>
       <%= f.submit "Send" %>
     <% end %>

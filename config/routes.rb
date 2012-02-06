@@ -4,7 +4,7 @@ ChattyPants::Application.routes.draw do
   resources :users, :only => [:new, :create, :show, :index, :edit, :update] 
   resources :messages, :only => [:create, :index]
   resources :recipients, :only => [:create, :index, :destroy]
-  resources :attachments, :only => [:new, :create]
+  resources :attachments, :only => [:create]
   resource :session, :only => [:new, :create, :destroy]
 
   match "/signup", :to => "users#new"
