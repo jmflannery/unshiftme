@@ -8,11 +8,6 @@ describe AttachmentsController do
 
   describe "access control" do
 
-    it "should deny access to 'new' for non-signed in users" do
-      get :new
-      response.should redirect_to(signin_path)
-    end
-
     it "should deny access to 'create' for non-signed in users" do
       post :create, uploaded_file: @file 
       response.should redirect_to(signin_path)
@@ -34,11 +29,6 @@ describe AttachmentsController do
     it "should create an attachment that belongs to the current user" do
       post :create, uploaded_file: @file
       assigns(:attachment).user_id.should == @user.id
-    end
-
-    it "should redirect to the current user's show page" do
-      post :create, uploaded_file: @file
-      response.should redirect_to user_path(@user)
     end
   end
 end

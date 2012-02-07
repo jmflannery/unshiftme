@@ -9,7 +9,7 @@ gem 'jquery-rails'
 gem 'pg'
 gem 'therubyracer'
 gem 'bcrypt-ruby', "~> 3.0.1"
-gem  "remotipart", "~> 1.0.2"
+gem 'remotipart', "~> 1.0.2"
 
 # Gems used only for assets and not required
 # in production environments by default.
