@@ -9,7 +9,7 @@ describe AttachmentsController do
   describe "access control" do
 
     it "should deny access to 'create' for non-signed in users" do
-      post :create, uploaded_file: @file 
+      post :create, attachment: {payload: @file} 
       response.should redirect_to(signin_path)
     end
   end
@@ -22,12 +22,12 @@ describe AttachmentsController do
     
     it "should create a attachment" do
       lambda do
-        post :create, uploaded_file: @file
+        post :create, attachment: {payload: @file}
       end.should change(Attachment, :count).by(1)
     end  
 
     it "should create an attachment that belongs to the current user" do
-      post :create, uploaded_file: @file
+      post :create, attachment: {payload: @file}
       assigns(:attachment).user_id.should == @user.id
     end
   end

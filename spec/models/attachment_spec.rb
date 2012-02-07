@@ -2,13 +2,16 @@
 #
 # Table name: attachments
 #
-#  id           :integer         not null, primary key
-#  user_id      :integer
-#  file         :binary
-#  created_at   :datetime        not null
-#  updated_at   :datetime        not null
-#  name         :string(255)
-#  content_type :string(255)
+#  id                   :integer         not null, primary key
+#  user_id              :integer
+#  created_at           :datetime        not null
+#  updated_at           :datetime        not null
+#  recievers            :string(255)
+#  delivered            :string(255)
+#  payload_file_name    :string(255)
+#  payload_content_type :string(255)
+#  payload_file_size    :integer
+#  payload_updated_at   :datetime
 #
 
 require 'spec_helper'
@@ -17,9 +20,10 @@ describe Attachment do
 
   before(:each) do
     @user = Factory(:user)
-    @reciever = Factory(:user, name: "Jim", full_name: "Jim Dickson")
-    @recipient = Factory(:recipient, user: @user, recipient_user_id: @reciever.id)
-    @attr = { name: "my_file.txt", content_type: "text/plain" }
+    reciever = Factory(:user, name: "Jim", full_name: "Jim Dickson")
+    Factory(:recipient, user: @user, recipient_user_id: reciever.id)
+    file = File.new(Rails.root + "spec/fixtures/files/test_file.txt")
+    @attr = { payload: file }
     @attachment = @user.attachments.create!(@attr)
   end
 

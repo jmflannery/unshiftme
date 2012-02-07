@@ -31,7 +31,7 @@
   
 <div id="upload_section">
   <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
-    Choose a file: <%= f.file_field("uploaded_file") %>
+    Choose a file: <%= f.file_field("payload") %>
     <%= f.submit "Send file" %>
   <% end %>   
 </div>

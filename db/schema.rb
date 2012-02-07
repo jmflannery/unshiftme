@@ -11,17 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120206002306) do
+ActiveRecord::Schema.define(:version => 20120207034019) do
 
   create_table "attachments", :force => true do |t|
     t.integer  "user_id"
-    t.binary   "file"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-    t.string   "name"
-    t.string   "content_type"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
     t.string   "recievers"
     t.string   "delivered"
+    t.string   "payload_file_name"
+    t.string   "payload_content_type"
+    t.integer  "payload_file_size"
+    t.datetime "payload_updated_at"
   end
 
   create_table "messages", :force => true do |t|

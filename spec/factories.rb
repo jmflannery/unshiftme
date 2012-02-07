@@ -22,6 +22,6 @@ Factory.define :recipient do |recipient|
 end
 
 Factory.define :attachment do |attachment|
-  attachment.file Rails.root + "spec/fixtures/files/test_file.txt"
+  attachment.payload Rails.root + "spec/fixtures/files/test_file.txt"
   attachment.association :user
 end
