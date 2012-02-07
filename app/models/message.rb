@@ -14,7 +14,7 @@
 #
 
 class Message < ActiveRecord::Base
-  attr_accessible :content
+  attr_accessible :content, :attachment_id
   
   belongs_to :user
   
