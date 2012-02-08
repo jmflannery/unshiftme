@@ -1,0 +1,15 @@
+development:
+  access_key_id: AKIAIJPPC2722LGJI5UQ
+  secret_access_key: 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
+  bucket: jacks
+  path: chatty_pants/attachments
+test:
+  access_key_id: AKIAIJPPC2722LGJI5UQ
+  secret_access_key: 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
+  bucket: jacks
+  path: chatty_pants/attachments
+production:
+  access_key_id: AKIAIJPPC2722LGJI5UQ
+  secret_access_key: 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
+  bucket: jacks
+  path: chatty_pants/attachments
