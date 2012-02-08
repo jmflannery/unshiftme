@@ -3,12 +3,12 @@
 /////////////////////////////////
 
 $(function() {
-  $('.button').corner();
+  //$('.button').corner();
   //$('#users_show_top').corner("6px top");
   //$('#users_show_bottom').corner("6px bottom");
-  $('#messages_section').corner("6px");
-  $('td#send_to').corner("6px");
-  $('#edit_user').corner("6px");
+  //$('#messages_section').corner("6px");
+  //$('td#send_to').corner("6px");
+  //$('#edit_user').corner("6px");
 });
 
 //////////////////////////
@@ -49,7 +49,15 @@ $(function() {
 
 $(function() {
   $('a#attach_button').click(function() {
-    $('#upload_section').toggle();
+    upload_section = $('#upload_section');
+    messages_section = $('#messages_section');
+    upload_section.toggle();
+    if (upload_section.is(":hidden")) {
+      messages_section.css("height", "+=45");
+      $('input[type="file"]').val("");
+    } else {
+      messages_section.css("height", "-=45");   
+    }
   });
 });
 

@@ -77,7 +77,7 @@ class User < ActiveRecord::Base
     stale_recipients = []
     self.recipients.each do |recipient|
       r_user = User.find(recipient.recipient_user_id)
-      if r_user.status.nil? || r_user.status == false || (r_user.lastpoll < Time.now - 4 if r_user.lastpoll) 
+      if r_user.status == false || (r_user.lastpoll < Time.now - 4) 
         stale_recipients << recipient 
         r_user.set_offline
       end
