@@ -30,8 +30,8 @@ ActiveRecord::Schema.define(:version => 20120207043650) do
     t.integer  "user_id"
     t.integer  "read"
     t.datetime "time_read"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.string   "recievers"
     t.string   "sent"
     t.integer  "attachment_id"
@@ -40,15 +40,15 @@ ActiveRecord::Schema.define(:version => 20120207043650) do
   create_table "recipients", :force => true do |t|
     t.integer  "user_id"
     t.integer  "recipient_user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
     t.text     "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(:version => 20120207043650) do
     t.string   "name"
     t.string   "full_name"
     t.string   "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.string   "password_digest"
     t.boolean  "status"
     t.integer  "recipient_id"
