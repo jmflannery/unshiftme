@@ -52,9 +52,11 @@ class User < ActiveRecord::Base
   end  
 
   def add_recipients(user_ids)
-    user_recipients = recipient_user_ids
     user_ids.each do |id|
-      recipients.create!(:recipient_user_id => id) unless user_recipients.include?(id)
+      unless recipient_user_ids.include?(id)
+        recipient_user = User.find(id) 
+        recipients.create!(:recipient_user_id => id) if recipient_user
+      end
     end
   end
 

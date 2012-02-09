@@ -3,3 +3,4 @@
 //= require jquery.remotipart
 //= require_self  
 //= require_tree .
+//= require private_pub

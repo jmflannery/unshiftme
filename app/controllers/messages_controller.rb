@@ -2,9 +2,17 @@ class MessagesController < ApplicationController
   before_filter :authenticate
   
   def create
-    @message = current_user.messages.build(params[:message])
+    @user = current_user
+    @recipient_names = ["/messages/#{@user.name}"]
+    @user.recipients.each do |recipient|
+      recip_user = User.find(recipient.recipient_user_id)
+      @recipient_names << "/messages/#{recip_user.name}" if recip_user
+    end
+
+    @message = @user.messages.build(params[:message])
     if @message.save
       @message.set_recievers
+      @message.mark_sent_to @user
     else
       render 'sessions/new'
     end

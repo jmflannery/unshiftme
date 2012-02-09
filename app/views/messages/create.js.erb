@@ -1,2 +1,7 @@
-$("input#message_content").val("");
-getMessages("User message update :)");
+<% publish_to_many @recipient_names do %>
+  $("input#message_content").val("");
+  $("tr.message:last-child").after("<%= j(render(@message)) %>");
+  <% unless @message.blank? %>
+    $('#messages_section').scrollTo("max");
+  <% end %>
+<% end %>

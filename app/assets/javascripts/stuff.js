@@ -60,27 +60,3 @@ $(function() {
     }
   });
 });
-
-///////////////////////////////////
-// Poll Server for more Messages
-///////////////////////////////////
-
-$(function() {
-  if ($("#messages_section").length > 0) {  
-    setTimeout("pollForMessages('Auto Poll')", 2000);
-  }
-});
-
-var pollForMessages = function(message) {
-  console.log(message);
-  var id = $('#user_name_section').attr("class");
-  $.getScript("/messages.js?user_id=" + id);
-  var f = "pollForMessages('auto poll')";
-  setTimeout(f, 2000);
-};
-
-var getMessages = function(message) {
-  console.log(message);
-  var id = $('#user_name_section').attr("class");
-  $.getScript("/messages.js?user_id=" + id); 
-};
