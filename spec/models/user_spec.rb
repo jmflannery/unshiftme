@@ -146,19 +146,14 @@ describe User do
     
     before(:each) do
       @user = Factory(:user)
-      @user_attr1 = { :name => "Wally", :full_name => "Wally Wallerson", :status => true }
-      @user_attr2 = { :name => "Sally", :full_name => "Sally Fields", :status => true }
-      @user_attr3 = { :name => "Jimmy", :full_name => "Jimmy Johnson", :status => true }
+      @user1 = Factory(:user, :name => "Wally", :full_name => "Wally Wallerson", :status => true)
+      @user2 = Factory(:user, :name => "Sally", :full_name => "Sally Fields", :status => true)
+      @user3 = Factory(:user, :name => "Jimmy", :full_name => "Jimmy Johnson", :status => true)
+      Factory(:recipient, :user => @user, :recipient_user_id => @user1.id)
+      @user_ids = [@user1.id, @user2.id, @user3.id]
     end
 
     describe "available_users" do
-
-      before(:each) do
-        @user1 = Factory(:user, @user_attr1)
-        user2 = Factory(:user, @user_attr2)
-        user3 = Factory(:user, @user_attr3)
-        Factory(:recipient, :user => @user, :recipient_user_id => @user1.id)
-      end
 
       it "should return an Array of users with online status" do
         users = User.available_users(@user)
@@ -184,20 +179,18 @@ describe User do
     describe "add_recipients" do
 
       it "should add the list of user IDs to the user's recipients" do
-        user_ids = [1,2,3]
-        @user.add_recipients(user_ids)
+        @user.add_recipients(@user_ids)
         recipients = Recipient.for_user(@user.id)
-        recipients.size.should == user_ids.size
+        recipients.size.should == @user_ids.size
         recipients.each do |recipient|
-          user_ids.should include recipient.recipient_user_id
+          @user_ids.should include recipient.recipient_user_id
         end
       end
 
       it "should not add any duplicate recipients" do
-        user_ids = [1,2,3]
-        @user.add_recipients(user_ids)
+        @user.add_recipients(@user_ids)
         size1 = Recipient.for_user(@user.id).size
-        @user.add_recipients(user_ids)
+        @user.add_recipients(@user_ids)
         size2 = Recipient.for_user(@user.id).size
         size1.should == size2
       end
@@ -206,10 +199,8 @@ describe User do
     describe "recipient_user_ids" do
 
       it "should return an array of the user's recipient's user_ids" do
-        user_ids = [1,2,3]
-        @user.add_recipients(user_ids)
-        recipient_user_ids = @user.recipient_user_ids
-        recipient_user_ids.should == user_ids
+        @user.add_recipients(@user_ids)
+        @user.recipient_user_ids == @user_ids
       end
     end
 
@@ -241,39 +232,37 @@ describe User do
     describe "remove_stale_recipients" do
       
       before(:each) do
-        @user3 = Factory(:user, @user_attr1)
-        @user4 = Factory(:user, @user_attr2)
-        @recipient3 = Factory(:recipient, :user => @user, :recipient_user_id => @user3.id)
-        @recipient4 = Factory(:recipient, :user => @user, :recipient_user_id => @user4.id)
+        @user.add_recipients(@user_ids)
+        @user.recipient_user_ids.each do |id|
+          r_user = User.find(id)
+          r_user.timestamp_poll(Time.now)
+        end
       end
     
       it "should remove recipients who have a status of false" do
-        @user3.timestamp_poll(Time.now)
-        @user4.timestamp_poll(Time.now)
-        @user4.set_offline
+        @user2.set_offline
         @user.remove_stale_recipients
         @user.reload
-        @user.recipients.should include(@recipient3)
-        @user.recipients.should_not include(@recipient4)
+        @user.recipient_user_ids.should include(@user1.id)
+        @user.recipient_user_ids.should_not include(@user2.id)
       end
 
       it "should remove recipients who haven't polled for messages in the last 4 seconds" do
-        @user3.timestamp_poll(Time.now)
-        @user4.timestamp_poll(Time.now - 4)
+        @user2.timestamp_poll(Time.now - 4)
         @user.remove_stale_recipients
         @user.reload
-        @user.recipients.should include(@recipient3)
-        @user.recipients.should_not include(@recipient4)
+        @user.recipient_user_ids.should include(@user1.id)
+        @user.recipient_user_ids.should_not include(@user2.id)
       end
 
       it "should set the user's stale recipients to offline status" do
-        @user3.timestamp_poll(Time.now - 4)
-        @user4.timestamp_poll(Time.now - 4)
+        @user1.timestamp_poll(Time.now - 4)
+        @user2.timestamp_poll(Time.now - 4)
         @user.remove_stale_recipients
-        @user3.reload
-        @user4.reload
-        @user3.status.should be_false
-        @user4.status.should be_false
+        @user1.reload
+        @user2.reload
+        @user1.status.should be_false
+        @user2.status.should be_false
       end
     end
   end
