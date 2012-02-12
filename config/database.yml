@@ -7,8 +7,8 @@ development:
   adapter: postgresql
   database: chatty_pants_development
   pool: 5
-  username: jack
-  password: tke140
+  username: postgres
+  password: postgres
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -17,12 +17,12 @@ test:
   adapter: postgresql
   database: chatty_pants_test
   pool: 5
-  username: jack
-  password: tke140
+  username: postgres
+  password: postgres
 
 production:
   adapter: postgresql
   database: chatty_pants_production
   pool: 5
-  username: jack
-  password: tke140
+  username: postgres
+  password: postgres
