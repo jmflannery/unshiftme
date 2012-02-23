@@ -13,6 +13,14 @@ set :user, "deploy"
 
 set :port, 30000
 
+set :deploy_via, :copy
+
+set :copy_stategy, :export
+
+set :use_sudo, false
+
+set :rake, "/home/deploy/.rvm/gems/ruby-1.9.3-p125/bin/rake"
+
 role :web, "50.56.191.206"   # Your HTTP server, Apache/etc
 role :app, "50.56.191.206"   # This may be the same as your `Web` server
 role :db,  "50.56.191.206", :primary => true # This is where Rails migrations will run
