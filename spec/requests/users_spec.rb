@@ -12,8 +12,8 @@ describe "Users" do
           fill_in "Name",         :with => ""
           fill_in "Full name",    :with => ""
           fill_in "Email",        :with => ""
-          fill_in "Password",     :with => ""
-          fill_in "Password confirmation", :with => ""
+          fill_in "pass", :with => ""
+          fill_in "conf", :with => ""
           click_button "Sign Up"
           #response.should render_template('users/new')
           #current_path.should == signup_path
@@ -30,8 +30,8 @@ describe "Users" do
           fill_in "Name",         :with => "DJ"
           fill_in "Full name",    :with => "Derick Jeter"
           fill_in "Email",        :with => "user@example.com"
-          fill_in "Password",     :with => "foobar"
-          fill_in "Password confirmation", :with => "foobar"
+          fill_in "pass",     :with => "foobar"
+          fill_in "conf", :with => "foobar"
           click_button "Sign Up"
           #response.should have_selector("div.flash.success",
            #                             :content => "Welcome")

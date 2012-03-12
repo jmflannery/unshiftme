@@ -1,6 +1,9 @@
-<% if remotipart_submitted? %>
-  getMessages("User message update :)");
+<% publish_to_many @recipient_names do %>
   $('input[type="file"]').val("");
   $('#upload_section').hide();
   $('#messages_section').css("height", "+=45");
+  $("tr.message:last-child").after("<%= j(render(@message)) %>");
+  <% unless @message.blank? %>
+    $('#messages_section').scrollTo("max");
+  <% end %>
 <% end %>

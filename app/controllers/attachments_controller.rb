@@ -3,6 +3,12 @@ class AttachmentsController < ApplicationController
    
   def create
     @attachment = current_user.attachments.build(params[:attachment])
+    @recipient_names = ["/messages/#{current_user.name}"]
+    current_user.recipients.each do |recipient|
+      recip_user = User.find(recipient.recipient_user_id)
+      @recipient_names << "/messages/#{recip_user.name}" if recip_user
+    end
+    
     respond_to do |format|
       if @attachment.save
         format.js do

@@ -2,8 +2,8 @@
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-#require 'capybara/rspec'
-#require 'capybara/rails'
+require 'capybara/rspec'
+require 'capybara/rails'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -27,7 +27,9 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = false
   
-  #Capybara.default_wait_time = 3
+  #Capybara.default_wait_time = 2
+  #Capybara.javascript_driver = :webkit 
+  #Capybara.default_driver = Capybara.javascript_driver = :chrome
 
   def test_sign_in(user)
     controller.sign_in(user)
@@ -39,7 +41,7 @@ RSpec.configure do |config|
     user.save(:validate => false)
     user
   end
-  
+ 
   # Configuration for databse cleaner
   config.before(:each) do
     DatabaseCleaner.strategy = :truncation

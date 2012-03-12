@@ -32,7 +32,7 @@
 <div id="upload_section">
   <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
     <%= f.file_field("payload") %>
-    <%= f.submit "Send file" %>
+    <%= f.submit "Upload" %>
   <% end %>   
 </div>
 
@@ -44,7 +44,7 @@
   <% if signed_in? %>
     <%= form_for(@message, :id => "message_input", remote: true, format: :js) do |f| %>
       <%= f.text_field :content %>
-      <%= f.submit "Send" %>
+      <%= f.submit "Send", id: "Send" %>
     <% end %>
   <% end %>
 </div>

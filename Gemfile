@@ -12,7 +12,7 @@ gem 'bcrypt-ruby', "~> 3.0.1"
 gem 'remotipart', "~> 1.0.2"
 gem 'paperclip', "~> 2.0"
 gem 'aws-sdk'
-gem 'private_pub'
+gem 'private_pub', "~> 1.0.1"
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -25,6 +25,8 @@ end
 group :development, :test do
   gem 'rspec-rails', "~> 2.8.0"
   gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
+  #gem 'capybara', "~> 1.1.2"
+  #gem 'capybara-webkit'
   gem 'factory_girl_rails', "~> 1.6.0"
   gem 'faker'
   gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
@@ -37,6 +39,8 @@ end
 
 # Use unicorn as the web server
 gem 'unicorn'
+
+gem 'thin'
 
 # Deploy with Capistrano
 gem 'capistrano'
