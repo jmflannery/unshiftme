@@ -21,9 +21,7 @@ class User < ActiveRecord::Base
   attr_accessible :name, :full_name, :email, :password, :password_confirmation 
   
   has_many :messages
-  
   has_many :recipients
-
   has_many :attachments
 
   validates :password, :presence => true,

@@ -10,9 +10,9 @@ class MessagesController < ApplicationController
     end
 
     @message = @user.messages.build(params[:message])
+
     if @message.save
       @message.set_recievers
-      @message.mark_sent_to @user
     else
       render 'sessions/new'
     end

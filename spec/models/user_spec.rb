@@ -87,7 +87,6 @@ describe User do
       it "should return authencated user given the correct password" do
         assert_equal(@user, @user.authenticate(@attr[:password]))
       end
-
     end
   end
   
@@ -95,8 +94,8 @@ describe User do
 
     before(:each) do
       @user = User.create(@attr)
-      @msg2 = Factory(:message, :user => @user, :created_at => 1.minute.ago)
-      @msg1 = Factory(:message, :user => @user, :created_at => 1.hour.ago)
+      @msg1 = Factory(:message, :user => @user, :created_at => 1.minute.ago)
+      @msg2 = Factory(:message, :user => @user, :created_at => 1.hour.ago)
     end
 
     it "should have a messages attribute" do

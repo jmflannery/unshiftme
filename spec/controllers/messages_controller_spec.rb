@@ -9,12 +9,7 @@ describe MessagesController do
       post :create, :message => { :content => "what the??" }
       response.should redirect_to(signin_path)
     end
-
-    it "should deny access to 'index' for non-signed in users" do
-      get :index, :format => :js
-      response.should redirect_to(signin_path)
-    end
-  end
+ end
   
   describe "POST 'create'" do
 

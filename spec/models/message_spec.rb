@@ -1,18 +1,3 @@
-# == Schema Information
-#
-# Table name: messages
-#
-#  id         :integer         not null, primary key
-#  content    :string(255)
-#  user_id    :integer
-#  read       :integer
-#  time_read  :datetime
-#  created_at :datetime
-#  updated_at :datetime
-#  recievers  :string(255)
-#  sent       :string(255)
-#
-
 require 'spec_helper'
 
 describe Message do
@@ -60,7 +45,7 @@ describe Message do
       @user.messages.build(:content => "a" * 141).should_not be_valid
     end
   end
-  
+
   describe "method" do
 
     before(:each) do
@@ -69,60 +54,18 @@ describe Message do
       Factory(:recipient, :user => @user, :recipient_user_id => @other_user.id)
       Factory(:recipient, :user => @user, :recipient_user_id => @other_user2.id)
       @message = @user.messages.create!(@msg_attr)
-      @message2 = @other_user.messages.create!(@msg_attr2)
-      @message3 = @other_user2.messages.create!(@msg_attr3)
-      @message.set_recievers
-      @message2.set_recievers
-      @message3.set_recievers
     end
 
     describe "set_recievers" do 
-
+    
       it "should set message.recievers to the message's recipient's user_ids seperated by commas" do
+        @message.set_recievers
         recievers = @message.recievers.split(/,/)
-        recipients = @user.recipients
-        recievers.size.should == recipients.size
-        recipients.each do |recipient|
+        recievers.size.should == @user.recipients.size
+        @user.recipients.each do |recipient|
           recievers.should include recipient.recipient_user_id.to_s
         end
       end
     end 
-
-    describe "mark_sent_to" do
-    
-      it "should mark the message as sent to the given user" do
-        @message2.mark_sent_to(@user)
-        @message2.mark_sent_to(@other_user)
-        @message2.sent.should include @user.id.to_s
-        @message2.sent.should include @other_user.id.to_s  
-      end
-    end 
-
-    describe "new_messages_for" do
-
-      it "should return new unsent messages that the given user is a recipient of" do
-        messages = Message.new_messages_for(@other_user)
-        messages.should include @message
-        messages.should include @message2
-      end
-
-      it "should return new unsent messages created by the given user" do     
-        messages = Message.new_messages_for(@user)
-        messages.should include @message
-      end
-
-      it "should not return any messages that the given user is not a recipient of" do
-        messages = Message.new_messages_for(@other_user)
-        messages.should_not include @message3        
-      end
-
-      it "should not return old messages already sent" do
-        @message.mark_sent_to(@other_user)
-        @message2.mark_sent_to(@other_user)
-        messages = Message.new_messages_for(@other_user)
-        messages.should_not include @message
-        messages.should_not include @message2
-      end
-    end
   end
 end

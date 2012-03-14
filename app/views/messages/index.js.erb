@@ -1,5 +1,0 @@
-$("tr.message:last-child").after("<%= j(render(@new_messages)) %>");
-$("#send_to_box").html("<%= j(render('recipients/recipients_table', :recipient_lists => @my_recipients)) %>");
-<% unless @new_messages.empty? %>
-  $('#messages_section').scrollTo("max");
-<% end %>
