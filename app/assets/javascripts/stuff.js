@@ -1,16 +1,3 @@
-/////////////////////////////////
-// Round the corners (even ie!)
-/////////////////////////////////
-
-$(function() {
-  //$('.button').corner();
-  //$('#users_show_top').corner("6px top");
-  //$('#users_show_bottom').corner("6px bottom");
-  //$('#messages_section').corner("6px");
-  //$('td#send_to').corner("6px");
-  //$('#edit_user').corner("6px");
-});
-
 //////////////////////////
 // Open User List Dialog
 //////////////////////////
@@ -41,6 +28,27 @@ var x_button_roll_out = function() {
 
 $(function() {
   $('img.x_button').hover(x_button_roll_in, x_button_roll_out);
+});
+
+///////////////////////////////////
+// Recipient User Selection
+///////////////////////////////////
+
+var toggleRecipientSelectionSection = function() {
+  recipient_selection_section = $('#recipient_selection_section');
+  
+  recipient_selection_section.toggle();
+  recipient_selection_section.toggleClass("visible");
+
+  if (recipient_selection_section.is(":hidden")) {
+    $('#messages_section').css("height", "+=200");
+  } else {
+    $('#messages_section').css("height", "-=200");   
+  }
+};
+
+$(function() {
+  $('#recipient_selection_section').hide();
 });
 
 ///////////////////////////////////

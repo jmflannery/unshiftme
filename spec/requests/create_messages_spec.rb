@@ -16,9 +16,7 @@ describe "CreateMessages" do
     end
     
     it "the message should appear on the senders screen", :js => true do
-      pending "selenium / capybara bug" #do
-        page.should have_content("#{@user.name}: #{@message}")
-      #end 
+      page.should have_content("#{@user.name}: #{@message}")
     end
     
     it "should clear the message input text field", :js => true do
