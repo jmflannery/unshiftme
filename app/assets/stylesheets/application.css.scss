@@ -171,7 +171,7 @@ table#recipients_table {
  *******************************/
 
 #recipient_selection_section {
-  height: 200px;
+//  height: 200px;
   background-color: $near-white;  
   @include rounded-corners(8px);
   margin: 8px;
@@ -179,10 +179,9 @@ table#recipients_table {
   color: $background-blue;
 }
 
-ul#online_users_list {
-  list-style: none;
+table#online_users_list {
 
-  li.online_user {
+  td.online_user {
     margin: 10px;
     padding: 4px 6px;
     @include mac-button-style;

@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     @messages = []
     @message = Message.new
     @attachment = Attachment.new
-    @my_recipients = Recipient.recipients_for(@user.id)
+    @my_recipients = Recipient.for_user(@user.id)
   end
 
   def index

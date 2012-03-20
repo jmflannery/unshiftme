@@ -140,6 +140,8 @@ describe User do
       @user.attachments.should == [@attach1, @attach2]
     end
   end
+  
+  describe
 
   describe "method" do
     
@@ -150,6 +152,7 @@ describe User do
       @user3 = Factory(:user, :name => "Jimmy", :full_name => "Jimmy Johnson", :status => true)
       Factory(:recipient, :user => @user, :recipient_user_id => @user1.id)
       @user_ids = [@user1.id, @user2.id, @user3.id]
+      @available_users = [@user2, @user3]
     end
 
     describe "available_users" do
@@ -157,7 +160,7 @@ describe User do
       it "should return an Array of users with online status" do
         users = User.available_users(@user)
         users.should be_kind_of(Array)
-        users.size.should == 2
+        users.size.should == @available_users.size
         users.each do |user|
           user.should be_kind_of(User)
           user.status.should be_true

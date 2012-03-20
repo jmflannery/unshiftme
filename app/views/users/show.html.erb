@@ -16,7 +16,8 @@
       </td>
       <td id='send_to'>
         <div id='send_to_box'>
-          <%= render('recipients/recipients_table', :recipient_lists => @my_recipients) %>
+          <table id='recipients_table'>
+          </table>
         </div>
       </td>
   </table>
@@ -25,8 +26,8 @@
 <div id='recipient_selection_section'>
   <h3>Available Users:</h3>
   <%= form_tag recipients_path, :remote => true, :format => :js do %>
-    <ul id="online_users_list"> 
-    </ul>
+    <table id="online_users_list"> 
+    </table>
     <%= submit_tag "OK" %>
   <% end %>
 </div>

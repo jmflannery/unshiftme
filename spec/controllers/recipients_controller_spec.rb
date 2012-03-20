@@ -71,7 +71,7 @@ describe RecipientsController do
         recip_user2 = Factory(:user, :name => "Darry", :full_name => "Darryl Strawberry")
         @recip1 = Factory(:recipient, :user => @user, :recipient_user_id => recip_user1.id)
         @recip2 = Factory(:recipient, :user => @user, :recipient_user_id => recip_user2.id)
-        @recips = [[@recip1, @recip2]]
+        @recips = [@recip1, @recip2]
         @non_recip = Factory(:recipient)
       end
 

@@ -1,4 +1,10 @@
-<li class='online_user'>
+<% if user_counter == 0 %>
+  <tr>
+<% elsif user_counter != 0 && user_counter.modulo(4) == 0 %>
+  </tr><tr>
+<% end %>
+
+<td class='online_user'>
   <%= check_box_tag("user_name_#{user.id}", user.id, :class => "a_user") %>
-  <%= label_tag("user_name_#{user.id}", user.full_name, :class => "a_user") %>
-<li>
+  <%= label_tag("user_name_#{user.id}", "#{user_counter} #{user.full_name}", :class => "a_user") %>
+</td>

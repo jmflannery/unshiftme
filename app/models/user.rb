@@ -33,10 +33,9 @@ class User < ActiveRecord::Base
   scope :online, lambda { |user_id| where("users.status = ? and users.id != ?", true, user_id) }
 
   def self.available_users(user)
-    recipient_user_ids = Recipient.recipient_user_ids_for(user.id)
     available_users = []
-    User.online(user.id).each do |user|
-      available_users << user unless recipient_user_ids.include?(user.id) 
+    User.online(user.id).each do |online_user|
+      available_users << online_user unless user.recipient_user_ids.include?(online_user.id) 
     end
     available_users
   end

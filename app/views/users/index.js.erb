@@ -1,7 +1,7 @@
 <% if @online_users.nil? || @online_users.empty? %>
-  $("ul#online_users_list").html("<li>Nobody's at the party!</li>");
+  $("table#online_users_list").html("<tr><td>Nobody's at the party!</td></tr>");
 <% else %>
-  $("ul#online_users_list").html("<%=j(render(@online_users)) %>");
+  $("table#online_users_list").html("<%=j(render(@online_users)) %>");
 <% end %>
 
 toggleRecipientSelectionSection();
