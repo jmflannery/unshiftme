@@ -27,8 +27,8 @@ describe RecipientsController do
       @user = test_sign_in(Factory(:user, :name => "cuzit", :full_name => "cousin it"))
     end
 
-    it "should be successful" do
-      post :create, :format => :js
+    it "should redirect to recipient/index" do
+      post :create, user: @user.id, format: :js
       response.should be_redirect
     end
 
@@ -36,20 +36,18 @@ describe RecipientsController do
 
       it "should create not a recipient" do
         lambda do
-          post :create, :recipient_user => 0, :format => :js
-        end.should_not change(Message, :count)
+          post :create, user: 0, format: :js
+        end.should_not change(Recipient, :count)
       end
-
     end
 
     describe "success" do
 
       it "should create a recipient" do
         lambda do
-          post :create, :user_name_22 => @user.id, :format => :js
+          post :create, user: @user.id, format: :js
         end.should change(Recipient, :count).by(1)
       end
-
     end
   end
 

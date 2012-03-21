@@ -1,2 +1,9 @@
+// display/refresh the recipients
 $("table#recipients_table").html("<%= j(render(@my_recipients)) %>");
-$('img.x_button').hover(x_button_roll_in, x_button_roll_out);
+
+// display/refresh the online users, if any
+<% if @online_users.nil? || @online_users.empty? %>
+  $("table#online_users_list").html("<tr><td>Nobody's at the party!</td></tr>");
+<% else %>
+  $("table#online_users_list").html("<%=j(render(@online_users)) %>");
+<% end %>

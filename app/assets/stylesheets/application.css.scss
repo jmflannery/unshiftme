@@ -124,6 +124,7 @@ h2 {
     width: 783px;
     height: 80px;
     background-color: $near-white;
+    overflow: auto;
     @include rounded-corners(8px);
   }
 }
@@ -171,21 +172,49 @@ table#recipients_table {
  *******************************/
 
 #recipient_selection_section {
-//  height: 200px;
+  height: 200px;
+  overflow: auto;
   background-color: $near-white;  
   @include rounded-corners(8px);
   margin: 8px;
   padding: 8px;
   color: $background-blue;
-}
 
-table#online_users_list {
+  #user_select_close {
+    float: right;
+    
+    a {
+      text-decoration: none;
+      font-size: 28px;
+      color: $dark-text;  
+      @include rounded-corners(23px);
 
-  td.online_user {
-    margin: 10px;
-    padding: 4px 6px;
-    @include mac-button-style;
-    @include mac-button-text-style;
+      &:hover {
+        color: $bright-red;
+      }
+    }
+  }
+
+  table#online_users_list {
+    border-collapse: seperate;
+    border-spacing: 8px;
+
+    td.online_user {
+
+      margin: 10px;
+      padding: 4px 6px;
+      @include mac-button-style;
+      @include mac-button-text-style;
+
+      a {
+        @include mac-button-text-style;
+        text-decoration: none;
+
+        &:hover {
+          color: $background-blue;
+        }
+      }
+    }
   }
 }
 

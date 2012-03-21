@@ -17,6 +17,7 @@
       <td id='send_to'>
         <div id='send_to_box'>
           <table id='recipients_table'>
+            <%= render(@my_recipients) %>
           </table>
         </div>
       </td>
@@ -24,12 +25,12 @@
 </div>
 
 <div id='recipient_selection_section'>
+  <div id='user_select_close'>
+    <%= link_to_function("×", "toggleRecipientSelectionSection()") %>
+  </div>
   <h3>Available Users:</h3>
-  <%= form_tag recipients_path, :remote => true, :format => :js do %>
-    <table id="online_users_list"> 
-    </table>
-    <%= submit_tag "OK" %>
-  <% end %>
+  <table id="online_users_list"> 
+  </table>
 </div>
 
 <div id="messages_section">
