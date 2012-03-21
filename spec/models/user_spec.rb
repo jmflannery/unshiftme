@@ -182,18 +182,34 @@ describe User do
 
       it "should add the list of user IDs to the user's recipients" do
         @user.add_recipients(@user_ids)
-        recipients = Recipient.for_user(@user.id)
-        recipients.size.should == @user_ids.size
-        recipients.each do |recipient|
+        @user.recipients.size.should == @user_ids.size
+        @user.recipients.each do |recipient|
           @user_ids.should include recipient.recipient_user_id
         end
       end
 
       it "should not add any duplicate recipients" do
         @user.add_recipients(@user_ids)
-        size1 = Recipient.for_user(@user.id).size
+        size1 = @user.recipients.size
         @user.add_recipients(@user_ids)
-        size2 = Recipient.for_user(@user.id).size
+        size2 = @user.recipients.size
+        size1.should == size2
+      end
+    end
+
+    describe "add_recipient" do
+
+      it "should add the user ID to the user's recipients" do
+        @user.add_recipient(@user1.id)
+        @user.recipients.size.should == 1
+        @user.recipients[0].recipient_user_id.should == @user1.id
+      end
+
+      it "should not add any duplicate recipients" do
+        @user.add_recipient(@user1.id)
+        size1 = @user.recipients.size
+        @user.add_recipient(@user1.id)
+        size2 = @user.recipients.size
         size1.should == size2
       end
     end

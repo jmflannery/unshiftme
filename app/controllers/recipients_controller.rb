@@ -3,7 +3,7 @@ class RecipientsController < ApplicationController
   before_filter :authorized_user, :only => :destroy
 
   def create
-    current_user.add_recipients([params[:user]]) if User.exists?(params[:user])
+    current_user.add_recipient(params[:user]) if User.exists?(params[:user])
     
     #user_ids = []
     #params.each do |key,value|

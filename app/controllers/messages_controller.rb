@@ -5,8 +5,10 @@ class MessagesController < ApplicationController
     @user = current_user
     @recipient_names = ["/messages/#{@user.name}"]
     @user.recipients.each do |recipient|
-      recip_user = User.find(recipient.recipient_user_id)
-      @recipient_names << "/messages/#{recip_user.name}" if recip_user
+      if User.exists?(recipient.recipient_user_id)
+        recip_user = User.find(recipient.recipient_user_id) 
+        @recipient_names << "/messages/#{recip_user.name}"
+      end
     end
 
     @message = @user.messages.build(params[:message])
