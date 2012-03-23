@@ -1,6 +1,11 @@
 <% publish_to_many @recipient_names do %>
+  // clear message text field
   $("input#message_content").val("");
+  
+  // append the new message 
   $("tr.message:last-child").after("<%= j(render(@message)) %>");
+  
+  // scroll to last message 
   <% unless @message.blank? %>
     $('#messages_section').scrollTo("max");
   <% end %>

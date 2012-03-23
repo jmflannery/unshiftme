@@ -8,6 +8,7 @@ class MessagesController < ApplicationController
       if User.exists?(recipient.recipient_user_id)
         recip_user = User.find(recipient.recipient_user_id) 
         @recipient_names << "/messages/#{recip_user.name}"
+        recip_user.add_recipient(@user.id)
       end
     end
 

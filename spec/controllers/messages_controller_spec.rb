@@ -41,6 +41,14 @@ describe MessagesController do
           post :create, :message => @attr, :format => :js
         end.should change(Message, :count).by(1)
       end
+
+      it "should add the message sender to the recipient list of all of the message's recipients" do
+        recip_user = Factory(:user)
+        recipient = Factory(:recipient, user: @user, recipient_user_id: recip_user.id)
+        post :create, :message => @attr, :format => :js
+        recip_user.recipients.size.should == 1
+        recip_user.recipients[0].recipient_user_id.should == @user.id
+      end
     end
   end
 end
