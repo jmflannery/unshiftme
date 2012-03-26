@@ -22,6 +22,16 @@ $(function() {
 });
 
 ///////////////////////////////////
+// show the most recent message
+///////////////////////////////////
+
+$(function() {
+  if ($("#messages_section").length > 0) {  
+    $('#messages_section').scrollTo("max");
+  }
+});
+
+///////////////////////////////////
 // Upload Section
 ///////////////////////////////////
 

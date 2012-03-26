@@ -48,6 +48,20 @@ describe UsersController do
       assigns(:attachment).should be_kind_of(Attachment) 
     end
 
+    it "should have an array of the given user's messages" do
+      message = Factory(:message, user: @user)
+      message.set_recievers
+      other_message = Factory(:message)
+      other_message.set_recievers
+      get :show, :id => @user
+      messages = assigns(:messages)
+      messages.should be_kind_of(Array)
+      messages.size.should be(1)
+      messages[0].should be_kind_of(Message)
+      messages[0].should == message
+      messages.should_not include(other_message)
+    end
+
   end
 
   describe "GET 'index'" do
