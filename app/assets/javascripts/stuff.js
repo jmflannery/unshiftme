@@ -38,3 +38,11 @@ $(function() {
     }
   });
 });
+
+///////////////////////////////////////////////
+//
+///////////////////////////////////////////////
+
+//PrivatePub.subscribe("/messages/new", function(data, channel) {
+//  $("tr.message:last-child").after(data.chat_message);
+//});

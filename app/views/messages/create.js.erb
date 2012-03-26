@@ -4,7 +4,15 @@
   
   // append the new message 
   $("tr.message:last-child").after("<%= j(render(@message)) %>");
-  
+
+  // display/refresh the Recipients and online users
+  $.get(
+    "/recipients",
+    function(response) {
+      response;
+    }
+  );
+
   // scroll to last message 
   <% unless @message.blank? %>
     $('#messages_section').scrollTo("max");
