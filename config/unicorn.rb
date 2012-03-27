@@ -1,4 +1,4 @@
-root = "/home/deployer/rails/chatty_pants"
+root = "/home/deployer/apps/chatty_pants"
 working_directory root
 
 pid "#{root}/tmp/pids/unicorn.pid"
