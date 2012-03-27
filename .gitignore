@@ -4,3 +4,5 @@ log/*.log
 tmp/
 .sass-cache/
 .redcar/
+
+/config/database.yml

@@ -1,0 +1,7 @@
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: chatty_pants_production
+  pool: 5
+  username: postgres
+  password: 

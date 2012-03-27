@@ -1,44 +1,51 @@
+require "bundler/capistrano"
+
+server "50.56.191.206", :web, :app, :db, primary: true
+
 set :application, "chatty_pants"
-set :repository,  "https://jmflannery@github.com/jmflannery/chatty_pants.git"
-
-set :scm, :git
-
-set :deploy_to, "/var/www"
-
-set :branch, "master"
-
+set :user, "deployer"
+set :deploy_to, "/home/#{user}/apps/#{application}"
 set :deploy_via, :remote_cache
-
-set :user, "deploy"
-
-set :port, 30000
-
-set :deploy_via, :copy
-
-set :copy_stategy, :export
-
 set :use_sudo, false
 
-set :rake, "/home/deploy/.rvm/gems/ruby-1.9.3-p125/bin/rake"
+set :scm, :git
+set :repository, "git@github.com:jmflannery/#{application}.git"
+set :branch, "master"
 
-role :web, "50.56.191.206"   # Your HTTP server, Apache/etc
-role :app, "50.56.191.206"   # This may be the same as your `Web` server
-role :db,  "50.56.191.206", :primary => true # This is where Rails migrations will run
-#role :db,  "your slave db-server here"
+default_run_options[:pty] = true
+ssh_options[:forward_agent] = true
 
-# if you're still using the script/reaper helper you will need
-# these http://github.com/rails/irs_process_scripts
+after "deploy", "deploy:cleanup" # keep only the last 5 releases
 
-# Passenger
-#namespace :deploy do
-#  desc "Restarting mod_rails with restart.txt"
-#  task :restart, :roles => :app, :except => { :no_release => true } do
-#    run "touch #{current_path}/tmp/restart.txt"
-#  end
-#
-#  [:start, :stop].each do |t|
-#    desc "#{t} task is a no-op with mod_rails"
-#    task t, :roles => :app do ; end
-#  end
-#end
+namespace :deploy do
+  %w[start stop restart].each do |command|
+    desc "#{command} unicorn server"
+    task command, roles: :app, except: {no_release: true} do
+      run "/etc/init.d/unicorn_#{application} #{command}"
+    end
+  end
 
+  task :setup_config, roles: :app do
+    sudo "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
+    sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
+    run "mkdir -p #{shared_path}/config"
+    put File.read("config/database.example.yml"), "#{shared_path}/config/database.yml"
+    puts "Now edit the config files in #{shared_path}."
+  end
+  after "deploy:setup", "deploy:setup_config"
+
+  task :symlink_config, roles: :app do
+    run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
+  end
+  after "deploy:finalize_update", "deploy:symlink_config"
+
+  desc "Make sure local git is in sync with remote."
+  task :check_revision, roles: :web do
+    unless `git rev-parse HEAD` == `git rev-parse origin/master`
+      puts "WARNING: HEAD is not the same as origin/master"
+      puts "Run `git push` to sync changes."
+      exit
+    end
+  end
+  before "deploy", "deploy:check_revision"
+end

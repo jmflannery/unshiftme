@@ -1,7 +1,9 @@
-working_directory "/home/jack/rails/chatty_pants"
-pid "/home/jack/rails/chatty_pants/tmp/pids/unicorn.pid"
-stderr_path "/home/jack/rails/chatty_pants/log/unicorn.log"
-stdout_path "/home/jack/rails/chatty_pants/log/unicorn.log"
+root = "/home/deployer/rails/chatty_pants"
+working_directory root
+
+pid "#{root}/tmp/pids/unicorn.pid"
+stderr_path "#{root}/log/unicorn.log"
+stdout_path "#{root}/log/unicorn.log"
 
 listen "/tmp/unicorn.chatty_pants.sock"
 worker_processes 2
