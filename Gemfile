@@ -40,6 +40,9 @@ end
 # Use unicorn as the web server
 gem 'unicorn'
 
+# Use thin server for Faye/Private_Pub
+gem 'thin'
+
 # Deploy with Capistrano
 gem 'capistrano'
 
