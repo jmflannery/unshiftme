@@ -1,7 +1,23 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: chatty_pants_development
+  pool: 5
+  username: postgres
+  password: postgres
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: chatty_pants_test
+  pool: 5
+  username: postgres
+  password: postgres
+
 production:
   adapter: postgresql
   encoding: unicode
   database: chatty_pants_production
   pool: 5
   username: postgres
-  password: 
+  password: postgres

@@ -12,6 +12,9 @@ set :scm, :git
 set :repository, "git@github.com:jmflannery/#{application}.git"
 set :branch, "master"
 
+set :faye_pid, "#{deploy_to}/shared/pids/faye.pid"
+set :faye_config, "#{deploy_to}/current/private_pub.ru"
+
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
 
@@ -51,7 +54,20 @@ namespace :deploy do
 
   #desc "Start Faye server."
   #task :start_push_server, roles: :web do
-  #  run "bundle exec rackup private_pub.ru -s thin -E production"
+  #  run "cd #{current_path} && nohup bundle exec rackup private_pub.ru -s thin -E production"
   #end
-  #after "deploy:check_revision", "deploy:start_push_server"
+  #after "deploy:symlink_config", "deploy:start_push_server"
 end
+
+namespace :faye do
+  desc "Start Faye"
+  task :start do
+    run "cd #{deploy_to}/current && bundle exec rackup #{faye_config} -s thin -E production -D"
+  end
+  desc "Stop Faye"
+  task :stop do
+    run "kill `cat #{faye_pid}` || true"
+  end
+end
+before 'deploy:update_code', 'faye:stop'
+after 'deploy:finalize_update', 'faye:start'
