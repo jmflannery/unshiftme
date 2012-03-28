@@ -49,9 +49,9 @@ namespace :deploy do
   end
   before "deploy", "deploy:check_revision"
 
-  desc "Start Faye server."
-  task :start_push_server, roles: :web do
-    run "rackup private_pub.ru -s thin -E production"
-  end
-  after "deploy:check_revision", "deploy:start_push_server"
+  #desc "Start Faye server."
+  #task :start_push_server, roles: :web do
+  #  run "bundle exec rackup private_pub.ru -s thin -E production"
+  #end
+  #after "deploy:check_revision", "deploy:start_push_server"
 end
