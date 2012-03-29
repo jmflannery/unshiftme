@@ -32,6 +32,14 @@ $(function() {
 });
 
 ///////////////////////////////////
+// Tone
+///////////////////////////////////
+
+$(function() {
+  //$('#tone')[0].innerHTML = "<embed src=/assets/soft_chime_beep.mp3 hidden=true autostart=true loop=false>";
+});
+
+///////////////////////////////////
 // Upload Section
 ///////////////////////////////////
 
@@ -47,6 +55,21 @@ $(function() {
       messages_section.css("height", "-=45");   
     }
   });
+});
+
+//////////////////////////////////////////////
+//
+//////////////////////////////////////////////
+
+$(function() {
+  if ($("#messages_section").length > 0) {
+    var uploader = new qq.FileUploader({
+        // pass the dom node (ex. $(selector)[0] for jQuery users)
+        element: document.getElementById('file-uploader'),
+        // path to server-side upload script
+        action: '/attachments.js'
+    });
+  }
 });
 
 ///////////////////////////////////////////////

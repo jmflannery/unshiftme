@@ -7,7 +7,8 @@ class MessagesController < ApplicationController
 
     if @message.save
       @message.set_recievers
-      @recipient_names = ["/messages/#{@user.name}"]
+      @recipient_names = []
+      #@recipient_names = ["/messages/#{@user.name}"]
       #PrivatePub.publish_to "/messages/#{@user.name}", chat_message: @message.content
     
       @user.recipients.each do |recipient|
