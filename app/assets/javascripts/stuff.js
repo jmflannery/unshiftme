@@ -80,7 +80,7 @@ $(function() {
     $("input#message_content").val("");
     
     // append the new message 
-    $("tr.message:last-child").after("<tr class='message'><td class='message_sender'>" + data.sender + "</td><td class='message_content'>" + data.chat_message + "</td><td class='message_timestamp'>..." + data.timestamp + "</td></tr>");
+    $("tr.message:last-child").after("<tr class='message'><td class='message_sender'>" + data.sender + ":</td><td class='message_content'>" + data.chat_message + "</td><td class='message_timestamp'>..." + data.timestamp + "</td></tr>");
 
     // display/refresh the Recipients and online users
     $.get(
