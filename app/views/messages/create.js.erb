@@ -8,27 +8,3 @@ $("tr.message:last-child").after("<%= j(render(@message)) %>");
 <% unless @message.blank? %>
   $('#messages_section').scrollTo("max");
 <% end %>
-
-<% publish_to_many @recipient_names do %>
-  // play tone
-  $('#tone')[0].innerHTML = "<embed src=/assets/soft_chime_beep.mp3 hidden=true autostart=true loop=false>";
-
-  // clear message text field
-  $("input#message_content").val("");
-  
-  // append the new message 
-  $("tr.message:last-child").after("<%= j(render(@message)) %>");
-
-  // display/refresh the Recipients and online users
-  $.get(
-    "/recipients",
-    function(response) {
-      response;
-    }
-  );
-
-  // scroll to last message 
-  <% unless @message.blank? %>
-    $('#messages_section').scrollTo("max");
-  <% end %>
-<% end %>

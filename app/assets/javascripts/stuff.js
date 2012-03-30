@@ -32,14 +32,6 @@ $(function() {
 });
 
 ///////////////////////////////////
-// Tone
-///////////////////////////////////
-
-$(function() {
-  //$('#tone')[0].innerHTML = "<embed src=/assets/soft_chime_beep.mp3 hidden=true autostart=true loop=false>";
-});
-
-///////////////////////////////////
 // Upload Section
 ///////////////////////////////////
 
@@ -58,24 +50,49 @@ $(function() {
 });
 
 //////////////////////////////////////////////
-//
+// message upload 
 //////////////////////////////////////////////
 
-$(function() {
-  if ($("#messages_section").length > 0) {
-    var uploader = new qq.FileUploader({
-        // pass the dom node (ex. $(selector)[0] for jQuery users)
-        element: document.getElementById('file-uploader'),
-        // path to server-side upload script
-        action: '/attachments.js'
-    });
-  }
-});
-
-///////////////////////////////////////////////
-//
-///////////////////////////////////////////////
-
-//PrivatePub.subscribe("/messages/new", function(data, channel) {
-//  $("tr.message:last-child").after(data.chat_message);
+//$(function() {
+//  if ($("#messages_section").length > 0) {
+//    var uploader = new qq.FileUploader({
+//        // pass the dom node (ex. $(selector)[0] for jQuery users)
+//        element: document.getElementById('file-uploader'),
+//        // path to server-side upload script
+//        action: '/attachments.js'
+//    });
+//  }
 //});
+
+///////////////////////////////////////////////
+// message recieve handler 
+///////////////////////////////////////////////
+
+$(function() {
+  // store the current user's name
+  user_name = $("#user_name_section").attr("class");
+
+  PrivatePub.subscribe("/messages/" + user_name, function(data, channel) {
+    // play tone
+    $('#tone')[0].innerHTML = "<embed src=/assets/soft_chime_beep.mp3 hidden=true autostart=true loop=false>";
+
+    // clear message text field
+    $("input#message_content").val("");
+    
+    // append the new message 
+    $("tr.message:last-child").after("<tr class='message'><td class='message_sender'>" + data.sender + "</td><td class='message_content'>" + data.chat_message + "</td><td class='message_timestamp'>..." + data.timestamp + "</td></tr>");
+
+    // display/refresh the Recipients and online users
+    $.get(
+      "/recipients",
+      function(response) {
+        response;
+      }
+    );
+
+    // scroll to last message 
+    if (data.chat_message) {
+      $('#messages_section').scrollTo("max");
+    }
+  });
+});
