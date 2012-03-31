@@ -1,4 +1,3 @@
-Chatty Pants
+Amtrak Messenger
 
-Chatty Pants is an example Ruby on Rails chat/instant message application.
-
+A communication system for Amtrak Chicago Control Center employees.

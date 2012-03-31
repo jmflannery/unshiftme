@@ -1,4 +1,4 @@
-ChattyPants::Application.routes.draw do
+AmtrakMessenger::Application.routes.draw do
   root :to => "sessions#new"
 
   resources :users, :only => [:new, :create, :show, :index, :edit, :update] 

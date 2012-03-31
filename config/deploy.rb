@@ -2,7 +2,7 @@ require "bundler/capistrano"
 
 server "50.56.191.206", :web, :app, :db, primary: true
 
-set :application, "chatty_pants"
+set :application, "amtrak_messenger"
 set :user, "deployer"
 set :deploy_to, "/home/#{user}/apps/#{application}"
 set :deploy_via, :remote_cache

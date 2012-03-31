@@ -1,7 +1,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: chatty_pants_development
+  database: amtrak_messenger_development
   pool: 5
   username: postgres
   password: postgres
@@ -9,7 +9,7 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: chatty_pants_test
+  database: amtrak_messenger_test
   pool: 5
   username: postgres
   password: postgres
@@ -17,7 +17,7 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: chatty_pants_production
+  database: amtrak_messenger_production
   pool: 5
   username: postgres
   password: postgres

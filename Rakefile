@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-ChattyPants::Application.load_tasks
+AmtrakMessenger::Application.load_tasks
