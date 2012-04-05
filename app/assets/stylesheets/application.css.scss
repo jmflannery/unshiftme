@@ -3,12 +3,17 @@
 *= require_tree . 
 */
 
-$background-blue: #229396; 
-$blue-grey: #8BA88F;
-$grey: #C7C5A7;
+$blue: #1375b3; 
+$dark-blue: #003e89; 
+$yellow: #ffae17;
 $near-white: #F0DFD0;
+$grey: #C7C5A7;
 $bright-red: #F23C3C;
 $dark-text: #323232;
+
+$blue-grey: #8BA88F; // unused
+
+$fugaz_one: 'Fugaz One', cursive; 
 
 @mixin rounded-corners($radius) {
   -webkit-border-radius: $radius;
@@ -41,311 +46,13 @@ $dark-text: #323232;
 }
 
 body {
-  background-color: $background-blue;
+  background-color: $blue;
   font-family: sans-serif;
-  color: $near-white;
 }
 
-h1 {
-  font-size: 72px;
-  text-align: right;
-  padding: 0px;
-  margin: 0px;
-  text-shadow: 1px 1px 6px rgba(240, 223, 208, 0.5);
+img {
+  max-width: 100%; 
 }
-
-h2 {
-  font-size: 48px;
-  text-align: center;
-  color: $bright-red;
-  padding: 0px;
-  margin: 0px;
-}
-
-/**************
- * Page 
-***************/
-
-#page {
-  width: 900px;
-  margin: 0 auto;
-}
-
-/******************** 
- * User name section 
- ********************/
-
-#user_name_section {
-  margin-top: 10px;
-
-  ul {
-    padding: 0px;
-    margin: 0px;
-    
-    li {
-      display: inline;
-    }
-  }
-
-  li#user_name {
-    color: $bright-red;
-    //text-shadow: 1px 1px 6px rgba(240, 223, 208, 0.5);
-    font-size: 42px;
-    font-weight: bold;
-  }
-
-  li#sign_out a {
-    color: $near-white;
-    font-size: 16px;
-    text-decoration: none;
-  }
-}
-
-/******************* 
- * Send to section 
- *******************/
-
-#send_to_section {
-  margin-top: 10px; 
-
-  td#to {
-    width: 115px;
-    margin: 0px;
-    font-size: 72px;
-    font-weight: bold;
-  
-    a {
-      color: $near-white;
-      text-decoration: none;
-    }
-  }
-
-  td#send_to {
-    width: 783px;
-    height: 80px;
-    background-color: $near-white;
-    overflow: auto;
-    @include rounded-corners(8px);
-  }
-}
- 
-/**********************
- * Recipients section
- **********************/
-
-table#recipients_table {
-  border-collapse: seperate;
-  border-spacing: 8px;
-  
-  td.recipient_cell {
-    padding: 4px 6px;
-    @include mac-button-style;
-    @include mac-button-text-style;
-    
-    ul.recipient {
-      padding: 0px;
-      margin: 3px 5px;
-      
-      li {;
-        display: inline;
-        padding: 2px;
-      }
-
-      li#x_link {
-
-        a {   
-          @include mac-button-text-style;
-          text-decoration: none;
-          display: inline;
-
-          &:hover {
-            color: $bright-red;
-          }
-        }
-      }
-    }
-  }
-}
-
-/*******************************
- * Recipients selection section
- *******************************/
-
-#recipient_selection_section {
-  height: 200px;
-  overflow: auto;
-  background-color: $near-white;  
-  @include rounded-corners(8px);
-  margin: 8px;
-  padding: 8px;
-  color: $background-blue;
-
-  #user_select_close {
-    float: right;
-    
-    a {
-      text-decoration: none;
-      font-size: 28px;
-      color: $dark-text;  
-      @include rounded-corners(23px);
-
-      &:hover {
-        color: $bright-red;
-      }
-    }
-  }
-
-  table#online_users_list {
-    border-collapse: seperate;
-    border-spacing: 8px;
-
-    td.online_user {
-
-      margin: 10px;
-      padding: 4px 6px;
-      @include mac-button-style;
-      @include mac-button-text-style;
-
-      a {
-        @include mac-button-text-style;
-        text-decoration: none;
-
-        &:hover {
-          color: $background-blue;
-        }
-      }
-    }
-  }
-}
-
-/******************* 
- * Messages section 
- *******************/
-
-#messages_section {
-  margin: 5px;
-  height: 500px;
-  width: 100%;
-  background-color: $near-white;
-  overflow: auto;
-  color: $background-blue;
-  @include rounded-corners(8px);
-
-  tr.message {
-    padding: 10px;
-    font-size: 1.2em;
-  
-    td.message_sender {
-      padding: 10px 5px 0px 10px;
-    }
-    
-    td.message_content {
-      width: 700px;
-      padding: 10px 5px 0px 0px;
-    }
-      
-    td.message_timestamp {
-      padding: 10px 10px 0px 0px;
-    }
-  }
-}
-
-/*************************
- * Upload Section
- ************************/
- 
-#upload_section {
-  display: none;
-  //background-color: $near-white;
-  @include rounded-corners(8px);
-  width: 100%;
-  height: 40px;
-  margin: 5px;
-
-  input[type="file"] {
-    background-color: $near-white;
-    @include rounded-corners(6px);
-    margin: 5px;
-    color: $background-blue;
-    padding: 5px 8px;
-    width: 775px;
-  }
-
-  input[type="submit"] {
-    padding: 8px 15px;
-    @include mac-button-style;
-    @include mac-button-text-style;
-  }
-}
-
-/*************************
- * Upload Button
- *************************/
-
-#upload_button {
-  float: left;
-
-  a#attach_button {
-    padding: 2px 6px;
-    text-decoration: none;
-   
-    &:hover, &:focus {
-      text-shadow: 0 2px 2px rgba(240, 223, 208, 0.5);
-      //@include box-shadow(0px, 1px, 6px, 2px, 0, 0, 0, 0.5);
-    } 
-  }
-}
-
-/************************* 
- * Message input section 
- *************************/
-
-#msg_input {
-  clear: right;
-  //margin: 5px;
-  width: 900px;
-  height: 30px;
-
-  #new_message input[type="text"] {
-    width: 755px;
-    padding: 6px 8px;
-    font-size: 1.4em;
-    color: $dark-text;
-    border: none;
-    background-color: $near-white;
-    @include rounded-corners(6px);
-  
-    &:hover, &:focus {
-      border: none;
-      outline: none;
-      @include box-shadow(0px, 0px, 12px, 2px, 240, 223, 208, 0.5);      
-    }
-  }
-
-  input[type="submit"] {
-    padding: 8px 15px;
-    @include mac-button-style;
-    @include mac-button-text-style;
-
-    &:hover, &:focus {
-      text-shadow: 0 2px 2px rgba(240, 223, 208, 0.5);
-      @include box-shadow(0px, 1px, 6px, 2px, 0, 0, 0, 0.5);
-    }
-  }
-}
-
-/**************************
- * User Selection Dialog
- **************************/
-
-#dialog {
-  width: 600px;
-  height: 200px;
-  
-  ul#online_users_list {
-    list-style-type: none;
-  }
-} 
 
 /***************************** 
  * center_spot form 
@@ -354,7 +61,7 @@ table#recipients_table {
 .center_spot {
   margin: 0 auto;
   width: 50%;
-  color: $background-blue;
+  color: $blue;
   background: $grey;
   padding: 15px;
   @include rounded-corners(13px);
@@ -364,7 +71,7 @@ table#recipients_table {
   }
 
   a {
-    color: $background-blue;
+    color: $blue;
   }
 
   .field {
@@ -407,24 +114,8 @@ table#recipients_table {
     @include mac-button-text-style; 
 
     &:hover, &:focus {
-      //@include box-shadow(0px, 2px, 4px, 0px, 34, 147, 150, 0.5);
       @include box-shadow(0px, 1px, 6px, 2px, 34, 147, 150, 0.5);
       text-shadow: 0 0px 1px rgba(34, 147, 150, 0.5);
     }
   } 
-}
-
-/* Edit User */
-
-#edit_user {
-  width: 400px;
-  height: 400px;
-  color: #FFFFFF;
-  background: #000000;
-  padding: 5px 5px 5px 10px;
-}
-
-#edit_user h1 {
-  text-align: center;
-  margin: 5px 0px 10px 0px;
 }

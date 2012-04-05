@@ -1,0 +1,370 @@
+$blue: #1375b3; 
+$dark-blue: #003e89; 
+$yellow: #ffae17;
+$near-white: #F0DFD0;
+$grey: #C7C5A7;
+$bright-red: #F23C3C;
+$dark-text: #323232;
+
+$blue-grey: #8BA88F; // unused
+
+$fugaz_one: 'Fugaz One', cursive;
+
+@mixin rounded-corners($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -o-border-radius: $radius;
+  border-radius: $radius; 
+}
+
+@mixin box-shadow($h-shadow, $v-shadow, $blur, $spread, $red, $green, $blue, $alpha) {
+  -webkit-box-shadow: $h-shadow $v-shadow $blur $spread rgba($red, $green, $blue, $alpha);
+  -moz-box-shadow: $h-shadow $v-shadow $blur $spread rgba($red, $green, $blue, $alpha);
+  box-shadow: $h-shadow $v-shadow $blur $spread rgba($red, $green, $blue, $alpha);
+}
+
+@mixin mac-button-style {
+  border: none;
+  background-color: #fff;
+  @include rounded-corners(23px);
+  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#bbb));
+  background-image: -moz-linear-gradient(0 100% 90deg, #bbb, #fff);
+  @include box-shadow(0px, 1px, 2px, 0px, 0, 0, 0, 0.5);
+}
+
+@mixin mac-button-text-style {
+  text-shadow: 0 2px 2px rgba(255, 255, 255, 0.85);
+  font-family: Helvetica, Arial, sans-serrif;
+  font-weight: bold;
+  line-height: 1;
+  color: #444;
+}
+
+body {
+  background-color: $blue;
+  font-family: sans-serif;
+}
+
+img {
+  max-width: 100%; 
+}
+
+#page {
+  margin: 0 auto;
+  width: 90%;
+
+  #application {
+    margin: 0 auto;
+    width: 93.73%; // 900 / 960 
+
+    #header {
+      width: 100%;
+
+      #logo {
+        width: 23.111111111%; // 208 / 900
+        margin: 0 auto -1.8%; 
+      } // end #logo 
+
+      h1 {
+        font-size: 4.5em;
+        font-family: $fugaz_one;
+        text-align: center;
+        font-weight: normal;
+        color: $yellow;
+        padding: 0px;
+        margin: 0px;
+        text-shadow: 3px 3px 6px rgba(240, 223, 208, 0.5);
+      }
+    } // end #header
+
+    #content {
+      width: 100%;
+
+      #user_name_section {
+        padding-left: 2.222222%; // 20 / 900
+
+        ul {
+          padding: 0px;
+          margin: 0px;
+          
+          li {
+            display: inline;
+          }
+        }
+
+        li#user_name {
+          color: $near-white;
+          //text-shadow: 1px 1px 6px rgba(240, 223, 208, 0.5);
+          font-size: 42px;
+          font-weight: bold;
+        }
+
+        li#sign_out a {
+          color: $near-white;
+          font-size: 16px;
+          text-decoration: none;
+        }
+      } // end #user_name_section
+
+      #messenger {
+        margin: 0 auto;
+        width: 95.555556%; // 860 / 900
+        background-color: $dark-blue;
+        border: 1px solid #ffffff;
+        @include rounded-corners(8px);  
+        padding: 1.333333%;
+
+        #send_to_section {
+          width: 100%;
+
+          #to {
+            //border: 3px solid $blue;
+            width: 19.767442%; // 170 / 860
+            margin: 0 auto;
+            float: left;
+            margin: 0px;
+            font-size: 4em;
+            font-weight: bold;
+            font-family: $fugaz_one; 
+            text-align: right;
+
+            a {
+              color: $near-white;
+              text-decoration: none;
+
+              &:hover {
+                background-color: $grey;
+                @include rounded-corners(8px);  
+              }
+            }
+          } // end #to
+
+          #send_to_box {
+            float: right;
+            margin: 0 auto;
+            width: 78.139535%; // 672 / 860
+            height: 80px;
+            background-color: $near-white;
+            overflow: auto;
+            @include rounded-corners(8px);
+            border: 3px solid $blue;
+           
+            table#recipients_table {
+              border-collapse: seperate;
+              border-spacing: 8px;
+              
+              td.recipient_cell {
+                padding: 4px 6px;
+                @include mac-button-style;
+                @include mac-button-text-style;
+                
+                ul.recipient {
+                  padding: 0px;
+                  margin: 3px 5px;
+                  
+                  li {
+                    display: inline;
+                    padding: 2px;
+                  }
+
+                  li#x_link {
+
+                    a {   
+                      @include mac-button-text-style;
+                      text-decoration: none;
+                      display: inline;
+
+                      &:hover {
+                        color: $bright-red;
+                      }
+                    }
+                  } // end li#x_link
+                }
+              } // end td.recipient_cell
+            } // end table#recipients_table
+          } // end #send_to_box
+        } // end #send_to_section
+
+        #recipient_selection_section {
+          height: 200px;
+          overflow: auto;
+          background-color: $near-white;  
+          @include rounded-corners(8px);
+          margin: 8px;
+          padding: 8px;
+          color: $blue;
+          clear: both;
+
+          #user_select_close {
+            float: right;
+            
+            a {
+              text-decoration: none;
+              font-size: 28px;
+              color: $dark-text;  
+              @include rounded-corners(23px);
+
+              &:hover {
+                color: $bright-red;
+              }
+            }
+          } // end #user_select_close 
+
+          table#online_users_list {
+            border-collapse: seperate;
+            border-spacing: 8px;
+
+            td.online_user {
+
+              margin: 10px;
+              padding: 4px 6px;
+              @include mac-button-style;
+              @include mac-button-text-style;
+
+              a {
+                @include mac-button-text-style;
+                text-decoration: none;
+
+                &:hover {
+                  color: $blue;
+                }
+              }
+            } // end td.online_user
+          } // end table#online_users_list
+        } // end #recipient_selection_section
+
+        #messages_section {
+          width: 100%;
+          height: 500px;
+          background-color: $near-white;
+          overflow: auto;
+          color: $blue;
+          @include rounded-corners(8px);
+          border: 3px solid $blue;
+
+          ul#message_list {
+            list-style: none;
+            padding: 0px;
+
+            li.message {
+              padding: 4px;
+              margin: 4px;
+              font-size: 1.2em;
+              border: 1px solid $blue;
+              background-image: -webkit-gradient(linear, 0% 31%, 0% 74%, from($dark-blue), to($blue));
+              background-image: -moz-linear-gradient(40% 46% 90deg,$blue, $dark-blue);
+              @include rounded-corners(8px);
+            
+              ul.inner_message {
+                padding: 0px;
+
+                li {
+                  list-style: none;
+                }
+                
+                p {
+                  margin: 0px;
+                }
+
+                .message_sender {
+                  color: #ffffff;
+                  float: left;
+                } // end .message_sender 
+                
+                .message_content {
+                  color: #000000;
+                  clear: both;
+                } // end .message_content
+                  
+                .message_timestamp {
+                  color: #ffffff;
+                  float: right;
+                } // end .message_timestamp 
+              } // end ul.inner_message
+            } // end li.message
+          } // end ul#message_list
+        } // end #messages_section
+        
+        #upload_section {
+          display: none;
+          //background-color: $near-white;
+          @include rounded-corners(8px);
+          width: 100%;
+          height: 40px;
+          margin: 5px;
+
+          input[type="file"] {
+            background-color: $near-white;
+            @include rounded-corners(6px);
+            margin: 5px;
+            color: $blue;
+            padding: 5px 8px;
+            //width: 775px;
+          } // end input[type="file"]
+
+          input[type="submit"] {
+            padding: 8px 15px;
+            @include mac-button-style;
+            @include mac-button-text-style;
+          } // end input[type="submit"]
+        } // end #upload_section 
+
+        #upload_button {
+          width: 4.883721%;
+          padding: .7%;
+          float: left;
+
+          a#attach_button {
+            text-decoration: none;
+           
+            &:hover, &:focus {
+              text-shadow: 0 2px 2px rgba(240, 223, 208, 0.5);
+              //@include box-shadow(0px, 1px, 6px, 2px, 0, 0, 0, 0.5);
+            } 
+          } // end a#attach_button
+        } // end #upload_button
+
+        #msg_input {
+          width: 100%;
+          margin: .9302326%;
+          //clear: right;
+          //margin: 5px;
+          //width: 900px;
+          //height: 30px;
+
+          #new_message input[type="text"] {
+            width: 78.023256%;
+            padding: .894188%;
+            font-size: 1.4em;
+            color: $dark-text;
+            border: none;
+            background-color: $near-white;
+            @include rounded-corners(6px);
+          
+            &:hover, &:focus {
+              border: none;
+              outline: none;
+              @include box-shadow(0px, 0px, 12px, 2px, 240, 223, 208, 0.5);      
+            }
+          } // end #new_message input[type="text"]
+
+          input[type="submit"] {
+            width: 11.627907%; // 100 / 860
+            padding: .8% .15%;
+            @include mac-button-style;
+            @include mac-button-text-style;
+
+            &:hover, &:focus {
+              text-shadow: 0 2px 2px rgba(240, 223, 208, 0.5);
+              @include box-shadow(0px, 1px, 6px, 2px, 0, 0, 0, 0.5);
+            }
+          } // end input[type="submit"]
+        } // end #msg_input
+      } // end #messenger
+    } // end #content
+
+    #footer {
+      width: 100%;
+    } // end #footer
+  } // end #application 
+} // end #page

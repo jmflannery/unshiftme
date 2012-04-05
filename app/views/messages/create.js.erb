@@ -2,7 +2,7 @@
 $("input#message_content").val("");
 
 // append the new message 
-$("tr.message:last-child").after("<%= j(render(@message)) %>");
+$("li.message:last-child").after("<%= j(render(@message)) %>");
 
 // scroll to last message 
 <% unless @message.blank? %>

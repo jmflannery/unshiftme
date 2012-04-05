@@ -8,56 +8,53 @@
   </ul>
 </div>
 
-<div id='send_to_section'>
-  <table>
-    <tr>
-      <td id='to'>
-        <%= link_to("To:", users_path, :id => "users_link", :remote => true, :format => :js) %>
-      </td>
-      <td id='send_to'>
-        <div id='send_to_box'>
-          <table id='recipients_table'>
-            <%= render(@my_recipients) %>
-          </table>
-        </div>
-      </td>
-  </table>
-</div>
+<div id='messenger'>
 
-<div id='recipient_selection_section'>
-  <div id='user_select_close'>
-    <%= link_to_function("×", "toggleRecipientSelectionSection()") %>
+  <div id='send_to_section'>
+    <div id='to'>
+      <%= link_to("To:", users_path, :id => "users_link", :remote => true, :format => :js) %>
+    </div>
+    <div id='send_to_box'>
+      <table id='recipients_table'>
+        <%= render(@my_recipients) %>
+      </table>
+    </div>
   </div>
-  <h3>Available Users:</h3>
-  <table id="online_users_list"> 
-  </table>
-</div>
 
-<div id="messages_section">
-  <table id="messages_table">
-    <tr class="message"></tr>
-    <%= render @messages %>
-  </table>
-</div>
-  
-<div id="upload_section">
-  <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
-    <%= f.file_field("payload") %>
-    <%= f.submit "Upload" %>
-  <% end %>  
-</div>
+  <div id='recipient_selection_section'>
+    <div id='user_select_close'>
+      <%= link_to_function("×", "toggleRecipientSelectionSection()") %>
+    </div>
+    <h3>Available Users:</h3>
+    <table id="online_users_list"></table>
+  </div>
 
-<div id="upload_button">
-  <%= link_to(image_tag("paperclip.png"), "#", id: "attach_button") %>
-</div>
+  <div id="messages_section">
+    <ul id="message_list">
+      <li class="message"></li>
+      <%= render(@messages) %>
+    </ul>
+  </div>
+    
+  <div id="upload_section">
+    <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
+      <%= f.file_field("payload") %>
+      <%= f.submit "Upload" %>
+    <% end %>  
+  </div>
 
-<div id="msg_input">
-  <% if signed_in? %>
-    <%= form_for(@message, :id => "message_input", remote: true, format: :js) do |f| %>
-      <%= f.text_field :content %>
-      <%= f.submit "Send", id: "Send" %>
+  <div id="msg_input">
+    <div id="upload_button">
+      <%= link_to(image_tag("paperclip.png"), "#", id: "attach_button") %>
+    </div>
+    <% if signed_in? %>
+      <%= form_for(@message, :id => "message_input", remote: true, format: :js) do |f| %>
+        <%= f.text_field :content %>
+        <%= f.submit "Send", id: "Send" %>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
+
 </div>
 
 <%= subscribe_to "/messages/#{@user.name}" %> 
