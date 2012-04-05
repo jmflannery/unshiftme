@@ -80,7 +80,23 @@ $(function() {
     $("input#message_content").val("");
     
     // append the new message 
-    $("li.message:last-child").after("<li class='message'><ul class='inner_message'><li class='message_sender'>" + data.sender + ":</li><li class='message_content'>" + data.chat_message + "</li><li class='message_timestamp'>..." + data.timestamp + "</li></ul></li>");
+    $("li.message:last-child").after("<li class='message'>" +
+                                       "<ul class='inner_message'>" +
+                                         "<li>" +
+                                           "<div class='message_sender'>" +
+                                             "<p>" + data.sender + "</p>" +
+                                           "</div>" + 
+                                           "<div class='message_timestamp'>" +
+                                             "<p>" + data.timestamp + "</p>" +
+                                           "</div>" +
+                                         "</li>" +
+                                         "<li>" +
+                                           "<div class='message_content'>" + 
+                                             "<p>" + data.chat_message + "<p>" +
+                                           "</div>" +
+                                         "</li>" +
+                                       "</ul>" +  
+                                     "</li>");
 
     // display/refresh the Recipients and online users
     $.get(
