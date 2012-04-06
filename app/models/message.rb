@@ -1,4 +1,6 @@
 class Message < ActiveRecord::Base
+  attr_accessor :view_class
+
   attr_accessible :content, :attachment_id
   
   belongs_to :user
@@ -24,12 +26,14 @@ class Message < ActiveRecord::Base
     messages = []
     self.before(time).each do |message|
       if message.user_id == user.id
+        message.view_class = "my_message"
         messages << message
         next
       end
 
       if message.recievers
         recievers = message.recievers.split(",")
+        message.view_class = "recieved_message"
         messages << message if recievers.include?(user.id.to_s)
       end
     end

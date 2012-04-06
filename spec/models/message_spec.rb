@@ -80,21 +80,47 @@ describe Message do
     end
    
     describe "before_for" do
-      
-      it "should return messages sent or recieved by the given user and created between the given date and 24 hours earlier" do
-        recipient_user = Factory(:user, @user_attr)
+
+      before(:each) do
+        @recipient_user = Factory(:user, @user_attr)
         other_user = Factory(:user, @user_attr2)
-        Factory(:recipient, user: @user, recipient_user_id: recipient_user.id)
-        message = Factory(:message, user: @user)
-        message.set_recievers
-        recipient_user_message = Factory(:message, user: recipient_user) 
-        recipient_user_message.set_recievers
-        other_user_message = Factory(:message, user: other_user) 
-        other_user_message.set_recievers 
-        recipient_messages = Message.before_for(recipient_user, Time.now)
-        recipient_messages.should include message
-        recipient_messages.should include recipient_user_message
-        recipient_messages.should_not include other_user_message
+        @user.recipients.create(recipient_user_id: @recipient_user.id)
+        @message = @user.messages.create(content: "hello world")
+        @message.set_recievers
+        @recipient_user_message = @recipient_user.messages.create(content: "hello rails")
+        @recipient_user_message.set_recievers
+        @other_user_message = other_user.messages.create(content: "hello ruby")
+        @other_user_message.set_recievers
+        @old_message = Factory(:message, user: @user, created_at: 25.hours.ago) 
+        @old_message.set_recievers
+      end
+      
+      it "should return messages that were sent or recieved by the given user" do
+        recipient_messages = Message.before_for(@recipient_user, Time.now)
+        recipient_messages.should include @message
+        recipient_messages.should include @recipient_user_message
+        recipient_messages.should_not include @other_user_message
+      end
+       
+      it "should return messages created between the given time and 24 hours earlier than the given time" do
+        recipient_messages = Message.before_for(@recipient_user, Time.now)
+        recipient_messages.should include @message
+        recipient_messages.should_not include @old_message
+      end
+
+      it "should set message view_class attribute to 'my_message' for messages created by the given user" do
+        recipient_messages = Message.before_for(@recipient_user, Time.now)
+        recipient_messages.each do |message|
+          message.view_class.should == "my_message" if message.user_id == @recipient_user.id
+        end 
+      end
+
+      it "should set message view_class attribute to 'recieved_message' for messages recieved by the given user" do
+        recipient_messages = Message.before_for(@recipient_user, Time.now)
+        recipient_messages.each do |message|
+          message_recipients = message.recievers.split(",")
+          message.view_class.should == "recieved_message" if message_recipients.include? @recipient_user_id 
+        end
       end
     end 
   end

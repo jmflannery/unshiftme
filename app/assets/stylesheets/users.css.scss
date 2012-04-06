@@ -246,13 +246,23 @@ img {
             list-style: none;
             padding: 0px;
 
+            li.my_message {
+              border: 1px solid $blue;
+              background-image: -webkit-gradient(linear, 0% 31%, 0% 74%, from($dark-blue), to($blue));
+              background-image: -moz-linear-gradient(40% 46% 90deg,$blue, $dark-blue); 
+            }
+
+            li.recieved_message {
+              border: 1px solid $blue;
+              background-image: -webkit-gradient(linear, 0% 31%, 0% 74%, from($grey), to($yellow));
+              background-image: -moz-linear-gradient(40% 46% 90deg, $yellow, $grey); 
+            }
+
             li.message {
               padding: 4px;
               margin: 4px;
               font-size: 1.2em;
-              border: 1px solid $blue;
-              background-image: -webkit-gradient(linear, 0% 31%, 0% 74%, from($dark-blue), to($blue));
-              background-image: -moz-linear-gradient(40% 46% 90deg,$blue, $dark-blue);
+              
               @include rounded-corners(8px);
             
               ul.inner_message {

@@ -1,4 +1,8 @@
-<li class="message">
+<% if message.view_class %>
+  <li class="message <%= message.view_class %>">
+<% else %>
+  <li class="message">
+<% end %>
   <% if message.attachment_id %>
     <% attachment = Attachment.find(message.attachment_id) %>
     <% if attachment %>

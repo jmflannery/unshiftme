@@ -80,7 +80,7 @@ $(function() {
     $("input#message_content").val("");
     
     // append the new message 
-    $("li.message:last-child").after("<li class='message'>" +
+    $("li.message:last-child").after("<li class='message recieved_message'>" +
                                        "<ul class='inner_message'>" +
                                          "<li>" +
                                            "<div class='message_sender'>" +

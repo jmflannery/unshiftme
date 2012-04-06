@@ -16,7 +16,7 @@ describe "CreateMessages" do
     end
     
     it "the message should appear on the senders screen", :js => true do
-      page.should have_content("#{@user.name}: #{@message}")
+      page.should have_content(@message)
     end
     
     it "should clear the message input text field", :js => true do
