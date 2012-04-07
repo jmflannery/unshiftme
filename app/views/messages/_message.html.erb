@@ -3,24 +3,19 @@
 <% else %>
   <li class="message">
 <% end %>
-  <% if message.attachment_id %>
-    <% attachment = Attachment.find(message.attachment_id) %>
-    <% if attachment %>
-      <ul class='inner_message'>
-        <li class="message_sender"><%= User.find(message.user_id).name %>: </li>
-        <li class="message_content"><%= link_to(message.content, attachment.payload.url) %></li>
-        <li class="message_timestamp">...<%= message.created_at.strftime("%T") %></li>
-      </ul>
-    <% end %>  
-  <% else %>
-    <ul class='inner_message'>
-      <li>
-        <div class="message_sender"><p><%= User.find(message.user_id).name %></p></div>
-        <div class="message_timestamp"><p><%= message.created_at.strftime("%T") %></p></div>
-      </li>
-      <li>
+
+  <ul class='inner_message'>
+    <li>
+      <div class="message_sender"><p><%= User.find(message.user_id).name %></p></div>
+      <div class="message_timestamp"><p><%= message.created_at.strftime("%T") %></p></div>
+    </li>
+    <li>
+      <% if message.attachment_id %>
+        <% attachment = Attachment.find(message.attachment_id) %>
+        <div class="message_content"><%= link_to(message.content, attachment.payload.url) if attachment %></div>
+      <% else %>
         <div class="message_content"><p><%= message.content %></p></div>
-      </li>
-    </ul>
-  <% end %>  
+      <% end %>  
+    </li>
+  </ul>
 </li>

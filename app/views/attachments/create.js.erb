@@ -1,9 +1,14 @@
-<% publish_to_many @recipient_names do %>
-  $('input[type="file"]').val("");
-  $('#upload_section').hide();
-  $('#messages_section').css("height", "+=45");
-  $("tr.message:last-child").after("<%= j(render(@message)) %>");
-  <% unless @message.blank? %>
-    $('#messages_section').scrollTo("max");
-  <% end %>
+// clear the file upload form field
+$('input[type="file"]').val("");
+
+// hide the file upload form fields
+$('#upload_section').hide();
+$('#messages_section').css("height", "+=45");
+
+// append the new message 
+$("li.message:last-child").after("<%= j(render(@message)) %>");
+
+// scroll to last message 
+<% unless @message.blank? %>
+  $('#messages_section').scrollTo("max");
 <% end %>

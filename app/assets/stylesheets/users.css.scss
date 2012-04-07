@@ -1,6 +1,7 @@
 $blue: #1375b3; 
 $dark-blue: #003e89; 
 $yellow: #ffae17;
+$light-yellow: #fcc560;
 $near-white: #F0DFD0;
 $grey: #C7C5A7;
 $bright-red: #F23C3C;
@@ -253,9 +254,9 @@ img {
             }
 
             li.recieved_message {
-              border: 1px solid $blue;
-              background-image: -webkit-gradient(linear, 0% 31%, 0% 74%, from($grey), to($yellow));
-              background-image: -moz-linear-gradient(40% 46% 90deg, $yellow, $grey); 
+              border: 1px solid $yellow;
+              background-image: -webkit-gradient(linear, 0% 31%, 0% 74%, from($yellow), to($light-yellow));
+              background-image: -moz-linear-gradient(40% 46% 90deg, $light-yellow, $yellow); 
             }
 
             li.message {

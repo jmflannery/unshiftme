@@ -78,25 +78,34 @@ $(function() {
 
     // clear message text field
     $("input#message_content").val("");
+
+    // create the new message html 
+    html ="<li class='message recieved_message'>" +
+            "<ul class='inner_message'>" +
+              "<li>" +
+                "<div class='message_sender'>" +
+                  "<p>" + data.sender + "</p>" +
+                "</div>" + 
+                "<div class='message_timestamp'>" +
+                  "<p>" + data.timestamp + "</p>" +
+                "</div>" +
+              "</li>" +
+              "<li>" +
+                "<div class='message_content'>";
     
-    // append the new message 
-    $("li.message:last-child").after("<li class='message recieved_message'>" +
-                                       "<ul class='inner_message'>" +
-                                         "<li>" +
-                                           "<div class='message_sender'>" +
-                                             "<p>" + data.sender + "</p>" +
-                                           "</div>" + 
-                                           "<div class='message_timestamp'>" +
-                                             "<p>" + data.timestamp + "</p>" +
-                                           "</div>" +
-                                         "</li>" +
-                                         "<li>" +
-                                           "<div class='message_content'>" + 
-                                             "<p>" + data.chat_message + "<p>" +
-                                           "</div>" +
-                                         "</li>" +
-                                       "</ul>" +  
-                                     "</li>");
+    if (data.attachment_url) {
+      html += "<a href='" + data.attachment_url + "'>" + data.chat_message + "</a>";
+    } else {
+      html += "<p>" + data.chat_message + "</p>";
+    }
+     
+    html += "</div>" +
+           "</li>" +
+         "</ul>" +  
+       "</li>"; 
+    
+    // append the new message html
+    $("li.message:last-child").after(html);
 
     // display/refresh the Recipients and online users
     $.get(

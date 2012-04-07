@@ -3,20 +3,27 @@ class AttachmentsController < ApplicationController
    
   def create
     @attachment = current_user.attachments.build(params[:attachment])
-    @recipient_names = ["/messages/#{current_user.name}"]
-    current_user.recipients.each do |recipient|
-      recip_user = User.find(recipient.recipient_user_id)
-      @recipient_names << "/messages/#{recip_user.name}" if recip_user
-    end
-    
-    respond_to do |format|
-      if @attachment.save
-        format.js do
-          @attachment.set_recievers
-          @message = current_user.messages.build(content: @attachment.payload_file_name, attachment_id: @attachment.id)
-          @message.set_recievers if @message.save
+    if @attachment.save
+      @attachment.set_recievers
+        
+      @message = current_user.messages.create(content: @attachment.payload_file_name, attachment_id: @attachment.id)
+      @message.set_recievers 
+      @message.view_class = "my_message"
+
+      current_user.recipients.each do |recipient|
+        if User.exists?(recipient.recipient_user_id)
+          recip_user = User.find(recipient.recipient_user_id)
+          recip_user.add_recipient(current_user.id) 
+        
+          data = { sender: current_user.name, 
+                   chat_message: @message.content,
+                   timestamp: @message.created_at.strftime("%H:%M:%S"),
+                   attachment_url: @attachment.payload.url 
+          }
+
+          PrivatePub.publish_to("/messages/#{recip_user.name}", data)
         end
       end
     end
-  end
+  end  
 end

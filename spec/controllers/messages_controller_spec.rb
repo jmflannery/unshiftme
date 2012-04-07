@@ -25,7 +25,7 @@ describe MessagesController do
 
       it "should not create a message" do
         lambda do
-          post :create, :message => @attr
+          post :create, :message => @attr, format: :js
         end.should_not change(Message, :count)
       end
     end
@@ -38,7 +38,7 @@ describe MessagesController do
 
       it "should create a message" do
         lambda do
-          post :create, :message => @attr, :format => :js
+          post :create, :message => @attr, format: :js
         end.should change(Message, :count).by(1)
       end
 
