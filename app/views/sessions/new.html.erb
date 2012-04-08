@@ -1,24 +1,27 @@
-<h2>Sign In</h2>
+<div id="sign_in">
+  
+  <h2>Sign In</h2>
 
-<div class="center_spot">
-  <%= form_tag session_path do %>
+  <div class="center_spot">
+    <%= form_tag session_path do %>
 
-    <div class="field">
-      <%= label_tag :name %></br>
-      <%= text_field_tag :name, params[:name] %>
-    </div>
+      <div class="field">
+        <%= label_tag :name %></br>
+        <%= text_field_tag :name, params[:name] %>
+      </div>
 
-    <div class="field">
-      <%= label_tag :password %></br>
-      <%= password_field_tag :password %>
-    </div>
+      <div class="field">
+        <%= label_tag :password %></br>
+        <%= password_field_tag :password %>
+      </div>
 
-    <div class="actions">
-      <%= submit_tag "Sign In" %>
-    </div>
+      <div class="actions">
+        <%= submit_tag "Sign In" %>
+      </div>
 
-  <% end %>
+    <% end %>
 
-  <p>New User? <%= link_to "Sign up now", signup_path %></p>
+    <p>New User? <%= link_to "Sign up now", signup_path %></p>
 
+  </div>
 </div>

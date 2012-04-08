@@ -3,119 +3,53 @@
 *= require_tree . 
 */
 
-$blue: #1375b3; 
-$dark-blue: #003e89; 
-$yellow: #ffae17;
-$near-white: #F0DFD0;
-$grey: #C7C5A7;
-$bright-red: #F23C3C;
-$dark-text: #323232;
-
-$blue-grey: #8BA88F; // unused
-
-$fugaz_one: 'Fugaz One', cursive; 
-
-@mixin rounded-corners($radius) {
-  -webkit-border-radius: $radius;
-  -moz-border-radius: $radius;
-  -o-border-radius: $radius;
-  border-radius: $radius; 
-}
-
-@mixin box-shadow($h-shadow, $v-shadow, $blur, $spread, $red, $green, $blue, $alpha) {
-  -webkit-box-shadow: $h-shadow $v-shadow $blur $spread rgba($red, $green, $blue, $alpha);
-  -moz-box-shadow: $h-shadow $v-shadow $blur $spread rgba($red, $green, $blue, $alpha);
-  box-shadow: $h-shadow $v-shadow $blur $spread rgba($red, $green, $blue, $alpha);
-}
-
-@mixin mac-button-style {
-  border: none;
-  background-color: #fff;
-  @include rounded-corners(23px);
-  background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fff), to(#bbb));
-  background-image: -moz-linear-gradient(0 100% 90deg, #bbb, #fff);
-  @include box-shadow(0px, 1px, 2px, 0px, 0, 0, 0, 0.5);
-}
-
-@mixin mac-button-text-style {
-  text-shadow: 0 2px 2px rgba(255, 255, 255, 0.85);
-  font-family: Helvetica, Arial, sans-serrif;
-  font-weight: bold;
-  line-height: 1;
-  color: #444;
-}
-
-body {
-  background-color: $blue;
-  font-family: sans-serif;
-}
+@import "colors";
+@import "fonts";
+@import "style_mixins";
 
 img {
   max-width: 100%; 
 }
 
-/***************************** 
- * center_spot form 
- *****************************/
+body {
+  background-color: $blue;
+  font-family: sans-serif;
 
-.center_spot {
-  margin: 0 auto;
-  width: 50%;
-  color: $blue;
-  background: $grey;
-  padding: 15px;
-  @include rounded-corners(13px);
+  #page {
+    margin: 0 auto;
+    width: 90%;
 
-  p {
-    color: $blue-grey;
-  }
+    #application {
+      margin: 0 auto;
+      width: 93.73%; // 900 / 960 
 
-  a {
-    color: $blue;
-  }
+      #header {
+        width: 100%;
 
-  .field {
-    margin: 8px 0px;
-  } 
+        #logo {
+          width: 23.111111111%; // 208 / 900
+          margin: 0 auto -1.8%; 
+        } // end #logo 
 
-  input[type="text"] {
-    padding: 5px 8px;
-    font-size: 1.2em;
-    color: $dark-text;
-    border: none;
-    background-color: $near-white;
-    @include rounded-corners(6px);
-  
-    &:hover, &:focus {
-      border: none;
-      outline: none;
-      @include box-shadow(0px, 0px, 12px, 2px, 34, 147, 150, 0.5);      
-    }
-  }
+        h1 {
+          font-size: 4.5em;
+          font-family: $fugaz_one;
+          text-align: center;
+          font-weight: normal;
+          color: $yellow;
+          padding: 0px;
+          margin: 0px;
+          text-shadow: 3px 3px 6px rgba(240, 223, 208, 0.5);
+        }
+      } // end #header
 
-  input[type="password"] {
-    padding: 5px 8px;
-    font-size: 1.2em;
-    color: $dark-text;
-    border: none;
-    background-color: $near-white;
-    @include rounded-corners(6px);
-  
-    &:hover, &:focus {
-      border: none;
-      outline: none;
-      @include box-shadow(0px, 0px, 12px, 2px, 34, 147, 150, 0.5);      
-    }
-  }
+      #content {
+        width: 100%;
+      } // end #content
 
-  input[type="submit"] {
-    padding: 8px 15px;
-    @include mac-button-style;
-    @include mac-button-text-style; 
-
-    &:hover, &:focus {
-      @include box-shadow(0px, 1px, 6px, 2px, 34, 147, 150, 0.5);
-      text-shadow: 0 0px 1px rgba(34, 147, 150, 0.5);
-    }
-  } 
-}
+      #footer {
+        width: 100%;
+      } // end #footer
+    } // end #application 
+  } // end #page
+} // end body

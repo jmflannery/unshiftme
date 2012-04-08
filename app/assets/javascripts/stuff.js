@@ -4,9 +4,7 @@
 
 var toggleRecipientSelectionSection = function() {
   recipient_selection_section = $('#recipient_selection_section');
-  
   recipient_selection_section.toggle();
-  recipient_selection_section.toggleClass("visible");
 
   if (recipient_selection_section.is(":hidden")) {
     $('#messages_section').css("height", "+=220");

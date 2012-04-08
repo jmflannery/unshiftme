@@ -1,0 +1,71 @@
+@import "colors";
+@import "fonts";
+@import "style_mixins";
+
+#sign_in {
+  margin: 0 auto;
+  width: 50%;
+
+  .center_spot {
+    width: 90%;
+    color: $blue;
+    background: $grey;
+    padding: 15px;
+    @include rounded-corners(13px);
+
+    p {
+      color: $dark-text;
+    }
+
+    a {
+      color: $blue;
+    }
+
+    .field {
+      margin: 8px 0px;
+    } 
+
+    input[type="text"] {
+      width: 80%;
+      padding: 5px 8px;
+      font-size: 1.2em;
+      color: $dark-text;
+      border: none;
+      background-color: $near-white;
+      @include rounded-corners(6px);
+    
+      &:hover, &:focus {
+        border: none;
+        outline: none;
+        @include box-shadow(0px, 0px, 12px, 2px, 34, 147, 150, 0.5);      
+      }
+    }
+
+    input[type="password"] {
+      width: 80%;
+      padding: 5px 8px;
+      font-size: 1.2em;
+      color: $dark-text;
+      border: none;
+      background-color: $near-white;
+      @include rounded-corners(6px);
+    
+      &:hover, &:focus {
+        border: none;
+        outline: none;
+        @include box-shadow(0px, 0px, 12px, 2px, 34, 147, 150, 0.5);      
+      }
+    }
+
+    input[type="submit"] {
+      padding: 8px 15px;
+      @include mac-button-style;
+      @include mac-button-text-style; 
+
+      &:hover, &:focus {
+        @include box-shadow(0px, 1px, 6px, 2px, 34, 147, 150, 0.5);
+        text-shadow: 0 0px 1px rgba(34, 147, 150, 0.5);
+      }
+    } 
+  } // end .center_spot 
+} // end #sign_in
