@@ -6,10 +6,14 @@ var toggleRecipientSelectionSection = function() {
   recipient_selection_section = $('#recipient_selection_section');
   recipient_selection_section.toggle();
 
+  height = recipient_selection_section.outerHeight(true);
+    
   if (recipient_selection_section.is(":hidden")) {
-    $('#messages_section').css("height", "+=220");
+    console.log("hiding: " + height);
+    $('#messages_section').css("height", "+=" + height);
   } else {
-    $('#messages_section').css("height", "-=220");   
+    console.log("showing: " + height);
+    $('#messages_section').css("height", "-=" + height);   
   }
 
   $('#messages_section').scrollTo("max");

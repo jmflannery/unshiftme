@@ -5,12 +5,10 @@
 <% end %>
 
 <td class='recipient_cell'>
-  <ul class='recipient'>
-    <li>
-      <%= User.find(recipient.recipient_user_id).name %>
-    </li>
-    <li id="x_link">
-      <%= link_to("×", recipient, :method => :delete, :remote => true, :format => :js) %>
-    </li>
-  </ul>
+  <div class='recipient'>
+    <%= User.find(recipient.recipient_user_id).name %>
+  </div>
+  <div class="x_link">
+    <%= link_to("×", recipient, :method => :delete, :remote => true, :format => :js) %>
+  </div>
 </td>

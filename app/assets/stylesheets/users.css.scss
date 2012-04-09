@@ -34,17 +34,14 @@
   background-color: $dark-blue;
   border: 1px solid #ffffff;
   @include rounded-corners(8px);  
-  padding: 1.333333%;
+  padding: 1.162791%;
 
   #send_to_section {
     width: 100%;
 
     #to {
-      //border: 3px solid $blue;
-      width: 19.767442%; // 170 / 860
-      margin: 0 auto;
+      width: 19.302326%; // 166 / 860
       float: left;
-      margin: 0px;
       font-size: 4em;
       font-weight: bold;
       font-family: $fugaz_one; 
@@ -63,8 +60,7 @@
 
     #send_to_box {
       float: right;
-      margin: 0 auto;
-      width: 78.139535%; // 672 / 860
+      width: 77.44186%; // 666 / 860
       height: 80px;
       background-color: $near-white;
       overflow: auto;
@@ -76,32 +72,28 @@
         border-spacing: 8px;
         
         td.recipient_cell {
-          padding: 4px 6px;
+          padding: 8px 10px;
           @include mac-button-style;
           @include mac-button-text-style;
           
-          ul.recipient {
-            padding: 0px;
-            margin: 3px 5px;
+          .recipient {
+            float: left;
+          } // end .recipient
             
-            li {
+          .x_link {
+            float: right;
+            margin-left: 8px;
+
+            a {   
+              @include mac-button-text-style;
+              text-decoration: none;
               display: inline;
-              padding: 2px;
-            }
 
-            li#x_link {
-
-              a {   
-                @include mac-button-text-style;
-                text-decoration: none;
-                display: inline;
-
-                &:hover {
-                  color: $bright-red;
-                }
+              &:hover {
+                color: $bright-red;
               }
-            } // end li#x_link
-          }
+            }
+          } // end .x_link
         } // end td.recipient_cell
       } // end table#recipients_table
     } // end #send_to_box
@@ -110,13 +102,12 @@
   #recipient_selection_section {
     overflow: auto;
     background-color: $near-white;  
-    width: 100%;
+    width: 97.906977%; // 842 / 860
     @include rounded-corners(8px);
     border: 3px solid $blue;
-    //margin: 8px;
-    //padding: 8px;
+    margin-bottom: 8px;
+    padding: .697674%;
     color: $blue;
-    //clear: both;
 
     #user_select_close {
       float: right;
@@ -139,8 +130,7 @@
 
       td.online_user {
 
-        //margin: 10px;
-        //padding: 4px 6px;
+        padding: 8px 10px;
         @include mac-button-style;
         @include mac-button-text-style;
 
@@ -157,7 +147,7 @@
   } // end #recipient_selection_section
 
   #messages_section {
-    width: 100%;
+    width: 99.302326%; // 854 / 860
     height: 500px;
     background-color: $near-white;
     overflow: auto;
@@ -182,10 +172,9 @@
       }
 
       li.message {
-        padding: 4px;
+        padding: 6px;
         margin: 4px;
         font-size: 1.2em;
-        
         @include rounded-corners(8px);
       
         ul.inner_message {
@@ -232,7 +221,6 @@
       margin: 5px;
       color: $blue;
       padding: 5px 8px;
-      //width: 775px;
     } // end input[type="file"]
 
     input[type="submit"] {
@@ -242,30 +230,26 @@
     } // end input[type="submit"]
   } // end #upload_section 
 
-  #upload_button {
-    width: 4.883721%;
-    padding: .7%;
-    float: left;
-
-    a#attach_button {
-      text-decoration: none;
-     
-      &:hover, &:focus {
-        text-shadow: 0 2px 2px rgba(240, 223, 208, 0.5);
-        //@include box-shadow(0px, 1px, 6px, 2px, 0, 0, 0, 0.5);
-      } 
-    } // end a#attach_button
-  } // end #upload_button
-
   #msg_input {
     width: 100%;
     margin: .9302326%;
-    //clear: right;
-    //margin: 5px;
-    //width: 900px;
-    //height: 30px;
 
-    #new_message input[type="text"] {
+    #upload_button {
+      width: 4.883721%;
+      padding: .7%;
+      float: left;
+
+      a#attach_button {
+        text-decoration: none;
+       
+        &:hover, &:focus {
+          text-shadow: 0 2px 2px rgba(240, 223, 208, 0.5);
+          //@include box-shadow(0px, 1px, 6px, 2px, 0, 0, 0, 0.5);
+        } 
+      } // end a#attach_button
+    } // end #upload_button
+
+    input[type="text"] {
       width: 78.023256%;
       padding: .894188%;
       font-size: 1.4em;
@@ -279,7 +263,7 @@
         outline: none;
         @include box-shadow(0px, 0px, 12px, 2px, 240, 223, 208, 0.5);      
       }
-    } // end #new_message input[type="text"]
+    } // end input[type="text"]
 
     input[type="submit"] {
       width: 11.627907%; // 100 / 860
