@@ -11,7 +11,7 @@ class MessagesController < ApplicationController
         if User.exists?(recipient.recipient_user_id)
           recip_user = User.find(recipient.recipient_user_id) 
           recip_user.add_recipient(@user.id) 
-          data = { sender: @user.name, chat_message: @message.content, timestamp: @message.created_at.strftime("%H:%M:%S") }
+          data = { sender: @user.name, chat_message: @message.content, timestamp: @message.created_at.strftime("%a %b %e %Y %T") }
           PrivatePub.publish_to("/messages/#{recip_user.name}", data)
         end
       end
