@@ -5,8 +5,8 @@ $('input[type="file"]').val("");
 $('#upload_section').hide();
 $('#messages_section').css("height", "+=45");
 
-// append the new message 
-$("li.message:last-child").after("<%= j(render(@message)) %>");
+// display the new message 
+display_new_message("<%= j(render(@message)) %>");
 
 // scroll to last message 
 <% unless @message.blank? %>

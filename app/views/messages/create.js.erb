@@ -1,8 +1,8 @@
 // clear message text field
 $("input#message_content").val("");
 
-// append the new message 
-$("li.message:last-child").after("<%= j(render(@message)) %>");
+// display the new message 
+display_new_message("<%= j(render(@message)) %>");
 
 // scroll to last message 
 <% unless @message.blank? %>

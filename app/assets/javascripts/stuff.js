@@ -74,6 +74,7 @@ $(function() {
   // store the current user's name
   user_name = $("#user_name_section").attr("class");
 
+  // register callback
   PrivatePub.subscribe("/messages/" + user_name, function(data, channel) {
     // play tone
     $('#tone')[0].innerHTML = "<embed src=/assets/soft_chime_beep.mp3 hidden=true autostart=true loop=false>";
@@ -106,10 +107,10 @@ $(function() {
          "</ul>" +  
        "</li>"; 
     
-    // append the new message html
-    $("li.message:last-child").after(html);
+    // display the new message 
+    display_new_message(html);
 
-    // display/refresh the Recipients and online users
+    // display/refresh the recipients and online users
     $.get(
       "/recipients",
       function(response) {
@@ -123,3 +124,12 @@ $(function() {
     }
   });
 });
+
+var display_new_message = function(message_html) {
+  message_list_item = $("li.message:last-child");
+  if (message_list_item[0]) {
+    message_list_item.after(message_html);
+  } else {
+    $("ul#message_list").html(message_html);
+  }
+};
