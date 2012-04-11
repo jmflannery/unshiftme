@@ -5,14 +5,13 @@
 var toggleRecipientSelectionSection = function() {
   recipient_selection_section = $('#recipient_selection_section');
   recipient_selection_section.toggle();
+  recipient_selection_section.toggleClass("visible");
 
   height = recipient_selection_section.outerHeight(true);
     
   if (recipient_selection_section.is(":hidden")) {
-    console.log("hiding: " + height);
     $('#messages_section').css("height", "+=" + height);
   } else {
-    console.log("showing: " + height);
     $('#messages_section').css("height", "-=" + height);   
   }
 
@@ -40,13 +39,15 @@ $(function() {
 $(function() {
   $('a#attach_button').click(function() {
     upload_section = $('#upload_section');
+    height = upload_section.outerHeight(true);
     messages_section = $('#messages_section');
     upload_section.toggle();
+
     if (upload_section.is(":hidden")) {
-      messages_section.css("height", "+=45");
+      messages_section.css("height", "+=" + height);
       $('input[type="file"]').val("");
     } else {
-      messages_section.css("height", "-=45");   
+      messages_section.css("height", "-=" + height);
     }
   });
 });

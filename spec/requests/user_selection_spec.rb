@@ -46,7 +46,7 @@ describe "User Selection", :js => true do
       click_link "To:"
 
       @users.each do |user|
-        page.should have_selector("ul.recipient li", text: user.name)
+        page.should have_selector(".recipient", text: user.name)
       end
     end
   end
