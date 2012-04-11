@@ -9,24 +9,15 @@
 
     <div id="page">
 
-      <div id="application">
+      <div id="header"></div>
 
-        <div id="header">
-          <div id="logo">
-            <%= image_tag "amtrak_logo.png" %>
-          </div>
-          <h1>Messenger</h1>
-        </div>
+      <div id="content">
+        <%= yield %>
+      </div>
 
-        <div id="content">
-          <%= yield %>
-        </div>
+      <div id="footer"></div>
 
-        <div id="footer"></div>
-
-        <%= debug(params) if Rails.env.development? %>
-      
-      </div> <!-- end #application -->
+      <%= debug(params) if Rails.env.development? %>
       
     </div> <!-- end #page -->
 

@@ -1,5 +1,5 @@
 // display/refresh the Recipients
-$("table#recipients_table").html("<%= j(render(@my_recipients)) %>");
+$("#send_to_section").html("<%= j(render(@my_recipients)) %>");
 
 // display/refresh the online users, if any
 <% if @online_users.nil? || @online_users.empty? %>

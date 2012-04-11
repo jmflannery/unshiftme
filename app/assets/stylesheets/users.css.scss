@@ -28,75 +28,28 @@
   }
 } // end #user_name_section
 
-#messenger {
-  margin: 0 auto;
-  width: 95.555556%; // 860 / 900
-  background-color: $dark-blue;
-  border: 1px solid #ffffff;
-  @include rounded-corners(8px);  
-  padding: 1.162791%;
-
   #send_to_section {
-    width: 100%;
 
-    #to {
-      width: 19.302326%; // 166 / 860
+    .recipient {
       float: left;
-      font-size: 4em;
-      font-weight: bold;
-      font-family: $fugaz_one; 
-      text-align: right;
+      margin: .1%;
 
-      a {
-        color: $near-white;
-        text-decoration: none;
+      h3 {
+        padding: 8px 10px;
+        @include mac-button-style;
+        @include mac-button-text-style;
 
-        &:hover {
-          background-color: $grey;
-          @include rounded-corners(8px);  
-        }
-      }
-    } // end #to
-
-    #send_to_box {
-      float: right;
-      width: 77.44186%; // 666 / 860
-      height: 80px;
-      background-color: $near-white;
-      overflow: auto;
-      @include rounded-corners(8px);
-      border: 3px solid $blue;
-     
-      table#recipients_table {
-        border-collapse: seperate;
-        border-spacing: 8px;
-        
-        td.recipient_cell {
-          padding: 8px 10px;
-          @include mac-button-style;
+        a {   
           @include mac-button-text-style;
-          
-          .recipient {
-            float: left;
-          } // end .recipient
-            
-          .x_link {
-            float: right;
-            margin-left: 8px;
+          text-decoration: none;
+          display: inline;
 
-            a {   
-              @include mac-button-text-style;
-              text-decoration: none;
-              display: inline;
-
-              &:hover {
-                color: $bright-red;
-              }
-            }
-          } // end .x_link
-        } // end td.recipient_cell
-      } // end table#recipients_table
-    } // end #send_to_box
+          &:hover {
+            color: $bright-red;
+          }
+        }
+      } // end h3
+    } // end .recipient
   } // end #send_to_section
 
   #recipient_selection_section {
@@ -277,4 +230,3 @@
       }
     } // end input[type="submit"]
   } // end #msg_input
-} // end #messenger

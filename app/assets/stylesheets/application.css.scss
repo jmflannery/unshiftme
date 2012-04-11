@@ -12,44 +12,30 @@ img {
 }
 
 body {
-  background-color: $blue;
+  background-color: $grey;
   font-family: sans-serif;
+  width: 100%;
+  height: 100%;
 
   #page {
-    margin: 0 auto;
-    width: 90%;
+    width: 100%;
+    height: 100%;
+    //background-color: black;
 
-    #application {
+    #header {
+      width: 100%;
       margin: 0 auto;
-      width: 93.73%; // 900 / 960 
+    } // end #header
 
-      #header {
-        width: 100%;
+    #content {
+      margin: 0 auto;
+      width: 90%;
+      height: 90%;
+      background-color: black;
+    } // end #content
 
-        #logo {
-          width: 23.111111111%; // 208 / 900
-          margin: 0 auto -1.8%; 
-        } // end #logo 
-
-        h1 {
-          font-size: 4.5em;
-          font-family: $fugaz_one;
-          text-align: center;
-          font-weight: normal;
-          color: $yellow;
-          padding: 0px;
-          margin: 0px;
-          text-shadow: 3px 3px 6px rgba(240, 223, 208, 0.5);
-        }
-      } // end #header
-
-      #content {
-        width: 100%;
-      } // end #content
-
-      #footer {
-        width: 100%;
-      } // end #footer
-    } // end #application 
+    #footer {
+      width: 100%;
+    } // end #footer
   } // end #page
 } // end body

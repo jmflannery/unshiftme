@@ -1,14 +1,7 @@
-<% if recipient_counter == 0 %>
-  <tr>
-<% elsif recipient_counter != 0 && recipient_counter.modulo(4) == 0 %>
-  </tr><tr>
-<% end %>
-
-<td class='recipient_cell'>
-  <div class='recipient'>
+<div class='recipient'>
+  <h3>
     <%= User.find(recipient.recipient_user_id).name %>
-  </div>
-  <div class="x_link">
     <%= link_to("×", recipient, :method => :delete, :remote => true, :format => :js) %>
-  </div>
-</td>
+  </h3>
+</div>
+  
