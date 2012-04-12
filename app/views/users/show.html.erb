@@ -14,14 +14,14 @@
 
 <div id='buttons'>
   <%= link_to("Show Available Users", users_path, :id => "users_button", :remote => true, :format => :js) %>
-  <%= link_to("Upload a File", "#", id: "attach_button") %>
+  <%= link_to("Show File Uploader", "#", id: "attach_button") %>
 </div>
 
 <div id='recipient_selection_section'>
-  <div id='user_select_close'>
-    <%= link_to_function("×", "toggleRecipientSelectionSection()") %>
-  </div>
-  <table id="online_users_list"></table>
+  <!--<div id='user_select_close'>-->
+    <!--<%#= link_to_function("×", "toggleRecipientSelectionSection()") %>-->
+    <!--</div>-->
+  <div id="online_users_list"></div>
 </div>
 
 <div id="msg_input">

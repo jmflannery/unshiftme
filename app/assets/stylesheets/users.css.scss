@@ -73,17 +73,13 @@
 }
 
 #recipient_selection_section {
-  @include rounded-corners(12px);
-  margin-bottom: 8px;
-  color: $blue;
+  padding: 5px;
 
   #user_select_close {
     float: right;
     
     a {
       text-decoration: none;
-      font-size: 28px;
-      color: $dark-text;  
       @include rounded-corners(23px);
 
       &:hover {
@@ -92,17 +88,17 @@
     }
   } // end #user_select_close 
 
-  table#online_users_list {
-    border-collapse: seperate;
-    border-spacing: 8px;
+  #online_users_list {
 
-    td.online_user {
+    color: $near-white;
 
-      padding: 8px 10px;
-      @include mac-button-style;
-      @include mac-button-text-style;
+    .online_user {
+      margin: 5px;
+      float: left;
 
       a {
+        padding: 8px 10px;
+        @include mac-button-style;
         @include mac-button-text-style;
         text-decoration: none;
 
@@ -110,8 +106,8 @@
           color: $blue;
         }
       }
-    } // end td.online_user
-  } // end table#online_users_list
+    } // end .online_user
+  } // end #online_users_list
 } // end #recipient_selection_section
 
 #messages_section {
@@ -195,13 +191,14 @@
 } // end #upload_section 
 
 #msg_input {
+  clear: both;
   width: 100%;
   margin: 5px;
   padding: 5px;
 
   input[type="text"] {
     width: 82.608696%; // 760 / 920
-    padding: .894188%;
+    padding: 6px;
     font-size: 1.4em;
     color: $dark-text;
     border: none;

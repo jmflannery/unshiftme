@@ -1,8 +1,8 @@
 // display/refresh the online users
 <% if @online_users.nil? || @online_users.empty? %>
-  $("table#online_users_list").html("<tr><td>Nobody's at the party!</td></tr>");
+  $("#online_users_list").html("<tr><td>Nobody's at the party!</td></tr>");
 <% else %>
-  $("table#online_users_list").html("<%=j(render(@online_users)) %>");
+  $("#online_users_list").html("<%=j(render(@online_users)) %>");
 <% end %>
 
 // show the recipient selection

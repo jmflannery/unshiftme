@@ -1,9 +1,3 @@
-<% if user_counter == 0 %>
-  <tr>
-<% elsif user_counter != 0 && user_counter.modulo(4) == 0 %>
-  </tr><tr>
-<% end %>
-
-<td class='online_user'>
+<div class='online_user'>
   <%= link_to(user.full_name, recipients_path(user: user), method: :post, remote: true, format: :js) %>
-</td>
+</div>
