@@ -2,21 +2,24 @@
 // Calculate Height
 ////////////////////////////////////////
 
+// calculate_message_section_height
+// resize the '#messages_section' to be 68% of the window
+var calculate_message_section_height = function() {
+  height = $(window).outerHeight(true);
+  calculated_height = (height * 68) / 100;  
+  $('#messages_section').height(calculated_height);
+  $('#messages_section').scrollTo("max");
+};
+
+// resize on page load
 $(function() {
   calculate_message_section_height();
 });
 
+// resize on each browser resize by the user
 $(function() {
   $(window).resize(calculate_message_section_height);
 });
-
-var calculate_message_section_height = function() {
-  height = $(window).outerHeight(true);
-  console.log("height=" + height);
-  calculated_height = (height * 68) / 100;  
-  $('#messages_section').height(calculated_height);
-  $('#messages_section').scrollTo("max");
-}; 
 
 ///////////////////////////////////
 // Recipient User Selection
@@ -25,24 +28,27 @@ var calculate_message_section_height = function() {
 var toggleRecipientSelectionSection = function() {
   // get recipient selection section element
   recipient_selection_section = $('#recipient_selection_section');
-  // toggle visibility
-  recipient_selection_section.toggle();
-  // toggle visibility class
-  recipient_selection_section.toggleClass("visible");
-  // get the height
-  height = recipient_selection_section.outerHeight(true);
-
   // get users button element
   users_button = $('a#users_button');
     
   if (recipient_selection_section.is(":hidden")) {
+    // get the height
+    height = recipient_selection_section.height();
+    // toggle visibility
+    recipient_selection_section.toggle();
+    recipient_selection_section.toggleClass("visible");
     // increase messages section height
-    $('#messages_section').css("height", "+=" + height);
+    $('#messages_section').css("height", "-=" + height);
     // change users button text
     users_button.text("Show Available Users");
   } else {
+    // toggle visibility
+    recipient_selection_section.toggle();
+    recipient_selection_section.toggleClass("visible");
+    // get the height
+    height = recipient_selection_section.height();
     // reduce messages section height
-    $('#messages_section').css("height", "-=" + height);   
+    $('#messages_section').css("height", "+=" + height);   
     // change users button text
     users_button.text("Hide Available Users");
   }
