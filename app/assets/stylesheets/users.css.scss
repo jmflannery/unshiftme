@@ -3,7 +3,7 @@
 @import "style_mixins";
 
 #user_name_section {
-  padding-left: 2.222222%; // 20 / 900
+  //padding-left: 2.222222%; // 20 / 900
 
   ul {
     padding: 0px;
@@ -17,7 +17,7 @@
   li#user_name {
     color: $near-white;
     //text-shadow: 1px 1px 6px rgba(240, 223, 208, 0.5);
-    font-size: 42px;
+    font-size: 2.25em;
     font-weight: bold;
   }
 
@@ -28,205 +28,202 @@
   }
 } // end #user_name_section
 
-  #send_to_section {
+#send_to_section {
+  padding: 5px;
 
-    .recipient {
-      float: left;
-      margin: .1%;
+  .recipient {
+    margin: 5px;
+    float: left;
 
-      h3 {
-        padding: 8px 10px;
-        @include mac-button-style;
+    h3 {
+      padding: 8px 10px;
+      margin: 0px;
+      @include mac-button-style;
+      @include mac-button-text-style;
+
+      a {   
         @include mac-button-text-style;
-
-        a {   
-          @include mac-button-text-style;
-          text-decoration: none;
-          display: inline;
-
-          &:hover {
-            color: $bright-red;
-          }
-        }
-      } // end h3
-    } // end .recipient
-  } // end #send_to_section
-
-  #recipient_selection_section {
-    overflow: auto;
-    background-color: $near-white;  
-    width: 97.906977%; // 842 / 860
-    @include rounded-corners(8px);
-    border: 3px solid $blue;
-    margin-bottom: 8px;
-    padding: .697674%;
-    color: $blue;
-
-    #user_select_close {
-      float: right;
-      
-      a {
         text-decoration: none;
-        font-size: 28px;
-        color: $dark-text;  
-        @include rounded-corners(23px);
+        display: inline;
 
         &:hover {
           color: $bright-red;
         }
       }
-    } // end #user_select_close 
+    } // end h3
+  } // end .recipient
+} // end #send_to_section
 
-    table#online_users_list {
-      border-collapse: seperate;
-      border-spacing: 8px;
-
-      td.online_user {
-
-        padding: 8px 10px;
-        @include mac-button-style;
-        @include mac-button-text-style;
-
-        a {
-          @include mac-button-text-style;
-          text-decoration: none;
-
-          &:hover {
-            color: $blue;
-          }
-        }
-      } // end td.online_user
-    } // end table#online_users_list
-  } // end #recipient_selection_section
-
-  #messages_section {
-    width: 99.302326%; // 854 / 860
-    height: 500px;
-    background-color: $near-white;
-    overflow: auto;
-    color: $blue;
-    @include rounded-corners(8px);
-    border: 3px solid $blue;
-
-    ul#message_list {
-      list-style: none;
-      padding: 0px;
-
-      li.my_message {
-        border: 1px solid $blue;
-        background-image: -webkit-gradient(linear, 0% 31%, 0% 74%, from($dark-blue), to($blue));
-        background-image: -moz-linear-gradient(40% 46% 90deg,$blue, $dark-blue); 
-      }
-
-      li.recieved_message {
-        border: 1px solid $yellow;
-        background-image: -webkit-gradient(linear, 0% 31%, 0% 74%, from($yellow), to($light-yellow));
-        background-image: -moz-linear-gradient(40% 46% 90deg, $light-yellow, $yellow); 
-      }
-
-      li.message {
-        padding: 6px;
-        margin: 4px;
-        font-size: 1.2em;
-        @include rounded-corners(8px);
-      
-        ul.inner_message {
-          padding: 0px;
-
-          li {
-            list-style: none;
-          }
-          
-          p {
-            margin: 0px;
-          }
-
-          .message_sender {
-            color: #ffffff;
-            float: left;
-          } // end .message_sender 
-          
-          .message_content {
-            color: #000000;
-            clear: both;
-          } // end .message_content
-            
-          .message_timestamp {
-            color: #ffffff;
-            float: right;
-          } // end .message_timestamp 
-        } // end ul.inner_message
-      } // end li.message
-    } // end ul#message_list
-  } // end #messages_section
+#buttons {
+  clear: both;
+  font-size: 0.875em;
+  padding: 6px;
   
-  #upload_section {
-    display: none;
-    //background-color: $near-white;
-    @include rounded-corners(8px);
-    width: 100%;
-    height: 40px;
-    margin: 5px;
+  a {   
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.7); 
+    @include mac-button-style;
+    @include mac-button-text-style;
+    padding: 2px;
 
-    input[type="file"] {
-      background-color: $near-white;
-      @include rounded-corners(6px);
-      margin: 5px;
-      color: $blue;
-      padding: 5px 8px;
-    } // end input[type="file"]
+    &:hover {
+      color: $bright-red;
+    }
+  } 
+}
 
-    input[type="submit"] {
-      padding: 8px 15px;
-      @include mac-button-style;
-      @include mac-button-text-style;
-    } // end input[type="submit"]
-  } // end #upload_section 
+#recipient_selection_section {
+  @include rounded-corners(12px);
+  margin-bottom: 8px;
+  color: $blue;
 
-  #msg_input {
-    width: 100%;
-    margin: .9302326%;
-
-    #upload_button {
-      width: 4.883721%;
-      padding: .7%;
-      float: left;
-
-      a#attach_button {
-        text-decoration: none;
-       
-        &:hover, &:focus {
-          text-shadow: 0 2px 2px rgba(240, 223, 208, 0.5);
-          //@include box-shadow(0px, 1px, 6px, 2px, 0, 0, 0, 0.5);
-        } 
-      } // end a#attach_button
-    } // end #upload_button
-
-    input[type="text"] {
-      width: 78.023256%;
-      padding: .894188%;
-      font-size: 1.4em;
-      color: $dark-text;
-      border: none;
-      background-color: $near-white;
-      @include rounded-corners(6px);
+  #user_select_close {
+    float: right;
     
-      &:hover, &:focus {
-        border: none;
-        outline: none;
-        @include box-shadow(0px, 0px, 12px, 2px, 240, 223, 208, 0.5);      
-      }
-    } // end input[type="text"]
+    a {
+      text-decoration: none;
+      font-size: 28px;
+      color: $dark-text;  
+      @include rounded-corners(23px);
 
-    input[type="submit"] {
-      width: 11.627907%; // 100 / 860
-      padding: .8% .15%;
+      &:hover {
+        color: $bright-red;
+      }
+    }
+  } // end #user_select_close 
+
+  table#online_users_list {
+    border-collapse: seperate;
+    border-spacing: 8px;
+
+    td.online_user {
+
+      padding: 8px 10px;
       @include mac-button-style;
       @include mac-button-text-style;
 
-      &:hover, &:focus {
-        text-shadow: 0 2px 2px rgba(240, 223, 208, 0.5);
-        @include box-shadow(0px, 1px, 6px, 2px, 0, 0, 0, 0.5);
+      a {
+        @include mac-button-text-style;
+        text-decoration: none;
+
+        &:hover {
+          color: $blue;
+        }
       }
-    } // end input[type="submit"]
-  } // end #msg_input
+    } // end td.online_user
+  } // end table#online_users_list
+} // end #recipient_selection_section
+
+#messages_section {
+  margin: 0 auto;
+  width: 99.302326%; // 854 / 860
+  background-color: #000000;
+  overflow: auto;
+  color: $blue;
+  @include rounded-corners(8px);
+  border: 1px solid $near-white;
+
+  ul#message_list {
+    list-style: none;
+    padding: 0px;
+
+    li.my_message {
+      border: 1px solid $near-white;
+      background-color: $blackish;
+      color: $near-white;
+    }
+
+    li.recieved_message {
+      background-color: $near-white;
+      color: $blackish;
+    }
+
+    li.message {
+      padding: 6px;
+      margin: 4px;
+      font-size: 1.2em;
+      @include rounded-corners(8px);
+    
+      ul.inner_message {
+        padding: 0px;
+
+        li {
+          list-style: none;
+        }
+        
+        p {
+          margin: 0px;
+        }
+
+        .message_sender {
+          float: left;
+        } // end .message_sender 
+        
+        .message_content {
+          clear: both;
+        } // end .message_content
+          
+        .message_timestamp {
+          float: right;
+        } // end .message_timestamp 
+      } // end ul.inner_message
+    } // end li.message
+  } // end ul#message_list
+} // end #messages_section
+  
+#upload_section {
+  display: none;
+  //background-color: $near-white;
+  @include rounded-corners(8px);
+  width: 100%;
+  height: 40px;
+  margin: 5px;
+
+  input[type="file"] {
+    background-color: $near-white;
+    @include rounded-corners(6px);
+    margin: 5px;
+    color: $blue;
+    padding: 5px 8px;
+  } // end input[type="file"]
+
+  input[type="submit"] {
+    padding: 8px 15px;
+    @include mac-button-style;
+    @include mac-button-text-style;
+  } // end input[type="submit"]
+} // end #upload_section 
+
+#msg_input {
+  width: 100%;
+  margin: 5px;
+  padding: 5px;
+
+  input[type="text"] {
+    width: 82.608696%; // 760 / 920
+    padding: .894188%;
+    font-size: 1.4em;
+    color: $dark-text;
+    border: none;
+    background-color: $near-white;
+    @include rounded-corners(6px);
+  
+    &:hover, &:focus {
+      border: none;
+      outline: none;
+      @include box-shadow(0px, 0px, 12px, 2px, 240, 223, 208, 0.5);      
+    }
+  } // end input[type="text"]
+
+  input[type="submit"] {
+    width: 10.869565%; // 100 / 920
+    padding: .8% .15%;
+    @include mac-button-style;
+    @include mac-button-text-style;
+
+    &:hover, &:focus {
+      text-shadow: 0 2px 2px rgba(240, 223, 208, 0.5);
+      @include box-shadow(0px, 1px, 6px, 2px, 0, 0, 0, 0.5);
+    }
+  } // end input[type="submit"]
+} // end #msg_input
