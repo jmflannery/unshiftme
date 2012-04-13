@@ -3,8 +3,14 @@
 <% unless recipients.empty? %>
   <p>Messaging: 
   <% recipients.each do |recipient| %>
+    <% if count == (size - 1) and size > 1 %>
+      and
+    <% elsif count > 0 %>
+      ,
+    <% end %>
     <% name = User.find(recipient.recipient_user_id).name %>
     <%= link_to(name, recipient, :method => :delete, :remote => true, :format => :js) %>
+    <% count += 1 %>
   <% end %>
   </p>
 <% else %>
