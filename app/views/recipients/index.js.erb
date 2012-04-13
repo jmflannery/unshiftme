@@ -2,7 +2,9 @@
 $("#send_to_section").html("<%= j(render(partial: 'recipients', object: @my_recipients)) %>");
 
 // display/refresh the online users, if any
-$("#recipient_selection_section").html("<%=j(render(partial: 'users/users', object: @online_users)) %>");
+if ($("a#users_button").text() != "Show Available Users") {
+  $("#recipient_selection_section").html("<%=j(render(partial: 'users/users', object: @online_users)) %>");
+}
 
 // register click callback for hide available users button
 $('#hide_button').click(hide_available_users);

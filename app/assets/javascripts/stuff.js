@@ -8,7 +8,7 @@ var calculate_message_section_height = function() {
   height = $(window).outerHeight(true);
   calculated_height = (height * 68) / 100;  
   $('#messages_section').height(calculated_height);
-  $('#messages_section').scrollTo("max");
+  //$('#messages_section').scrollTo("max");
 };
 
 // resize on page load
@@ -33,11 +33,11 @@ var hide_available_users = function() {
 // show the most recent message
 ///////////////////////////////////Available: Nobody! ~Hide~
 
-$(function() {
-  if ($("#messages_section").length > 0) {  
-    $('#messages_section').scrollTo("max");
-  }
-});
+//$(function() {
+//  if ($("#messages_section").length > 0) {  
+//    $('#messages_section').scrollTo("max");
+//  }
+//});
 
 ///////////////////////////////////
 // Upload Section
@@ -130,16 +130,16 @@ $(function() {
     );
 
     // scroll to last message 
-    if (data.chat_message) {
-      $('#messages_section').scrollTo("max");
-    }
+    //if (data.chat_message) {
+    //  $('#messages_section').scrollTo("max");
+    //}
   });
 });
 
 var display_new_message = function(message_html) {
-  message_list_item = $("li.message:last-child");
+  message_list_item = $("li.message:first-child");
   if (message_list_item[0]) {
-    message_list_item.after(message_html);
+    message_list_item.before(message_html);
   } else {
     $("ul#message_list").html(message_html);
   }

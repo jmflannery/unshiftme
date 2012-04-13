@@ -8,6 +8,8 @@ class Message < ActiveRecord::Base
   validates :content, :presence => true, :length => { :maximum => 140 }
   validates :user_id, :presence => true
 
+  default_scope order("created_at DESC")
+
   scope :before, lambda { |time| where("created_at <= ? and created_at >= ?", time, time - 1.day) }
 
   def set_recievers
