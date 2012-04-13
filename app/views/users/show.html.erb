@@ -17,7 +17,7 @@
 </div>
 
 <div id='upload_button'>
-  <h3><%= link_to("Show File Uploader", "#", id: "attach_button") %></h3>
+  <%= link_to("Show File Uploader", "#", id: "attach_button") %>
 </div>
 
 <div id="msg_input">
@@ -30,17 +30,19 @@
   <% end %>
 </div>
 
-<div id="messages_section">
-  <ul id="message_list">
-    <%= render(@messages) %>
-  </ul>
-</div>
-  
 <div id="upload_section">
   <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
     <%= f.file_field("payload") %>
     <%= f.submit "Upload" %>
   <% end %>  
 </div>
+
+<div id="messages_section">
+  <ul id="message_list">
+    <%= render(@messages) %>
+  </ul>
+</div>
+  
+
 
 <%= subscribe_to "/messages/#{@user.name}" %> 

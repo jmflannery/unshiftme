@@ -29,18 +29,31 @@
 } // end #user_name_section
 
 #send_to_section {
-  //margin: 5px;
-  //padding: 5px;
+  text-align: left;
   color: $near-white;
    
   p {
     margin: 0px;
+    padding: 2px 3px;
+  }
+   
+  a {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    font-weight: bold;
+    padding: 2px 3px;
+    margin: 0px;
+
+    &:hover, &:focus {
+      color: $red;
+      background: rgba(240, 8, 7, 0.5); 
+      @include rounded-corners(4px);
+    }
   }
 } // end #send_to_section
 
 #recipient_selection_section {
-  //margin: 5px;
-  //padding: 5px;
   color: $near-white;
 
   p {
@@ -48,15 +61,50 @@
   }
   
   a {
-    //text-decoration: none;
-    color: $near-white;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    font-weight: bold;
+    padding: 2px 3px;
+    margin: 0px;    
+
+    &:hover, &:focus {
+      color: $green;
+      background: rgba(88, 143, 39, 0.5); 
+      @include rounded-corners(4px);
+    }
   }
 
   #hide_button {
-    color: $bright-red;
+    color: $red;
     cursor: pointer;
+    font-weight: bold;
+    padding: 2px 3px;
+
+    &:hover, &:focus {
+      color: $red;
+      background: rgba(240, 8, 7, 0.5); 
+      @include rounded-corners(4px);
+    }  
   }
 } // end #recipient_selection_section
+
+#upload_button {
+  a {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+    font-weight: bold;
+    padding: 2px 3px;
+    margin: 0px;
+
+    &:hover, &:focus {
+      color: $blue;
+      background: rgba(0, 76, 152, 0.5); 
+      @include rounded-corners(4px);
+    }
+  } 
+}
 
 #messages_section {
   margin: 0 auto;
