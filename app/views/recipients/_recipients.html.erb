@@ -1,0 +1,12 @@
+<% count = 0 %>
+<% size = recipients.size %>
+<% unless recipients.empty? %>
+  <p>Messaging: 
+  <% recipients.each do |recipient| %>
+    <% name = User.find(recipient.recipient_user_id).name %>
+    <%= link_to(name, recipient, :method => :delete, :remote => true, :format => :js) %>
+  <% end %>
+  </p>
+<% else %>
+  <p>Messaging Nobody.</p>
+<% end %>

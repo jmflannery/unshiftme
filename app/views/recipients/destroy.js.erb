@@ -1,9 +1,8 @@
 // display/refresh the recipients
-$("#send_to_section").html("<%= j(render(@my_recipients)) %>");
+$("#send_to_section").html("<%= j(render(partial: 'recipients', object: @my_recipients)) %>");
 
 // display/refresh the online users, if any
-<% if @online_users.nil? || @online_users.empty? %>
-  $("#online_users_list").html("<div><h3>Nobody's at the party!</h3></div>");
-<% else %>
-  $("#online_users_list").html("<%=j(render(@online_users)) %>");
-<% end %>
+$("#recipient_selection_section").html("<%=j(render(partial: 'users/users', object: @online_users)) %>");
+
+// register click callback for hide available users button
+$('#hide_button').click(hide_available_users);

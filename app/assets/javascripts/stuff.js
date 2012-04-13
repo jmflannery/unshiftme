@@ -21,48 +21,17 @@ $(function() {
   $(window).resize(calculate_message_section_height);
 });
 
-///////////////////////////////////
-// Recipient User Selection
-///////////////////////////////////
+////////////////////////////////////////
+// hide_available_users()
+////////////////////////////////////////
 
-var toggleRecipientSelectionSection = function() {
-  // get recipient selection section element
-  recipient_selection_section = $('#recipient_selection_section');
-  // get users button element
-  users_button = $('a#users_button');
-    
-  if (recipient_selection_section.is(":hidden")) {
-    // get the height
-    height = recipient_selection_section.height();
-    // toggle visibility
-    recipient_selection_section.toggle();
-    recipient_selection_section.toggleClass("visible");
-    // increase messages section height
-    $('#messages_section').css("height", "-=" + height);
-    // change users button text
-    users_button.text("Show Available Users");
-  } else {
-    // toggle visibility
-    recipient_selection_section.toggle();
-    recipient_selection_section.toggleClass("visible");
-    // get the height
-    height = recipient_selection_section.height();
-    // reduce messages section height
-    $('#messages_section').css("height", "+=" + height);   
-    // change users button text
-    users_button.text("Hide Available Users");
-  }
-
-  $('#messages_section').scrollTo("max");
+var hide_available_users = function() {
+  $("#recipient_selection_section").html("<a href='/users' data-remote='true' format='js' id='users_button'>Show Available Users</a>");
 };
-
-$(function() {
-  $('#recipient_selection_section').hide();
-});
 
 ///////////////////////////////////
 // show the most recent message
-///////////////////////////////////
+///////////////////////////////////Available: Nobody! ~Hide~
 
 $(function() {
   if ($("#messages_section").length > 0) {  

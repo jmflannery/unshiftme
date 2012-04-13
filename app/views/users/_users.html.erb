@@ -1,0 +1,11 @@
+<% count = 0 %>
+<% size = users.size %>
+<% unless users.empty? %>
+  <p>Available Users: 
+  <% users.each do |user| %>
+    <%= link_to(user.full_name, recipients_path(user: user), method: :post, remote: true, format: :js) %>
+  <% end %>
+  <span id='hide_button'> Hide</span></p>
+<% else %>
+  <p>Available Users: Nobody!<span id='hide_button'> Hide</span></p>
+<% end %>

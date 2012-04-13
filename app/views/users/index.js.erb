@@ -1,9 +1,5 @@
 // display/refresh the online users
-<% if @online_users.nil? || @online_users.empty? %>
-  $("#online_users_list").html("<tr><td>Nobody's at the party!</td></tr>");
-<% else %>
-  $("#online_users_list").html("<%=j(render(@online_users)) %>");
-<% end %>
+$("#recipient_selection_section").html("<%=j(render(partial: 'users', object: @online_users)) %>");
 
-// show the recipient selection
-toggleRecipientSelectionSection();
+// register click callback for hide available users button
+$('#hide_button').click(hide_available_users );

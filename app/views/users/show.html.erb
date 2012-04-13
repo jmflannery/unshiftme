@@ -9,19 +9,15 @@
 </div>
 
 <div id='send_to_section'>
-  <%= render(@my_recipients) %>
-</div>
-
-<div id='buttons'>
-  <%= link_to("Show Available Users", users_path, :id => "users_button", :remote => true, :format => :js) %>
-  <%= link_to("Show File Uploader", "#", id: "attach_button") %>
+  <%= render(partial: 'recipients/recipients', object: @my_recipients) %>
 </div>
 
 <div id='recipient_selection_section'>
-  <!--<div id='user_select_close'>-->
-    <!--<%#= link_to_function("×", "toggleRecipientSelectionSection()") %>-->
-    <!--</div>-->
-  <div id="online_users_list"></div>
+  <%= link_to("Show Available Users", users_path, :id => "users_button", :remote => true, :format => :js) %>
+</div>
+
+<div id='upload_button'>
+  <h3><%= link_to("Show File Uploader", "#", id: "attach_button") %></h3>
 </div>
 
 <div id="msg_input">

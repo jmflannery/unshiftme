@@ -29,85 +29,33 @@
 } // end #user_name_section
 
 #send_to_section {
-  padding: 5px;
-
-  .recipient {
-    margin: 5px;
-    float: left;
-
-    h3 {
-      padding: 8px 10px;
-      margin: 0px;
-      @include mac-button-style;
-      @include mac-button-text-style;
-
-      a {   
-        @include mac-button-text-style;
-        text-decoration: none;
-        display: inline;
-
-        &:hover {
-          color: $bright-red;
-        }
-      }
-    } // end h3
-  } // end .recipient
+  //margin: 5px;
+  //padding: 5px;
+  color: $near-white;
+   
+  p {
+    margin: 0px;
+  }
 } // end #send_to_section
 
-#buttons {
-  clear: both;
-  font-size: 0.875em;
-  padding: 6px;
-  
-  a {   
-    text-decoration: none;
-    color: rgba(255, 255, 255, 0.7); 
-    @include mac-button-style;
-    @include mac-button-text-style;
-    padding: 2px;
-
-    &:hover {
-      color: $bright-red;
-    }
-  } 
-}
-
 #recipient_selection_section {
-  padding: 5px;
+  //margin: 5px;
+  //padding: 5px;
+  color: $near-white;
 
-  #user_select_close {
-    float: right;
-    
-    a {
-      text-decoration: none;
-      @include rounded-corners(23px);
-
-      &:hover {
-        color: $bright-red;
-      }
-    }
-  } // end #user_select_close 
-
-  #online_users_list {
-
+  p {
+    margin: 0px;
+  }
+  
+  a {
+    //text-decoration: none;
     color: $near-white;
+  }
 
-    .online_user {
-      margin: 5px;
-      float: left;
-
-      a {
-        padding: 8px 10px;
-        @include mac-button-style;
-        @include mac-button-text-style;
-        text-decoration: none;
-
-        &:hover {
-          color: $blue;
-        }
-      }
-    } // end .online_user
-  } // end #online_users_list
+  #hide_button {
+    color: $bright-red;
+    cursor: pointer;
+  }
 } // end #recipient_selection_section
 
 #messages_section {
