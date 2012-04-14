@@ -15,11 +15,11 @@ describe "CreateMessages" do
       click_button "Send"
     end
     
-    it "the message should appear on the senders screen", :js => true do
-      page.should have_content(@message)
+    it "the message should appear on the senders screen", js: true do
+      page.should have_selector(".message", text: @message)
     end
     
-    it "should clear the message input text field", :js => true do
+    it "should clear the message input text field", js: true do
       find_field("message_content").value.should be_blank
     end
   end
