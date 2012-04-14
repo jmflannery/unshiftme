@@ -4,11 +4,12 @@
   <p>Available Users: 
   <% users.each do |user| %>
     <% if count == (size - 1) and size > 1 %>
-      and
+      <span>and</span>
     <% elsif count > 0 %>
-      ,
+      <span>,</span>
     <% end %>
-    <%= link_to(user.full_name, recipients_path(user: user), method: :post, remote: true, format: :js) %>
+    <% options = { method: :post, remote: true, format: :js, class: "available_user" } %>
+    <%= link_to(user.full_name, recipients_path(user: user), options) %>
     <% count += 1 %>
   <% end %>
   <span id='hide_button'> Hide</span></p>

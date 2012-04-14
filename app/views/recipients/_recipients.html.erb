@@ -9,7 +9,8 @@
       <span>,</span>
     <% end %>
     <% name = User.find(recipient.recipient_user_id).name %>
-    <%= link_to(name, recipient, :method => :delete, :remote => true, :format => :js) %>
+    <% options = { method: :delete, remote: true, format: :js, class: "recipient_user" } %>
+    <%= link_to(name, recipient, options) %>
     <% count += 1 %>
   <% end %>
   </p>

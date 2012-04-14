@@ -65,7 +65,7 @@ describe "Users" do
         click_button "Sign In"
         page.should have_content(user.full_name)
         click_link "Sign out"
-        page.should have_content("Messenger")
+        page.should have_content("Sign In")
         #controller.should_not be_signed_in
       end
     end
