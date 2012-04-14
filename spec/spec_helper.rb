@@ -41,7 +41,25 @@ RSpec.configure do |config|
     user.save(:validate => false)
     user
   end
+
+  def request_sign_in(user)
+    visit signin_path
+    fill_in "Name", :with => user.name
+    fill_in "Password", :with  => user.password
+    click_button "Sign In"
+  end
+
+  def request_send_message(message)
+    fill_in "message_content", :with => message
+    click_button "Send"
+  end
  
+  def within_browser(name)
+    Capybara.session_name = name
+
+    yield
+  end 
+
   # Configuration for databse cleaner
   config.before(:each) do
     DatabaseCleaner.strategy = :truncation
