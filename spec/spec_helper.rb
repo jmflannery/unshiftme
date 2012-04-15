@@ -47,6 +47,7 @@ RSpec.configure do |config|
     fill_in "Name", :with => user.name
     fill_in "Password", :with  => user.password
     click_button "Sign In"
+    user
   end
 
   def request_send_message(message)
