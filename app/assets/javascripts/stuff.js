@@ -26,7 +26,7 @@ $(function() {
 ////////////////////////////////////////
 
 var hide_available_users = function() {
-  $("#recipient_selection_section").html("<a href='/users' data-remote='true' format='js' id='users_button'>Show Available Users</a>");
+  $("#recipient_selection_section").html("<a href='/users' data-remote='true' format='js' id='users_button'>Add Available Users</a>");
 };
 
 ///////////////////////////////////

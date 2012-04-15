@@ -23,7 +23,7 @@ group :assets do
 end
 
 group :development, :test do
-  gem 'rspec-rails', "~> 2.8.0"
+  gem 'rspec-rails'
   gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
   #gem 'capybara', "~> 1.1.2"
   #gem 'capybara-webkit'
