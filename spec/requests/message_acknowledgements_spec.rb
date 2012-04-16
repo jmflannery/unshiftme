@@ -3,6 +3,7 @@ require 'spec_helper'
 feature "Message Acknowledgement", js: true do
   background do
     @message = "this be my message, dummy"
+    @add_users_button_text = "Add Available Users"
 
     within_browser(:reciever) do
       @reciever = request_sign_in(Factory(:user, name: "Bill", full_name: "Bill Stump"))
@@ -11,7 +12,7 @@ feature "Message Acknowledgement", js: true do
     within_browser(:sender) do
       @sender = request_sign_in(Factory(:user, name: "Jack", full_name: "Jack Sprat"))
       within("#recipient_selection_section") do
-        click_link "Add Available Users"
+        click_link @add_users_button_text
         click_link @reciever.full_name
       end
       request_send_message(@message)

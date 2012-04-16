@@ -4,6 +4,7 @@ describe "User Selection", :js => true do
 
   before(:each) do
     @title = "Available Users"
+    @add_users_button_text = "Add Available Users"
     @user = Factory(:user)
     visit signin_path
     fill_in "Name", :with => @user.name
@@ -23,14 +24,14 @@ describe "User Selection", :js => true do
     end
 
     it "should appear with correct title and disappear when closed" do
-      click_link "Show Available Users"
+      click_link @add_users_button_text
       page.should have_content("Available Users:")
       find("#hide_button").click
       page.should_not have_content("Available Users:")
     end
 
     it "should display all online users, except for the current user" do
-      click_link "Show Available Users"
+      click_link @add_users_button_text
       @users.each do |u|
         page.should have_selector(".available_user", text: u.full_name)
       end
@@ -38,7 +39,7 @@ describe "User Selection", :js => true do
     end
 
     it "should display all selected recipients on the user's page" do
-      click_link "Show Available Users"
+      click_link @add_users_button_text
       @users.each do |user|
         click_link user.full_name
       end
@@ -54,7 +55,7 @@ describe "User Selection", :js => true do
   describe "with no other users online" do
 
     it "should display a message if there are no online users" do
-      click_link "Show Available Users"
+      click_link @add_users_button_text
       page.should have_content("Available Users: Nobody!")
     end
   end

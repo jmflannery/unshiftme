@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe "Messaging" do
+
+  before(:each) do
+    @add_users_button_text = "Add Available Users"
+  end
   
   describe "sending a message" do
     
@@ -31,7 +35,7 @@ describe "Messaging" do
       end
     end
 
-    describe "in the recievers browser" do
+    describe "in the message recievers browser" do
 
       before(:each) do
         reciever = Factory(:user, name: "Jack", full_name: "Jack Sprat")
@@ -43,7 +47,7 @@ describe "Messaging" do
         within_browser(:sender) do
           request_sign_in(@sender)
           within("#recipient_selection_section") do
-            click_link "Show Available Users"
+            click_link @add_users_button_text
             click_link reciever.full_name
           end
           request_send_message(@message)
