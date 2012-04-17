@@ -35,10 +35,32 @@ class Message < ActiveRecord::Base
 
       if message.recievers
         recievers = message.recievers.split(",")
-        message.view_class = "recieved_message"
-        messages << message if recievers.include?(user.id.to_s)
+
+        if recievers.include?(user.id.to_s)
+          messages << message
+
+          if message.read_by
+            readers = message.read_by.split(",")
+            if readers.include?(user.id.to_s)
+              message.view_class = "recieved_message read"
+            else
+              message.view_class = "recieved_message unread"
+            end
+          else
+            message.view_class = "recieved_message unread"
+          end
+        end
       end
     end
     messages
+  end
+
+  def mark_read_by(user)
+    if self.read_by
+      self.read_by += ",#{user.id.to_s}" unless self.read_by.split(",").include?(user.id.to_s)
+    else
+      self.read_by = user.id.to_s
+    end
+    save
   end
 end

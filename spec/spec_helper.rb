@@ -29,7 +29,7 @@ RSpec.configure do |config|
   
   #Capybara.default_wait_time = 2
   #Capybara.javascript_driver = :webkit 
-  #Capybara.default_driver = Capybara.javascript_driver = :chrome
+  #Capybara.default_driver = :chrome
 
   def test_sign_in(user)
     controller.sign_in(user)

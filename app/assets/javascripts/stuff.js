@@ -30,6 +30,26 @@ var hide_available_users = function() {
 };
 
 ///////////////////////////////////
+// acknowledge (read) message
+///////////////////////////////////
+
+// TODO:
+var read_message = function(message_id) {
+  $.post(
+    "/message?message_id=",
+    function(response) {
+      response;
+    }
+  );
+};
+
+$(function() {
+
+  //$("li.message.recieved_message").click(read_message);
+});
+
+
+///////////////////////////////////
 // show the most recent message
 ///////////////////////////////////Available: Nobody! ~Hide~
 
@@ -94,7 +114,7 @@ $(function() {
     $("input#message_content").val("");
 
     // create the new message html 
-    html ="<li class='message recieved_message'>" +
+    html ="<li class='message recieved_message " + data.message_id + "'>" +
             "<ul class='inner_message'>" +
               "<li>" +
                 "<div class='message_sender'>" +

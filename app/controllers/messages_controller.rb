@@ -11,12 +11,20 @@ class MessagesController < ApplicationController
         if User.exists?(recipient.recipient_user_id)
           recip_user = User.find(recipient.recipient_user_id) 
           recip_user.add_recipient(@user.id) 
-          data = { sender: @user.name, chat_message: @message.content, timestamp: @message.created_at.strftime("%a %b %e %Y %T") }
+          data = { message_id: @message.id, sender: @user.name, chat_message: @message.content, timestamp: @message.created_at.strftime("%a %b %e %Y %T") }
           PrivatePub.publish_to("/messages/#{recip_user.name}", data)
         end
       end
     else
       render 'sessions/new'
     end
+  end
+  
+  def update
+    @message_id = params[:message_id]
+    if Message.exists?(@message_id)
+      @message = Message.find(@message_id)
+      @message.mark_read_by(current_user)
+    end 
   end
 end

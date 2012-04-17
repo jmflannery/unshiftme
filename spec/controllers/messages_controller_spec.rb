@@ -9,7 +9,14 @@ describe MessagesController do
       post :create, :message => { :content => "what the??" }
       response.should redirect_to(signin_path)
     end
- end
+
+    it "should deny access to 'update' for non-signed in users" do
+      user = Factory(:user)
+      message = user.messages.create(:content => "i like turtles")
+      post :update, message_id: message.id, format: :jd, remote: true
+      response.should redirect_to(signin_path)
+    end
+  end
   
   describe "POST 'create'" do
 
@@ -49,6 +56,26 @@ describe MessagesController do
         recip_user.recipients.size.should == 1
         recip_user.recipients[0].recipient_user_id.should == @user.id
       end
+    end
+  end
+
+  describe "POST 'update'" do
+
+    before(:each) do
+      @cur_user = test_sign_in(Factory(:user))
+      @sender = Factory(:user)
+      @message = @sender.messages.create!(:content => "i like turtles")
+    end
+
+    it "is successful" do
+      post :update, message_id: @message.id, format: :jd, remote: true
+      response.should be_success
+    end
+
+    it "marks the message read by the current user" do
+      post :update, message_id: @message.id, format: :jd, remote: true
+      @message.reload
+      @message.read_by.should == @cur_user.id.to_s
     end
   end
 end
