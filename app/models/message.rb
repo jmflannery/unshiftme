@@ -28,7 +28,7 @@ class Message < ActiveRecord::Base
     messages = []
     self.before(time).each do |message|
       if message.user_id == user.id
-        message.view_class = "my_message"
+        message.view_class = "message #{message.id} owner"
         messages << message
         next
       end
@@ -40,14 +40,13 @@ class Message < ActiveRecord::Base
           messages << message
 
           if message.read_by
-            readers = message.read_by.split(",")
-            if readers.include?(user.id.to_s)
-              message.view_class = "recieved_message read"
+            if message.read_by.split(",").include?(user.id.to_s)
+              message.view_class = "message #{message.id} recieved read"
             else
-              message.view_class = "recieved_message unread"
+              message.view_class = "message #{message.id} recieved unread"
             end
           else
-            message.view_class = "recieved_message unread"
+            message.view_class = "message #{message.id} recieved unread"
           end
         end
       end

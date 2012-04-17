@@ -111,27 +111,25 @@ describe Message do
         recipient_messages.should_not include @old_message
       end
 
-      it "sets message view_class attribute to 'my_message' for each message created by the given user" do
-        recipient_messages = Message.before_for(@recipient_user, Time.now)
-        recipient_messages.each do |message|
-          if message.user_id == @recipient_user.id
-            message.view_class.should == "my_message"
-          end
-        end 
+      it "sets message view_class attribute to 'owner' for each message created by the given user" do
+        messages = Message.before_for(@recipient_user, Time.now)
+        messages.should include @recipient_user_message           
+        index = messages.index(@recipient_user_message) 
+        messages[index].view_class.should == "message #{messages[index].id} owner"
       end
 
       it "sets message view_class attribute to 'recieved_message read' for each read message recieved by the given user" do
         messages = Message.before_for(@recipient_user, Time.now)
         messages.should include @read_message
         index = messages.index(@read_message) 
-        messages[index].view_class.should == "recieved_message read"
+        messages[index].view_class.should == "message #{messages[index].id} recieved read"
       end
 
       it "sets message view_class attribute to 'recieved_message unread' for each unread message recieved by the given user" do
         messages = Message.before_for(@recipient_user, Time.now)
         messages.should include @message
         index = messages.index(@message) 
-        messages[index].view_class.should == "recieved_message unread"
+        messages[index].view_class.should == "message #{messages[index].id} recieved unread"
       end
     end 
 

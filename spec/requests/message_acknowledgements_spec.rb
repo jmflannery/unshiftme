@@ -22,8 +22,8 @@ feature "Message Acknowledgement", js: true do
   scenario "Acknowleding a recieved message" do
     within_browser(:reciever) do
       within "#messages_section" do
-        page.should have_css("li.message.recieved_message")
-        #find("li.message.recieved_message").click
+        #page.should have_css("li.message.recieved")
+        find("li.message.recieved").click
       end
     end
 

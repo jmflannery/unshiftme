@@ -24,7 +24,7 @@ describe "Messaging" do
 
       it "sends the message to the sender's browser", js: true do
         within_browser(:sender) do
-          page.should have_selector("li.message.my_message", text: @message)
+          page.should have_selector("li.message.owner", text: @message)
         end
       end
 
@@ -57,7 +57,7 @@ describe "Messaging" do
       it "sends the message to the sender's recipient's browser", js: true do
         within_browser(:reciever) do
           within "#messages_section" do
-            page.should have_selector("li.message.recieved_message", text: @message)
+            page.should have_selector("li.message.recieved", text: @message)
           end
         end
       end

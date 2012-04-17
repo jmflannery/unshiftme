@@ -68,12 +68,12 @@ describe MessagesController do
     end
 
     it "is successful" do
-      post :update, message_id: @message.id, format: :jd, remote: true
+      post :update, id: @message.id, format: :jd, remote: true
       response.should be_success
     end
 
     it "marks the message read by the current user" do
-      post :update, message_id: @message.id, format: :jd, remote: true
+      post :update, id: @message.id, format: :jd, remote: true
       @message.reload
       @message.read_by.should == @cur_user.id.to_s
     end

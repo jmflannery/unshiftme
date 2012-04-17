@@ -1,3 +1,13 @@
+// Returns the array of class names
+$.fn.getClassNames = function() {
+  var name = this.attr("className");
+  if (name != null) {
+    return name.split(" ");
+  } else {
+    return [];
+  }
+};
+
 ////////////////////////////////////////
 // Calculate Height
 ////////////////////////////////////////
@@ -35,17 +45,30 @@ var hide_available_users = function() {
 
 // TODO:
 var read_message = function(message_id) {
-  $.post(
-    "/message?message_id=",
-    function(response) {
-      response;
+  var classes = $(this).attr("class").split(" ");
+  var i;
+  var message_id = 0;
+  for (i = 0; i < classes.length; i += 1) {
+    var clas = parseInt(classes[i]);
+    if (!isNaN(clas)) {
+      message_id = clas;
+      console.log(clas);
     }
-  );
+  }
+
+  if (message_id) {
+    $.ajax( {
+      url: "/messages/" + message_id,
+      type: 'PUT',
+      success: function(response) {
+        response;
+      }
+    });
+  }
 };
 
 $(function() {
-
-  //$("li.message.recieved_message").click(read_message);
+  $("li.message.recieved.unread").click(read_message);
 });
 
 
@@ -114,7 +137,7 @@ $(function() {
     $("input#message_content").val("");
 
     // create the new message html 
-    html ="<li class='message recieved_message " + data.message_id + "'>" +
+    html ="<li class='" + data.view_class + "'>" +
             "<ul class='inner_message'>" +
               "<li>" +
                 "<div class='message_sender'>" +
@@ -140,6 +163,9 @@ $(function() {
     
     // display the new message 
     display_new_message(html);
+
+    // add click handler to new message element
+    $("li.message.recieved.unread").click(read_message);
 
     // display/refresh the recipients and online users
     $.get(

@@ -119,14 +119,21 @@
     list-style: none;
     padding: 0px;
 
-    li.my_message {
+    li.owner {
       border: 1px solid $near-white;
       background-color: $blackish;
       color: $near-white;
     }
 
-    li.recieved_message {
+    li.recieved.unread {
       background-color: $near-white;
+      color: $blackish;
+      cursor: pointer;
+    }
+
+    li.recieved.read {
+      border: 1px solid $near-white;
+      background-color: $grey;
       color: $blackish;
     }
 

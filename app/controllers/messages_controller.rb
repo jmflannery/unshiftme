@@ -5,13 +5,16 @@ class MessagesController < ApplicationController
     @user = current_user
     @message = @user.messages.build(params[:message])
     if @message.save
-      @message.view_class = "my_message"
+      @message.view_class = "message #{@message.id} owner"
       @message.set_recievers
       @user.recipients.each do |recipient|
         if User.exists?(recipient.recipient_user_id)
           recip_user = User.find(recipient.recipient_user_id) 
-          recip_user.add_recipient(@user.id) 
-          data = { message_id: @message.id, sender: @user.name, chat_message: @message.content, timestamp: @message.created_at.strftime("%a %b %e %Y %T") }
+          recip_user.add_recipient(@user.id)
+          data = { sender: @user.name, 
+                   chat_message: @message.content,
+                   timestamp: @message.created_at.strftime("%a %b %e %Y %T"),
+                   view_class: "message #{@message.id.to_s} recieved unread" }
           PrivatePub.publish_to("/messages/#{recip_user.name}", data)
         end
       end
@@ -21,9 +24,8 @@ class MessagesController < ApplicationController
   end
   
   def update
-    @message_id = params[:message_id]
-    if Message.exists?(@message_id)
-      @message = Message.find(@message_id)
+    if Message.exists?(params[:id])
+      @message = Message.find(params[:id])
       @message.mark_read_by(current_user)
     end 
   end
