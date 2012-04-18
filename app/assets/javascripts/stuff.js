@@ -57,9 +57,8 @@ var read_message = function(message_id) {
 
   if (message_id) {
     $.ajax( {
-      type: "POST",
+      type: "PUT",
       url: "/messages/" + message_id,
-      data: { _method:'PUT' },
       success: function(response) {
         response;
       }
