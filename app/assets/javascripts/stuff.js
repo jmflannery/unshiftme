@@ -43,7 +43,6 @@ var hide_available_users = function() {
 // acknowledge (read) message
 ///////////////////////////////////
 
-// TODO:
 var read_message = function(message_id) {
   var classes = $(this).attr("class").split(" ");
   var i;
@@ -58,8 +57,9 @@ var read_message = function(message_id) {
 
   if (message_id) {
     $.ajax( {
+      type: "POST",
       url: "/messages/" + message_id,
-      type: 'PUT',
+      data: { _method:'PUT' },
       success: function(response) {
         response;
       }
@@ -207,5 +207,3 @@ $(function() {
     $(selector).html(data.reader + " read this.");
   });
 });
-
-
