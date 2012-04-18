@@ -28,8 +28,8 @@ feature "Message Acknowledgement", js: true do
     end
 
     within_browser(:sender) do
-      within "#messages_section li.message.my_message" do
-        page.should have_content("read by #{@reciever.name}")
+      within "#messages_section li.message.owner" do
+        page.should have_content("#{@reciever.name} read this.")
       end
     end
   end

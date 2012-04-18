@@ -42,7 +42,6 @@
     <%= render(@messages) %>
   </ul>
 </div>
-  
-
 
 <%= subscribe_to "/messages/#{@user.name}" %> 
+<%= subscribe_to "/readers/#{@user.name}" %> 

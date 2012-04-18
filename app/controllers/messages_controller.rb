@@ -11,10 +11,12 @@ class MessagesController < ApplicationController
         if User.exists?(recipient.recipient_user_id)
           recip_user = User.find(recipient.recipient_user_id) 
           recip_user.add_recipient(@user.id)
-          data = { sender: @user.name, 
-                   chat_message: @message.content,
-                   timestamp: @message.created_at.strftime("%a %b %e %Y %T"),
-                   view_class: "message #{@message.id.to_s} recieved unread" }
+          data = { 
+            sender: @user.name, 
+            chat_message: @message.content,
+            timestamp: @message.created_at.strftime("%a %b %e %Y %T"),
+            view_class: "message #{@message.id.to_s} recieved unread"
+          }
           PrivatePub.publish_to("/messages/#{recip_user.name}", data)
         end
       end
@@ -27,6 +29,13 @@ class MessagesController < ApplicationController
     if Message.exists?(params[:id])
       @message = Message.find(params[:id])
       @message.mark_read_by(current_user)
+
+      message_owner = User.find(@message.user_id)
+      data = {
+        reader: current_user.name,
+        message: @message.id
+      }  
+      PrivatePub.publish_to("/readers/#{message_owner.name}", data)
     end 
   end
 end

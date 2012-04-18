@@ -190,3 +190,22 @@ var display_new_message = function(message_html) {
     $("ul#message_list").html(message_html);
   }
 };
+
+///////////////////////////////////////////////
+// message read handler
+///////////////////////////////////////////////
+
+$(function() {
+  // store the current user's name
+  user_name = $("#user_name_section").attr("class");
+
+  // register callback
+  PrivatePub.subscribe("/readers/" + user_name, function(data, channel) {
+    console.log("message: " + data.message); 
+    selector = "li.message.owner." + data.message + " ul.inner_message li .read_by";
+    console.log(selector);
+    $(selector).html(data.reader + " read this.");
+  });
+});
+
+
