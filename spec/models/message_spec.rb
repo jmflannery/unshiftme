@@ -6,6 +6,7 @@ describe Message do
     @user = Factory(:user)
     @user_attr = { :name => "Fred", :full_name => "Fred Savage" }
     @user_attr2 = { :name => "Herman", :full_name => "Herman Munster" }
+    @user_attr3 = { :name => "John", :full_name => "John Wayne" }
     @msg_attr = { :content => "this is just a test" }
     @msg_attr2 = { :content => "of the emergency broadcast system" }
     @msg_attr3 = { :content => "please remain seated in your seates" }
@@ -151,6 +152,23 @@ describe Message do
         @message.mark_read_by @recipient_user
         read_by_list = @message.read_by.split(",")
         read_by_list.uniq!.should be_nil
+      end
+    end
+
+    describe "readers" do
+
+      before(:each) do
+        @message = @user.messages.create(@msg_attr)
+        @recipient_user = Factory(:user, @user_attr)
+        @recipient_user2 = Factory(:user, @user_attr2)
+        @recipient_user3 = Factory(:user, @user_attr3)
+      end
+
+      it "returns a list of the user names who read the message" do
+        @message.mark_read_by @recipient_user
+        @message.mark_read_by @recipient_user2
+        @message.mark_read_by @recipient_user3
+        @message.readers.should == "#{@recipient_user.name}, #{@recipient_user2.name} and #{@recipient_user3.name} read this."
       end
     end
   end

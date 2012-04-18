@@ -203,6 +203,6 @@ $(function() {
     console.log("message: " + data.message); 
     selector = "li.message.owner." + data.message + " ul.inner_message li .read_by";
     console.log(selector);
-    $(selector).html(data.reader + " read this.");
+    $(selector).html(data.readers);
   });
 });

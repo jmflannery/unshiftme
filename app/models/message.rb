@@ -62,4 +62,21 @@ class Message < ActiveRecord::Base
     end
     save
   end
+
+  def readers
+    readers = ""
+    if self.read_by
+      readit = self.read_by.split(",")
+      readit.each_with_index do |user_id, i|
+        if i == (readit.size - 1) and readit.size > 1
+          readers += " and " 
+        elsif i > 0
+          readers += ", "
+        end
+        readers += User.find(user_id).name
+      end
+      readers += " read this."
+    end
+    readers
+  end
 end
