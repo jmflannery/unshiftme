@@ -14,21 +14,39 @@
     }
   }
 
-  li#user_name {
+  #user_name {
+    float: left;
     color: $near-white;
-    //text-shadow: 1px 1px 6px rgba(240, 223, 208, 0.5);
-    font-size: 2.25em;
     font-weight: bold;
+    margin: 5px;
+    
+    h1 {
+      text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6);
+      margin: 0px;
+    }
   }
 
-  li#sign_out a {
-    color: $near-white;
-    font-size: 16px;
-    text-decoration: none;
+  #sign_out {
+    float: right;
+    margin: 8px;
+    
+    a {
+      color: $near-white;
+      text-decoration: none;
+      font-size: 16px;
+      padding: 2px 4px;
+
+      &:hover, &:focus {
+        color: $red;
+        background: rgba(240, 8, 7, 0.5); 
+        @include rounded-corners(4px);
+      }
+    }
   }
 } // end #user_name_section
 
 #send_to_section {
+  clear: both;
   text-align: left;
   color: $near-white;
    
@@ -123,18 +141,52 @@
       border: 1px solid $near-white;
       background-color: $blackish;
       color: $near-white;
+
+      ul.inner_message {
+        .message_sender {
+          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+          font-weight: bold;
+        } // end .message_sender
+        .message_timestamp {
+          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+          font-weight: bold;
+        } // end .message_timestamp
+      }
     }
 
     li.recieved.unread {
       background-color: $near-white;
       color: $blackish;
       cursor: pointer;
+
+      ul.inner_message {
+        
+        .message_sender {
+          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+          font-weight: bold;
+        } // end .message_sender
+        .message_timestamp {
+          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+          font-weight: bold;
+        } // end .message_timestamp
+      }
     }
 
     li.recieved.read {
       border: 1px solid $near-white;
-      background-color: $grey;
+      background-color: $light-grey;
       color: $blackish;
+
+      ul.inner_message {
+        .message_sender {
+          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+          font-weight: bold;
+        } // end .message_sender
+        .message_timestamp {
+          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+          font-weight: bold;
+        } // end .message_timestamp
+      }
     }
 
     li.message {

@@ -1,12 +1,10 @@
-<div id="user_name_section" class=<%= @user.name %>>
-  <ul>
-    <li id='user_name'><%= @user.full_name %></li>
-    <% if signed_in? %>
-      <li id='sign_out'><%= link_to "Sign out", signout_path %></li>
-      <!--<%= link_to "Update Profile", edit_user_path(current_user) %>-->
-    <% end %>
-  </ul>
-</div>
+<div id="user_name_section" class='<%= @user.name %>'>
+  <div id='user_name'><h1><%= @user.full_name %></h1></div>
+  <% if signed_in? %>
+    <div id='sign_out'><%= link_to "Sign out", signout_path %></div>
+    <!--<div id='update'><%#= link_to "Update Profile", edit_user_path(current_user) %></div>-->
+  <% end %>
+</div> <!-- end #user_name_section -->
 
 <div id='send_to_section'>
   <%= render(partial: 'recipients/recipients', object: @my_recipients) %>
