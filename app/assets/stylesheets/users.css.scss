@@ -138,8 +138,8 @@
     padding: 0px;
 
     li.owner {
-      border: 1px solid $near-white;
-      background-color: $blackish;
+      background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#191919), to(#101010));
+      background-image: -moz-linear-gradient(#191919, #101010);
       color: $near-white;
 
       ul.inner_message {
@@ -155,7 +155,8 @@
     }
 
     li.recieved.unread {
-      background-color: $near-white;
+      background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F2F3F8), to(#EDEFF4));
+      background-image: -moz-linear-gradient(#F2F3F8, #EDEFF4);
       color: $blackish;
       cursor: pointer;
 
@@ -173,8 +174,8 @@
     }
 
     li.recieved.read {
-      border: 1px solid $near-white;
-      background-color: $light-grey;
+      background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#96968E), to(#5C5B57));
+      background-image: -moz-linear-gradient(#96968E, #5C5B57);
       color: $blackish;
 
       ul.inner_message {
