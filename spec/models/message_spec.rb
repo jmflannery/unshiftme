@@ -41,9 +41,13 @@ describe Message do
     it "requires nonblank content" do
       @user.messages.build(:content => "  ").should_not be_valid
     end
+     
+    it "accepts a 300 character message" do
+      @user.messages.build(:content => "a" * 300).should be_valid
+    end
 
     it "rejects long content" do
-      @user.messages.build(:content => "a" * 141).should_not be_valid
+      @user.messages.build(:content => "a" * 301).should_not be_valid
     end
   end
 

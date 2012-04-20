@@ -23,7 +23,7 @@ feature "Message Acknowledgement", js: true do
     within_browser(:reciever) do
       within "#messages_section" do
         #page.should have_css("li.message.recieved")
-        find("li.message.recieved").click
+        find("li.message.recieved.unread").click
       end
     end
 

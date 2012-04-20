@@ -22,7 +22,7 @@
   
   <% if signed_in? %>
     <%= form_for(@message, remote: true, format: :js) do |f| %>
-      <%= f.text_field :content %>
+      <%= f.text_field :content, maxlength: 300 %>
       <%= f.submit "Send", id: "Send" %>
     <% end %>
   <% end %>
