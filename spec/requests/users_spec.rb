@@ -17,7 +17,7 @@ describe "Users" do
           click_button "Sign Up"
           #response.should render_template('users/new')
           #current_path.should == signup_path
-          page.should have_content("Sign Up")
+          page.should have_content("Sign up")
         end.should_not change(User, :count)
       end
     end
@@ -52,7 +52,7 @@ describe "Users" do
         click_button "Sign In"
         #response.should have_selector("div.flash.error", :content => "Invalid")
         #controller.should_not be_signed_in
-        page.should have_content("Sign In")
+        page.should have_content("Sign in")
       end
     end
 
@@ -65,7 +65,7 @@ describe "Users" do
         click_button "Sign In"
         page.should have_content(user.full_name)
         click_link "Sign out"
-        page.should have_content("Sign In")
+        page.should have_content("Sign in")
         #controller.should_not be_signed_in
       end
     end

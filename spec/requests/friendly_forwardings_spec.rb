@@ -6,7 +6,7 @@ describe "FriendlyForwardings" do
   it "should forward to the requested page after sign in" do
     user = Factory(:user)
     visit edit_user_path(user)
-    page.should have_content("Sign In")
+    page.should have_content("Sign in")
     # Test follows redirect to the sign in page
     fill_in "Name", :with => user.name
     fill_in "Password", :with => user.password

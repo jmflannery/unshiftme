@@ -1,45 +1,48 @@
-<div id="user_name_section" class='<%= @user.name %>'>
-  <div id='user_name'><h1><%= @user.full_name %></h1></div>
-  <% if signed_in? %>
-    <div id='sign_out'><%= link_to "Sign out", signout_path %></div>
-    <!--<div id='update'><%#= link_to "Update Profile", edit_user_path(current_user) %></div>-->
-  <% end %>
-</div> <!-- end #user_name_section -->
-
-<div id='send_to_section'>
-  <%= render(partial: 'recipients/recipients', object: @my_recipients) %>
-</div>
-
-<div id='recipient_selection_section'>
-  <%= link_to("Add Available Users", users_path, :id => "users_button", :remote => true, :format => :js) %>
-</div>
-
-<div id='upload_button'>
-  <%= link_to("Show File Uploader", "#", id: "attach_button") %>
-</div>
-
-<div id="msg_input">
-  
-  <% if signed_in? %>
-    <%= form_for(@message, remote: true, format: :js) do |f| %>
-      <%= f.text_field :content, maxlength: 300 %>
-      <%= f.submit "Send", id: "Send" %>
+<div id="content">
+  <div id="user_name_section" class='<%= @user.name %>'>
+    <div id='user_name'><h1><%= @user.full_name %></h1></div>
+    <% if signed_in? %>
+      <div id='sign_out'><%= link_to "Sign out", signout_path %></div>
+      <!--<div id='update'><%#= link_to "Update Profile", edit_user_path(current_user) %></div>-->
     <% end %>
-  <% end %>
-</div>
+  </div> <!-- end #user_name_section -->
 
-<div id="upload_section">
-  <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
-    <%= f.file_field("payload") %>
-    <%= f.submit "Upload" %>
-  <% end %>  
-</div>
+  <div id='send_to_section'>
+    <%= render(partial: 'recipients/recipients', object: @my_recipients) %>
+  </div>
 
-<div id="messages_section">
-  <ul id="message_list">
-    <%= render(@messages) %>
-  </ul>
-</div>
+  <div id='recipient_selection_section'>
+    <%= link_to("Add Available Users", users_path, :id => "users_button", :remote => true, :format => :js) %>
+  </div>
 
-<%= subscribe_to "/messages/#{@user.name}" %> 
-<%= subscribe_to "/readers/#{@user.name}" %> 
+  <div id='upload_button'>
+    <%= link_to("Show File Uploader", "#", id: "attach_button") %>
+  </div>
+
+  <div id="msg_input">
+    
+    <% if signed_in? %>
+      <%= form_for(@message, remote: true, format: :js) do |f| %>
+        <%= f.text_field :content, maxlength: 300 %>
+        <%= f.submit "Send", id: "Send" %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div id="upload_section">
+    <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
+      <%= f.file_field("payload") %>
+      <%= f.submit "Upload" %>
+    <% end %>  
+  </div>
+
+  <div id="messages_section">
+    <ul id="message_list">
+      <%= render(@messages) %>
+    </ul>
+  </div>
+
+  <%= subscribe_to "/messages/#{@user.name}" %> 
+  <%= subscribe_to "/readers/#{@user.name}" %> 
+
+</div> <!-- end #content -->

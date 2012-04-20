@@ -284,3 +284,7 @@
     }
   } // end input[type="submit"]
 } // end #msg_input
+
+#signup {
+  @include form-style;
+}

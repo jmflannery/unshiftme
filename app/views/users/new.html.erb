@@ -1,39 +1,41 @@
-<h2>Sign Up</h2>
+<div id="signup">
 
-<div class="center_spot"> 
-  <%= form_for(@user) do |f| %>
+  <h2>Sign up for</br><span id=title>Amtrak Messenger</span></h2>
 
-    <div class="field">
-      <%= f.label :name %> </br>
-      <%= f.text_field :name %>
-    </div>
+  <div class="center_spot"> 
+    <%= form_for(@user) do |f| %>
 
-    <div class="field">
-      <%= f.label :full_name %> </br>
-      <%= f.text_field :full_name %>
-    </div>
+      <div class="field">
+        <%= f.label :name %> </br>
+        <%= f.text_field :name %>
+      </div>
 
-    <div class="field">
-      <%= f.label :email %> </br>
-      <%= f.text_field :email %>
-    </div>
+      <div class="field">
+        <%= f.label :full_name %> </br>
+        <%= f.text_field :full_name %>
+      </div>
 
-    <div class="field">
-      <%= f.label :password %> </br>
-      <%= f.password_field :password, id: "pass" %>
-    </div>
+      <div class="field">
+        <%= f.label :email %> </br>
+        <%= f.text_field :email %>
+      </div>
 
-    <div class="field">
-      <%= f.label :password_confirmation %> </br>
-      <%= f.password_field :password_confirmation, id: "conf" %>
-    </div>
+      <div class="field">
+        <%= f.label :password %> </br>
+        <%= f.password_field :password, id: "pass" %>
+      </div>
 
-    <div class="actions">
-      <%= f.submit "Sign Up" %>
-    </div>
+      <div class="field">
+        <%= f.label :password_confirmation %> </br>
+        <%= f.password_field :password_confirmation, id: "conf" %>
+      </div>
 
-   <p>Already Signed Up? <%= link_to "Sign In", signin_path %></p>
+      <div class="actions">
+        <%= f.submit "Sign Up" %>
+      </div>
 
-  <% end %>
-</div>
+     <p>Already Signed Up? <%= link_to "Sign In", signin_path %></p>
+
+    <% end %>
+  </div>
 
