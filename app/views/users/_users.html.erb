@@ -9,7 +9,7 @@
       <span>,</span>
     <% end %>
     <% options = { method: :post, remote: true, format: :js, class: "available_user" } %>
-    <%= link_to(user.full_name, recipients_path(user: user), options) %>
+    <%= link_to(user.user_name, recipients_path(user: user), options) %>
     <% count += 1 %>
   <% end %>
   <span id='hide_button'> Hide</span></p>

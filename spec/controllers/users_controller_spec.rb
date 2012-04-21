@@ -3,10 +3,32 @@ require 'spec_helper'
 describe UsersController do
   render_views
 
+  before(:each) do
+    @fail_attr = { 
+      first_name: "",
+      middle_initial: "",
+      last_name: "",
+      user_name: "",
+      email: "",
+      password: "",
+      password_confirmation: ""
+    }
+    
+    @success_attr = { 
+      first_name: "New",
+      middle_initial: "X",
+      last_name: "User",
+      user_name: "nxuser",
+      email: "user@example.com",
+      password: "foobar",
+      password_confirmation: "foobar"
+    }
+  end
+
   describe "GET 'new'" do
 
     it "should be successful" do
-      get 'new'
+      get :new
       response.should be_success
     end
 
@@ -19,7 +41,7 @@ describe UsersController do
   describe "GET 'show'" do
 
     before(:each) do
-      @user = Factory(:user)
+      @user = FactoryGirl.create(:user)
       test_sign_in(@user)
     end
 
@@ -35,12 +57,12 @@ describe UsersController do
 
     it "should have the right title" do
       get :show, :id => @user
-      response.body.should have_selector("title", :content => @user.full_name)
+      response.body.should have_selector("title", content: "#{@user.first_name} #{@user.middle_initial}. #{@user.last_name}")
     end
 
     it "should include the users name" do
       get :show, :id => @user
-      response.should have_selector("p", :content => @user.full_name)
+      response.should have_selector("p", content: "#{@user.first_name} #{@user.middle_initial}. #{@user.last_name}")
     end
     
     it "should create a new attachment (for a subsequent create)" do
@@ -68,9 +90,9 @@ describe UsersController do
 
     before(:each) do
       @offline_user = Factory(:user)
-      user1 = test_sign_in(Factory(:user, :name => "Fred", :full_name => "Fred Mertz"))
-      user2 = test_sign_in(Factory(:user, :name => "Sam", :full_name => "Sammy Sosa"))
-      @user = test_sign_in(Factory(:user, :name => "Frank", :full_name => "Frank N Stein"))
+      user1 = test_sign_in(FactoryGirl.create(:user))
+      user2 = test_sign_in(FactoryGirl.create(:user1))
+      @user = test_sign_in(FactoryGirl.create(:user2))
       @users = [user1, user2]
     end
 
@@ -103,48 +125,38 @@ describe UsersController do
 
     describe "failure" do
 
-      before(:each) do
-        @attr = { :name => "", :email => "", :password => "",
-                  :password_confirmation => "" }
-      end
-
       it "should not create a user" do
         lambda do
-          post :create, :user => @attr
+          post :create, :user => @fail_attr
         end.should_not change(User, :count)
       end
 
       it "should have the right title" do
-        post :create, :user => @attr
+        post :create, :user => @fail_attr
         response.body.should have_selector("title", :content => "Sign Up")
       end
 
       it "should render the 'new' page" do
-        post :create, :user => @attr
+        post :create, :user => @fail_attr
         response.should render_template :new
       end
     end
 
     describe "success" do
 
-      before(:each) do
-        @attr = { :name => "New User", :email => "user@example.com",
-                  :password => "foobar", :password_confirmation => "foobar" }
-      end
-
       it "should create a user" do
         lambda do
-          post :create, :user => @attr
+          post :create, :user => @success_attr
         end.should change(User, :count).by(1)
       end
 
       it "should redirect to the user show page" do
-        post :create, :user => @attr
+        post :create, :user => @success_attr
         response.should redirect_to(user_path(assigns(:user)))
       end
 
       it "should sign the user in" do
-        post :create, :user => @attr
+        post :create, :user => @success_attr
         controller.should be_signed_in
       end
     end
@@ -153,7 +165,7 @@ describe UsersController do
   describe "GET 'edit'" do
 
     before(:each) do
-      @user = Factory(:user)
+      @user = FactoryGirl.create(:user)
       test_sign_in(@user)
     end
 
@@ -171,24 +183,19 @@ describe UsersController do
   describe "PUT 'update'" do
 
     before(:each) do
-      @user = Factory(:user)
+      @user = FactoryGirl.create(:user)
       test_sign_in(@user)
     end
 
     describe "failure" do
 
-      before(:each) do
-        @attr = { :name => "", :full_name => "", :email => "",
-            :password => "", :password_confirmation => ""}
-      end
-
       it "should render the 'edit' page" do
-        put :update, :id => @user, :user => @attr
+        put :update, id: @user, user: @fail_attr
         response.should render_template('edit')
       end
 
       it "should have the right title" do
-        put :update, :id => @user, :user => @attr
+        put :update, id: @user, user: @fail_attr
         response.body.should have_selector("title", :content => "Edit user")
       end
 
@@ -197,52 +204,59 @@ describe UsersController do
     describe "success" do
 
       before(:each) do
-        @attr = { :name => "samson", :full_name => "happy samson", :email => "samson@bigboys.org",
-            :password => "idigoldladies", :password_confirmation => "idigoldladies"}
+        @new_attr = { 
+          first_name: "Foo",
+          middle_initial: "Z",
+          last_name: "Bar",
+          user_name: "fzbar",
+          email: "foobar@example.com",
+          password: "foobar",
+          password_confirmation: "foobar"
+        }
       end
 
       it "should change the user's attributes" do
-        put :update, :id => @user, :user => @attr
+        put :update, id: @user, user: @new_attr
         @user.reload
-        @user.name.should == @attr[:name]
-        @user.full_name.should == @attr[:full_name]
-        @user.email.should == @attr[:email]
+        @user.first_name.should == @new_attr[:first_name]
+        @user.middle_initial.should == @new_attr[:middle_initial]
+        @user.last_name.should == @new_attr[:last_name]
+        @user.user_name.should == @new_attr[:user_name]
+        @user.email.should == @new_attr[:email]
       end
 
       it "should redirect to the user show page" do
-        put :update, :id => @user, :user => @attr
+        put :update, id: @user, user: @success_attr
         response.should redirect_to(user_path(@user))
       end
 
       it "should have a flash message" do
-        put :update, :id => @user, :user => @attr
+        put :update, id: @user, user: @success_attr
         flash[:success].should =~ /updated/
       end
-
     end
-
   end
 
   describe "authentication of show/edit/update pages" do
 
     before(:each) do
-      @user = Factory(:user)
+      @user = FactoryGirl.create(:user)
     end
 
     describe "for non-signed-in users" do
 
       it "should deny access to 'show'" do
-        get :show, :id => @user
+        get :show, id: @user
         response.should redirect_to(signin_path)
       end
 
       it "should deny access to 'edit'" do
-        get :edit, :id => @user
+        get :edit, id: @user
         response.should redirect_to(signin_path)
       end
 
       it "should deny access to 'update'" do
-        put :update, :id => @user, :user => {}
+        put :update, id: @user, user: {}
         response.should redirect_to(signin_path)
       end
     end
@@ -250,25 +264,24 @@ describe UsersController do
     describe "for signed-in users" do
 
       before(:each) do
-        wrong_user = Factory(:user, :name => "Seamore")
+        wrong_user = FactoryGirl.create(:user1)
         test_sign_in(wrong_user)
       end
 
       it "should require matching user for 'show'" do
-        get :show, :id => @user
+        get :show, id: @user
         response.should redirect_to(root_path)
       end
 
       it "should require matching user for 'edit'" do
-        get :edit, :id => @user
+        get :edit, id: @user
         response.should redirect_to(root_path)
       end
 
       it "should require matching user for 'update'" do
-        put :update, :id => @user, :user => {}
+        put :update, id: @user, user: {}
         response.should redirect_to(root_path)
       end
-
     end
   end
 end

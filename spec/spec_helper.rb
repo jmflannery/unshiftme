@@ -36,7 +36,7 @@ RSpec.configure do |config|
   end
 
   def integration_test_sign_in(user)   
-    post signin_path, :name => user.name, :password => user.password
+    post signin_path, :name => user.user_name, :password => user.password
     user.status = true
     user.save(:validate => false)
     user
@@ -44,7 +44,7 @@ RSpec.configure do |config|
 
   def request_sign_in(user)
     visit signin_path
-    fill_in "Name", :with => user.name
+    fill_in "User name", :with => user.user_name
     fill_in "Password", :with  => user.password
     click_button "Sign In"
     user

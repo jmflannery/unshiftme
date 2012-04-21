@@ -1,24 +1,8 @@
-# == Schema Information
-#
-# Table name: users
-#
-#  id              :integer         not null, primary key
-#  name            :string(255)
-#  full_name       :string(255)
-#  email           :string(255)
-#  created_at      :datetime
-#  updated_at      :datetime
-#  password_digest :string(255)
-#  status          :boolean
-#  recipient_id    :integer
-#  lastpoll        :datetime
-#
-
 class User < ActiveRecord::Base
 
   has_secure_password 
 
-  attr_accessible :name, :full_name, :email, :password, :password_confirmation 
+  attr_accessible :first_name, :middle_initial, :last_name, :user_name, :email, :password, :password_confirmation 
   
   has_many :messages
   has_many :recipients
@@ -28,7 +12,7 @@ class User < ActiveRecord::Base
                        :confirmation => true,
                        :length => { :within => 6..40 }
 
-  default_scope :order => 'users.full_name ASC'
+  default_scope :order => 'users.last_name ASC'
 
   scope :online, lambda { |user_id| where("users.status = ? and users.id != ?", true, user_id) }
 
@@ -87,4 +71,6 @@ class User < ActiveRecord::Base
     self.recipients = self.recipients - stale_recipients
     self.save validate: false
   end
+
+  
 end

@@ -8,7 +8,7 @@
     <% elsif count > 0 %>
       <span>,</span>
     <% end %>
-    <% name = User.find(recipient.recipient_user_id).name %>
+    <% name = User.find(recipient.recipient_user_id).user_name %>
     <% options = { method: :delete, remote: true, format: :js, class: "recipient_user" } %>
     <%= link_to(name, recipient, options) %>
     <% count += 1 %>

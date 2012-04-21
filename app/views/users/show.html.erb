@@ -1,6 +1,6 @@
 <div id="content">
-  <div id="user_name_section" class='<%= @user.name %>'>
-    <div id='user_name'><h1><%= @user.full_name %></h1></div>
+  <div id="user_name_section" class='<%= @user.user_name %>'>
+    <div id='user_name'><h1><%= @title %></h1></div>
     <% if signed_in? %>
       <div id='sign_out'><%= link_to "Sign out", signout_path %></div>
       <!--<div id='update'><%#= link_to "Update Profile", edit_user_path(current_user) %></div>-->
@@ -42,7 +42,7 @@
     </ul>
   </div>
 
-  <%= subscribe_to "/messages/#{@user.name}" %> 
-  <%= subscribe_to "/readers/#{@user.name}" %> 
+  <%= subscribe_to "/messages/#{@user.user_name}" %> 
+  <%= subscribe_to "/readers/#{@user.user_name}" %> 
 
 </div> <!-- end #content -->

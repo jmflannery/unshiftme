@@ -6,14 +6,14 @@ feature "Message Acknowledgement", js: true do
     @add_users_button_text = "Add Available Users"
 
     within_browser(:reciever) do
-      @reciever = request_sign_in(Factory(:user, name: "Bill", full_name: "Bill Stump"))
+      @reciever = request_sign_in(FactoryGirl.create(:user))
     end
 
     within_browser(:sender) do
-      @sender = request_sign_in(Factory(:user, name: "Jack", full_name: "Jack Sprat"))
+      @sender = request_sign_in(FactoryGirl.create(:user1))
       within("#recipient_selection_section") do
         click_link @add_users_button_text
-        click_link @reciever.full_name
+        click_link @reciever.user_name
       end
       request_send_message(@message)
     end
@@ -29,7 +29,7 @@ feature "Message Acknowledgement", js: true do
 
     within_browser(:sender) do
       within "#messages_section li.message.owner" do
-        page.should have_content("#{@reciever.name} read this.")
+        page.should have_content("#{@reciever.user_name} read this.")
       end
     end
   end

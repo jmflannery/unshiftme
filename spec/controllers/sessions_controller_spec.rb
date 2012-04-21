@@ -21,7 +21,7 @@ describe SessionsController do
     describe "invalid signin" do
   
       before(:each) do
-        @attr = { :name => "XXX", :password => "invalid" }
+        @attr = { name: "XXX", password: "invalid" }
       end
   
       it "should re-render the new page" do
@@ -31,7 +31,7 @@ describe SessionsController do
   
       it "should have the right title" do
         post :create, @attr
-        response.body.should have_selector("title", :content => "Sign in")
+        response.body.should have_selector("title", content: "Sign in")
       end
   
       it "should have a flash.now message" do
@@ -43,13 +43,13 @@ describe SessionsController do
     describe "with valid email and password" do
   
       before(:each) do
-        @user = Factory(:user)
-        @attr = { :name => @user.name, :password => @user.password }
+        @user = FactoryGirl.create(:user)
+        @attr = { user_name: @user.user_name, password: @user.password }
       end
   
       it "should sign the user in" do
         post :create, @attr
-        controller.current_user.should eq(@user)
+        controller.current_user.should == @user
         controller.should be_signed_in
       end
   
@@ -63,7 +63,7 @@ describe SessionsController do
   describe "DELETE 'destroy'" do
   
     it "should sign a user out" do
-      test_sign_in(Factory(:user))
+      test_sign_in(FactoryGirl.create(:user))
       delete :destroy
       controller.should_not be_signed_in
       response.should redirect_to(root_path)

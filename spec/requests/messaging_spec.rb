@@ -9,7 +9,7 @@ describe "Messaging" do
   describe "sending a message" do
     
     before(:each) do
-      @sender = Factory(:user)
+      @sender = FactoryGirl.create(:user)
       @message = "this is a message, wassup"
     end
     
@@ -38,7 +38,7 @@ describe "Messaging" do
     describe "in the message recievers browser" do
 
       before(:each) do
-        reciever = Factory(:user, name: "Jack", full_name: "Jack Sprat")
+        reciever = FactoryGirl.create(:user1)
 
         within_browser(:reciever) do
           request_sign_in(reciever)
@@ -48,7 +48,7 @@ describe "Messaging" do
           request_sign_in(@sender)
           within("#recipient_selection_section") do
             click_link @add_users_button_text
-            click_link reciever.full_name
+            click_link reciever.user_name
           end
           request_send_message(@message)
         end
@@ -65,7 +65,7 @@ describe "Messaging" do
       it "adds the sender to the reciever's recipient list", js: true do
         within_browser :reciever do
           within "#send_to_section" do
-            page.should have_selector("a.recipient_user", text: @sender.name)
+            page.should have_selector("a.recipient_user", text: @sender.user_name)
           end
         end
       end

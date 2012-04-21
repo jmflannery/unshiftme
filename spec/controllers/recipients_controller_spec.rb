@@ -24,7 +24,7 @@ describe RecipientsController do
   describe "POST 'create'" do
 
     before(:each) do
-      @user = test_sign_in(Factory(:user, :name => "cuzit", :full_name => "cousin it"))
+      @user = test_sign_in(FactoryGirl.create(:user))
     end
 
     it "should redirect to recipient/index" do
@@ -54,7 +54,7 @@ describe RecipientsController do
   describe "GET 'index'" do
 
     before(:each) do
-      @user = test_sign_in(Factory(:user, :name => "cuzit", :full_name => "cousin it"))
+      @user = test_sign_in(FactoryGirl.create(:user))
     end
 
     it "should be successful" do
@@ -65,8 +65,8 @@ describe RecipientsController do
     describe "recipient list" do
 
       before(:each) do
-        recip_user1 = Factory(:user, :name => "Lucy", :full_name => "Lucille Ball")
-        recip_user2 = Factory(:user, :name => "Darry", :full_name => "Darryl Strawberry")
+        recip_user1 = FactoryGirl.create(:user1)
+        recip_user2 = FactoryGirl.create(:user2)
         @recip1 = Factory(:recipient, :user => @user, :recipient_user_id => recip_user1.id)
         @recip2 = Factory(:recipient, :user => @user, :recipient_user_id => recip_user2.id)
         @recips = [@recip1, @recip2]
@@ -90,7 +90,7 @@ describe RecipientsController do
   describe "DELETE 'destroy'" do
 
     before(:each) do
-      @user = Factory(:user, :name => "cuzit", :full_name => "cousin it")
+      @user = FactoryGirl.create(:user)
       @recipient = Factory(:recipient, :user => @user)
     end
     
@@ -103,14 +103,13 @@ describe RecipientsController do
     describe "for an unauthorized user" do
 
       before(:each) do
-        test_sign_in(Factory(:user))
+        test_sign_in(FactoryGirl.create(:user1))
       end
 
       it "should deny access" do
         delete :destroy, :id => @recipient
         response.should redirect_to(root_path)  
       end
-
     end
 
     describe "for an authorized user" do

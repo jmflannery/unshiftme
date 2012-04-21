@@ -1,32 +1,45 @@
 <div id="edit_user">
   <h1>Edit user</h1>
-  <%= @user.full_name %>
+  <%= @user.user_name %>
 
   <%= form_for(@user) do |f| %>
     <%= render 'shared/error_messages', :object => f.object %>
     <div class="field">
-      <%= f.label :name %><br />
-      <%= f.text_field :name %>
-    </div>
-    <div class="field">
-      <%= f.label :full_name %><br />
-      <%= f.text_field :full_name %>
-    </div>
-    <div class="field">
-      <%= f.label :email %><br />
-      <%= f.text_field :email %>
-    </div>
-    <div class="field">
-      <%= f.label :password %><br />
-      <%= f.password_field :password %>
-    </div>
-    <div class="field">
-      <%= f.label :password_confirmation %><br />
-      <%= f.password_field :password_confirmation %>
-    </div>
+        <%= f.label :first_name %> </br>
+        <%= f.text_field :first_name %>
+      </div>
+
+      <div class="field">
+        <%= f.label :middle_initial %> </br>
+        <%= f.text_field :middle_initial %>
+      </div>
+
+      <div class="field">
+        <%= f.label :last_name %> </br>
+        <%= f.text_field :last_name %>
+      </div>
+
+      <div class="field">
+        <%= f.label :user_name %> </br>
+        <%= f.text_field :user_name %>
+      </div>
+
+      <div class="field">
+        <%= f.label :email %> </br>
+        <%= f.text_field :email %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password %> </br>
+        <%= f.password_field :password, id: "pass" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password_confirmation %> </br>
+        <%= f.password_field :password_confirmation, id: "conf" %>
+      </div>
     <div class="actions">
       <%= f.submit "Update" %>
     </div>
   <% end %>
 </div>
-

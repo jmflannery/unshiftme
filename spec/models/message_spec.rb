@@ -3,10 +3,7 @@ require 'spec_helper'
 describe Message do
 
   before(:each) do
-    @user = Factory(:user)
-    @user_attr = { :name => "Fred", :full_name => "Fred Savage" }
-    @user_attr2 = { :name => "Herman", :full_name => "Herman Munster" }
-    @user_attr3 = { :name => "John", :full_name => "John Wayne" }
+    @user = FactoryGirl.create(:user)
     @msg_attr = { :content => "this is just a test" }
     @msg_attr2 = { :content => "of the emergency broadcast system" }
     @msg_attr3 = { :content => "please remain seated in your seates" }
@@ -70,8 +67,8 @@ describe Message do
     describe "set_recievers" do 
     
       it "sets message.recievers to the message's recipient's user_ids seperated by commas" do
-        other_user = Factory(:user, @user_attr)
-        other_user2 = Factory(:user, @user_attr2)
+        other_user = FactoryGirl.create(:user1)
+        other_user2 = FactoryGirl.create(:user2)
         Factory(:recipient, :user => @user, :recipient_user_id => other_user.id)
         Factory(:recipient, :user => @user, :recipient_user_id => other_user2.id)
         @message = @user.messages.create!(@msg_attr)
@@ -87,8 +84,8 @@ describe Message do
     describe "before_for" do
 
       before(:each) do
-        @recipient_user = Factory(:user, @user_attr)
-        other_user = Factory(:user, @user_attr2)
+        @recipient_user = FactoryGirl.create(:user1)
+        other_user = FactoryGirl.create(:user2)
         @user.recipients.create(recipient_user_id: @recipient_user.id)
         @message = @user.messages.create(content: "hello world")
         @message.set_recievers
@@ -142,7 +139,7 @@ describe Message do
 
       before(:each) do
         @message = @user.messages.create(@msg_attr)
-        @recipient_user = Factory(:user, @user_attr)
+        @recipient_user = FactoryGirl.create(:user1)
       end
       
       it "adds the given user id the message's read by list" do
@@ -163,16 +160,16 @@ describe Message do
 
       before(:each) do
         @message = @user.messages.create(@msg_attr)
-        @recipient_user = Factory(:user, @user_attr)
-        @recipient_user2 = Factory(:user, @user_attr2)
-        @recipient_user3 = Factory(:user, @user_attr3)
+        @recipient_user = FactoryGirl.create(:user1)
+        @recipient_user2 = FactoryGirl.create(:user2)
+        @recipient_user3 = FactoryGirl.create(:user3)
       end
 
       it "returns a list of the user names who read the message" do
         @message.mark_read_by @recipient_user
         @message.mark_read_by @recipient_user2
         @message.mark_read_by @recipient_user3
-        @message.readers.should == "#{@recipient_user.name}, #{@recipient_user2.name} and #{@recipient_user3.name} read this."
+        @message.readers.should == "#{@recipient_user.user_name}, #{@recipient_user2.user_name} and #{@recipient_user3.user_name} read this."
       end
     end
   end

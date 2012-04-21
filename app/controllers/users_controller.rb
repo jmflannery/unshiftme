@@ -22,7 +22,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @title = @user.full_name
+    @title = "#{@user.first_name} #{@user.middle_initial}. #{@user.last_name}"
     @messages = Message.before_for(@user, Time.now)
     @message = Message.new
     @attachment = Attachment.new

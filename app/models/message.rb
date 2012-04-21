@@ -73,7 +73,7 @@ class Message < ActiveRecord::Base
         elsif i > 0
           readers += ", "
         end
-        readers += User.find(user_id).name
+        readers += User.find(user_id).user_name
       end
       readers += " read this."
     end

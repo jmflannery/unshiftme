@@ -29,7 +29,7 @@ group :development, :test do
   #gem 'capybara-webkit'
   gem 'factory_girl_rails', "~> 1.6.0"
   gem 'faker'
-  gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
+  gem "annotate", "~> 2.4.0"
   gem 'rb-inotify'
   gem 'libnotify'
   gem 'guard-rspec'

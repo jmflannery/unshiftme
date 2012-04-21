@@ -12,12 +12,12 @@ class MessagesController < ApplicationController
           recip_user = User.find(recipient.recipient_user_id) 
           recip_user.add_recipient(@user.id)
           data = { 
-            sender: @user.name, 
+            sender: @user.user_name, 
             chat_message: @message.content,
             timestamp: @message.created_at.strftime("%a %b %e %Y %T"),
             view_class: "message #{@message.id.to_s} recieved unread"
           }
-          PrivatePub.publish_to("/messages/#{recip_user.name}", data)
+          PrivatePub.publish_to("/messages/#{recip_user.user_name}", data)
         end
       end
     else
@@ -35,7 +35,7 @@ class MessagesController < ApplicationController
         message: @message.id
       }  
       message_owner = User.find(@message.user_id)
-      PrivatePub.publish_to("/readers/#{message_owner.name}", data)
+      PrivatePub.publish_to("/readers/#{message_owner.user_name}", data)
     end 
   end
 end

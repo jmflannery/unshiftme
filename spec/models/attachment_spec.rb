@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Attachment do
 
   before(:each) do
-    @user = Factory(:user)
-    reciever = Factory(:user, name: "Jim", full_name: "Jim Dickson")
+    @user = FactoryGirl.create(:user)
+    reciever = FactoryGirl.create(:user1)
     Factory(:recipient, user: @user, recipient_user_id: reciever.id)
     file = File.new(Rails.root + "spec/fixtures/files/test_file.txt")
     @attr = { payload: file }
