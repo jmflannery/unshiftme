@@ -69,5 +69,12 @@ namespace :faye do
     run "kill `cat #{faye_pid}` || true"
   end
 end
+
+namespace :db do
+  desc "Reset production database"
+  task :reset do
+    run("cd #{deploy_to}/current && /usr/bin/env rake db:reset RAILS_ENV=production")
+  end
+end
 #before 'deploy:update_code', 'faye:stop'
 #after 'deploy:finalize_update', 'faye:start'
