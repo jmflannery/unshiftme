@@ -53,8 +53,8 @@ describe Message do
     describe "before" do
 
       it "returns messages created between the given time and 24 hours earlier" do
-        today_message = Factory(:message, user: @user, created_at: 23.hours.ago) 
-        yesterday_message = Factory(:message, user: @user, created_at: 25.hours.ago) 
+        today_message = FactoryGirl.create(:message, user: @user, created_at: 23.hours.ago) 
+        yesterday_message = FactoryGirl.create(:message, user: @user, created_at: 25.hours.ago) 
         todays_messages = Message.before(Time.now)
         todays_messages.should include today_message
         todays_messages.should_not include yesterday_message
@@ -69,8 +69,8 @@ describe Message do
       it "sets message.recievers to the message's recipient's user_ids seperated by commas" do
         other_user = FactoryGirl.create(:user1)
         other_user2 = FactoryGirl.create(:user2)
-        Factory(:recipient, :user => @user, :recipient_user_id => other_user.id)
-        Factory(:recipient, :user => @user, :recipient_user_id => other_user2.id)
+        FactoryGirl.create(:recipient, :user => @user, :recipient_user_id => other_user.id)
+        FactoryGirl.create(:recipient, :user => @user, :recipient_user_id => other_user2.id)
         @message = @user.messages.create!(@msg_attr)
         @message.set_recievers
         recievers = @message.recievers.split(/,/)
@@ -96,7 +96,7 @@ describe Message do
         @recipient_user_message.set_recievers
         @other_user_message = other_user.messages.create(content: "hello ruby")
         @other_user_message.set_recievers
-        @old_message = Factory(:message, user: @user, created_at: 25.hours.ago) 
+        @old_message = FactoryGirl.create(:message, user: @user, created_at: 25.hours.ago) 
         @old_message.set_recievers
       end
       

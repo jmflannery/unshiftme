@@ -5,7 +5,7 @@ describe Attachment do
   before(:each) do
     @user = FactoryGirl.create(:user)
     reciever = FactoryGirl.create(:user1)
-    Factory(:recipient, user: @user, recipient_user_id: reciever.id)
+    FactoryGirl.create(:recipient, user: @user, recipient_user_id: reciever.id)
     file = File.new(Rails.root + "spec/fixtures/files/test_file.txt")
     @attr = { payload: file }
     @attachment = @user.attachments.create!(@attr)

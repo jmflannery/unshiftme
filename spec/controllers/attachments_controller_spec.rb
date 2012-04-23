@@ -18,7 +18,7 @@ describe AttachmentsController do
   describe "XHR POST 'create'" do
 
     before(:each) do
-      @user = test_sign_in(Factory(:user)) 
+      @user = test_sign_in(FactoryGirl.create(:user)) 
     end
      
     #describe "failure" do

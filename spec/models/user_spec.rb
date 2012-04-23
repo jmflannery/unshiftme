@@ -138,8 +138,8 @@ describe User do
 
     before(:each) do
       @user = User.create(@attr)
-      @msg1 = Factory(:message, user: @user, created_at: 1.minute.ago)
-      @msg2 = Factory(:message, user: @user, created_at: 1.hour.ago)
+      @msg1 = FactoryGirl.create(:message, user: @user, created_at: 1.minute.ago)
+      @msg2 = FactoryGirl.create(:message, user: @user, created_at: 1.hour.ago)
     end
 
     it "has a messages attribute" do
@@ -155,8 +155,8 @@ describe User do
 
     before(:each) do
       @user = User.create(@attr)
-      @recip1 = Factory(:recipient, user: @user)
-      @recip2 = Factory(:recipient, user: @user)
+      @recip1 = FactoryGirl.create(:recipient, user: @user)
+      @recip2 = FactoryGirl.create(:recipient, user: @user)
     end
 
     it "has a recipients attribute" do
@@ -172,8 +172,8 @@ describe User do
 
     before(:each) do
       @user = User.create(@attr)
-      @attach1 = Factory(:attachment, user: @user)
-      @attach2 = Factory(:attachment, user: @user)
+      @attach1 = FactoryGirl.create(:attachment, user: @user)
+      @attach2 = FactoryGirl.create(:attachment, user: @user)
     end
 
     it "has an attachements attribute" do
@@ -192,7 +192,7 @@ describe User do
       @user1 = FactoryGirl.create(:user1, status: true)
       @user2 = FactoryGirl.create(:user2, status: true)
       @user3 = FactoryGirl.create(:user3, status: true)
-      Factory(:recipient, user: @user, recipient_user_id: @user1.id)
+      FactoryGirl.create(:recipient, user: @user, recipient_user_id: @user1.id)
       @user_ids = [@user1.id, @user2.id, @user3.id]
       @available_users = [@user2, @user3]
     end
