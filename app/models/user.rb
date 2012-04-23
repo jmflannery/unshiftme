@@ -15,11 +15,10 @@ class User < ActiveRecord::Base
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, uniqueness: true, format: { with: VALID_EMAIL_REGEX }
 
-  validates :password, :presence => true,
-                       :confirmation => true,
-                       :length => { :within => 6..40 }
+  validates :password, presence: true, length: { minimum: 6 }
+  validates :password_confirmation, presence: true 
 
-  default_scope :order => 'users.last_name ASC'
+  default_scope order: 'users.last_name ASC'
 
   scope :online, lambda { |user_id| where("users.status = ? and users.id != ?", true, user_id) }
 
@@ -78,6 +77,4 @@ class User < ActiveRecord::Base
     self.recipients = self.recipients - stale_recipients
     self.save validate: false
   end
-
-  
 end

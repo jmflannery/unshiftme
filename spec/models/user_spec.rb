@@ -19,176 +19,170 @@ require 'spec_helper'
 describe User do
 
   before(:each) do
-    @attr = {
-      first_name: "Sam",
-      middle_initial: "Q",
-      last_name: "Smith",
-      user_name: "sqsmith",
-      email: "xxx@xxx.xxx",
-      password: "foobar",
-      password_confirmation: "foobar"
-    }
+    @user = User.new(first_name: "Sam", middle_initial: "Q", last_name: "Smith",
+                     user_name: "sqsmith", email: "xxx@xxx.xxx", password: "foobar",
+                     password_confirmation: "foobar")
   end
 
-  it "creates a new instance given valid attributes" do
-    User.create!(@attr)
+  subject { @user }
+
+  it { should respond_to(:first_name) }
+  it { should respond_to(:middle_initial) }
+  it { should respond_to(:last_name) }
+  it { should respond_to(:user_name) }
+  it { should respond_to(:email) }
+  it { should respond_to(:password) }
+  it { should respond_to(:password_confirmation) }
+
+  it { should be_valid }
+
+  describe "when first_name is not present" do
+    before { @user.first_name = " " }
+    it { should_not be_valid }
   end
 
-  describe "validations" do
+  describe "when last_name is not present" do
+    before { @user.last_name = " " }
+    it { should_not be_valid }
+  end
 
-    it "requires a first_name" do
-      User.new(@attr.merge(first_name: " ")).should_not be_valid
+  describe "when user_name is not present" do
+    before { @user.user_name = " " }
+    it { should_not be_valid }
+  end
+
+  describe "when email is not present" do
+    before { @user.email = " " }
+    it { should_not be_valid }
+  end
+
+  describe "when user_name is already taken" do
+    before do
+      user_with_same_name = FactoryGirl.create(:user, user_name: @user.user_name) 
     end
 
-    it "requires a last_name" do
-      User.new(@attr.merge(last_name: " ")).should_not be_valid
+    it { should_not be_valid }
+  end
+
+  describe "when email is already taken" do
+    before do
+      user_with_same_email = FactoryGirl.create(:user, email: @user.email) 
     end
 
-    it "requires a user_name" do
-      User.new(@attr.merge(user_name: " ")).should_not be_valid
-    end
+    it { should_not be_valid }
+  end
 
-    it "requires an email" do
-      User.new(@attr.merge(email: " ")).should_not be_valid
-    end
-
-    it "requires a unique user_name" do
-      user = User.create!(@attr)
-      FactoryGirl.build(:user, user_name: user.user_name).should_not be_valid
-    end
-
-    it "requires a unique email" do
-      user = User.create!(@attr)
-      FactoryGirl.build(:user, email: user.email).should_not be_valid
-    end
-
-    it "does not accept invalid email addresses" do
-      user = User.create!(@attr)
+  describe "when email format is invalid" do
+    it "should not be invalid" do
       addresses = %w[user@foo,com user_at_foo.org example.user@foo.]
       addresses.each do |invalid_address|
-        user.email = invalid_address
-        user.should_not be_valid
-      end      
+        @user.email = invalid_address
+        @user.should_not be_valid
+      end
     end
+  end
 
-    it "accepts valid email addresses" do
-      user = User.create!(@attr)
+  describe "when email format is valid" do
+    it "should be valid" do
       addresses = %w[user@foo.com A_USER@f.b.org frst.lst@foo.jp a+b@baz.cn]
       addresses.each do |valid_address|
-        user.email = valid_address
-        user.should be_valid
-      end      
+        @user.email = valid_address
+        @user.should be_valid
+      end
     end
   end
 
-  describe "password validations" do
-
-    it "requires a password" do
-      User.new(@attr.merge(:password => "", :password_confirmation => "")).should_not be_valid
-    end
-
-    it "requires a matching password confirmation" do
-      User.new(@attr.merge(:password_confirmation => "Invalid")).should_not be_valid
-    end
-
-    it "rejects short passwords" do
-      short = "a" * 5
-      hash = @attr.merge(:password => short, :password_confirmation => short)
-      User.new(hash).should_not be_valid
-    end
-
-    it "rejects long passwords" do
-      long = "a" * 41
-      hash = @attr.merge(:password => long, :password_confirmation => long)
-      User.new(hash).should_not be_valid
-    end
+  describe "when password is not present" do
+    before { @user.password = @user.password_confirmation = " " }
+    it { should_not be_valid }
   end
 
-  describe "password encryption" do
+  describe "when password does not match confirmation" do
+    before { @user.password_confirmation = "mismatch" }
+    it { should_not be_valid }
+  end
 
-    before(:each) do
-      @user = User.create!(@attr)
+  describe "when password confirmation is nil" do
+    before { @user.password_confirmation = nil }
+    it { should_not be_valid }
+  end
+
+  describe "with a password that's too short" do
+    before { @user.password = @user.password_confirmation = "a" * 5 }
+    it { should_not be_valid }
+  end 
+
+  describe "return value of authenticate method" do
+    before { @user.save }
+    let(:found_user) { User.find_by_user_name(@user.user_name) } 
+
+    describe "with valid password" do
+      it { should == found_user.authenticate(@user.password) }
     end
 
-    it "has a password digest attribute" do
-      @user.should respond_to(:password_digest)
-    end
-
-    it "sets the encrypted password" do
-      @user.password_digest.should_not be_blank
-    end
-
-    describe "authenticate method" do
+    describe "with an invalid password" do
+      let(:user_with_invalid_password) { found_user.authenticate("invalid") }
       
-      it "has an authenticate method" do
-        @user.should respond_to(:authenticate)
-      end
-
-      it "returns false on wrong password" do
-        assert_equal(false, @user.authenticate("wrongpassword"))
-      end
-
-      it "returns authencated user given the correct password" do
-        assert_equal(@user, @user.authenticate(@attr[:password]))
-      end
+      it { should_not == user_with_invalid_password } 
+      specify { user_with_invalid_password.should be_false }
     end
   end
   
   describe "message associations" do
 
-    before(:each) do
-      @user = User.create(@attr)
-      @msg1 = FactoryGirl.create(:message, user: @user, created_at: 1.minute.ago)
-      @msg2 = FactoryGirl.create(:message, user: @user, created_at: 1.hour.ago)
+    before { @user.save }
+    let!(:older_message) do
+      FactoryGirl.create(:message, user: @user, created_at: 1.day.ago)
+    end
+    let!(:newer_message) do
+      FactoryGirl.create(:message, user: @user, created_at: 1.minute.ago)
     end
 
-    it "has a messages attribute" do
-      @user.should respond_to(:messages)
-    end
+    it { should respond_to(:messages) }
 
     it "has the right messages in the right order" do
-      @user.messages.should == [@msg1, @msg2]
+      @user.messages.should == [newer_message, older_message]
     end
   end
 
   describe "recipient associations" do
 
-    before(:each) do
-      @user = User.create(@attr)
-      @recip1 = FactoryGirl.create(:recipient, user: @user)
-      @recip2 = FactoryGirl.create(:recipient, user: @user)
+    before { @user.save }
+    let!(:recipient1) do
+      FactoryGirl.create(:recipient, user: @user)
+    end
+    let!(:recipient2) do
+      FactoryGirl.create(:recipient, user: @user)
     end
 
-    it "has a recipients attribute" do
-      @user.should respond_to(:recipients)
-    end
+    it { should respond_to(:recipients) }
 
-    it "has the correct recipients" do
-      @user.recipients.should == [@recip1, @recip2]
+    it "has the right recipients" do
+      @user.recipients.should == [recipient1, recipient2]
     end
   end
 
   describe "attachment associations" do
 
-    before(:each) do
-      @user = User.create(@attr)
-      @attach1 = FactoryGirl.create(:attachment, user: @user)
-      @attach2 = FactoryGirl.create(:attachment, user: @user)
+    before { @user.save }
+    let!(:attachment1) do
+      FactoryGirl.create(:attachment, user: @user)
+    end
+    let!(:attachment2) do
+      FactoryGirl.create(:attachment, user: @user)
     end
 
-    it "has an attachements attribute" do
-      @user.should respond_to(:attachments)
-    end
+    it { should respond_to(:attachments) }
 
-    it "has the correct attachments" do
-      @user.attachments.should == [@attach1, @attach2]
+    it "has the right attachements" do
+      @user.attachments.should == [attachment1, attachment2]
     end
   end
   
   describe "method" do
     
     before(:each) do
-      @user = FactoryGirl.create(:user)
+      #@user.save
       @user1 = FactoryGirl.create(:user1, status: true)
       @user2 = FactoryGirl.create(:user2, status: true)
       @user3 = FactoryGirl.create(:user3, status: true)
@@ -199,8 +193,9 @@ describe User do
 
     describe "available_users" do
 
+      let(:users) { User.available_users(@user) }
+
       it "returns an Array of users with online status" do
-        users = User.available_users(@user)
         users.should be_kind_of(Array)
         users.size.should == @available_users.size
         users.each do |user|
@@ -210,12 +205,10 @@ describe User do
       end
 
       it "doesn't return the given user" do
-        users = User.available_users(@user)
         users.should_not include(@user)
       end
 
       it "doesn't return users who are already recipients of the given user" do
-        users = User.available_users(@user)
         users.should_not include(@user1)
       end 
     end
