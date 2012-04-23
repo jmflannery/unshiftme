@@ -182,7 +182,7 @@ describe User do
   describe "method" do
     
     before(:each) do
-      #@user.save
+      @user.save
       @user1 = FactoryGirl.create(:user1, status: true)
       @user2 = FactoryGirl.create(:user2, status: true)
       @user3 = FactoryGirl.create(:user3, status: true)
@@ -195,11 +195,9 @@ describe User do
 
       let(:users) { User.available_users(@user) }
 
-      it "returns an Array of users with online status" do
-        users.should be_kind_of(Array)
+      it "returns a list users with online status" do
         users.size.should == @available_users.size
         users.each do |user|
-          user.should be_kind_of(User)
           user.status.should be_true
         end
       end
@@ -215,8 +213,9 @@ describe User do
 
     describe "add_recipients" do
 
+      before { @user.add_recipients(@user_ids) }
+
       it "adds the list of user IDs to the user's recipients" do
-        @user.add_recipients(@user_ids)
         @user.recipients.size.should == @user_ids.size
         @user.recipients.each do |recipient|
           @user_ids.should include recipient.recipient_user_id
@@ -224,7 +223,6 @@ describe User do
       end
 
       it "doesn't add any duplicate recipients" do
-        @user.add_recipients(@user_ids)
         size1 = @user.recipients.size
         @user.add_recipients(@user_ids)
         size2 = @user.recipients.size
@@ -234,14 +232,14 @@ describe User do
 
     describe "add_recipient" do
 
+      before { @user.add_recipient(@user1.id) }
+
       it "adds the user ID to the user's recipients" do
-        @user.add_recipient(@user1.id)
         @user.recipients.size.should == 1
         @user.recipients[0].recipient_user_id.should == @user1.id
       end
 
       it "doesn't not add any duplicate recipients" do
-        @user.add_recipient(@user1.id)
         size1 = @user.recipients.size
         @user.add_recipient(@user1.id)
         size2 = @user.recipients.size
@@ -251,33 +249,39 @@ describe User do
 
     describe "recipient_user_ids" do
 
+      before { @user.add_recipients(@user_ids) }
+
       it "returns an array of the user's recipient's user_ids" do
-        @user.add_recipients(@user_ids)
         @user.recipient_user_ids == @user_ids
       end
     end
 
     describe "timestamp_poll" do
 
+      before(:each) do
+        @time = Time.now
+        @user.timestamp_poll(@time)
+      end
+
       it "sets the lastpoll attribute to the given time" do
-        time = Time.now
-        @user.timestamp_poll(time)
-        @user.lastpoll.should == time
+        @user.lastpoll.should == @time
       end
     end    
 
     describe "set_online" do
 
+      before { @user.set_online }
+
       it "sets the user's online status to true" do
-        @user.set_online
         @user.status.should be_true
       end
     end
 
     describe "set_offline" do
 
+      before { @user.set_offline }
+
       it "sets the user's online status to false" do
-        @user.set_offline
         @user.status.should be_false
       end
     end
