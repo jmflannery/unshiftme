@@ -34,6 +34,53 @@ describe User do
     User.create!(@attr)
   end
 
+  describe "validations" do
+
+    it "requires a first_name" do
+      User.new(@attr.merge(first_name: " ")).should_not be_valid
+    end
+
+    it "requires a last_name" do
+      User.new(@attr.merge(last_name: " ")).should_not be_valid
+    end
+
+    it "requires a user_name" do
+      User.new(@attr.merge(user_name: " ")).should_not be_valid
+    end
+
+    it "requires an email" do
+      User.new(@attr.merge(email: " ")).should_not be_valid
+    end
+
+    it "requires a unique user_name" do
+      user = User.create!(@attr)
+      FactoryGirl.build(:user, user_name: user.user_name).should_not be_valid
+    end
+
+    it "requires a unique email" do
+      user = User.create!(@attr)
+      FactoryGirl.build(:user, email: user.email).should_not be_valid
+    end
+
+    it "does not accept invalid email addresses" do
+      user = User.create!(@attr)
+      addresses = %w[user@foo,com user_at_foo.org example.user@foo.]
+      addresses.each do |invalid_address|
+        user.email = invalid_address
+        user.should_not be_valid
+      end      
+    end
+
+    it "accepts valid email addresses" do
+      user = User.create!(@attr)
+      addresses = %w[user@foo.com A_USER@f.b.org frst.lst@foo.jp a+b@baz.cn]
+      addresses.each do |valid_address|
+        user.email = valid_address
+        user.should be_valid
+      end      
+    end
+  end
+
   describe "password validations" do
 
     it "requires a password" do
@@ -55,7 +102,6 @@ describe User do
       hash = @attr.merge(:password => long, :password_confirmation => long)
       User.new(hash).should_not be_valid
     end
-
   end
 
   describe "password encryption" do
@@ -73,10 +119,6 @@ describe User do
     end
 
     describe "authenticate method" do
-      
-      before(:each) do
-        @user = User.create!(@attr)
-      end
       
       it "has an authenticate method" do
         @user.should respond_to(:authenticate)

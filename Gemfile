@@ -27,7 +27,7 @@ group :development, :test do
   gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
   #gem 'capybara', "~> 1.1.2"
   #gem 'capybara-webkit'
-  gem 'factory_girl_rails', "~> 1.6.0"
+  gem 'factory_girl_rails', "~> 3.0"
   gem 'faker'
   gem "annotate", "~> 2.4.0"
   gem 'rb-inotify'

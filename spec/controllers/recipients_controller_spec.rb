@@ -67,10 +67,10 @@ describe RecipientsController do
       before(:each) do
         recip_user1 = FactoryGirl.create(:user1)
         recip_user2 = FactoryGirl.create(:user2)
-        @recip1 = Factory(:recipient, :user => @user, :recipient_user_id => recip_user1.id)
-        @recip2 = Factory(:recipient, :user => @user, :recipient_user_id => recip_user2.id)
+        @recip1 = FactoryGirl.create(:recipient, :user => @user, :recipient_user_id => recip_user1.id)
+        @recip2 = FactoryGirl.create(:recipient, :user => @user, :recipient_user_id => recip_user2.id)
         @recips = [@recip1, @recip2]
-        @non_recip = Factory(:recipient)
+        @non_recip = FactoryGirl.create(:recipient3)
       end
 
       it "should include all recipients" do 
@@ -91,7 +91,7 @@ describe RecipientsController do
 
     before(:each) do
       @user = FactoryGirl.create(:user)
-      @recipient = Factory(:recipient, :user => @user)
+      @recipient = FactoryGirl.create(:recipient, :user => @user)
     end
     
     it "should be successful" do

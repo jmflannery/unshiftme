@@ -5,7 +5,7 @@ describe "User Selection", :js => true do
   before(:each) do
     @title = "Available Users"
     @add_users_button_text = "Add Available Users"
-    @user = Factory(:user)
+    @user = FactoryGirl.create(:user)
     visit signin_path
     fill_in "User name", :with => @user.user_name
     fill_in "Password", :with => @user.password
@@ -17,7 +17,7 @@ describe "User Selection", :js => true do
     before(:each) do
       @users = []
       5.times do |n|
-        usr = integration_test_sign_in(FactoryGirl.create(:user, user_name: "User-#{n}"))
+        usr = integration_test_sign_in(FactoryGirl.create(:user1, user_name: "User-#{n}", email: "user#{n}@example.com"))
         @users << usr
       end
     end

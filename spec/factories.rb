@@ -1,4 +1,5 @@
 FactoryGirl.define do
+
   factory :user, class: User do |user|
     first_name "Chesty"
     middle_initial "H"
@@ -44,21 +45,59 @@ FactoryGirl.define do
   end
 end
 
-Factory.sequence :email do |n|
-  "person-#{n}@example.com"
+#Factory.sequence :email do |n|
+#  "person-#{n}@example.com"
+#end
+
+FactoryGirl.define do
+  
+  factory :message, class: Message do |message|
+    message.content "this is just a message"
+    association :user, factory: :user
+  end
+
+  factory :message1, class: Message do |message|
+    message.content "Foo bar"
+    association :user, factory: :user1
+  end
+
+  factory :message2, class: Message do |message|
+    message.content "What the? Who the?"
+    association :user, factory: :user2
+  end
+
+  factory :message3, class: Message do |message|
+    message.content "I have nothing to say"
+    association :user, factory: :user3
+  end
 end
 
-Factory.define :message do |message|
-  message.content "Foo bar"
-  message.association :user
+FactoryGirl.define do
+
+  factory :recipient, class: Recipient do |recipient|
+    recipient.recipient_user_id 22
+    association :user, factory: :user
+  end
+
+  factory :recipient1, class: Recipient do |recipient|
+    recipient.recipient_user_id 22
+    association :user, factory: :user1
+  end
+
+  factory :recipient2, class: Recipient do |recipient|
+    recipient.recipient_user_id 22
+    association :user, factory: :user2
+  end
+
+  factory :recipient3, class: Recipient do |recipient|
+    recipient.recipient_user_id 22
+    association :user, factory: :user3
+  end
 end
 
-Factory.define :recipient do |recipient|
-  recipient.recipient_user_id 22
-  recipient.association :user
-end
-
-Factory.define :attachment do |attachment|
-  attachment.payload Rails.root + "spec/fixtures/files/test_file.txt"
-  attachment.association :user
+FactoryGirl.define do
+  factory :attachment, class: Attachment do |attachment|
+    attachment.payload Rails.root + "spec/fixtures/files/test_file.txt"
+    association :user, factory: :user
+  end
 end

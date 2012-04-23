@@ -11,7 +11,7 @@ describe MessagesController do
     end
 
     it "should deny access to 'update' for non-signed in users" do
-      user = Factory(:user)
+      user = FactoryGirl.create(:user)
       message = user.messages.create(:content => "i like turtles")
       post :update, message_id: message.id, format: :jd, remote: true
       response.should redirect_to(signin_path)
@@ -21,7 +21,7 @@ describe MessagesController do
   describe "POST 'create'" do
 
     before(:each) do
-      @user = test_sign_in(Factory(:user))
+      @user = test_sign_in(FactoryGirl.create(:user))
     end
     
     describe "failure" do
@@ -50,8 +50,8 @@ describe MessagesController do
       end
 
       it "should add the message sender to the recipient list of all of the message's recipients" do
-        recip_user = Factory(:user)
-        recipient = Factory(:recipient, user: @user, recipient_user_id: recip_user.id)
+        recip_user = FactoryGirl.create(:user1)
+        recipient = FactoryGirl.create(:recipient, user: @user, recipient_user_id: recip_user.id)
         post :create, :message => @attr, :format => :js
         recip_user.recipients.size.should == 1
         recip_user.recipients[0].recipient_user_id.should == @user.id
@@ -62,8 +62,8 @@ describe MessagesController do
   describe "POST 'update'" do
 
     before(:each) do
-      @cur_user = test_sign_in(Factory(:user))
-      @sender = Factory(:user)
+      @cur_user = test_sign_in(FactoryGirl.create(:user))
+      @sender = FactoryGirl.create(:user1)
       @message = @sender.messages.create!(:content => "i like turtles")
     end
 

@@ -71,17 +71,14 @@ describe UsersController do
     end
 
     it "should have an array of the given user's messages" do
-      message = Factory(:message, user: @user)
+      message = FactoryGirl.create(:message, user: @user)
       message.set_recievers
-      other_message = Factory(:message)
+      other_message = FactoryGirl.create(:message1)
       other_message.set_recievers
       get :show, :id => @user
       messages = assigns(:messages)
-      messages.should be_kind_of(Array)
-      messages.size.should be(1)
-      messages[0].should be_kind_of(Message)
-      messages[0].should == message
-      messages.should_not include(other_message)
+      messages.should include message
+      messages.should_not include other_message
     end
 
   end
@@ -89,11 +86,11 @@ describe UsersController do
   describe "GET 'index'" do
 
     before(:each) do
-      @offline_user = Factory(:user)
-      user1 = test_sign_in(FactoryGirl.create(:user))
-      user2 = test_sign_in(FactoryGirl.create(:user1))
-      @user = test_sign_in(FactoryGirl.create(:user2))
-      @users = [user1, user2]
+      user1 = test_sign_in(FactoryGirl.create(:user1))
+      user2 = test_sign_in(FactoryGirl.create(:user2))
+      @offline_user = FactoryGirl.create(:user3)
+      @user = test_sign_in(FactoryGirl.create(:user))
+      @users = [user2, user1]
     end
 
     it "should should be success" do
