@@ -2,8 +2,14 @@
   <div id="user_name_section" class='<%= @user.user_name %>'>
     <div id='user_name'><h1><%= @title %></h1></div>
     <% if signed_in? %>
-      <div id='sign_out'><%= link_to "Sign out", signout_path %></div>
-      <!--<div id='update'><%#= link_to "Update Profile", edit_user_path(current_user) %></div>-->
+      <div id='menu'>
+        <ul>
+        <% if @user.admin? %>
+          <li><%= link_to "View Transcript", "#" %></li>
+          <li><%= link_to "Manage Users", "#" %></li>
+        <% end %> 
+        <li><%= link_to "Sign out", signout_path %></li>
+      </div>
     <% end %>
   </div> <!-- end #user_name_section -->
 

@@ -9,6 +9,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
+    @user.toggle(:admin) if User.count == 0
     if @user.save
       sign_in @user
       redirect_to @user

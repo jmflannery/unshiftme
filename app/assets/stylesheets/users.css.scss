@@ -23,12 +23,17 @@
     h1 {
       text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6);
       margin: 0px;
+      font-size: 1.4em;
     }
   }
 
-  #sign_out {
+  #menu {
     float: right;
     margin: 8px;
+
+    ul {
+      display: inline;
+    }
     
     a {
       color: $near-white;

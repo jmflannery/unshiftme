@@ -80,7 +80,6 @@ describe UsersController do
       messages.should include message
       messages.should_not include other_message
     end
-
   end
 
   describe "GET 'index'" do
@@ -155,6 +154,14 @@ describe UsersController do
       it "should sign the user in" do
         post :create, :user => @success_attr
         controller.should be_signed_in
+      end
+
+      it "should create admin user if it is the first User to be created" do
+        post :create, user: @success_attr
+        assigns(:user).should be_admin
+        user = FactoryGirl.build(:user)
+        post :create, user: user
+        assigns(:user).should_not be_admin
       end
     end
   end
