@@ -73,7 +73,7 @@ describe UsersController do
     it "should have an array of the given user's messages" do
       message = FactoryGirl.create(:message, user: @user)
       message.set_recievers
-      other_message = FactoryGirl.create(:message1)
+      other_message = FactoryGirl.create(:message)
       other_message.set_recievers
       get :show, :id => @user
       messages = assigns(:messages)
@@ -86,11 +86,11 @@ describe UsersController do
   describe "GET 'index'" do
 
     before(:each) do
-      user1 = test_sign_in(FactoryGirl.create(:user1))
-      user2 = test_sign_in(FactoryGirl.create(:user2))
-      @offline_user = FactoryGirl.create(:user3)
+      user1 = test_sign_in(FactoryGirl.create(:user))
+      user2 = test_sign_in(FactoryGirl.create(:user))
+      @offline_user = FactoryGirl.create(:user)
       @user = test_sign_in(FactoryGirl.create(:user))
-      @users = [user2, user1]
+      @users = [user1, user2]
     end
 
     it "should should be success" do
@@ -261,7 +261,7 @@ describe UsersController do
     describe "for signed-in users" do
 
       before(:each) do
-        wrong_user = FactoryGirl.create(:user1)
+        wrong_user = FactoryGirl.create(:user)
         test_sign_in(wrong_user)
       end
 

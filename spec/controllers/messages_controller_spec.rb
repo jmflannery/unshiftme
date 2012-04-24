@@ -50,7 +50,7 @@ describe MessagesController do
       end
 
       it "should add the message sender to the recipient list of all of the message's recipients" do
-        recip_user = FactoryGirl.create(:user1)
+        recip_user = FactoryGirl.create(:user)
         recipient = FactoryGirl.create(:recipient, user: @user, recipient_user_id: recip_user.id)
         post :create, :message => @attr, :format => :js
         recip_user.recipients.size.should == 1
@@ -63,7 +63,7 @@ describe MessagesController do
 
     before(:each) do
       @cur_user = test_sign_in(FactoryGirl.create(:user))
-      @sender = FactoryGirl.create(:user1)
+      @sender = FactoryGirl.create(:user)
       @message = @sender.messages.create!(:content => "i like turtles")
     end
 

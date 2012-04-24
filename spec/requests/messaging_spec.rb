@@ -38,7 +38,7 @@ describe "Messaging" do
     describe "in the message recievers browser" do
 
       before(:each) do
-        reciever = FactoryGirl.create(:user1)
+        reciever = FactoryGirl.create(:user)
 
         within_browser(:reciever) do
           request_sign_in(reciever)

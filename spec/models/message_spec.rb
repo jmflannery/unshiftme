@@ -67,8 +67,8 @@ describe Message do
     describe "set_recievers" do 
     
       it "sets message.recievers to the message's recipient's user_ids seperated by commas" do
-        other_user = FactoryGirl.create(:user1)
-        other_user2 = FactoryGirl.create(:user2)
+        other_user = FactoryGirl.create(:user)
+        other_user2 = FactoryGirl.create(:user)
         FactoryGirl.create(:recipient, :user => @user, :recipient_user_id => other_user.id)
         FactoryGirl.create(:recipient, :user => @user, :recipient_user_id => other_user2.id)
         @message = @user.messages.create!(@msg_attr)
@@ -84,8 +84,8 @@ describe Message do
     describe "before_for" do
 
       before(:each) do
-        @recipient_user = FactoryGirl.create(:user1)
-        other_user = FactoryGirl.create(:user2)
+        @recipient_user = FactoryGirl.create(:user)
+        other_user = FactoryGirl.create(:user)
         @user.recipients.create(recipient_user_id: @recipient_user.id)
         @message = @user.messages.create(content: "hello world")
         @message.set_recievers
@@ -139,7 +139,7 @@ describe Message do
 
       before(:each) do
         @message = @user.messages.create(@msg_attr)
-        @recipient_user = FactoryGirl.create(:user1)
+        @recipient_user = FactoryGirl.create(:user)
       end
       
       it "adds the given user id the message's read by list" do
@@ -160,9 +160,9 @@ describe Message do
 
       before(:each) do
         @message = @user.messages.create(@msg_attr)
-        @recipient_user = FactoryGirl.create(:user1)
-        @recipient_user2 = FactoryGirl.create(:user2)
-        @recipient_user3 = FactoryGirl.create(:user3)
+        @recipient_user = FactoryGirl.create(:user)
+        @recipient_user2 = FactoryGirl.create(:user)
+        @recipient_user3 = FactoryGirl.create(:user)
       end
 
       it "returns a list of the user names who read the message" do

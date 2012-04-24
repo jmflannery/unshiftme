@@ -14,7 +14,7 @@ require 'spec_helper'
 describe Recipient do
   before(:each) do
     @sender = FactoryGirl.create(:user)
-    @reciever = FactoryGirl.create(:user1)
+    @reciever = FactoryGirl.create(:user)
     @attr = { :recipient_user_id => @reciever.id }
     @recipient = @sender.recipients.create!(@attr)
   end

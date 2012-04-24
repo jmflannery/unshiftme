@@ -191,9 +191,9 @@ describe User do
     
     before(:each) do
       @user.save
-      @user1 = FactoryGirl.create(:user1, status: true)
-      @user2 = FactoryGirl.create(:user2, status: true)
-      @user3 = FactoryGirl.create(:user3, status: true)
+      @user1 = FactoryGirl.create(:user, status: true)
+      @user2 = FactoryGirl.create(:user, status: true)
+      @user3 = FactoryGirl.create(:user, status: true)
       FactoryGirl.create(:recipient, user: @user, recipient_user_id: @user1.id)
       @user_ids = [@user1.id, @user2.id, @user3.id]
       @available_users = [@user2, @user3]

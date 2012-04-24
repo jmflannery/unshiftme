@@ -17,7 +17,7 @@ describe "User Selection", :js => true do
     before(:each) do
       @users = []
       5.times do |n|
-        usr = integration_test_sign_in(FactoryGirl.create(:user1, user_name: "User-#{n}", email: "user#{n}@example.com"))
+        usr = integration_test_sign_in(FactoryGirl.create(:user))
         @users << usr
       end
     end

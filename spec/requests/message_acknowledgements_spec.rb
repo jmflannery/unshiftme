@@ -10,7 +10,7 @@ feature "Message Acknowledgement", js: true do
     end
 
     within_browser(:sender) do
-      @sender = request_sign_in(FactoryGirl.create(:user1))
+      @sender = request_sign_in(FactoryGirl.create(:user))
       within("#recipient_selection_section") do
         click_link @add_users_button_text
         click_link @reciever.user_name

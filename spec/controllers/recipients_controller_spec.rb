@@ -65,12 +65,12 @@ describe RecipientsController do
     describe "recipient list" do
 
       before(:each) do
-        recip_user1 = FactoryGirl.create(:user1)
-        recip_user2 = FactoryGirl.create(:user2)
-        @recip1 = FactoryGirl.create(:recipient, :user => @user, :recipient_user_id => recip_user1.id)
-        @recip2 = FactoryGirl.create(:recipient, :user => @user, :recipient_user_id => recip_user2.id)
+        recip_user1 = FactoryGirl.create(:user)
+        recip_user2 = FactoryGirl.create(:user)
+        @recip1 = FactoryGirl.create(:recipient, user: @user, :recipient_user_id => recip_user1.id)
+        @recip2 = FactoryGirl.create(:recipient, user: @user, :recipient_user_id => recip_user2.id)
         @recips = [@recip1, @recip2]
-        @non_recip = FactoryGirl.create(:recipient3)
+        @non_recip = FactoryGirl.create(:recipient)
       end
 
       it "should include all recipients" do 
@@ -103,7 +103,7 @@ describe RecipientsController do
     describe "for an unauthorized user" do
 
       before(:each) do
-        test_sign_in(FactoryGirl.create(:user1))
+        test_sign_in(FactoryGirl.create(:user))
       end
 
       it "should deny access" do
