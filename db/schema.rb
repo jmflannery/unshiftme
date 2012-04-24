@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120421023110) do
+ActiveRecord::Schema.define(:version => 20120424033958) do
 
   create_table "attachments", :force => true do |t|
     t.integer  "user_id"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(:version => 20120421023110) do
     t.string   "middle_initial",  :limit => 1
     t.string   "last_name"
     t.string   "user_name"
+    t.boolean  "admin"
   end
 
 end
