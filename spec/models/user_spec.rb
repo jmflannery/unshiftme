@@ -187,6 +187,23 @@ describe User do
     end
   end
   
+  describe "transcript associations" do
+
+    before { @user.save }
+    let!(:transcript1) do
+      FactoryGirl.create(:transcript, user: @user, watch_user_id: 11, start_time: 1.hour.ago, end_time: 1.minute.ago)
+    end
+    let!(:transcript2) do
+      FactoryGirl.create(:transcript, user: @user, watch_user_id: 22, start_time: 3.hours.ago, end_time: 4.hours.ago)
+    end
+
+    it { should respond_to(:transcripts) }
+
+    it "has the right transcripts" do
+      @user.transcripts.should == [transcript1, transcript2]
+    end
+  end
+
   describe "method" do
     
     before(:each) do

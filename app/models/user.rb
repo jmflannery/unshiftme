@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   attr_accessible :first_name, :middle_initial, :last_name, :user_name, :email, :password, :password_confirmation 
   
   has_many :messages
+  has_many :transcripts
   has_many :recipients
   has_many :attachments
   

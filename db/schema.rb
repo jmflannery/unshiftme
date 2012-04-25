@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120424033958) do
+ActiveRecord::Schema.define(:version => 20120424220422) do
 
   create_table "attachments", :force => true do |t|
     t.integer  "user_id"
@@ -53,13 +53,21 @@ ActiveRecord::Schema.define(:version => 20120424033958) do
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
+  create_table "transcripts", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "watch_user_id"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
   create_table "users", :force => true do |t|
     t.string   "email"
     t.datetime "created_at",                   :null => false
     t.datetime "updated_at",                   :null => false
     t.string   "password_digest"
     t.boolean  "status"
-    t.integer  "recipient_id"
     t.datetime "lastpoll"
     t.string   "first_name"
     t.string   "middle_initial",  :limit => 1
