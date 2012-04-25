@@ -5,8 +5,8 @@ describe Transcript do
   before(:each) do
     @user = FactoryGirl.create(:user)
     @transcript = @user.transcripts.build(watch_user_id: 22,
-                                          start_time: 2.minutes.ago,
-                                          end_time: 1.second.ago)
+                                          start_time: 3.minutes.ago,
+                                          end_time: 3.second.ago)
   end
 
   subject { @transcript }
@@ -29,6 +29,26 @@ describe Transcript do
 
   describe "when end_time is not present" do
     before { @transcript.end_time = nil }
+    it { should_not be_valid }
+  end
+  
+  describe "when start_time is too low" do
+    before { @transcript.start_time = 5.days.ago }
+    it { should_not be_valid }
+  end
+
+  describe "when start_time is too high" do
+    before { @transcript.start_time = 1.second.ago }
+    it { should_not be_valid }
+  end
+
+  describe "when end_time is too low" do
+    before { @transcript.end_time = 5.days.ago }
+    it { should_not be_valid }
+  end
+
+  describe "when end_time is too high" do
+    before { @transcript.end_time = 1.second.ago }
     it { should_not be_valid }
   end
 
