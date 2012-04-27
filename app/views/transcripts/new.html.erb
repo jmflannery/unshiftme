@@ -1,2 +1,27 @@
-<h1>Transcripts#new</h1>
-<p>Find me in app/views/transcripts/new.html.erb</p>
+<div id="new_transcript">
+  
+  <h2>Create a new Transcript</h2>
+
+  <div class="center_spot">
+    <%= form_for(@transcript) do |f|  %>
+      <div class="field">
+        <%= f.label :watch_user_id %>
+        <%= f.select :watch_user_id, @online_users %>
+      </div> 
+
+      <div class="field">
+        <%= f.label :start_time %>
+        <%= f.text_field :start_time %>
+      </div>
+
+      <div class="field">
+        <%= f.label :end_time %>
+        <%= f.text_field :end_time %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Create Transcript" %>
+      </div>
+    <% end %>
+  </div>
+</div>

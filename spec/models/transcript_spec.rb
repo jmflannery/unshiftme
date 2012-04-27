@@ -61,4 +61,24 @@ describe Transcript do
       @transcript.user.should == @user
     end
   end
+
+  describe "named scope" do
+
+    before(:each) do
+      @user = FactoryGirl.create(:user)
+      @transcript = FactoryGirl.create(:transcript, user: @user)
+      @transcript1 = FactoryGirl.create(:transcript, user: @user)
+      @other_transcript = FactoryGirl.create(:transcript)
+    end
+
+    describe "for_user" do
+      
+      it "returns all transcripts owned by the given user" do
+        @transcripts = Transcript.for_user(@user)
+        @transcripts.should include @transcript
+        @transcripts.should include @transcript1
+        @transcripts.should_not include @other_transcript
+      end
+    end
+  end
 end

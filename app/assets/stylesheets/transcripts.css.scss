@@ -1,3 +1,22 @@
-// Place all the styles related to the transcripts controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "colors";
+@import "fonts";
+@import "style_mixins";
+
+#transcript_page {
+  
+  ul {
+
+    display: inline;
+  
+    li {
+    
+      a {
+        font-size: .8em;
+        text-decoration: none;
+        @include mac-button-style;
+        @include mac-button-text-style; 
+        padding: 2px 4px;
+      }
+    }
+  }
+}

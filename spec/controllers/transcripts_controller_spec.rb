@@ -12,22 +12,22 @@ describe TranscriptsController do
     describe "for non-signed in users" do
 
       it "deny's access to 'new'" do
-        get :new, user_id: @admin_user.id, format: :js
+        get :new, user: @admin_user.id, format: :js
         response.should redirect_to(signin_path)
       end
 
       it "deny's access to 'create'" do
-        post :create, user_id: @admin_user.id, format: :js
+        post :create, user: @admin_user.id, format: :js
         response.should redirect_to(signin_path)
       end
 
       it "deny's access to 'show'" do
-        get :show, id: @transcript.id, user_id: @admin_user.id
+        get :show, id: @transcript.id, user: @admin_user.id
         response.should redirect_to(signin_path)
       end
 
       it "deny's access to 'index'" do
-        get :index, id: @transcript.id, user_id: @admin_user.id
+        get :index, id: @transcript.id, user: @admin_user.id
         response.should redirect_to(signin_path)
       end
     end
@@ -40,22 +40,22 @@ describe TranscriptsController do
       end
 
       it "deny's access to 'new'" do
-        get :new, user_id: @non_admin.id
+        get :new, user: @non_admin.id
         response.should redirect_to(signin_path)
       end
 
       it "deny's access to 'create'" do
-        post :create, user_id: @non_admin.id
+        post :create, user: @non_admin.id
         response.should redirect_to(signin_path)
       end
 
       it "deny's access to 'show'" do
-        get :show, id: @transcript.id, user_id: @non_admin.id
+        get :show, id: @transcript.id, user: @non_admin.id
         response.should redirect_to(signin_path)
       end
 
       it "deny's access to 'index'" do
-        get :index, id: @transcript.id, user_id: @non_admin.id
+        get :index, id: @transcript.id, user: @non_admin.id
         response.should redirect_to(signin_path)
       end
     end
@@ -69,12 +69,7 @@ describe TranscriptsController do
       end
 
       it "deny's access to 'show'" do
-        get :show, id: @transcript_id, user_id: @admin_user.id
-        response.should redirect_to(signin_path)
-      end
-
-      it "deny's access to 'index'" do
-        get :index, id: @transcript_id, user_id: @admin_user.id
+        get :show, id: @transcript_id, user: @admin_user.id
         response.should redirect_to(signin_path)
       end
     end
@@ -87,7 +82,7 @@ describe TranscriptsController do
     end
 
     it "returns http success" do
-      get :new, user_id: @admin_user.id, format: :js
+      get :new, user: @admin_user.id, format: :js
       response.should be_success
     end
   end
@@ -99,7 +94,7 @@ describe TranscriptsController do
     end
 
     it "returns http success" do
-      post :create, user_id: @admin_user.id, format: :js
+      post :create, user: @admin_user.id, format: :js
       response.should be_success
     end
   end
@@ -112,7 +107,7 @@ describe TranscriptsController do
     end
 
     it "returns http success" do
-      get 'show', id: @transcript.id, user_id: @admin_user.id
+      get 'show', id: @transcript.id, user: @admin_user.id
       response.should be_success
     end
   end
@@ -125,7 +120,7 @@ describe TranscriptsController do
     end
 
     it "returns http success" do
-      get 'index', id: @transcript.id, user_id: @admin_user.id
+      get 'index', id: @transcript.id, user: @admin_user.id
       response.should be_success
     end
   end

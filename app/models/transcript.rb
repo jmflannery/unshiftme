@@ -9,6 +9,8 @@ class Transcript < ActiveRecord::Base
   validates :end_time, presence: true
   validate :acceptable_start_date
   validate :acceptable_end_date
+  
+  scope :for_user, lambda { |user_id| where("user_id = ?", user_id) }
 
   def acceptable_start_date
     errors.add("start_time", "is not within acceptable range") unless date_within(self.start_time, 3.days.ago, 2.second.ago)
