@@ -49,15 +49,27 @@ describe Message do
   end
 
   describe "scope" do
+     
+    before(:each) do
+      @today_message = FactoryGirl.create(:message, user: @user, created_at: 23.hours.ago) 
+      @yesterday_message = FactoryGirl.create(:message, user: @user, created_at: 25.hours.ago) 
+    end
 
     describe "before" do
 
       it "returns messages created between the given time and 24 hours earlier" do
-        today_message = FactoryGirl.create(:message, user: @user, created_at: 23.hours.ago) 
-        yesterday_message = FactoryGirl.create(:message, user: @user, created_at: 25.hours.ago) 
         todays_messages = Message.before(Time.now)
-        todays_messages.should include today_message
-        todays_messages.should_not include yesterday_message
+        todays_messages.should include @today_message
+        todays_messages.should_not include @yesterday_message
+      end
+    end
+
+    describe "between" do
+
+      it "returns messages created between the given from and to times" do
+        messages = Message.between(24.hours.ago, 20.hours.ago)
+        messages.should include @today_message
+        messages.should_not include @yesterday_message
       end
     end
   end

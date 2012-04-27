@@ -1,2 +1,10 @@
-<h1>Transcripts#show</h1>
-<p>Find me in app/views/transcripts/show.html.erb</p>
+<div id="transcripts">
+  <h2><%= "Transcript for #{@watch_user.user_name}" %></h2>
+  <p><%= "From #{@start_time} to #{@end_time}" %></p>
+
+  <div id="messages_section">
+    <ul id="message_list">
+      <%= render(@messages) %>
+    </ul>
+  </div>
+</div>

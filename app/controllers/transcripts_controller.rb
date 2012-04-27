@@ -11,10 +11,21 @@ class TranscriptsController < ApplicationController
   end
 
   def create
-    puts "hey now #{User.find_by_id(params[:transcript][:watch_user_id]).user_name}"
+    @user = current_user
+    @transcript = @user.transcripts.build(params[:transcript])
+    if @transcript.save
+      redirect_to transcript_path(@transcript)
+    else
+      puts "not a success"
+    end
   end
 
   def show
+    @transcript = Transcript.find(params[:id])
+    @watch_user = User.find(@transcript.watch_user_id)
+    @start_time = @transcript.start_time.strftime("%a %b %e %Y %T")
+    @end_time = @transcript.end_time.strftime("%a %b %e %Y %T")
+    @messages = Message.between(@transcript.start_time, @transcript.end_time)
   end
 
   def index
