@@ -1,4 +1,7 @@
 <div id="transcript_page">
+  
+  <%= link_to "Back", user_path(@user) %>
+
   <ul>
     <li><%= link_to "New Transcript", new_transcript_path(user: @user) %></li>
   </ul>

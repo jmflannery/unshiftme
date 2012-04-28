@@ -21,6 +21,7 @@ class TranscriptsController < ApplicationController
   end
 
   def show
+    @user = current_user
     @transcript = Transcript.find(params[:id])
     @watch_user = User.find(@transcript.watch_user_id)
     @start_time = @transcript.start_time.strftime("%a %b %e %Y %T")
