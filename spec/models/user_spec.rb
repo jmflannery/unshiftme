@@ -208,12 +208,20 @@ describe User do
     
     before(:each) do
       @user.save
-      @user1 = FactoryGirl.create(:user, status: true)
-      @user2 = FactoryGirl.create(:user, status: true)
+      @user1 = FactoryGirl.create(:user, first_name: "Jack", middle_initial: "M", last_name: "Flannery", status: true)
+      @user2 = FactoryGirl.create(:user, first_name: "Bill", middle_initial: nil, last_name: "Stump", status: true)
       @user3 = FactoryGirl.create(:user, status: true)
       FactoryGirl.create(:recipient, user: @user, recipient_user_id: @user1.id)
       @user_ids = [@user1.id, @user2.id, @user3.id]
       @available_users = [@user2, @user3]
+    end
+
+    describe "full_name" do
+
+      it "returns a string of the users first name middle initial if it exists and last name" do
+        @user1.full_name.should == "Jack M. Flannery"
+        @user2.full_name.should == "Bill Stump"
+      end
     end
 
     describe "available_users" do

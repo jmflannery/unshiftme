@@ -31,6 +31,13 @@ class User < ActiveRecord::Base
     available_users
   end
 
+  def full_name
+    full_name = self.first_name
+    full_name += " #{self.middle_initial}." if self.middle_initial 
+    full_name += " #{self.last_name}"
+    full_name
+  end
+
   def recipient_user_ids
     ids = []
     recipients.each do |recipient|
