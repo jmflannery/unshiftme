@@ -55,6 +55,36 @@ class Message < ActiveRecord::Base
     messages
   end
 
+  def self.between_for(user, timeFrom, timeTo)
+    messages = []
+    self.between(timeFrom, timeTo).each do |message|
+      if message.user_id == user.id
+        message.view_class = "message #{message.id} owner"
+        messages << message
+        next
+      end
+
+      if message.recievers
+        recievers = message.recievers.split(",")
+
+        if recievers.include?(user.id.to_s)
+          messages << message
+
+          if message.read_by
+            if message.read_by.split(",").include?(user.id.to_s)
+              message.view_class = "message #{message.id} recieved read"
+            else
+              message.view_class = "message #{message.id} recieved unread"
+            end
+          else
+            message.view_class = "message #{message.id} recieved unread"
+          end
+        end
+      end
+    end
+    messages
+  end
+
   def mark_read_by(user)
     if self.read_by
       self.read_by += ",#{user.id.to_s}" unless self.read_by.split(",").include?(user.id.to_s)

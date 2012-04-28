@@ -92,7 +92,7 @@ describe Message do
         end
       end
     end
-   
+      
     describe "before_for" do
 
       before(:each) do
@@ -111,7 +111,7 @@ describe Message do
         @old_message = FactoryGirl.create(:message, user: @user, created_at: 25.hours.ago) 
         @old_message.set_recievers
       end
-      
+
       it "returns messages that were sent or recieved by the given user" do
         recipient_messages = Message.before_for(@recipient_user, Time.now)
         recipient_messages.should include @message
@@ -143,6 +143,60 @@ describe Message do
         messages = Message.before_for(@recipient_user, Time.now)
         messages.should include @message
         index = messages.index(@message) 
+        messages[index].view_class.should == "message #{messages[index].id} recieved unread"
+      end
+    end 
+
+    describe "between_for" do
+
+      before(:each) do
+        @sent_message = FactoryGirl.create(:message, user: @user)
+        @sent_message2 = FactoryGirl.create(:message, user: @user, created_at: 4.hours.ago)
+        @sender = FactoryGirl.create(:user)
+        FactoryGirl.create(:recipient, user: @sender, recipient_user_id: @user.id)
+        @recieved_message = FactoryGirl.create(:message, user: @sender)
+        @recieved_message.set_recievers
+        @recieved_message2 = FactoryGirl.create(:message, user: @sender, created_at: 4.hours.ago)
+        @recieved_message2.set_recievers
+        other_user = FactoryGirl.create(:user)
+        @other_message = FactoryGirl.create(:message, user: other_user)
+        @other_message.set_recievers
+      end
+      
+      it "returns messages that were sent or recieved by the given user" do
+        messages = Message.between_for(@user, 1.hour.ago, Time.now)
+        messages.should include @sent_message
+        messages.should include @recieved_message
+        messages.should_not include @other_message
+      end
+       
+      it "returns messages created between the given time and 24 hours earlier than the given time" do
+        messages = Message.between_for(@user, 1.hour.ago, Time.now)
+        messages.should include @sent_message
+        messages.should include @recieved_message
+        messages.should_not include @sent_message2
+        messages.should_not include @recieved_message2
+      end
+
+      it "sets message view_class attribute to 'owner' for each message created by the given user" do
+        messages = Message.between_for(@user, 1.hour.ago, Time.now)
+        messages.should include @sent_message           
+        index = messages.index(@sent_message) 
+        messages[index].view_class.should == "message #{messages[index].id} owner"
+      end
+
+      it "sets message view_class attribute to 'recieved_message read' for each read message recieved by the given user" do
+        @recieved_message.mark_read_by(@user)
+        messages = Message.between_for(@user, 1.hour.ago, Time.now)
+        messages.should include @recieved_message
+        index = messages.index(@recieved_message) 
+        messages[index].view_class.should == "message #{messages[index].id} recieved read"
+      end
+
+      it "sets message view_class attribute to 'recieved_message unread' for each unread message recieved by the given user" do
+        messages = Message.between_for(@user, 1.hour.ago, Time.now)
+        messages.should include @recieved_message
+        index = messages.index(@recieved_message) 
         messages[index].view_class.should == "message #{messages[index].id} recieved unread"
       end
     end 

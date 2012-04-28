@@ -19,4 +19,8 @@
       }
     }
   }
+
+  #messages_section {
+    @include message_section_style;
+  } // end #messages_section
 }
