@@ -1,6 +1,8 @@
 class SessionsController < ApplicationController
   def new
     @title = "Sign in"
+    @td_desks = Desk.of_type("td")
+    @ops_desks = Desk.of_type("ops")
   end
 
   def create

@@ -101,6 +101,17 @@ $(function() {
   $('label[for=user_user_name]').click(name_user);
 });
 
+
+////////////////////////////////////
+// Desk radio buttons
+////////////////////////////////////
+
+$(function() {
+  $("#select_desk input").click(function() {
+    console.log($(this).val());
+  });
+});
+
 ///////////////////////////////////
 // show the most recent message
 ///////////////////////////////////

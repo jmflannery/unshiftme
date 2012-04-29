@@ -15,6 +15,15 @@
         <%= password_field_tag :password %>
       </div>
 
+      <div id="select_desk">
+        <div id="td_desks">
+          <%= render @td_desks %>
+        </div>
+        <div id="ops_desks">
+          <%= render @ops_desks %>
+        </div>
+      </div>
+
       <div class="actions">
         <%= submit_tag "Sign In" %>
       </div>
