@@ -235,3 +235,10 @@
     } // end .actions
   } // end .center_spot
 } // end mixin form-style
+
+@mixin desk_select_style {
+
+  #select_desk {
+    font-size: .8em;
+  }
+}

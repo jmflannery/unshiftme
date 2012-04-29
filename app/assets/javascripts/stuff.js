@@ -107,8 +107,12 @@ $(function() {
 ////////////////////////////////////
 
 $(function() {
-  $("#select_desk input").click(function() {
-    console.log($(this).val());
+  $("#td_desks input").click(function() {
+    $("#ops_desks input[type='radio']").removeAttr("checked");
+  });
+
+  $("#ops_desks input").click(function() {
+    $("#td_desks input[type='radio']").removeAttr("checked");
   });
 });
 

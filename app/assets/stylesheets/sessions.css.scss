@@ -4,4 +4,6 @@
 
 #signin {
   @include form-style;
+  
+  @include desk_select_style;
 } // end #sign_in
