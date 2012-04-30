@@ -391,6 +391,11 @@ describe User do
         it "returns a list of all the desks under the control of the user" do
           @user.desks.should == [Desk.find_by_abrev("CUSN"), Desk.find_by_abrev("AML")]
         end
+
+        it "returns an empty list of the user has no desks" do
+          @user2 = FactoryGirl.build(:user)
+          @user2.desks.should == []
+        end
       end
 
       describe "leave_desk" do
