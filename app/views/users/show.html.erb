@@ -1,20 +1,6 @@
 <div id="content">
   <div id='recipient_desk_selection'>
-    <ul>
-      <%= render(partial: 'desks/recipient_desk', collection: @desks) %>
-    </ul>
-  </div>
-  <!--
-  <div id='send_to_section'>
-    <#%= render(partial: 'recipients/recipients', object: @my_recipients) %>
-  </div>
-
-  <div id='recipient_selection_section'>
-    <#%= link_to("Add Available Users", users_path, :id => "users_button", :remote => true, :format => :js) %>
-  </div>
-  -->
-  <div id='upload_button'>
-    <%= link_to("Show File Uploader", "#", id: "attach_button") %>
+    <%= render(partial: 'desks/recipient_desk', collection: @desks) %>
   </div>
 
   <div id="msg_input">
@@ -22,9 +8,12 @@
     <% if signed_in? %>
       <%= form_for(@message, remote: true, format: :js) do |f| %>
         <%= f.text_field :content, maxlength: 300 %>
-        <%= f.submit "Send", id: "Send" %>
       <% end %>
     <% end %>
+  </div>
+
+  <div id='upload_button'>
+    <%= link_to("Show File Uploader", "#", id: "attach_button") %>
   </div>
 
   <div id="upload_section">

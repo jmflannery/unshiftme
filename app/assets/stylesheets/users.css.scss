@@ -4,79 +4,25 @@
 
 #recipient_desk_selection {
   color: $near-white;
+  font-size: .86em;
 
-  ul {
-
-    li {
-      list-style: none;
-      display: inline;
-    }
+  .recipient_desk {
+    float: left;
+    white-space: nowrap;
+    padding: 3px;
+    margin: 3px;
+    @include mac-button-style;
+    @include mac-button-text-style;
   }
 }
 
-#send_to_section {
-  clear: both;
-  text-align: left;
-  color: $near-white;
-   
-  p {
-    margin: 0px;
-    padding: 2px 3px;
-  }
-   
-  a {
-    text-decoration: none;
-    color: rgba(255, 255, 255, 0.7);
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
-    font-weight: bold;
-    padding: 2px 3px;
-    margin: 0px;
-
-    &:hover, &:focus {
-      color: $red;
-      background: rgba(240, 8, 7, 0.5); 
-      @include rounded-corners(4px);
-    }
-  }
-} // end #send_to_section
-
-#recipient_selection_section {
-  color: $near-white;
-
-  p {
-    margin: 0px;
-  }
-  
-  a {
-    text-decoration: none;
-    color: rgba(255, 255, 255, 0.7);
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
-    font-weight: bold;
-    padding: 2px 3px;
-    margin: 0px;    
-
-    &:hover, &:focus {
-      color: $green;
-      background: rgba(88, 143, 39, 0.5); 
-      @include rounded-corners(4px);
-    }
-  }
-
-  #hide_button {
-    color: $red;
-    cursor: pointer;
-    font-weight: bold;
-    padding: 2px 3px;
-
-    &:hover, &:focus {
-      color: $red;
-      background: rgba(240, 8, 7, 0.5); 
-      @include rounded-corners(4px);
-    }  
-  }
-} // end #recipient_selection_section
+#messages_section {
+  @include message_section_style;
+} // end #messages_section
 
 #upload_button {
+  margin-bottom: 5px;
+
   a {
     text-decoration: none;
     color: rgba(255, 255, 255, 0.7);
@@ -84,6 +30,7 @@
     font-weight: bold;
     padding: 2px 3px;
     margin: 0px;
+    font-size: .86em;
 
     &:hover, &:focus {
       color: $blue;
@@ -93,10 +40,6 @@
   } 
 }
 
-#messages_section {
-  @include message_section_style;
-} // end #messages_section
-  
 #upload_section {
   display: none;
   //background-color: $near-white;
@@ -122,12 +65,13 @@
 
 #msg_input {
   clear: both;
-  width: 100%;
+  width: 95%;
   margin: 5px;
   padding: 5px;
+  text-align: center;
 
   input[type="text"] {
-    width: 82.608696%; // 760 / 920
+    width: 95%;
     padding: 6px;
     font-size: 1.4em;
     color: $dark-text;
@@ -143,7 +87,7 @@
   } // end input[type="text"]
 
   input[type="submit"] {
-    width: 10.869565%; // 100 / 920
+    //width: 10.869565%; // 100 / 920
     padding: .8% .15%;
     @include mac-button-style;
     @include mac-button-text-style;
