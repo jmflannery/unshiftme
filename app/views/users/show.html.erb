@@ -13,6 +13,12 @@
     <% end %>
   </div> <!-- end #user_name_section -->
 
+  <div id='recipient_desk_selection'>
+    <ul>
+      <%= render(partial: 'desks/recipient_desk', collection: @desks) %>
+    </ul>
+  </div>
+
   <div id='send_to_section'>
     <%= render(partial: 'recipients/recipients', object: @my_recipients) %>
   </div>

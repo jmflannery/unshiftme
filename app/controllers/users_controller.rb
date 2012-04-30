@@ -28,6 +28,7 @@ class UsersController < ApplicationController
     @message = Message.new
     @attachment = Attachment.new
     @my_recipients = Recipient.for_user(@user.id)
+    @desks = Desk.all
   end
 
   def index

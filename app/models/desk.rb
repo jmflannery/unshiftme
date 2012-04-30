@@ -3,4 +3,6 @@ class Desk < ActiveRecord::Base
 
   scope :of_type, lambda { |type| where("job_type = ?", type) }
   scope :of_user, lambda { |user_id| where("user_id = ?", user_id) }
+  
+  default_scope order("id")
 end
