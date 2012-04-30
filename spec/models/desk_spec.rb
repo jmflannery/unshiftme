@@ -32,7 +32,7 @@ describe Desk do
         @ops_desks = Desk.of_type("ops")
       end
 
-      it "returns all desks of the given type" do
+      it "returns a list of all Desks of the given type" do
         @td_desks.should include @cusn
         @ops_desks.should_not include @cusn
         @td_desks.should include @cuss
@@ -45,6 +45,19 @@ describe Desk do
         @td_desks.should_not include @ydmstr
         @ops_desks.should include @glhse
         @td_desks.should_not include @glhse
+      end
+    end
+
+    describe "of_user" do
+
+      before(:each) do
+        @user = FactoryGirl.create(:user)
+        @params = { key: "val", "CUSN" => 1, "AML" => 1, anotherkey: "val" }
+        @user.authenticate_desk(@params)
+      end
+      
+      it "returns a list of all Desks belonging to the given user" do
+        Desk.of_user(@user.id).should == [Desk.find_by_abrev("CUSN"), Desk.find_by_abrev("AML")]
       end
     end
   end

@@ -361,7 +361,7 @@ describe User do
       end
     end
 
-    describe "authenticate_desk" do
+    describe "Desk" do
       
       before(:each) do
         @params = { key: "val", "CUSN" => 1, "AML" => 1, anotherkey: "val" }
@@ -372,11 +372,38 @@ describe User do
         Desk.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
         Desk.create!(name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
       end
-      
-      it "parses the user params and assiges control of each desk to the user" do
-        @user.authenticate_desk(@params)
-        Desk.find_by_abrev("CUSN").user_id.should == @user.id  
-        Desk.find_by_abrev("AML").user_id.should == @user.id  
+
+      describe "authenticate_desk" do
+        
+        it "parses the user params and assiges control of each desk to the user" do
+          @user.authenticate_desk(@params)
+          Desk.find_by_abrev("CUSN").user_id.should == @user.id  
+          Desk.find_by_abrev("AML").user_id.should == @user.id  
+        end
+      end
+
+      describe "desks" do
+
+        before(:each) do
+          @user.authenticate_desk(@params)
+        end
+
+        it "returns a list of all the desks under the control of the user" do
+          @user.desks.should == [Desk.find_by_abrev("CUSN"), Desk.find_by_abrev("AML")]
+        end
+      end
+
+      describe "leave_desk" do
+
+        before(:each) do
+          @user.authenticate_desk(@params)
+        end
+
+        it "relinqishes control of all desks belonging to the given user" do
+          @user.leave_desk
+          Desk.find_by_abrev("CUSN").user_id.should_not == @user.id  
+          Desk.find_by_abrev("AML").user_id.should_not == @user.id  
+        end
       end
     end
   end

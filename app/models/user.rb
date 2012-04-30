@@ -97,4 +97,15 @@ class User < ActiveRecord::Base
     end
     true
   end
+
+  def desks
+    Desk.of_user(self.id)
+  end
+
+  def leave_desk
+    self.desks.each do |desk|
+      desk.user_id = 0
+      desk.save
+    end
+  end
 end
