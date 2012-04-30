@@ -85,4 +85,16 @@ class User < ActiveRecord::Base
     self.recipients = self.recipients - stale_recipients
     self.save validate: false
   end
+
+  def authenticate_desk(params)
+    params.each do |key, val|
+      Desk.all.each do |desk|
+        if (desk.abrev == key)
+          desk.user_id = self.id
+          desk.save
+        end
+      end
+    end
+    true
+  end
 end

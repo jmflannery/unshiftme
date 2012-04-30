@@ -105,14 +105,24 @@ $(function() {
 ////////////////////////////////////
 // Desk radio buttons
 ////////////////////////////////////
-
 $(function() {
   $("#td_desks input").click(function() {
-    $("#ops_desks input[type='radio']").removeAttr("checked");
+    $("#ops_desks input").removeAttr("checked");
   });
-
-  $("#ops_desks input").click(function() {
-    $("#td_desks input[type='radio']").removeAttr("checked");
+  $("input#YDCTL").click(function() {
+    $("#td_desks input").removeAttr("checked");
+    $("input#YDMSTR").removeAttr("checked");
+    $("input#GLHSE").removeAttr("checked");
+  });
+  $("input#YDMSTR").click(function() {
+    $("#td_desks input").removeAttr("checked");
+    $("input#YDCTL").removeAttr("checked");
+    $("input#GLHSE").removeAttr("checked");
+  });
+  $("input#GLHSE").click(function() {
+    $("#td_desks input").removeAttr("checked");
+    $("input#YDCTL").removeAttr("checked");
+    $("input#YDMSTR").removeAttr("checked");
   });
 });
 

@@ -21,7 +21,7 @@ class MessagesController < ApplicationController
         end
       end
     else
-      render 'sessions/new'
+      redirect_to new_session_path
     end
   end
   

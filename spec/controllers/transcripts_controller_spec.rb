@@ -103,11 +103,12 @@ describe TranscriptsController do
 
     before(:each) do
       test_sign_in(@admin_user)
-      @transcript = FactoryGirl.create(:transcript, user: @admin_user)
+      @watch_user = FactoryGirl.create(:user)
+      @transcript = FactoryGirl.create(:transcript, user: @admin_user, watch_user_id: @watch_user.id)
     end
 
     it "returns http success" do
-      get 'show', id: @transcript.id, user: @admin_user.id
+      get 'show', id: @transcript.id
       response.should be_success
     end
   end

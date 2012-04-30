@@ -17,21 +17,25 @@ describe SessionsController do
   end
   
   describe "POST 'create'" do
+
+    before(:each) do
+      Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
+      Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td")
+      Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td")
+      Desk.create!(name: "Yard Control", abrev: "YDCTL", job_type: "ops")
+      Desk.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
+      Desk.create!(name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
+    end
   
     describe "invalid signin" do
   
       before(:each) do
-        @attr = { name: "XXX", password: "invalid" }
+        @attr = { user_name: "XXX", password: "invalid" }
       end
   
       it "should re-render the new page" do
         post :create, @attr
-        response.should render_template('new')
-      end
-  
-      it "should have the right title" do
-        post :create, @attr
-        response.body.should have_selector("title", content: "Sign in")
+        response.should redirect_to new_session_path
       end
   
       it "should have a flash.now message" do

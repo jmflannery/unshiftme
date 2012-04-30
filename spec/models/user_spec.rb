@@ -306,15 +306,20 @@ describe User do
       before { @user.set_online }
 
       it "sets the user's online status to true" do
+        @user.reload
         @user.status.should be_true
       end
     end
 
     describe "set_offline" do
 
-      before { @user.set_offline }
+      before do 
+        @user.set_online
+        @user.set_offline
+      end
 
       it "sets the user's online status to false" do
+        @user.reload
         @user.status.should be_false
       end
     end
@@ -353,6 +358,25 @@ describe User do
         @user2.reload
         @user1.status.should be_false
         @user2.status.should be_false
+      end
+    end
+
+    describe "authenticate_desk" do
+      
+      before(:each) do
+        @params = { key: "val", "CUSN" => 1, "AML" => 1, anotherkey: "val" }
+        Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
+        Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td")
+        Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td")
+        Desk.create!(name: "Yard Control", abrev: "YDCTL", job_type: "ops")
+        Desk.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
+        Desk.create!(name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
+      end
+      
+      it "parses the user params and assiges control of each desk to the user" do
+        @user.authenticate_desk(@params)
+        Desk.find_by_abrev("CUSN").user_id.should == @user.id  
+        Desk.find_by_abrev("AML").user_id.should == @user.id  
       end
     end
   end

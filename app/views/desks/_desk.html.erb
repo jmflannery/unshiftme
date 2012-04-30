@@ -1,7 +1,2 @@
-<% if desk.job_type == "td" %>
-  <%= radio_button_tag(desk.abrev, desk.abrev) %>
-  <%= label_tag(desk.abrev, desk.name) %> </br>
-<% elsif desk.job_type == "ops" %>
-  <%= radio_button_tag("ops", desk.abrev) %>
-  <%= label_tag("ops_#{desk.abrev}", desk.name) %> </br>
-<% end %>
+<%= check_box_tag(desk.abrev) %>
+<%= label_tag(desk.abrev, desk.name) %> </br>

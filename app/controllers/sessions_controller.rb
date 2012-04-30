@@ -8,12 +8,13 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by_user_name(params[:user_name])
     if user && user.authenticate(params[:password])
+      desk_ok = user.authenticate_desk(params)
       sign_in user
       redirect_back_or user
     else
       flash.now[:error] = "Invalid name and/or password"
       @title = "Sign in"
-      render 'new'
+      redirect_to new_session_path
     end
   end
 

@@ -15,8 +15,6 @@ class TranscriptsController < ApplicationController
     @transcript = @user.transcripts.build(params[:transcript])
     if @transcript.save
       redirect_to transcript_path(@transcript)
-    else
-      puts "not a success"
     end
   end
 

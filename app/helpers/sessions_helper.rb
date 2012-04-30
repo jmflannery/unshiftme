@@ -1,17 +1,15 @@
 module SessionsHelper
   def sign_in(user)
     session[:user_id] = user.id
-    self.current_user = user
-    self.current_user.status = true
-    self.current_user.save(:validate => false)
-    self.current_user
+    current_user = user
+    current_user.set_online
+    current_user
   end
 
   def sign_out
-    self.current_user.status = 0
-    self.current_user.save(:validate => false)
+    current_user.set_offline
     session[:user_id] = nil
-    self.current_user = nil 
+    current_user = nil 
   end
 
   def current_user=(user)
