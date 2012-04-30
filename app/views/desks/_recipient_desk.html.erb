@@ -1,3 +1,8 @@
 <div class='recipient_desk'>
-  <%= recipient_desk.name %>
+  <%= recipient_desk.name %> </br>
+  <% if recipient_desk.user_id > 0 %> 
+    <%= "(#{User.find_by_id(recipient_desk.user_id).full_name})" %>
+  <% else %>
+    (vacant)
+  <% end %>
 </div>
