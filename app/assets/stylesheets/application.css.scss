@@ -12,14 +12,67 @@ img {
 }
 
 body {
+  margin: 0px;
   background-color: $grey;
   font-family: sans-serif;
 
   #page {
-    margin: 0 auto;
+    //margin: 0 auto;
 
     #header {
-      margin: 0 auto;
+      color: $near-white;
+      background-color: $blackish;
+      margin: 0 0 12px 0;
+      text-align: left;
+      padding: 7px; 
+
+      #main_menu {
+        font-size: .9em;
+
+        ul {
+          margin: 0;
+
+          li {
+            display: inline;
+            list-style: none;
+
+            a {
+              color: $near-white;
+              text-decoration: none;
+              padding: 2px 4px;
+
+              &:hover, &:focus {
+                @include rounded-corners(4px);
+              }
+            }
+          }
+
+          li#page_title {
+            font-weight: bold;
+            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.3);
+            padding-right: 20px;
+            margin-left: -20px;
+          }
+
+          li.nav_button {
+            a {
+              &:hover, &:focus {
+                color: $blue;
+                background: rgba(0, 76, 152, 0.5); 
+              }
+            }
+          }
+
+          li#sign_out_button {
+            a {
+              &:hover, &:focus {
+                color: $red;
+                background: rgba(240, 8, 7, 0.5); 
+              }
+            }
+          }
+        }
+      } // end #main_menu
     } // end #header
 
     #content {

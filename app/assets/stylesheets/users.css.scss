@@ -2,54 +2,6 @@
 @import "fonts";
 @import "style_mixins";
 
-#user_name_section {
-  //padding-left: 2.222222%; // 20 / 900
-
-  ul {
-    padding: 0px;
-    margin: 0px;
-    
-    li {
-      display: inline;
-    }
-  }
-
-  #user_name {
-    float: left;
-    color: $near-white;
-    font-weight: bold;
-    margin: 5px;
-    
-    h1 {
-      text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6);
-      margin: 0px;
-      font-size: 1.4em;
-    }
-  }
-
-  #menu {
-    float: right;
-    margin: 8px;
-
-    ul {
-      display: inline;
-    }
-    
-    a {
-      color: $near-white;
-      text-decoration: none;
-      font-size: 16px;
-      padding: 2px 4px;
-
-      &:hover, &:focus {
-        color: $red;
-        background: rgba(240, 8, 7, 0.5); 
-        @include rounded-corners(4px);
-      }
-    }
-  }
-} // end #user_name_section
-
 #recipient_desk_selection {
   color: $near-white;
 
