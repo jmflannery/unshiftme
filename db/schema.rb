@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120429172255) do
+ActiveRecord::Schema.define(:version => 20120430232153) do
 
   create_table "attachments", :force => true do |t|
     t.integer  "user_id"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(:version => 20120429172255) do
     t.integer  "recipient_user_id"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+    t.string   "recipient_desk_id"
   end
 
   create_table "sessions", :force => true do |t|

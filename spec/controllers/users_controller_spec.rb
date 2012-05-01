@@ -159,8 +159,7 @@ describe UsersController do
       it "should create admin user if it is the first User to be created" do
         post :create, user: @success_attr
         assigns(:user).should be_admin
-        user = FactoryGirl.build(:user)
-        post :create, user: user
+        post :create, user: @success_attr.merge(user_name: "xxxuser", email: "xxx@xxx.xxx")
         assigns(:user).should_not be_admin
       end
     end

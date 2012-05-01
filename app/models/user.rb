@@ -46,15 +46,15 @@ class User < ActiveRecord::Base
     ids
   end  
 
-  def add_recipients(user_ids)
-    user_ids.each do |user_id|
-      add_recipient(user_id)
+  def add_recipients(users)
+    users.each do |user|
+      add_recipient(user)
     end
   end
 
-  def add_recipient(user_id)
-    unless recipient_user_ids.include?(user_id)
-      recipients.create!(:recipient_user_id => user_id) if User.exists?(user_id)
+  def add_recipient(user)
+    unless recipient_user_ids.include?(user.id)
+      recipients.create!(recipient_user_id: user.id, recipient_desk_id: user.desks) if User.exists?(user.id)
     end
   end
 
@@ -99,11 +99,12 @@ class User < ActiveRecord::Base
   end
 
   def desks
-    Desk.of_user(self.id)
+    Desk.of_user(self.id).collect { |desk| desk.id }
   end
 
   def leave_desk
-    self.desks.each do |desk|
+    self.desks.each do |desk_id|
+      desk = Desk.find(desk_id)
       desk.user_id = 0
       desk.save
     end

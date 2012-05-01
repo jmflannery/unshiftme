@@ -10,7 +10,7 @@ class MessagesController < ApplicationController
       @user.recipients.each do |recipient|
         if User.exists?(recipient.recipient_user_id)
           recip_user = User.find(recipient.recipient_user_id) 
-          recip_user.add_recipient(@user.id)
+          recip_user.add_recipient(@user)
           data = { 
             sender: @user.user_name, 
             chat_message: @message.content,

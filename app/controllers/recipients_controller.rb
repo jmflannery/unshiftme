@@ -3,15 +3,8 @@ class RecipientsController < ApplicationController
   before_filter :authorized_user, :only => :destroy
 
   def create
-    current_user.add_recipient(params[:user]) if User.exists?(params[:user])
+    current_user.add_recipient(User.find(params[:user])) if User.exists?(params[:user])
     
-    #user_ids = []
-    #params.each do |key,value|
-    #  user_ids << value.to_i if key =~ /user_name_.*/
-    #end
-
-    #current_user.add_recipients(user_ids)
-
     redirect_to recipients_path
   end
 

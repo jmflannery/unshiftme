@@ -211,9 +211,61 @@ describe User do
       @user1 = FactoryGirl.create(:user, first_name: "Jack", middle_initial: "M", last_name: "Flannery", status: true)
       @user2 = FactoryGirl.create(:user, first_name: "Bill", middle_initial: nil, last_name: "Stump", status: true)
       @user3 = FactoryGirl.create(:user, status: true)
-      FactoryGirl.create(:recipient, user: @user, recipient_user_id: @user1.id)
-      @user_ids = [@user1.id, @user2.id, @user3.id]
+      #@user_ids = [@user1.id, @user2.id, @user3.id]
+      @users = [@user1, @user2, @user3]
       @available_users = [@user2, @user3]
+    end
+
+    describe "Desk" do
+      
+      before(:each) do
+        @params = { key: "val", "CUSN" => 1, "AML" => 1, anotherkey: "val" }
+        Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
+        Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td")
+        Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td")
+        Desk.create!(name: "Yard Control", abrev: "YDCTL", job_type: "ops")
+        Desk.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
+        Desk.create!(name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
+      end
+
+      describe "authenticate_desk" do
+        
+        it "parses the user params and assiges control of each desk to the user" do
+          @user.authenticate_desk(@params)
+          Desk.find_by_abrev("CUSN").user_id.should == @user.id  
+          Desk.find_by_abrev("AML").user_id.should == @user.id  
+        end
+      end
+
+      describe "desks" do
+
+        before(:each) do
+          @user.authenticate_desk(@params)
+        end
+
+        it "returns a list of all the desk id's under the control of the user" do
+          @user.desks.should be_kind_of Array
+          @user.desks.should == [Desk.find_by_abrev("CUSN").id, Desk.find_by_abrev("AML").id]
+        end
+
+        it "returns an empty list of the user has no desks" do
+          @user2 = FactoryGirl.build(:user)
+          @user2.desks.should == []
+        end
+      end
+
+      describe "leave_desk" do
+
+        before(:each) do
+          @user.authenticate_desk(@params)
+        end
+
+        it "relinqishes control of all desks belonging to the given user" do
+          @user.leave_desk
+          Desk.find_by_abrev("CUSN").user_id.should_not == @user.id  
+          Desk.find_by_abrev("AML").user_id.should_not == @user.id  
+        end
+      end
     end
 
     describe "full_name" do
@@ -226,9 +278,13 @@ describe User do
 
     describe "available_users" do
 
+      before(:each) do
+        FactoryGirl.create(:recipient, user: @user, recipient_user_id: @user1.id)
+      end
+
       let(:users) { User.available_users(@user) }
 
-      it "returns a list users with online status" do
+      it "returns a list of users with online status" do
         users.size.should == @available_users.size
         users.each do |user|
           user.status.should be_true
@@ -246,18 +302,20 @@ describe User do
 
     describe "add_recipients" do
 
-      before { @user.add_recipients(@user_ids) }
+      before(:each) do
+        @user.add_recipients(@users)
+      end
 
       it "adds the list of user IDs to the user's recipients" do
-        @user.recipients.size.should == @user_ids.size
+        @user.recipients.size.should == @users.size
         @user.recipients.each do |recipient|
-          @user_ids.should include recipient.recipient_user_id
+          @users.map { |u| u.id }.should include recipient.recipient_user_id
         end
       end
 
       it "doesn't add any duplicate recipients" do
         size1 = @user.recipients.size
-        @user.add_recipients(@user_ids)
+        @user.add_recipients(@users)
         size2 = @user.recipients.size
         size1.should == size2
       end
@@ -265,16 +323,28 @@ describe User do
 
     describe "add_recipient" do
 
-      before { @user.add_recipient(@user1.id) }
+      before(:each) do
+        params = { key: "val", "CUSN" => 1, "AML" => 1, anotherkey: "val" }
+        Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
+        Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td")
+        Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td")
+        Desk.create!(name: "Yard Control", abrev: "YDCTL", job_type: "ops")
+        Desk.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
+        Desk.create!(name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
+        @user1.authenticate_desk(params)
+      end
 
-      it "adds the user ID to the user's recipients" do
+      it "adds the user and desk id's to the user's recipients" do
+        @user.add_recipient(@user1)
         @user.recipients.size.should == 1
         @user.recipients[0].recipient_user_id.should == @user1.id
+        @user.recipients[0].recipient_desk_id.should == @user1.desks
       end
 
       it "doesn't not add any duplicate recipients" do
+        @user.add_recipient(@user1)
         size1 = @user.recipients.size
-        @user.add_recipient(@user1.id)
+        @user.add_recipient(@user1)
         size2 = @user.recipients.size
         size1.should == size2
       end
@@ -282,10 +352,10 @@ describe User do
 
     describe "recipient_user_ids" do
 
-      before { @user.add_recipients(@user_ids) }
+      before { @user.add_recipients(@users) }
 
       it "returns an array of the user's recipient's user_ids" do
-        @user.recipient_user_ids == @user_ids
+        @user.recipient_user_ids == @users.map { |u| u.id }
       end
     end
 
@@ -327,7 +397,7 @@ describe User do
     describe "remove_stale_recipients" do
       
       before(:each) do
-        @user.add_recipients(@user_ids)
+        @user.add_recipients(@users)
         @user.recipient_user_ids.each do |id|
           r_user = User.find(id)
           r_user.timestamp_poll(Time.now)
@@ -361,55 +431,6 @@ describe User do
       end
     end
 
-    describe "Desk" do
-      
-      before(:each) do
-        @params = { key: "val", "CUSN" => 1, "AML" => 1, anotherkey: "val" }
-        Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
-        Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td")
-        Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td")
-        Desk.create!(name: "Yard Control", abrev: "YDCTL", job_type: "ops")
-        Desk.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
-        Desk.create!(name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
-      end
-
-      describe "authenticate_desk" do
-        
-        it "parses the user params and assiges control of each desk to the user" do
-          @user.authenticate_desk(@params)
-          Desk.find_by_abrev("CUSN").user_id.should == @user.id  
-          Desk.find_by_abrev("AML").user_id.should == @user.id  
-        end
-      end
-
-      describe "desks" do
-
-        before(:each) do
-          @user.authenticate_desk(@params)
-        end
-
-        it "returns a list of all the desks under the control of the user" do
-          @user.desks.should == [Desk.find_by_abrev("CUSN"), Desk.find_by_abrev("AML")]
-        end
-
-        it "returns an empty list of the user has no desks" do
-          @user2 = FactoryGirl.build(:user)
-          @user2.desks.should == []
-        end
-      end
-
-      describe "leave_desk" do
-
-        before(:each) do
-          @user.authenticate_desk(@params)
-        end
-
-        it "relinqishes control of all desks belonging to the given user" do
-          @user.leave_desk
-          Desk.find_by_abrev("CUSN").user_id.should_not == @user.id  
-          Desk.find_by_abrev("AML").user_id.should_not == @user.id  
-        end
-      end
-    end
+    
   end
 end

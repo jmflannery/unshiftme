@@ -10,7 +10,11 @@
 #
 
 class Recipient < ActiveRecord::Base
+  serialize :recipient_desk_id
+
   belongs_to :user
+
+  attr_accessible :recipient_user_id, :recipient_desk_id
   
   #validates :recipient_user_id, :uniqueness => { :scope => :user_id }
 
