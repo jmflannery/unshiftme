@@ -57,6 +57,12 @@ class User < ActiveRecord::Base
       recipients.create!(recipient_user_id: user.id, recipient_desk_id: user.desks) if User.exists?(user.id)
     end
   end
+  
+  def add_desk_recipient(desk)
+    unless desks.include?(desk.id)
+      recipients.create!(recipient_user_id: 0, recipient_desk_id: [desk.id])
+    end
+  end
 
   def timestamp_poll(time)
     self.lastpoll = time
@@ -99,7 +105,7 @@ class User < ActiveRecord::Base
   end
 
   def desks
-    Desk.of_user(self.id).collect { |desk| desk.id }
+    Desk.of_user(self.id).map { |desk| desk.id }
   end
 
   def leave_desk

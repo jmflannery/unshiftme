@@ -211,7 +211,6 @@ describe User do
       @user1 = FactoryGirl.create(:user, first_name: "Jack", middle_initial: "M", last_name: "Flannery", status: true)
       @user2 = FactoryGirl.create(:user, first_name: "Bill", middle_initial: nil, last_name: "Stump", status: true)
       @user3 = FactoryGirl.create(:user, status: true)
-      #@user_ids = [@user1.id, @user2.id, @user3.id]
       @users = [@user1, @user2, @user3]
       @available_users = [@user2, @user3]
     end
@@ -321,7 +320,7 @@ describe User do
       end
     end
 
-    describe "add_recipient" do
+    describe "add_recipient(user)" do
 
       before(:each) do
         params = { key: "val", "CUSN" => 1, "AML" => 1, anotherkey: "val" }
@@ -347,6 +346,34 @@ describe User do
         @user.add_recipient(@user1)
         size2 = @user.recipients.size
         size1.should == size2
+      end
+    end
+
+    describe "add_desk_recipient(desk)" do
+
+      before(:each) do
+        Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
+        Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td")
+        Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td")
+        Desk.create!(name: "Yard Control", abrev: "YDCTL", job_type: "ops")
+        Desk.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
+        Desk.create!(name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
+        @ydmstr = Desk.find_by_abrev("YDMSTR")
+        @glhse = Desk.find_by_abrev("GLHSE")
+      end
+
+      it "adds the desk id's to the user's recipients" do
+        @user.add_desk_recipient(@ydmstr)
+        @user.recipients[0].recipient_desk_id.should == [@ydmstr.id]
+        @user.recipients[0].recipient_user_id.should == 0
+      end
+
+      it "doesn't not add any duplicate recipients" do
+        @user.add_desk_recipient(@ydmstr)
+        size1 = @user.recipients.size
+        @user.add_desk_recipient(@ydmstr)
+        size2 = @user.recipients.size
+        size2.should == size1
       end
     end
 

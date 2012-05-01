@@ -40,6 +40,45 @@ var hide_available_users = function() {
 };
 
 ///////////////////////////////////
+// add recipient
+///////////////////////////////////
+
+var toggle_recipient = function() {
+  var klasses = $(this).find(".recipient_desk_id").attr('class').split(" ");
+  var desk = 0;
+  if (klasses[1]) {
+    if (!isNaN(klasses[1])) {
+      desk = parseInt(klasses[1]);
+    }
+  }
+  
+  var user = 0;
+  if ($(this).find(".recipient_user_id").attr('class').indexOf(" ") != -1) {
+    klasses = $(this).find(".recipient_user_id").attr('class').split(" ");
+    if (klasses[1]) {
+      if (!isNaN(klasses[1])) {
+        user = parseInt(klasses[1]);
+      }
+    }
+  }
+
+  var data = { "desk_id": desk, "user_id": user }
+
+  $.ajax( {
+    type: "POST", 
+    url: "/recipients",
+    data: data,
+    success: function(response) {
+      response;
+    }
+  });
+};
+
+$(function() {
+  $(".recipient_desk").click(toggle_recipient);
+});
+
+///////////////////////////////////
 // acknowledge (read) message
 ///////////////////////////////////
 

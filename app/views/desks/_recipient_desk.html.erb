@@ -1,8 +1,14 @@
 <div class='recipient_desk'>
-  <%= recipient_desk.name %> </br>
+  <div class='<%= "recipient_desk_id #{recipient_desk.id}" %>'>
+    <%= recipient_desk.name %>
+  </div>
   <% if recipient_desk.user_id > 0 %> 
-    <%= "(#{User.find_by_id(recipient_desk.user_id).full_name})" %>
+    <div class='<%= "recipient_user_id #{recipient_desk.user_id}" %>'>
+      <%= "(#{User.find_by_id(recipient_desk.user_id).full_name})" %>
+    </div>
   <% else %>
-    (vacant)
+    <div class='recipient_user_id'>
+      (vacant)
+    </div>
   <% end %>
 </div>
