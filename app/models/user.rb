@@ -21,16 +21,6 @@ class User < ActiveRecord::Base
 
   default_scope order: 'users.last_name ASC'
 
-  scope :online, lambda { |user_id| where("users.status = ? and users.id != ?", true, user_id) }
-
-  def self.available_users(user)
-    available_users = []
-    User.online(user.id).each do |online_user|
-      available_users << online_user unless user.recipient_user_ids.include?(online_user.id) 
-    end
-    available_users
-  end
-
   def full_name
     full_name = self.first_name
     full_name += " #{self.middle_initial}." if self.middle_initial 
@@ -38,29 +28,23 @@ class User < ActiveRecord::Base
     full_name
   end
 
-  def recipient_user_ids
+  def recipient_desk_ids
     ids = []
     recipients.each do |recipient|
-      ids << recipient.recipient_user_id
+      ids << recipient.desk_id
     end
     ids
   end  
 
-  def add_recipients(users)
-    users.each do |user|
-      add_recipient(user)
+  def add_recipients(desks)
+    desks.each do |desk|
+      add_recipient(desk)
     end
   end
 
-  def add_recipient(user)
-    unless recipient_user_ids.include?(user.id)
-      recipients.create!(recipient_user_id: user.id, recipient_desk_id: user.desks) if User.exists?(user.id)
-    end
-  end
-  
-  def add_desk_recipient(desk)
-    unless desks.include?(desk.id)
-      recipients.create!(recipient_user_id: 0, recipient_desk_id: [desk.id])
+  def add_recipient(desk)
+    unless recipient_desk_ids.include?(desk.id)
+      recipients.create!(desk_id: desk.id)
     end
   end
 
@@ -82,7 +66,7 @@ class User < ActiveRecord::Base
   def remove_stale_recipients
     stale_recipients = []
     self.recipients.each do |recipient|
-      r_user = User.find(recipient.recipient_user_id)
+      r_user = User.find_by_id(Desk.find(recipient.desk_id).user_id)
       if r_user.status == false || (r_user.lastpoll < Time.now - 4) 
         stale_recipients << recipient 
         r_user.set_offline
@@ -105,7 +89,7 @@ class User < ActiveRecord::Base
   end
 
   def desks
-    Desk.of_user(self.id).map { |desk| desk.id }
+    Desk.of_user(self.id).collect { |desk| desk.id }
   end
 
   def leave_desk

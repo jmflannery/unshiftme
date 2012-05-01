@@ -27,26 +27,39 @@ describe RecipientsController do
       @user = test_sign_in(FactoryGirl.create(:user))
     end
 
-    it "should redirect to recipient/index" do
-      post :create, user: @user.id, format: :js
-      response.should be_redirect
+    it "should be success" do
+      post :create, user_id: @user.id, format: :js
+      response.should be_success
     end
 
     describe "failure" do
 
       it "should create not a recipient" do
         lambda do
-          post :create, user: 0, format: :js
+          post :create, user_id: 0, format: :js
         end.should_not change(Recipient, :count)
       end
     end
 
     describe "success" do
 
-      it "should create a recipient" do
+      it "should create a recipient given a user id" do
         lambda do
-          post :create, user: @user.id, format: :js
+          post :create, user_id: @user.id, format: :js
         end.should change(Recipient, :count).by(1)
+      end
+
+      describe "given a valid desk id" do
+
+        before do 
+          @cusn = Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
+        end
+
+        it "should create a recipient" do
+          lambda do
+            post :create, desk_id: @cusn.id, format: :js
+          end.should change(Recipient, :count).by(1)
+        end
       end
     end
   end

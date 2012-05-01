@@ -208,11 +208,6 @@ describe User do
     
     before(:each) do
       @user.save
-      @user1 = FactoryGirl.create(:user, first_name: "Jack", middle_initial: "M", last_name: "Flannery", status: true)
-      @user2 = FactoryGirl.create(:user, first_name: "Bill", middle_initial: nil, last_name: "Stump", status: true)
-      @user3 = FactoryGirl.create(:user, status: true)
-      @users = [@user1, @user2, @user3]
-      @available_users = [@user2, @user3]
     end
 
     describe "Desk" do
@@ -220,11 +215,7 @@ describe User do
       before(:each) do
         @params = { key: "val", "CUSN" => 1, "AML" => 1, anotherkey: "val" }
         Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
-        Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td")
         Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td")
-        Desk.create!(name: "Yard Control", abrev: "YDCTL", job_type: "ops")
-        Desk.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
-        Desk.create!(name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
       end
 
       describe "authenticate_desk" do
@@ -268,6 +259,11 @@ describe User do
     end
 
     describe "full_name" do
+       
+      before do
+         @user1 = FactoryGirl.create(:user, first_name: "Jack", middle_initial: "M", last_name: "Flannery", status: true)
+         @user2 = FactoryGirl.create(:user, first_name: "Bill", middle_initial: nil, last_name: "Stump", status: true)
+       end
 
       it "returns a string of the users first name middle initial if it exists and last name" do
         @user1.full_name.should == "Jack M. Flannery"
@@ -275,114 +271,61 @@ describe User do
       end
     end
 
-    describe "available_users" do
-
-      before(:each) do
-        FactoryGirl.create(:recipient, user: @user, recipient_user_id: @user1.id)
-      end
-
-      let(:users) { User.available_users(@user) }
-
-      it "returns a list of users with online status" do
-        users.size.should == @available_users.size
-        users.each do |user|
-          user.status.should be_true
-        end
-      end
-
-      it "doesn't return the given user" do
-        users.should_not include(@user)
-      end
-
-      it "doesn't return users who are already recipients of the given user" do
-        users.should_not include(@user1)
-      end 
-    end
-
     describe "add_recipients" do
 
       before(:each) do
-        @user.add_recipients(@users)
+        @cusn = Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
+        @cuss = Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td")
+        @desks = [@cusn, @cuss]
+        @user.add_recipients(@desks)
       end
 
-      it "adds the list of user IDs to the user's recipients" do
-        @user.recipients.size.should == @users.size
+      it "adds the list of desks to the user's recipients" do
+        @user.recipients.size.should == @desks.size
         @user.recipients.each do |recipient|
-          @users.map { |u| u.id }.should include recipient.recipient_user_id
+          @desks.map { |d| d.id }.should include recipient.desk_id
         end
       end
 
       it "doesn't add any duplicate recipients" do
         size1 = @user.recipients.size
-        @user.add_recipients(@users)
-        size2 = @user.recipients.size
-        size1.should == size2
-      end
-    end
-
-    describe "add_recipient(user)" do
-
-      before(:each) do
-        params = { key: "val", "CUSN" => 1, "AML" => 1, anotherkey: "val" }
-        Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
-        Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td")
-        Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td")
-        Desk.create!(name: "Yard Control", abrev: "YDCTL", job_type: "ops")
-        Desk.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
-        Desk.create!(name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
-        @user1.authenticate_desk(params)
-      end
-
-      it "adds the user and desk id's to the user's recipients" do
-        @user.add_recipient(@user1)
-        @user.recipients.size.should == 1
-        @user.recipients[0].recipient_user_id.should == @user1.id
-        @user.recipients[0].recipient_desk_id.should == @user1.desks
-      end
-
-      it "doesn't not add any duplicate recipients" do
-        @user.add_recipient(@user1)
-        size1 = @user.recipients.size
-        @user.add_recipient(@user1)
-        size2 = @user.recipients.size
-        size1.should == size2
-      end
-    end
-
-    describe "add_desk_recipient(desk)" do
-
-      before(:each) do
-        Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
-        Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td")
-        Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td")
-        Desk.create!(name: "Yard Control", abrev: "YDCTL", job_type: "ops")
-        Desk.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
-        Desk.create!(name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
-        @ydmstr = Desk.find_by_abrev("YDMSTR")
-        @glhse = Desk.find_by_abrev("GLHSE")
-      end
-
-      it "adds the desk id's to the user's recipients" do
-        @user.add_desk_recipient(@ydmstr)
-        @user.recipients[0].recipient_desk_id.should == [@ydmstr.id]
-        @user.recipients[0].recipient_user_id.should == 0
-      end
-
-      it "doesn't not add any duplicate recipients" do
-        @user.add_desk_recipient(@ydmstr)
-        size1 = @user.recipients.size
-        @user.add_desk_recipient(@ydmstr)
+        @user.add_recipients(@desks)
         size2 = @user.recipients.size
         size2.should == size1
       end
     end
 
-    describe "recipient_user_ids" do
+    describe "add_recipient" do
 
-      before { @user.add_recipients(@users) }
+      before(:each) do
+        @ydmstr = Desk.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
+      end
 
-      it "returns an array of the user's recipient's user_ids" do
-        @user.recipient_user_ids == @users.map { |u| u.id }
+      it "adds the desk id's to the user's recipients" do
+        @user.add_recipient(@ydmstr)
+        @user.recipients[0].desk_id.should == @ydmstr.id
+      end
+
+      it "doesn't not add any duplicate recipients" do
+        @user.add_recipient(@ydmstr)
+        size1 = @user.recipients.size
+        @user.add_recipient(@ydmstr)
+        size2 = @user.recipients.size
+        size2.should == size1
+      end
+    end
+    
+    describe "recipient_desk_ids" do
+
+      before(:each) do
+        @ydmstr = Desk.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
+        @glhse = Desk.create!(name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
+        @user.add_recipient(@ydmstr)
+        @user.add_recipient(@glhse)
+      end
+
+      it "returns an array of the user's recipient's desk_ids" do
+        @user.recipient_desk_ids.should == [@ydmstr.id, @glhse.id]
       end
     end
 
@@ -420,44 +363,5 @@ describe User do
         @user.status.should be_false
       end
     end
-
-    describe "remove_stale_recipients" do
-      
-      before(:each) do
-        @user.add_recipients(@users)
-        @user.recipient_user_ids.each do |id|
-          r_user = User.find(id)
-          r_user.timestamp_poll(Time.now)
-        end
-      end
-    
-      it "removes recipients who have a status of false" do
-        @user2.set_offline
-        @user.remove_stale_recipients
-        @user.reload
-        @user.recipient_user_ids.should include(@user1.id)
-        @user.recipient_user_ids.should_not include(@user2.id)
-      end
-
-      it "removes recipients who haven't polled for messages in the last 4 seconds" do
-        @user2.timestamp_poll(Time.now - 4)
-        @user.remove_stale_recipients
-        @user.reload
-        @user.recipient_user_ids.should include(@user1.id)
-        @user.recipient_user_ids.should_not include(@user2.id)
-      end
-
-      it "sets the user's stale recipients to offline status" do
-        @user1.timestamp_poll(Time.now - 4)
-        @user2.timestamp_poll(Time.now - 4)
-        @user.remove_stale_recipients
-        @user1.reload
-        @user2.reload
-        @user1.status.should be_false
-        @user2.status.should be_false
-      end
-    end
-
-    
   end
 end

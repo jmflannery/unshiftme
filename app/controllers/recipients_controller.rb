@@ -6,8 +6,11 @@ class RecipientsController < ApplicationController
     @desk = Desk.find_by_id(params[:desk_id])
     @recipient_user = User.find_by_id(params[:user_id])
 
+    if @recipient_user
+
+    end
+
     current_user.add_recipient(@recipient_user) if @recipient_user
-    puts "Desk: #{@desk.name} User: #{@recipient_user.user_name}"
     #format.js
     #redirect_to recipients_path
   end
