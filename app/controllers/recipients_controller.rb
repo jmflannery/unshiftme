@@ -4,26 +4,18 @@ class RecipientsController < ApplicationController
 
   def create
     @desk = Desk.find_by_id(params[:desk_id])
-    @recipient_user = User.find_by_id(params[:user_id])
-
-    if @recipient_user
-
-    end
-
-    current_user.add_recipient(@recipient_user) if @recipient_user
-    #format.js
-    #redirect_to recipients_path
+    current_user.add_recipient(@desk) if @desk
   end
 
-  def index
-    @my_recipients = Recipient.for_user(current_user.id)
-    @online_users = User.available_users(current_user)
-  end
+  #def index
+  #  @my_recipients = Recipient.for_user(current_user.id)
+  #  #@online_users = User.available_users(current_user)
+  #end
 
   def destroy
     @recipient.destroy
     @my_recipients = Recipient.for_user(current_user.id)
-    @online_users = User.available_users(current_user)
+    #@online_users = User.available_users(current_user)
   end
 
   private

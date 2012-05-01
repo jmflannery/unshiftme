@@ -81,42 +81,7 @@ describe UsersController do
       messages.should_not include other_message
     end
   end
-
-  describe "GET 'index'" do
-
-    before(:each) do
-      user1 = test_sign_in(FactoryGirl.create(:user))
-      user2 = test_sign_in(FactoryGirl.create(:user))
-      @offline_user = FactoryGirl.create(:user)
-      @user = test_sign_in(FactoryGirl.create(:user))
-      @users = [user1, user2]
-    end
-
-    it "should should be success" do
-      get :index, :format => :js
-      response.should be_success
-    end
-
-    it "should not show non-signed in users" do
-      get :index, :format => :js
-      users = assigns(:online_users)
-      users.should_not include(@offline_user)
-    end
-
-    it "should not include the current user" do
-      get :index, :format => :js
-      users = assigns(:online_users)
-      users.should_not include(@user)
-    end
-
-    it "should show signed in users" do
-      get :index, :format => :js
-      users = assigns(:online_users)
-      users.should == @users
-    end
-
-  end
-
+  
   describe "POST 'create'" do
 
     describe "failure" do

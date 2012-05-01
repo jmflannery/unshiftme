@@ -1,10 +1,10 @@
 // display/refresh the recipients
-$("#send_to_section").html("<%= j(render(partial: 'recipients', object: @my_recipients)) %>");
+//$("#send_to_section").html("<#%= j(render(partial: 'recipients', object: @my_recipients)) %>");
 
 // display/refresh the online users, if any
-if ($("a#users_button").text() != "Add Available Users") {
-  $("#recipient_selection_section").html("<%=j(render(partial: 'users/users', object: @online_users)) %>");
-}
+//if ($("a#users_button").text() != "Add Available Users") {
+//  $("#recipient_selection_section").html("<#%=j(render(partial: 'users/users', object: @online_users)) %>");
+//}
 
 // register click callback for Hide (available users) button
-$('#hide_button').click(hide_available_users);
+//$('#hide_button').click(hide_available_users);

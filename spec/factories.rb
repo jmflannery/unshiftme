@@ -22,14 +22,6 @@ FactoryGirl.define do
 end
 
 FactoryGirl.define do
-
-  factory :recipient, class: Recipient do |recipient|
-    recipient.recipient_user_id 22
-    association :user, factory: :user
-  end
-end
-
-FactoryGirl.define do
   factory :attachment, class: Attachment do |attachment|
     attachment.payload Rails.root + "spec/fixtures/files/test_file.txt"
     association :user, factory: :user

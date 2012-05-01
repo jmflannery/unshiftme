@@ -1,9 +1,8 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
-
 FactoryGirl.define do
-  factory :desk do
-    name "MyString"
-    abrev "MyString"
-    user_id "MyString"
+  factory :desk, class: Desk do |desk|
+    sequence(:name) { |n| "CUS North #{n}" }
+    sequence(:abrev) { |n| "CUS#{n}" }
+    job_type "td"
+    sequence(:user_id) { |n| n }
   end
 end

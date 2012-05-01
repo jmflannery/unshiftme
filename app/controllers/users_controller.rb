@@ -31,10 +31,6 @@ class UsersController < ApplicationController
     @desks = Desk.all
   end
 
-  def index
-    @online_users = User.available_users(current_user)
-  end
-
   def edit
     @user = User.find(params[:id])
     @title = "Edit user"
