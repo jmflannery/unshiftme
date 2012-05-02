@@ -16,6 +16,6 @@ class RecipientsController < ApplicationController
 
     def authorized_user
       @recipient = current_user.recipients.find_by_id(params[:id])
-      redirect_to root_path if @recipient.nil?  
+      redirect_to root_path if @recipient.nil?
     end
 end
