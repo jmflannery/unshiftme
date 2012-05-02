@@ -43,9 +43,11 @@ class User < ActiveRecord::Base
   end
 
   def add_recipient(desk)
+    recipient = nil
     unless recipient_desk_ids.include?(desk.id)
-      recipients.create!(desk_id: desk.id)
+      recipient = recipients.create(desk_id: desk.id)
     end
+    recipient
   end
 
   def timestamp_poll(time)

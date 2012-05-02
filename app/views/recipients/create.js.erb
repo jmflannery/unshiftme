@@ -1,1 +1,3 @@
-alert("hey buddy, recipient created, almost");
+<% if @recipient %>
+  $('<%= ".recipient_desk_id.#{@recipient.desk_id}" %>').parent().addClass('<%= "#{@recipient.id}" %>'); 
+<% end %>

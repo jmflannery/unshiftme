@@ -43,35 +43,64 @@ var hide_available_users = function() {
 // add recipient
 ///////////////////////////////////
 
+//TODO: refactor, too ugly
 var toggle_recipient = function() {
-  var klasses = $(this).find(".recipient_desk_id").attr('class').split(" ");
-  var desk = 0;
-  if (klasses[1]) {
-    if (!isNaN(klasses[1])) {
-      desk = parseInt(klasses[1]);
+  $(this).toggleClass("off");
+  $(this).toggleClass("on");
+  var classes = $(this).attr('class').split(" ");
+
+  var i;
+  var status_index = -1;
+  var recipient_index = -1;
+  for (i = 0; i < classes.length; i += 1) {
+    if (!isNaN(classes[i])) {
+      recipient_index = i;
+    } else if (classes[i] == "on" || classes[i] == "off") {
+      status_index = i;
     }
   }
-  
-  var user = 0;
-  if ($(this).find(".recipient_user_id").attr('class').indexOf(" ") != -1) {
-    klasses = $(this).find(".recipient_user_id").attr('class').split(" ");
-    if (klasses[1]) {
-      if (!isNaN(klasses[1])) {
-        user = parseInt(klasses[1]);
+ 
+  if (status_index > -1) { 
+    if (classes[status_index] == "on") {
+
+      var innerEl = $(this).find(".recipient_desk_id");
+      var innerClasses = innerEl.attr('class').split(" ");
+      var desk = 0;
+      if (innerClasses[1]) {
+        if (!isNaN(innerClasses[1])) {
+          desk = parseInt(innerClasses[1]);
+        }
+      }  
+
+      var data = { "desk_id": desk };
+      
+      // POST - recipients#create
+      $.ajax( {
+        type: "POST", 
+        url: "/recipients",
+        data: data,
+        success: function(response) {
+          response;
+        }
+      });
+
+    } else if (classes[status_index] == "off") {
+      
+      var data = { _method: 'delete' };
+
+      // DELETE - desks#destroy
+      if (classes[recipient_index] && !isNaN(classes[recipient_index]) && classes[recipient_index] > 0) {
+        $.ajax( {
+          type: "POST", 
+          url: "/recipients/" + parseInt(classes[recipient_index]),
+          data: data,
+          success: function(response) {
+            response;
+          }
+        });
       }
     }
   }
-
-  var data = { "desk_id": desk, "user_id": user }
-
-  $.ajax( {
-    type: "POST", 
-    url: "/recipients",
-    data: data,
-    success: function(response) {
-      response;
-    }
-  });
 };
 
 $(function() {

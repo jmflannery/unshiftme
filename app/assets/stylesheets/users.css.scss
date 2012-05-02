@@ -16,6 +16,13 @@
     @include mac-button-style;
     @include mac-button-text-style;
   }
+
+  .on {
+    color: $green;
+  }
+
+  .off {
+  }
 }
 
 #messages_section {
