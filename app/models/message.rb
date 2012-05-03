@@ -39,10 +39,7 @@ class Message < ActiveRecord::Base
 
       msg_user = User.find_by_id(message.user_id)
       if message.recievers
-        puts "what the!!"
         message.recievers.each do |reciever|
-          puts "who the!!"
-          puts "Desk id: #{reciever[:desk_id]} User id: #{reciever[:user_id]}"
           if user.id == reciever[:user_id] or (msg_user.desks.include?(reciever[:desk_id]) and !reciever[:user_id])
             messages << message 
           end
@@ -62,7 +59,7 @@ class Message < ActiveRecord::Base
     messages
   end
 
-  def self.between_for(user, timeFrom, timeTo)
+  def self.for_user_between(user, timeFrom, timeTo)
     messages = []
     self.between(timeFrom, timeTo).each do |message|
       if message.user_id == user.id
@@ -71,11 +68,12 @@ class Message < ActiveRecord::Base
         next
       end
 
+      msg_user = User.find_by_id(message.user_id)
       if message.recievers
-        recievers = message.recievers.split(",")
-
-        if recievers.include?(user.id.to_s)
-          messages << message
+        message.recievers.each do |reciever|
+          if user.id == reciever[:user_id] or (msg_user.desks.include?(reciever[:desk_id]) and !reciever[:user_id])
+            messages << message 
+          end
 
           if message.read_by
             if message.read_by.split(",").include?(user.id.to_s)

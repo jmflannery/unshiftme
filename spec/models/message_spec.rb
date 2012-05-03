@@ -100,7 +100,6 @@ describe Message do
     describe "for_user_before" do
       
       let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
-      #let(:aml) { Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
 
       let(:user1) { FactoryGirl.create(:user) }
       let(:user2) { FactoryGirl.create(:user) }
@@ -108,29 +107,15 @@ describe Message do
       let(:message) { FactoryGirl.create(:message, user: @user) }
       let(:message1) { FactoryGirl.create(:message, user: user1) }
       let(:message2) { FactoryGirl.create(:message, user: user2) }
+      let(:old_message) { FactoryGirl.create(:message, user: @user, created_at: 25.hours.ago) }
 
       before(:each) do
         user1.authenticate_desk(cusn.abrev => 1)
+        FactoryGirl.create(:recipient, user: @user, desk_id: cusn.id)
         message.set_recievers
         message1.set_recievers
         message2.set_recievers
-        #@recipient_user = FactoryGirl.create(:user)
-        #other_user = FactoryGirl.create(:user)
-        #FactoryGirl.create(:recipient, user: @user, desk_id: cusn.id)
-        #FactoryGirl.create(:recipient, user: @user, desk_id: aml.id)
-
-        #@user.recipients.create(recipient_user_id: @recipient_user.id)
-        #@message = @user.messages.create(content: "hello world")
-        #@message.set_recievers
-        #@read_message = @user.messages.create(content: "I read this, world!")
-        #@read_message.set_recievers
-        #@read_message.mark_read_by(@recipient_user)
-        #@recipient_user_message = @recipient_user.messages.create(content: "hello rails")
-        #@recipient_user_message.set_recievers
-        #@other_user_message = other_user.messages.create(content: "hello ruby")
-        #@other_user_message.set_recievers
-        #@old_message = FactoryGirl.create(:message, user: @user, created_at: 25.hours.ago) 
-        #@old_message.set_recievers
+        old_message.set_recievers
       end
 
       it "returns messages that were sent or recieved by the given user" do
@@ -141,84 +126,100 @@ describe Message do
       end
        
       it "returns messages created between the given time and 24 hours earlier than the given time" do
-        recipient_messages = Message.before_for(@recipient_user, Time.now)
-        recipient_messages.should include @message
-        recipient_messages.should_not include @old_message
+        messages = Message.for_user_before(user1, Time.now)
+        messages.should include message
+        messages.should_not include old_message
       end
 
-      it "sets message view_class attribute to 'owner' for each message created by the given user" do
-        messages = Message.before_for(@recipient_user, Time.now)
-        messages.should include @recipient_user_message           
-        index = messages.index(@recipient_user_message) 
-        messages[index].view_class.should == "message #{messages[index].id} owner"
+      context "for messages created by the given user" do
+        let(:messages) { Message.for_user_before(@user, Time.now) }
+        it "sets message view_class attribute to 'owner'" do
+          messages.should include message           
+          index = messages.index(message) 
+          messages[index].view_class.should == "message #{messages[index].id} owner"
+        end
       end
 
-      it "sets message view_class attribute to 'recieved_message read' for each read message recieved by the given user" do
-        messages = Message.before_for(@recipient_user, Time.now)
-        messages.should include @read_message
-        index = messages.index(@read_message) 
-        messages[index].view_class.should == "message #{messages[index].id} recieved read"
+      context "for messages recieved and read by the given user" do
+        let(:messages) { Message.for_user_before(user1, Time.now) }
+        before { message.mark_read_by(user1) }
+        it "sets message view_class attribute to 'recieved_message read' " do
+          messages.should include message
+          index = messages.index(message) 
+          messages[index].view_class.should == "message #{messages[index].id} recieved read"
+        end
       end
 
-      it "sets message view_class attribute to 'recieved_message unread' for each unread message recieved by the given user" do
-        messages = Message.before_for(@recipient_user, Time.now)
-        messages.should include @message
-        index = messages.index(@message) 
-        messages[index].view_class.should == "message #{messages[index].id} recieved unread"
+      context "for messages recieved and not read by the given user" do
+        let(:messages) { Message.for_user_before(user1, Time.now) }
+        it "sets message view_class attribute to 'recieved_message unread'" do
+          messages.should include message
+          index = messages.index(message) 
+          messages[index].view_class.should == "message #{messages[index].id} recieved unread"
+        end
       end
     end 
 
-    describe "between_for" do
+    describe "for_user_between" do
+      
+      let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+
+      let(:user1) { FactoryGirl.create(:user) }
+      let(:user2) { FactoryGirl.create(:user) }
+
+      let(:message) { FactoryGirl.create(:message, user: @user) }
+      let(:message1) { FactoryGirl.create(:message, user: user1) }
+      let(:message2) { FactoryGirl.create(:message, user: user2) }
+      let(:old_message) { FactoryGirl.create(:message, user: @user, created_at: 25.hours.ago) }
 
       before(:each) do
-        @sent_message = FactoryGirl.create(:message, user: @user)
-        @sent_message2 = FactoryGirl.create(:message, user: @user, created_at: 4.hours.ago)
-        @sender = FactoryGirl.create(:user)
-        FactoryGirl.create(:recipient, user: @sender, recipient_user_id: @user.id)
-        @recieved_message = FactoryGirl.create(:message, user: @sender)
-        @recieved_message.set_recievers
-        @recieved_message2 = FactoryGirl.create(:message, user: @sender, created_at: 4.hours.ago)
-        @recieved_message2.set_recievers
-        other_user = FactoryGirl.create(:user)
-        @other_message = FactoryGirl.create(:message, user: other_user)
-        @other_message.set_recievers
+        user1.authenticate_desk(cusn.abrev => 1)
+        FactoryGirl.create(:recipient, user: @user, desk_id: cusn.id)
+        message.set_recievers
+        message1.set_recievers
+        message2.set_recievers
+        old_message.set_recievers
       end
-      
+
       it "returns messages that were sent or recieved by the given user" do
-        messages = Message.between_for(@user, 1.hour.ago, Time.now)
-        messages.should include @sent_message
-        messages.should include @recieved_message
-        messages.should_not include @other_message
+        messages = Message.for_user_between(user1, 1.hour.ago, Time.now)
+        messages.should include message
+        messages.should include message1
+        messages.should_not include message2
       end
        
-      it "returns messages created between the given time and 24 hours earlier than the given time" do
-        messages = Message.between_for(@user, 1.hour.ago, Time.now)
-        messages.should include @sent_message
-        messages.should include @recieved_message
-        messages.should_not include @sent_message2
-        messages.should_not include @recieved_message2
+      it "returns messages created between the 2 given times" do
+        messages = Message.for_user_between(user1, 24.hours.ago, Time.now)
+        messages.should include message
+        messages.should_not include old_message
       end
 
-      it "sets message view_class attribute to 'owner' for each message created by the given user" do
-        messages = Message.between_for(@user, 1.hour.ago, Time.now)
-        messages.should include @sent_message           
-        index = messages.index(@sent_message) 
-        messages[index].view_class.should == "message #{messages[index].id} owner"
+      context "for messages created by the given user" do
+        let(:messages) { Message.for_user_between(@user, 1.hour.ago, Time.now) }
+        it "sets message view_class attribute to 'owner'" do
+          messages.should include message           
+          index = messages.index(message) 
+          messages[index].view_class.should == "message #{messages[index].id} owner"
+        end
       end
 
-      it "sets message view_class attribute to 'recieved_message read' for each read message recieved by the given user" do
-        @recieved_message.mark_read_by(@user)
-        messages = Message.between_for(@user, 1.hour.ago, Time.now)
-        messages.should include @recieved_message
-        index = messages.index(@recieved_message) 
-        messages[index].view_class.should == "message #{messages[index].id} recieved read"
+      context "for messages recieved and read by the given user" do
+        let(:messages) { Message.for_user_between(user1, 1.hour.ago, Time.now) }
+        before { message.mark_read_by(user1) }
+        it "sets message view_class attribute to 'recieved_message read' " do
+          messages.should include message
+          index = messages.index(message) 
+          messages[index].view_class.should == "message #{messages[index].id} recieved read"
+        end
       end
 
-      it "sets message view_class attribute to 'recieved_message unread' for each unread message recieved by the given user" do
-        messages = Message.between_for(@user, 1.hour.ago, Time.now)
-        messages.should include @recieved_message
-        index = messages.index(@recieved_message) 
-        messages[index].view_class.should == "message #{messages[index].id} recieved unread"
+      context "for messages recieved and not read by the given user" do
+        let(:messages) { Message.for_user_between(user1, 1.hour.ago, Time.now) }
+        it "sets message view_class attribute to 'recieved_message unread'" do
+          messages.should include message
+          index = messages.index(message) 
+          messages[index].view_class.should == "message #{messages[index].id} recieved unread"
+        end
       end
     end 
 

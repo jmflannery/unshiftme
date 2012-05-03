@@ -24,7 +24,7 @@ class TranscriptsController < ApplicationController
     @watch_user = User.find(@transcript.watch_user_id)
     @start_time = @transcript.start_time.strftime("%a %b %e %Y %T")
     @end_time = @transcript.end_time.strftime("%a %b %e %Y %T")
-    @messages = Message.between_for(@watch_user, @transcript.start_time, @transcript.end_time)
+    @messages = Message.for_user_between(@watch_user, @transcript.start_time, @transcript.end_time)
   end
 
   def index
