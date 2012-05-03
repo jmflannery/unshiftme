@@ -1,6 +1,6 @@
 class RecipientsController < ApplicationController
   before_filter :authenticate
-  before_filter :authorized_user, :only => :destroy
+  before_filter :authorized_user, only: :destroy
 
   def create
     @desk = Desk.find_by_id(params[:desk_id])

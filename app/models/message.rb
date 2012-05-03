@@ -2,6 +2,8 @@ class Message < ActiveRecord::Base
   attr_accessor :view_class
 
   attr_accessible :content, :attachment_id
+
+  serialize :recievers
   
   belongs_to :user
   
@@ -14,18 +16,19 @@ class Message < ActiveRecord::Base
   scope :between, lambda { |timeFrom, timeTo| where("created_at >= ? and created_at <= ?", timeFrom, timeTo) }
 
   def set_recievers
-    first = true
-    recipient_user_ids = ""
+    recievers_list = []
     user.recipients.each do |recipient|
-      recipient_user_ids << "," unless first
-      recipient_user_ids << recipient.recipient_user_id.to_s
-      first = false
+      desk = Desk.find_by_id(recipient.desk_id)
+      recip_user = User.find_by_id(desk.user_id)
+      node = { desk_id: desk.id }
+      node = node.merge({ user_id: recip_user.id }) if recip_user
+      recievers_list << node
     end
-    self.recievers = recipient_user_ids
+    self.recievers = recievers_list
     save
   end
 
-  def self.before_for(user, time)
+  def self.for_user_before(user, time)
     messages = []
     self.before(time).each do |message|
       if message.user_id == user.id
@@ -34,11 +37,15 @@ class Message < ActiveRecord::Base
         next
       end
 
+      msg_user = User.find_by_id(message.user_id)
       if message.recievers
-        recievers = message.recievers.split(",")
-
-        if recievers.include?(user.id.to_s)
-          messages << message
+        puts "what the!!"
+        message.recievers.each do |reciever|
+          puts "who the!!"
+          puts "Desk id: #{reciever[:desk_id]} User id: #{reciever[:user_id]}"
+          if user.id == reciever[:user_id] or (msg_user.desks.include?(reciever[:desk_id]) and !reciever[:user_id])
+            messages << message 
+          end
 
           if message.read_by
             if message.read_by.split(",").include?(user.id.to_s)

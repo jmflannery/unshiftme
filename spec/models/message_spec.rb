@@ -77,46 +77,67 @@ describe Message do
   describe "method" do
 
     describe "set_recievers" do 
-    
-      it "sets message.recievers to the message's recipient's user_ids seperated by commas" do
-        other_user = FactoryGirl.create(:user)
-        other_user2 = FactoryGirl.create(:user)
-        FactoryGirl.create(:recipient, :user => @user, :recipient_user_id => other_user.id)
-        FactoryGirl.create(:recipient, :user => @user, :recipient_user_id => other_user2.id)
-        @message = @user.messages.create!(@msg_attr)
-        @message.set_recievers
-        recievers = @message.recievers.split(/,/)
-        recievers.size.should == @user.recipients.size
-        @user.recipients.each do |recipient|
-          recievers.should include recipient.recipient_user_id.to_s
-        end
+
+      let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:aml) { Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
+
+      let(:user1) { FactoryGirl.create(:user) }
+
+      let(:message) { FactoryGirl.create(:message, user: @user) }
+
+      before do
+        user1.authenticate_desk(cusn.abrev => 1)
+        FactoryGirl.create(:recipient, user: @user, desk_id: cusn.id)
+        FactoryGirl.create(:recipient, user: @user, desk_id: aml.id)
+        message.set_recievers
+      end
+
+      it "sets message.recievers to an array hashes, with desk_id and user_id" do
+        message.recievers.should == [{ desk_id: cusn.id, user_id: user1.id }, { desk_id: aml.id }]
       end
     end
       
-    describe "before_for" do
+    describe "for_user_before" do
+      
+      let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+      #let(:aml) { Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
+
+      let(:user1) { FactoryGirl.create(:user) }
+      let(:user2) { FactoryGirl.create(:user) }
+
+      let(:message) { FactoryGirl.create(:message, user: @user) }
+      let(:message1) { FactoryGirl.create(:message, user: user1) }
+      let(:message2) { FactoryGirl.create(:message, user: user2) }
 
       before(:each) do
-        @recipient_user = FactoryGirl.create(:user)
-        other_user = FactoryGirl.create(:user)
-        @user.recipients.create(recipient_user_id: @recipient_user.id)
-        @message = @user.messages.create(content: "hello world")
-        @message.set_recievers
-        @read_message = @user.messages.create(content: "I read this, world!")
-        @read_message.set_recievers
-        @read_message.mark_read_by(@recipient_user)
-        @recipient_user_message = @recipient_user.messages.create(content: "hello rails")
-        @recipient_user_message.set_recievers
-        @other_user_message = other_user.messages.create(content: "hello ruby")
-        @other_user_message.set_recievers
-        @old_message = FactoryGirl.create(:message, user: @user, created_at: 25.hours.ago) 
-        @old_message.set_recievers
+        user1.authenticate_desk(cusn.abrev => 1)
+        message.set_recievers
+        message1.set_recievers
+        message2.set_recievers
+        #@recipient_user = FactoryGirl.create(:user)
+        #other_user = FactoryGirl.create(:user)
+        #FactoryGirl.create(:recipient, user: @user, desk_id: cusn.id)
+        #FactoryGirl.create(:recipient, user: @user, desk_id: aml.id)
+
+        #@user.recipients.create(recipient_user_id: @recipient_user.id)
+        #@message = @user.messages.create(content: "hello world")
+        #@message.set_recievers
+        #@read_message = @user.messages.create(content: "I read this, world!")
+        #@read_message.set_recievers
+        #@read_message.mark_read_by(@recipient_user)
+        #@recipient_user_message = @recipient_user.messages.create(content: "hello rails")
+        #@recipient_user_message.set_recievers
+        #@other_user_message = other_user.messages.create(content: "hello ruby")
+        #@other_user_message.set_recievers
+        #@old_message = FactoryGirl.create(:message, user: @user, created_at: 25.hours.ago) 
+        #@old_message.set_recievers
       end
 
       it "returns messages that were sent or recieved by the given user" do
-        recipient_messages = Message.before_for(@recipient_user, Time.now)
-        recipient_messages.should include @message
-        recipient_messages.should include @recipient_user_message
-        recipient_messages.should_not include @other_user_message
+        messages = Message.for_user_before(user1, Time.now)
+        messages.should include message
+        messages.should include message1
+        messages.should_not include message2
       end
        
       it "returns messages created between the given time and 24 hours earlier than the given time" do
