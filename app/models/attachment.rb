@@ -1,6 +1,8 @@
 class Attachment < ActiveRecord::Base
   belongs_to :user
 
+  serialize :recievers
+
   has_attached_file :payload
 
   def uploaded_file=(upload_file)
@@ -14,14 +16,18 @@ class Attachment < ActiveRecord::Base
   end
 
   def set_recievers
-    first = true
-    recipient_user_ids = ""
+    recievers_list = []
     user.recipients.each do |recipient|
-      recipient_user_ids << "," unless first
-      recipient_user_ids << recipient.recipient_user_id.to_s
-      first = false
+      puts "recipient: #{recipient.id}"
+      desk = Desk.find_by_id(recipient.desk_id)
+      puts "desk: #{desk.abrev}"
+      recip_user = User.find_by_id(desk.id)
+      puts "recip_user: #{recip_user.first_name}" if recip_user
+      node = { desk_id: desk.id }
+      node = node.merge({ user_id: recip_user.id }) if recip_user
+      recievers_list << node
     end
-    self.recievers = recipient_user_ids
+    self.recievers = recievers_list
     save
   end 
 end
