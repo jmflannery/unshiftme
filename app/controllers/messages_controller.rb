@@ -8,9 +8,10 @@ class MessagesController < ApplicationController
       @message.view_class = "message #{@message.id} owner"
       @message.set_recievers
       @user.recipients.each do |recipient|
-        if User.exists?(recipient.recipient_user_id)
-          recip_user = User.find(recipient.recipient_user_id) 
-          recip_user.add_recipient(@user)
+        desk = Desk.find(recipient.desk_id)
+        if User.exists?(desk.user_id)
+          recip_user = User.find(desk.user_id) 
+          recip_user.add_recipient(desk)
           data = { 
             sender: @user.user_name, 
             chat_message: @message.content,
