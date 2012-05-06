@@ -101,4 +101,15 @@ class User < ActiveRecord::Base
       desk.save
     end
   end
+
+  def messaging?(desk_id)
+    recipient_id = nil  
+    recipients.each do |recipient|
+      if recipient.desk_id == desk_id
+        recipient_id = recipient.id 
+        break
+      end
+    end
+    recipient_id
+  end
 end

@@ -1,4 +1,8 @@
-<div class='recipient_desk off'>
+<% if recipient_id = @user.messaging?(recipient_desk.id) %>
+  <div class='recipient_desk on <%= recipient_id %>'>
+  <% elsif %>
+    <div class='recipient_desk off'>
+  <% end %>
   <div class='<%= "recipient_desk_id #{recipient_desk.id}" %>'>
     <%= recipient_desk.name %>
   </div>
