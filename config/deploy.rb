@@ -75,6 +75,11 @@ namespace :db do
   task :reset do
     run("cd #{deploy_to}/current && /usr/bin/env rake db:reset RAILS_ENV=production")
   end
+
+  desc "Load the desk data into the database"
+  task :load_desks do
+    run("cd #{deploy_to}/current && /usr/bin/env rake db:desk:populate RAILS_ENV=production")
+  end
 end
 #before 'deploy:update_code', 'faye:stop'
 #after 'deploy:finalize_update', 'faye:start'
