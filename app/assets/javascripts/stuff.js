@@ -248,7 +248,7 @@ $(function() {
 
 $(function() {
   // store the current user's name
-  user_name = $("#user_name_section").attr("class");
+  user_name = $("#main_menu").attr("class");
 
   // register callback
   PrivatePub.subscribe("/messages/" + user_name, function(data, channel) {
@@ -319,7 +319,7 @@ var display_new_message = function(message_html) {
 
 $(function() {
   // store the current user's name
-  user_name = $("#user_name_section").attr("class");
+  user_name = $("#main_menu").attr("class");
 
   // register callback
   PrivatePub.subscribe("/readers/" + user_name, function(data, channel) {
