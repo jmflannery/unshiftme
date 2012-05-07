@@ -7,8 +7,8 @@ class Transcript < ActiveRecord::Base
   validates :watch_user_id, presence: true
   validates :start_time, presence: true
   validates :end_time, presence: true
-  validate :acceptable_start_date
-  validate :acceptable_end_date
+  #validate :acceptable_start_date
+  #validate :acceptable_end_date
   
   scope :for_user, lambda { |user_id| where("user_id = ?", user_id) }
 
