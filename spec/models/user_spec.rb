@@ -262,12 +262,14 @@ describe User do
        
       before do
          @user1 = FactoryGirl.create(:user, first_name: "Jack", middle_initial: "M", last_name: "Flannery", status: true)
-         @user2 = FactoryGirl.create(:user, first_name: "Bill", middle_initial: nil, last_name: "Stump", status: true)
+         @user2 = FactoryGirl.create(:user, first_name: "Bill", middle_initial: "", last_name: "Stump", status: true)
+         @user3 = FactoryGirl.create(:user, first_name: "Mario", middle_initial: nil, last_name: "Pizzaface", status: true)
        end
 
       it "returns a string of the users first name middle initial if it exists and last name" do
         @user1.full_name.should == "Jack M. Flannery"
         @user2.full_name.should == "Bill Stump"
+        @user3.full_name.should == "Mario Pizzaface"
       end
     end
 
