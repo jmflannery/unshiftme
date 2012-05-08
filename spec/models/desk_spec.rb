@@ -61,4 +61,23 @@ describe Desk do
       end
     end
   end
+
+  describe "method" do
+
+    describe "description" do
+
+      let(:user) { FactoryGirl.create(:user, user_name: "epresley") }
+
+      before(:each) do
+        @cusn = Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
+        @cuss = Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td")
+        user.authenticate_desk(@cusn.abrev => 1)
+      end
+    
+      it "returns a string of the desk name and desk user (if the desk has a user)" do
+        @cusn.description == "#{@cusn.name} (#{user.user_name})"
+        @cuss.description == "#{@cuss.name}"
+      end 
+    end
+  end
 end
