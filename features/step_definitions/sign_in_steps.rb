@@ -1,25 +1,37 @@
 Given /^I am not a registered user$/ do
-  @user = FactoryGirl.build(:user)
+  @user = FactoryGirl.build(:user,
+                            first_name: "Fred",
+                            middle_initial: "",
+                            last_name: "Savage",
+                            user_name: "fsavage",
+                            password: "jjjjjj",
+                            password_confirmation: "jjjjjj")
 end
 
 Given /^I am a registered user$/ do
-  @user = FactoryGirl.create(:user)
+  @user = FactoryGirl.create(:user,
+                             first_name: "Fred",
+                             middle_initial: "",
+                             last_name: "Savage",
+                             user_name: "fsavage",
+                             password: "jjjjjj",
+                             password_confirmation: "jjjjjj")
 end
 
 Given /^I am on the sign in page$/ do
   visit signin_path
 end
 
-When /^I fill in "(.*?)" with "(.*?)"$/ do |arg1, arg2|
-  fill_in "User name", with: @user.user_name
+Given /^I am on the sign up page$/ do
+  visit signup_path
 end
 
-When /^I fill in password with "(.*?)"$/ do |arg1|
-  fill_in "Password", with: @user.password
+When /^I fill in "(.*?)" with "(.*?)"$/ do |arg1, arg2|
+  fill_in arg1, with: arg2
 end
 
 When /^I press "(.*?)"$/ do |arg1|
-  click_button "Sign In"
+  click_button arg1
 end
 
 Then /^I should see the sign in page$/ do
@@ -27,6 +39,9 @@ Then /^I should see the sign in page$/ do
 end
 
 Then /^I should see my user home page$/ do
-  page.should have_content(@user.first_name)
+  page.should have_content(@user.full_name)
 end
 
+Then /^I should see the sign up page$/ do
+  page.should have_content("Sign up")
+end
