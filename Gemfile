@@ -23,13 +23,8 @@ group :assets do
   gem 'uglifier'
 end
 
-group :development, :test do
-  gem 'faker'
-  gem 'rb-inotify'
-  gem 'libnotify'
-  gem 'guard-rspec'
-  gem 'launchy'
-  gem 'database_cleaner'
+group :development do
+  gem 'foreman'
 end
 
 group :test do
@@ -39,6 +34,12 @@ group :test do
   #gem 'capybara', "~> 1.1.2"
   #gem 'capybara-webkit'
   gem 'factory_girl_rails', "~> 3.0"
+  gem 'faker'
+  gem 'rb-inotify'
+  gem 'libnotify'
+  gem 'guard-rspec'
+  gem 'launchy'
+  gem 'database_cleaner'
 end
 
 # Use unicorn as the production web server
