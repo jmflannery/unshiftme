@@ -6,8 +6,8 @@ FactoryGirl.define do
     last_name "Person"
     sequence(:user_name) { |n| "experson#{n}" }
     sequence(:email) { |n| "eperson#{n}@example.com" }
-    password "dirtysanchez"
-    password_confirmation "dirtysanchez"
+    password "secret"
+    password_confirmation "secret"
     admin false
     status false
   end

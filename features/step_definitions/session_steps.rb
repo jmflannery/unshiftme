@@ -21,17 +21,20 @@ end
 When /^I go to the messaging page$/ do
 end
 
-Then /^I should not see "(.*?)"$/ do |message_content|
-  page.should_not have_content message_content
-end
-
 When /^I press the "(.*?)" key$/ do |key|
   find_field('message_content').native.send_key(key.to_sym)
 end
 
-Then /^I should see "(.*?)"$/ do |message_content|
-  page.should have_content message_content
-  #page.should have_selector("li.message.recieved", text: message_content)
+Then /^I should not see recieved message "(.*?)"$/ do |message_content|
+  page.should_not have_content message_content
+end
+
+Then /^I should see my message "(.*?)"$/ do |message_content|
+  page.should have_selector("li.message.owner", text: @message)
+end
+
+Then /^I should see recieved message "(.*?)"$/ do |message_content|
+  page.should have_selector("li.message.recieved", text: message_content)
 end
 
 When /^I click "(.*?)"$/ do |desk_abrev|
@@ -44,4 +47,12 @@ end
 
 Then /^I should nothing in the "(.*?)" text field$/ do |textfield_id|
   find_field(textfield_id).value.should be_blank
+end
+
+Given /^I click on the recieved message$/ do
+  find("li.message.recieved.unread").click
+end
+
+Then /^I should see "(.*?)" read this$/ do |user|
+  page.should have_content("#{user} read this.")
 end

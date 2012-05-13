@@ -16,7 +16,7 @@ Feature: Messaging
     And I am in Bill's browser
     And I am logged in as "Bill" with password "secret" at "CUSN"
     When I go to the messaging page
-    Then I should not see "Hi Bill!"
+    Then I should not see recieved message "Hi Bill!"
 
     Given I am in Bob's browser
     And I am logged in as "Bob" with password "secret" at "CUSS"
@@ -24,9 +24,15 @@ Feature: Messaging
     And I click "CUSN"
     And I fill in "message_content" with "Hi Bill!"
     And I press the "enter" key
-    Then I should see "Hi Bill!"
+    Then I should see my message "Hi Bill!"
     And I should nothing in the "message_content" text field
 
     Given I am in Bill's browser
-    When I wait 1 seconds
-    Then I should see "Hi Bill!"
+    When I wait 1 second
+    Then I should see recieved message "Hi Bill!"
+
+    Given I click on the recieved message
+
+    Given I am in Bob's browser
+    When I wait 1 second
+    Then I should see "Bill" read this
