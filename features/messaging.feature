@@ -10,9 +10,9 @@ Feature: Messaging
       | CUS North | CUSN  | td       | 0       |
       | CUS South | CUSS  | td       | 0       |
     Given the following user records
-      | user_name | password | password_confirmation |
-      | Bill      | secret   | secret                |
-      | Bob       | secret   | secret                |
+      | user_name |
+      | Bill      |
+      | Bob       |
     And I am in Bill's browser
     And I am logged in as "Bill" with password "secret" at "CUSN"
     When I go to the messaging page

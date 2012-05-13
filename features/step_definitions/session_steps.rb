@@ -56,3 +56,27 @@ end
 Then /^I should see "(.*?)" read this$/ do |user|
   page.should have_content("#{user} read this.")
 end
+
+Then /^I should see buttons for each desk indicating that I am not messaging that desk$/ do |table|
+  table.hashes.each do |hash|
+    page.should have_selector("##{hash[:abrev]}", ".recipient_desk.off")
+  end
+end
+
+When /^I click on each button$/ do |table|
+  table.hashes.each do |hash|
+    find("##{hash[:abrev]}").click
+  end
+end
+
+Then /^I should see each button indicate that I am messaging that desk$/ do |table|
+  table.hashes.each do |hash|
+    page.should have_selector("##{hash[:abrev]}", ".recipient_desk.on")
+  end
+end
+
+Then /^I should see each button indicate that I am not messaging that desk$/ do |table|
+  table.hashes.each do |hash|
+    page.should have_selector("##{hash[:abrev]}", ".recipient_desk.off")
+  end
+end
