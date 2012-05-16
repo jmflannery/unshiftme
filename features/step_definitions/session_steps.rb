@@ -3,9 +3,12 @@ Given /^I am in (.*) browser$/ do |name|
 end
 
 Given /^the following (.+) records?$/ do |factory, table|
+  records = []
   table.hashes.each do |hash|
-    FactoryGirl.create(factory, hash)
+    records << FactoryGirl.create(factory, hash)
   end
+  @test_records ||= Hash.new()
+  @test_records[factory.to_sym] = records unless @test_records.has_key?(factory.to_sym)
 end
 
 Given /^I am logged in as "([^\"]*)" with password "([^\"]*)" at "([^\"]*)"$/ do |username, password, desk|
@@ -57,26 +60,26 @@ Then /^I should see "(.*?)" read this$/ do |user|
   page.should have_content("#{user} read this.")
 end
 
-Then /^I should see buttons for each desk indicating that I am not messaging that desk$/ do |table|
-  table.hashes.each do |hash|
-    page.should have_selector("##{hash[:abrev]}", ".recipient_desk.off")
+Then /^I should see a button for each desk indicating that I am not messaging that desk$/ do
+  @test_records[:desk].each do |desk|
+    page.should have_selector("##{desk.abrev}", ".recipient_desk")
   end
 end
 
-When /^I click on each button$/ do |table|
-  table.hashes.each do |hash|
-    find("##{hash[:abrev]}").click
+When /^I click on each button$/ do
+  @test_records[:desk].each do |desk|
+    find("##{desk.abrev}").click
   end
 end
 
-Then /^I should see each button indicate that I am messaging that desk$/ do |table|
-  table.hashes.each do |hash|
-    page.should have_selector("##{hash[:abrev]}", ".recipient_desk.on")
+Then /^I should see each button indicate that I am messaging that desk$/ do
+  @test_records[:desk].each do |desk|
+    page.should have_selector("##{desk.abrev}", ".recipient_desk.on")
   end
 end
 
-Then /^I should see each button indicate that I am not messaging that desk$/ do |table|
-  table.hashes.each do |hash|
-    page.should have_selector("##{hash[:abrev]}", ".recipient_desk.off")
+Then /^I should see each button indicate that I am not messaging that desk$/ do
+  @test_records[:desk].each do |desk|
+    page.should have_selector("##{desk.abrev}", ".recipient_desk.off")
   end
 end
