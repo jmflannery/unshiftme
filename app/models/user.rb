@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
   validates :password_confirmation, presence: true 
 
   default_scope order: 'users.last_name ASC'
+  scope :online, lambda { where("status = true") }
 
   def full_name
     full_name = self.first_name
@@ -92,6 +93,10 @@ class User < ActiveRecord::Base
 
   def desks
     Desk.of_user(self.id).collect { |desk| desk.id }
+  end
+
+  def desk_names
+    Desk.of_user(self.id).collect { |desk| desk.abrev }
   end
 
   def leave_desk

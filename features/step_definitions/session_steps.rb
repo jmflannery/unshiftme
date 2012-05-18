@@ -83,3 +83,11 @@ Then /^I should see each button indicate that I am not messaging that desk$/ do
     page.should have_selector("##{desk.abrev}", ".recipient_desk.off")
   end
 end
+
+Then /^I should see that "(.*?)" is at "(.*?)" desk$/ do |user, desk|
+  if user == "nobody"
+    page.should have_selector("##{desk}", text: "(vacant)")
+  else
+    page.should have_selector("##{desk}", text: "(#{user})")
+  end
+end

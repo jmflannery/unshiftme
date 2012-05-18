@@ -204,6 +204,24 @@ describe User do
     end
   end
 
+  describe "scope" do
+    
+    describe "online" do
+      
+      before(:each) do
+        @user.save
+        @user1 = FactoryGirl.create(:user, status: true)
+      end
+      let(:online_users) { User.online }
+  
+      it "only returns online users" do
+        online_users.should include @user1
+        online_users.should_not include @user
+      end
+
+    end
+  end
+
   describe "method" do
     
     before(:each) do
@@ -241,6 +259,23 @@ describe User do
         it "returns an empty list of the user has no desks" do
           @user2 = FactoryGirl.build(:user)
           @user2.desks.should == []
+        end
+      end
+      
+      describe "desk_names" do
+
+        before(:each) do
+          @user.authenticate_desk(@params)
+        end
+
+        it "returns a list of all the desk abreviation names under the control of the user" do
+          @user.desk_names.should be_kind_of Array
+          @user.desk_names.should == [Desk.find_by_abrev("CUSN").abrev, Desk.find_by_abrev("AML").abrev]
+        end
+
+        it "returns an empty list of the user has no desks" do
+          @user2 = FactoryGirl.build(:user)
+          @user2.desk_names.should == []
         end
       end
 
