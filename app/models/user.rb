@@ -99,6 +99,15 @@ class User < ActiveRecord::Base
     Desk.of_user(self.id).collect { |desk| desk.abrev }
   end
 
+  def desk_names_str
+    desks = ""
+    desk_names.each_with_index do |desk_name, i|
+      desks += "," unless i == 0
+      desks += desk_name
+    end
+    desks
+  end
+
   def leave_desk
     self.desks.each do |desk_id|
       desk = Desk.find(desk_id)

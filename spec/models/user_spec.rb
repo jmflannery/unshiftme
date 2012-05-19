@@ -269,13 +269,28 @@ describe User do
         end
 
         it "returns a list of all the desk abreviation names under the control of the user" do
-          @user.desk_names.should be_kind_of Array
           @user.desk_names.should == [Desk.find_by_abrev("CUSN").abrev, Desk.find_by_abrev("AML").abrev]
         end
 
         it "returns an empty list of the user has no desks" do
           @user2 = FactoryGirl.build(:user)
           @user2.desk_names.should == []
+        end
+      end
+
+      describe "desk_names_str" do
+
+        before(:each) do
+          @user.authenticate_desk(@params)
+        end
+
+        it "returns a list of all the desk abreviation names under the control of the user as a string seperated by commas" do
+          @user.desk_names_str.should == "#{Desk.find_by_abrev("CUSN").abrev},#{Desk.find_by_abrev("AML").abrev}"
+        end
+
+        it "returns an empty string of the user has no desks" do
+          @user2 = FactoryGirl.build(:user)
+          @user2.desk_names_str.should == ""
         end
       end
 

@@ -57,3 +57,10 @@ Feature: Desk Selection
     Given I am in Bill's browser
     When I go to the messaging page
     Then I should see that "sam" is at "AML" desk
+
+    Given I log out
+
+    Given I am in Sam's browser
+    When I go to the messaging page
+    Then I should see that "sam" is at "AML" desk
+    And I should see that "nobody" is at "CUSN" desk

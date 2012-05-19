@@ -11,20 +11,8 @@ class SessionsController < ApplicationController
       desk_ok = user.authenticate_desk(params)
       sign_in user
 
-      desks = ""
-      user.desk_names.each_with_index do |desk_name, i|
-        desks += "," unless i == 0
-        desks += desk_name
-      end
-
-      data = {
-        name: user.user_name,
-        desks: desks
-      }
-
-      User.online.each do |online_user|
-        PrivatePub.publish_to("/desks/#{online_user.user_name}", data)
-      end
+      data = { name: user.user_name, desks: user.desk_names_str }
+      send_user_in_or_out_message(data)
 
       redirect_back_or user
     else
@@ -35,8 +23,18 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    data = { name: "vacant", desks: current_user.desk_names_str }
+    send_user_in_or_out_message(data)
+    
     sign_out
     redirect_to root_path
   end
-end
 
+  private
+
+  def send_user_in_or_out_message(data)
+    User.online.each do |online_user|
+      PrivatePub.publish_to("/desks/#{online_user.user_name}", data)
+    end
+  end
+end

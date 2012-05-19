@@ -323,13 +323,10 @@ $(function() {
 
   // register callback
   PrivatePub.subscribe("/desks/" + user_name, function(data, channel) {
-    console.log("message: " + data.name + " is signed in at " + data.desks + "."); 
     var desks = data.desks.split(",");
-    //for (var desk in desks) {
     for (var i = 0; i < desks.length; i++) {
       console.log("Desk: " + desks[i])
       selector = "#" + desks[i] + " .recipient_user_id"
-      console.log(selector);
       $(selector).html("(" + data.name + ")");
     }
   });

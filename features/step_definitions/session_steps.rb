@@ -91,3 +91,7 @@ Then /^I should see that "(.*?)" is at "(.*?)" desk$/ do |user, desk|
     page.should have_selector("##{desk}", text: "(#{user})")
   end
 end
+
+Given /^I log out$/ do
+  click_link "Sign out"
+end
