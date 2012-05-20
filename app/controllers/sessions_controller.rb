@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
       data = { name: user.user_name, desks: user.desk_names_str }
       send_user_in_or_out_message(data)
 
-      redirect_back_or user
+      redirect_to user
     else
       flash.now[:error] = "Invalid name and/or password"
       @title = "Sign in"

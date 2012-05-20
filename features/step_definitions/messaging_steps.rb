@@ -1,16 +1,3 @@
-Given /^I am in (.*) browser$/ do |name|
-  Capybara.session_name = name
-end
-
-Given /^the following (.+) records?$/ do |factory, table|
-  records = []
-  table.hashes.each do |hash|
-    records << FactoryGirl.create(factory, hash)
-  end
-  @test_records ||= Hash.new()
-  @test_records[factory.to_sym] = records unless @test_records.has_key?(factory.to_sym)
-end
-
 Given /^I am logged in as "([^\"]*)" with password "([^\"]*)" at "([^\"]*)"$/ do |username, password, desk|
   unless username.blank?
     visit signin_path
@@ -24,10 +11,6 @@ end
 When /^I go to the messaging page$/ do
 end
 
-When /^I press the "(.*?)" key$/ do |key|
-  find_field('message_content').native.send_key(key.to_sym)
-end
-
 Then /^I should not see recieved message "(.*?)"$/ do |message_content|
   page.should_not have_content message_content
 end
@@ -38,14 +21,6 @@ end
 
 Then /^I should see recieved message "(.*?)"$/ do |message_content|
   page.should have_selector("li.message.recieved", text: message_content)
-end
-
-When /^I click "(.*?)"$/ do |desk_abrev|
-  find("##{desk_abrev}").click
-end
-
-When /^I wait (\d+) seconds?$/ do |seconds|
-  sleep seconds.to_i
 end
 
 Then /^I should nothing in the "(.*?)" text field$/ do |textfield_id|
@@ -70,6 +45,10 @@ When /^I click on each button$/ do
   @test_records[:desk].each do |desk|
     find("##{desk.abrev}").click
   end
+end
+
+When /^I click "(.*?)"$/ do |desk_abrev|
+  find("##{desk_abrev}").click
 end
 
 Then /^I should see each button indicate that I am messaging that desk$/ do

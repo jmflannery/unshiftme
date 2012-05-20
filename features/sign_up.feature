@@ -1,3 +1,4 @@
+@sign_up
 Feature: Sign up
   As an Amtrak Chicago Control Center Employee
   I want to sign up for Messenger
@@ -15,8 +16,8 @@ Feature: Sign up
   Scenario: Sign up success
     Given I am not a registered user
     And I am on the sign up page
-    When I fill in "User name" with "fsavage"
-    And I fill in "password" with "jjjjjj"
-    And I fill in "conformation" with "jjjjjj"
+    When I fill in "User name" with "fred"
+    And I fill in "password" with "secret"
+    And I fill in "conformation" with "secret"
     And I press "Sign Up"
     Then I should see my user home page 
