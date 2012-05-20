@@ -365,9 +365,17 @@ describe User do
         @user.messaging?(cusn.id).should be_true
         @user.messaging?(cuss.id).should be_false
       end
+    end
 
+    describe "recipient_id" do
+      let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+
+      before do
+        @recipient = FactoryGirl.create(:recipient, user: @user, desk_id: cusn.id)
+      end
+      
       it "returns the recipient_id associated with the given desk_id" do
-        @user.messaging?(cusn.id).should eq(@recipient.id)
+        @user.recipient_id(cusn.id).should eq(@recipient.id)
       end
     end
   end

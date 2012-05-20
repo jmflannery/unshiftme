@@ -106,6 +106,15 @@ class User < ActiveRecord::Base
   end
 
   def messaging?(desk_id)
+    recipients.each do |recipient|
+      if recipient.desk_id == desk_id
+        return true
+      end
+    end
+    false
+  end
+
+  def recipient_id(desk_id)
     recipient_id = nil  
     recipients.each do |recipient|
       if recipient.desk_id == desk_id
