@@ -78,6 +78,10 @@ Then /^I should see each button indicate that I am messaging that desk$/ do
   end
 end
 
+Then /^I should see that I am messaging "(.*?)"$/ do |desk|
+  page.should have_selector("##{desk}", ".recipient_desk.on")
+end
+
 Then /^I should see each button indicate that I am not messaging that desk$/ do
   @test_records[:desk].each do |desk|
     page.should have_selector("##{desk.abrev}", ".recipient_desk.off")

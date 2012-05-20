@@ -45,6 +45,12 @@ module SessionsHelper
 
   private
 
+    def send_user_in_or_out_message(data)
+      User.online.each do |online_user|
+        PrivatePub.publish_to("/desks/#{online_user.user_name}", data)
+      end
+    end
+
     def store_location
       session[:return_to] = request.fullpath
     end

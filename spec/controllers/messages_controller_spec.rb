@@ -44,12 +44,19 @@ describe MessagesController do
         end.should change(Message, :count).by(1)
       end
 
-      let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
-      before { FactoryGirl.create(:recipient, user: user, desk_id: cusn.id) }
+      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:cuss) { FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td") }
+      let(:recip_user) { FactoryGirl.create(:user) }
+      before do
+        recip_user.authenticate_desk(cuss.abrev => 1)
+        user.authenticate_desk(cusn.abrev => 1)
+        FactoryGirl.create(:recipient, user: user, desk_id: cuss.id)
+      end
+
       it "adds the message sender's desk to the recipient list of all of the message's recipient users" do
         post :create, :message => attr, :format => :js
-        user.recipients.size.should == 1
-        user.recipients[0].desk_id.should == cusn.id
+        recip_user.recipients.size.should == 1
+        recip_user.recipients[0].desk_id.should == cusn.id
       end
     end
   end

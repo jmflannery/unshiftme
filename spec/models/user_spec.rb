@@ -183,8 +183,8 @@ describe User do
       
       before(:each) do
         @params = { key: "val", "CUSN" => 1, "AML" => 1, anotherkey: "val" }
-        Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
-        Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td")
+        FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td")
+        FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td")
       end
 
       describe "authenticate_desk" do

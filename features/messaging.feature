@@ -42,6 +42,7 @@ Feature: Messaging
     Given I am in Bill's browser
     When I wait 1 second
     Then I should see recieved message "Hi Bill!"
+    And I should see that I am messaging "CUSS"
 
     Given I click on the recieved message
 

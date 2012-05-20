@@ -289,13 +289,12 @@ $(function() {
     // add click handler to new message element
     $("li.message.recieved.unread").click(read_message);
 
-    // display/refresh the recipients and online users
-    $.get(
-      "/recipients",
-      function(response) {
-        response;
-      }
-    );
+    // show the sending desk as a recipient
+    var desks = data.from_desks.split(",");
+    for (var i = 0; i < desks.length; i++) {
+      selector = "#" + desks[i] + ".recipient_desk.off";
+      $(selector).removeClass("off").addClass("on").addClass(data.recipient_id);
+    }
 
     // scroll to last message 
     //if (data.chat_message) {
@@ -325,7 +324,6 @@ $(function() {
   PrivatePub.subscribe("/desks/" + user_name, function(data, channel) {
     var desks = data.desks.split(",");
     for (var i = 0; i < desks.length; i++) {
-      console.log("Desk: " + desks[i])
       selector = "#" + desks[i] + " .recipient_user_id"
       $(selector).html("(" + data.name + ")");
     }

@@ -11,10 +11,13 @@ class MessagesController < ApplicationController
         desk = Desk.find(recipient.desk_id)
         if User.exists?(desk.user_id)
           recip_user = User.find(desk.user_id) 
-          recip_user.add_recipient(desk)
+          @user.desks.each { |desk_id| recip_user.add_recipient(Desk.find(desk_id)) }
+          
           data = { 
             sender: @user.user_name, 
             chat_message: @message.content,
+            from_desks: @user.desk_names_str,
+            recipient_id: recipient.id,
             timestamp: @message.created_at.strftime("%a %b %e %Y %T"),
             view_class: "message #{@message.id.to_s} recieved unread"
           }

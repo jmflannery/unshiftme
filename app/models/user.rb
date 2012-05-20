@@ -71,11 +71,10 @@ class User < ActiveRecord::Base
 
   def authenticate_desk(params)
     params.each do |key, val|
-      Desk.all.each do |desk|
-        if (desk.abrev == key)
-          desk.user_id = self.id
-          desk.save
-        end
+      desk = Desk.find_by_abrev(key)
+      if desk
+        desk.user_id = self.id
+        desk.save
       end
     end
     true
