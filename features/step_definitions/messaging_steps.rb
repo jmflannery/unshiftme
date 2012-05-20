@@ -37,7 +37,17 @@ end
 
 Then /^I should see a button for each desk indicating that I am not messaging that desk$/ do
   @test_records[:desk].each do |desk|
-    page.should have_selector("##{desk.abrev}", ".recipient_desk")
+    page.should have_selector("##{desk.abrev}.recipient_desk.off")
+  end
+end
+
+Then /^I should see a button for each desk indicating that I am not messaging that desk excluding my own desk "(.*?)"$/ do |desk_abrev|
+  @test_records[:desk].each do |desk|
+    if desk.abrev == desk_abrev
+      page.should have_selector("##{desk.abrev}.recipient_desk.mine")
+    else
+      page.should have_selector("##{desk.abrev}.recipient_desk.off")
+    end
   end
 end
 
@@ -51,19 +61,31 @@ When /^I click "(.*?)"$/ do |desk_abrev|
   find("##{desk_abrev}").click
 end
 
-Then /^I should see each button indicate that I am messaging that desk$/ do
+Then /^I should see that I am at "(.*?)"$/ do |desk|
+  page.should have_selector("##{desk}.recipient_desk.mine")
+end
+
+Then /^I should see each button indicate that I am messaging that desk excluding my own desk "(.*?)"$/ do |desk_abrev|
   @test_records[:desk].each do |desk|
-    page.should have_selector("##{desk.abrev}", ".recipient_desk.on")
+    if desk.abrev == desk_abrev
+      page.should have_selector("##{desk.abrev}.recipient_desk.mine")
+    else
+      page.should have_selector("##{desk.abrev}.recipient_desk.on")
+    end
   end
 end
 
 Then /^I should see that I am messaging "(.*?)"$/ do |desk|
-  page.should have_selector("##{desk}", ".recipient_desk.on")
+  page.should have_selector("##{desk}.recipient_desk.on")
 end
 
-Then /^I should see each button indicate that I am not messaging that desk$/ do
+Then /^I should see each button indicate that I am not messaging that desk excluding my own desk "(.*?)"$/ do |desk_abrev|
   @test_records[:desk].each do |desk|
-    page.should have_selector("##{desk.abrev}", ".recipient_desk.off")
+    if desk.abrev == desk_abrev
+      page.should have_selector("##{desk.abrev}.recipient_desk.mine")
+    else
+      page.should have_selector("##{desk.abrev}.recipient_desk.off")
+    end
   end
 end
 

@@ -104,7 +104,8 @@ var toggle_recipient = function() {
 };
 
 $(function() {
-  $(".recipient_desk").click(toggle_recipient);
+  $(".recipient_desk.on").click(toggle_recipient);
+  $(".recipient_desk.off").click(toggle_recipient);
 });
 
 ///////////////////////////////////
