@@ -15,8 +15,8 @@ Feature: Desk Selection
       | Yard Master  | YDMSTR | ops      | 0       |
       | Glasshouse   | GLHSE  | ops      | 0       |
     And the following user records
-      | first_name | middle_initial | last_name | user_name |
-      | Bill       |                | Brown     | bill      |
+      | user_name |
+      | bill      |
 
      And I am logged in as "bill" with password "secret" at "CUSN"
      When I go to the messaging page
@@ -38,9 +38,9 @@ Feature: Desk Selection
       | Yard Master  | YDMSTR | ops      | 0       |
       | Glasshouse   | GLHSE  | ops      | 0       |
     And the following user records
-      | first_name | middle_initial | last_name | user_name |
-      | Bill       |                | Brown     | bill      |
-      | Sam        |                | Cook      | sam       |
+      | user_name |
+      | bill      |
+      | sam       |
 
     And I am in Bill's browser
     And I am logged in as "bill" with password "secret" at "CUSN"

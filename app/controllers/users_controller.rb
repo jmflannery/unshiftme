@@ -23,7 +23,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    @title = @user.full_name
+    @title = @user.user_name
     @messages = Message.for_user_before(@user, Time.now)
     @message = Message.new
     @attachment = Attachment.new

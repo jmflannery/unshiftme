@@ -4,40 +4,22 @@
 
   <%= form_for(@user) do |f| %>
     <%= render 'shared/error_messages', :object => f.object %>
+
     <div class="field">
-        <%= f.label :first_name %> </br>
-        <%= f.text_field :first_name %>
-      </div>
+      <%= f.label :user_name %> </br>
+      <%= f.text_field :user_name %>
+    </div>
 
-      <div class="field">
-        <%= f.label :middle_initial %> </br>
-        <%= f.text_field :middle_initial %>
-      </div>
+    <div class="field">
+      <%= f.label :password %> </br>
+      <%= f.password_field :password, id: "pass" %>
+    </div>
 
-      <div class="field">
-        <%= f.label :last_name %> </br>
-        <%= f.text_field :last_name %>
-      </div>
+    <div class="field">
+      <%= f.label :password_confirmation %> </br>
+      <%= f.password_field :password_confirmation, id: "conf" %>
+    </div>
 
-      <div class="field">
-        <%= f.label :user_name %> </br>
-        <%= f.text_field :user_name %>
-      </div>
-
-      <div class="field">
-        <%= f.label :email %> </br>
-        <%= f.text_field :email %>
-      </div>
-
-      <div class="field">
-        <%= f.label :password %> </br>
-        <%= f.password_field :password, id: "pass" %>
-      </div>
-
-      <div class="field">
-        <%= f.label :password_confirmation %> </br>
-        <%= f.password_field :password_confirmation, id: "conf" %>
-      </div>
     <div class="actions">
       <%= f.submit "Update" %>
     </div>

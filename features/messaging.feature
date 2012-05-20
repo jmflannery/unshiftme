@@ -12,10 +12,10 @@ Feature: Messaging
       | CUS South | CUSS  | td       | 0       |
       | AML / NOL | AML   | td       | 0       |
     Given the following user records
-      | first_name | middle_initial | last_name | user_name |
-      | Bill       |                | Brown     | bill      |
-      | Bob        |                | Barker    | bob       |
-      | Sam        |                | Cook      | sam       |
+      | user_name |
+      | bill      |
+      | bob       |
+      | sam       |
     And I am in Bill's browser
     And I am logged in as "bill" with password "secret" at "CUSN"
     When I go to the messaging page

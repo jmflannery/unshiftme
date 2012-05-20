@@ -5,21 +5,13 @@ describe UsersController do
 
   before(:each) do
     @fail_attr = { 
-      first_name: "",
-      middle_initial: "",
-      last_name: "",
       user_name: "",
-      email: "",
       password: "",
       password_confirmation: ""
     }
     
     @success_attr = { 
-      first_name: "New",
-      middle_initial: "X",
-      last_name: "User",
       user_name: "nxuser",
-      email: "user@example.com",
       password: "foobar",
       password_confirmation: "foobar"
     }
@@ -57,12 +49,12 @@ describe UsersController do
 
     it "should have the right title" do
       get :show, :id => @user
-      response.body.should have_selector("title", content: "#{@user.first_name} #{@user.middle_initial}. #{@user.last_name}")
+      response.body.should have_selector("title", content: @user.user_name)
     end
 
     it "should include the users name" do
       get :show, :id => @user
-      response.should have_selector("p", content: "#{@user.first_name} #{@user.middle_initial}. #{@user.last_name}")
+      response.should have_selector("p", content: @user.user_name)
     end
     
     it "should create a new attachment (for a subsequent create)" do
@@ -124,7 +116,7 @@ describe UsersController do
       it "should create admin user if it is the first User to be created" do
         post :create, user: @success_attr
         assigns(:user).should be_admin
-        post :create, user: @success_attr.merge(user_name: "xxxuser", email: "xxx@xxx.xxx")
+        post :create, user: @success_attr.merge(user_name: "xuserx")
         assigns(:user).should_not be_admin
       end
     end
@@ -173,11 +165,7 @@ describe UsersController do
 
       before(:each) do
         @new_attr = { 
-          first_name: "Foo",
-          middle_initial: "Z",
-          last_name: "Bar",
           user_name: "fzbar",
-          email: "foobar@example.com",
           password: "foobar",
           password_confirmation: "foobar"
         }
@@ -186,11 +174,7 @@ describe UsersController do
       it "should change the user's attributes" do
         put :update, id: @user, user: @new_attr
         @user.reload
-        @user.first_name.should == @new_attr[:first_name]
-        @user.middle_initial.should == @new_attr[:middle_initial]
-        @user.last_name.should == @new_attr[:last_name]
         @user.user_name.should == @new_attr[:user_name]
-        @user.email.should == @new_attr[:email]
       end
 
       it "should redirect to the user show page" do

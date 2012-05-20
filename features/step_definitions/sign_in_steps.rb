@@ -1,8 +1,5 @@
 Given /^I am not a registered user$/ do
   @user = FactoryGirl.build(:user,
-                            first_name: "Fred",
-                            middle_initial: "",
-                            last_name: "Savage",
                             user_name: "fsavage",
                             password: "jjjjjj",
                             password_confirmation: "jjjjjj")
@@ -10,9 +7,6 @@ end
 
 Given /^I am a registered user$/ do
   @user = FactoryGirl.create(:user,
-                             first_name: "Fred",
-                             middle_initial: "",
-                             last_name: "Savage",
                              user_name: "fsavage",
                              password: "jjjjjj",
                              password_confirmation: "jjjjjj")
@@ -39,7 +33,7 @@ Then /^I should see the sign in page$/ do
 end
 
 Then /^I should see my user home page$/ do
-  page.should have_content(@user.full_name)
+  page.should have_content(@user.user_name)
 end
 
 Then /^I should see the sign up page$/ do

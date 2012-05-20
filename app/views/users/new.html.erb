@@ -6,30 +6,10 @@
     <%= form_for(@user) do |f| %>
 
       <div class="field">
-        <%= f.label :first_name %> </br>
-        <%= f.text_field :first_name %>
-      </div>
-
-      <div class="field">
-        <%= f.label :middle_initial %> </br>
-        <%= f.text_field :middle_initial, maxlength: 1 %>
-      </div>
-
-      <div class="field">
-        <%= f.label :last_name %> </br>
-        <%= f.text_field :last_name %>
-      </div>
-
-      <div class="field">
         <%= f.label :user_name %> </br>
         <%= f.text_field :user_name %>
       </div>
-
-      <div class="field">
-        <%= f.label :email %> </br>
-        <%= f.text_field :email %>
-      </div>
-
+      
       <div class="field">
         <%= f.label :password %> </br>
         <%= f.password_field :password, id: "password" %>

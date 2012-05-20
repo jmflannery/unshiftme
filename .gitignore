@@ -4,6 +4,7 @@ log/*.log
 tmp/
 .sass-cache/
 .redcar/
+*.swp
 
 /config/database.yml
 /public/system/payloads/

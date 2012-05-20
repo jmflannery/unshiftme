@@ -2,32 +2,22 @@ class User < ActiveRecord::Base
 
   has_secure_password 
 
-  attr_accessible :first_name, :middle_initial, :last_name, :user_name, :email, :password, :password_confirmation 
+  attr_accessible :user_name, :password, :password_confirmation 
   
   has_many :messages
   has_many :transcripts
   has_many :recipients
   has_many :attachments
   
-  validates :first_name, presence: true
-  validates :last_name, presence: true
   validates :user_name, presence: true, uniqueness: true
   
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  validates :email, presence: true, uniqueness: true, format: { with: VALID_EMAIL_REGEX }
+  #VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  #validates :email, presence: true, uniqueness: true, format: { with: VALID_EMAIL_REGEX }
 
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true 
 
-  default_scope order: 'users.last_name ASC'
   scope :online, lambda { where("status = true") }
-
-  def full_name
-    full_name = self.first_name
-    full_name += " #{self.middle_initial}." unless self.middle_initial.blank?
-    full_name += " #{self.last_name}"
-    full_name
-  end
 
   def recipient_desk_ids
     ids = []

@@ -19,18 +19,12 @@ require 'spec_helper'
 describe User do
 
   before(:each) do
-    @user = User.new(first_name: "Sam", middle_initial: "Q", last_name: "Smith",
-                     user_name: "sqsmith", email: "xxx@xxx.xxx", password: "foobar",
-                     password_confirmation: "foobar")
+    @user = User.new(user_name: "smith", password: "foobar", password_confirmation: "foobar")
   end
 
   subject { @user }
 
-  it { should respond_to(:first_name) }
-  it { should respond_to(:middle_initial) }
-  it { should respond_to(:last_name) }
   it { should respond_to(:user_name) }
-  it { should respond_to(:email) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:admin) }
@@ -44,23 +38,8 @@ describe User do
     it { should be_admin }
   end
 
-  describe "when first_name is not present" do
-    before { @user.first_name = " " }
-    it { should_not be_valid }
-  end
-
-  describe "when last_name is not present" do
-    before { @user.last_name = " " }
-    it { should_not be_valid }
-  end
-
   describe "when user_name is not present" do
     before { @user.user_name = " " }
-    it { should_not be_valid }
-  end
-
-  describe "when email is not present" do
-    before { @user.email = " " }
     it { should_not be_valid }
   end
 
@@ -70,34 +49,6 @@ describe User do
     end
 
     it { should_not be_valid }
-  end
-
-  describe "when email is already taken" do
-    before do
-      user_with_same_email = FactoryGirl.create(:user, email: @user.email) 
-    end
-
-    it { should_not be_valid }
-  end
-
-  describe "when email format is invalid" do
-    it "should not be invalid" do
-      addresses = %w[user@foo,com user_at_foo.org example.user@foo.]
-      addresses.each do |invalid_address|
-        @user.email = invalid_address
-        @user.should_not be_valid
-      end
-    end
-  end
-
-  describe "when email format is valid" do
-    it "should be valid" do
-      addresses = %w[user@foo.com A_USER@f.b.org frst.lst@foo.jp a+b@baz.cn]
-      addresses.each do |valid_address|
-        @user.email = valid_address
-        @user.should be_valid
-      end
-    end
   end
 
   describe "when password is not present" do
@@ -305,21 +256,6 @@ describe User do
           Desk.find_by_abrev("CUSN").user_id.should_not == @user.id  
           Desk.find_by_abrev("AML").user_id.should_not == @user.id  
         end
-      end
-    end
-
-    describe "full_name" do
-       
-      before do
-         @user1 = FactoryGirl.create(:user, first_name: "Jack", middle_initial: "M", last_name: "Flannery", status: true)
-         @user2 = FactoryGirl.create(:user, first_name: "Bill", middle_initial: "", last_name: "Stump", status: true)
-         @user3 = FactoryGirl.create(:user, first_name: "Mario", middle_initial: nil, last_name: "Pizzaface", status: true)
-       end
-
-      it "returns a string of the users first name middle initial if it exists and last name" do
-        @user1.full_name.should == "Jack M. Flannery"
-        @user2.full_name.should == "Bill Stump"
-        @user3.full_name.should == "Mario Pizzaface"
       end
     end
 
