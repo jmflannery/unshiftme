@@ -124,4 +124,8 @@ class User < ActiveRecord::Base
     end
     recipient_id
   end
+
+  def delete_all_recipients
+    recipients.each { |recipient| recipient.destroy } 
+  end
 end

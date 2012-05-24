@@ -378,5 +378,20 @@ describe User do
         @user.recipient_id(cusn.id).should eq(@recipient.id)
       end
     end
+
+    describe "delete_all_recipients" do
+      let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:aml) { Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
+      before do
+        FactoryGirl.create(:recipient, user: @user, desk_id: cusn.id)
+        FactoryGirl.create(:recipient, user: @user, desk_id: aml.id)
+      end
+      it "deletes all of the user's recipients" do
+        @user.recipients.size.should == 2
+        @user.delete_all_recipients
+        @user.reload
+        @user.recipients.should be_empty
+      end
+    end
   end
 end

@@ -1,13 +1,3 @@
-Given /^I am logged in as "([^\"]*)" with password "([^\"]*)" at "([^\"]*)"$/ do |username, password, desk|
-  unless username.blank?
-    visit signin_path
-    fill_in "User name", :with => username
-    fill_in "Password", :with => password
-    check desk
-    click_button "Sign In"
-  end
-end
-
 When /^I go to the messaging page$/ do
 end
 
@@ -77,6 +67,10 @@ end
 
 Then /^I should see that I am messaging "(.*?)"$/ do |desk|
   page.should have_selector("##{desk}.recipient_desk.on")
+end
+
+Then /^I should see that I am not messaging "(.*?)"$/ do |desk|
+  page.should_not have_selector("##{desk}.recipient_desk.on")
 end
 
 Then /^I should see each button indicate that I am not messaging that desk excluding my own desk "(.*?)"$/ do |desk_abrev|

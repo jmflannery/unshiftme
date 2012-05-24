@@ -1,6 +1,16 @@
 Given /^I am in (.*) browser$/ do |name|
   Capybara.session_name = name
 end
+ 
+Given /^I am logged in as "([^\"]*)" with password "([^\"]*)" at "([^\"]*)"$/ do |username, password, desk|
+  unless username.blank?
+    visit signin_path
+    fill_in "User name", :with => username
+    fill_in "Password", :with => password
+    check desk
+    click_button "Sign In"
+  end
+end
 
 Given /^the following (.+) records?$/ do |factory, table|
   records = []
@@ -21,6 +31,10 @@ end
 
 When /^I press "(.*?)"$/ do |arg1|
   click_button arg1
+end
+
+When /^I click link "(.*?)"$/ do |arg1|
+  click_link arg1 
 end
 
 When /^I wait (\d+) seconds?$/ do |seconds|

@@ -12,6 +12,22 @@ Given /^I am a registered user$/ do
                              password_confirmation: "secret")
 end
 
+Given /^I am registered user "(.*?)" with password "(.*?)"$/ do |name, passwd|
+  @user = FactoryGirl.create(:user,
+                             user_name: name,
+                             password: passwd,
+                             password_confirmation: passwd)
+end
+
+Given /^I am logged in at "(.*?)"$/ do |desk|
+  visit signin_path
+  fill_in "User name", :with => @user.user_name
+  fill_in "Password", :with => @user.password
+  check desk
+  click_button "Sign In"
+end
+
+
 Given /^I am on the sign in page$/ do
   visit signin_path
 end
