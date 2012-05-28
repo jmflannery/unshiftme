@@ -29,6 +29,11 @@ class Message < ActiveRecord::Base
     save
   end
 
+  def set_sent_by
+    self.sent = user.desk_names
+    save
+  end
+
   def self.for_user_before(user, time)
     messages = []
     self.before(time).each do |message|

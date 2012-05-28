@@ -96,6 +96,23 @@ describe Message do
         message.recievers.should == [{ desk_id: cusn.id, user_id: user1.id }, { desk_id: aml.id }]
       end
     end
+
+    describe "set_sent_by" do
+
+      let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:aml) { Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
+      
+      before do
+        @user.authenticate_desk(cusn.abrev => 1)
+        @user.authenticate_desk(aml.abrev => 1)
+        @message = FactoryGirl.create(:message, user: @user)
+        @message.set_sent_by
+      end
+
+      it "sets message.sent to an array of strings of the desk_abrev's owned by the message sender " do
+        @message.sent.should == [cusn.abrev, aml.abrev]
+      end
+    end
       
     describe "for_user_before" do
       

@@ -24,6 +24,7 @@ class MessagesController < ApplicationController
           PrivatePub.publish_to("/messages/#{recip_user.user_name}", data)
         end
       end
+      @message.set_sent_by
     else
       redirect_to new_session_path
     end
