@@ -19,12 +19,12 @@ Feature: Messaging
     And I am in Bill's browser
     And I am logged in as "bill" with password "secret" at "CUSN"
     When I go to the messaging page
-    Then I should not see recieved message "Hi Bill!"
+    Then I should not see recieved message "Hi Bill!" from desk "CUSS" user "bob"
 
     Given I am in Sam's browser
     And I am logged in as "sam" with password "secret" at "AML"
     When I go to the messaging page
-    Then I should not see recieved message "Hi Bill!"
+    Then I should not see recieved message "Hi Bill!" from desk "CUSS" user "bob"
 
     Given I am in Bob's browser
     And I am logged in as "bob" with password "secret" at "CUSS"
@@ -32,16 +32,16 @@ Feature: Messaging
     And I click "CUSN"
     And I fill in "message_content" with "Hi Bill!"
     And I press the "enter" key
-    Then I should see my message "Hi Bill!"
+    Then I should see my message "Hi Bill!" from desk "CUSS" user "bob"
     And I should nothing in the "message_content" text field
 
     Given I am in Sam's browser
     When I wait 1 second
-    Then I should not see recieved message "Hi Bill!"
+    Then I should not see recieved message "Hi Bill!" from desk "CUSS" user "bob"
 
     Given I am in Bill's browser
     When I wait 1 second
-    Then I should see recieved message "Hi Bill!"
+    Then I should see recieved message "Hi Bill!" from desk "CUSS" user "bob"
     And I should see that I am messaging "CUSS"
 
     Given I click on the recieved message

@@ -264,7 +264,7 @@ $(function() {
             "<ul class='inner_message'>" +
               "<li>" +
                 "<div class='message_sender'>" +
-                  "<p>" + data.sender + "</p>" +
+                  "<p>" + data.from_desks + " (" + data.sender + ")</p>" +
                 "</div>" + 
                 "<div class='message_timestamp'>" +
                   "<p>" + data.timestamp + "</p>" +

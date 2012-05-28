@@ -1,15 +1,18 @@
 When /^I go to the messaging page$/ do
 end
 
-Then /^I should not see recieved message "(.*?)"$/ do |message_content|
+Then /^I should not see recieved message "(.*?)" from desk "(.*?)" user "(.*?)"$/ do |message_content, desk_abrev, user_name|
+  page.should_not have_selector(".message_sender p", text: "#{desk_abrev} (#{user_name})")
   page.should_not have_content message_content
 end
 
-Then /^I should see my message "(.*?)"$/ do |message_content|
+Then /^I should see my message "(.*?)" from desk "(.*?)" user "(.*?)"$/ do |message_content, desk_abrev, user_name|
+  page.should have_selector(".message_sender p", text: "#{desk_abrev} (#{user_name})")
   page.should have_selector("li.message.owner", text: @message)
 end
 
-Then /^I should see recieved message "(.*?)"$/ do |message_content|
+Then /^I should see recieved message "(.*?)" from desk "(.*?)" user "(.*?)"$/ do |message_content, desk_abrev, user_name|
+  page.should have_selector(".message_sender p", text: "#{desk_abrev} (#{user_name})")
   page.should have_selector("li.message.recieved", text: message_content)
 end
 
