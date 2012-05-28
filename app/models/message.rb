@@ -3,6 +3,7 @@ class Message < ActiveRecord::Base
 
   attr_accessible :content, :attachment_id
 
+  serialize :read_by
   serialize :recievers
   
   belongs_to :user
@@ -45,7 +46,7 @@ class Message < ActiveRecord::Base
           end
 
           if message.read_by
-            if message.read_by.split(",").include?(user.id.to_s)
+            if message.read_by.include?({ user: user.id.to_s, desks: user.desk_names_str })
               message.view_class = "message #{message.id} recieved read"
             else
               message.view_class = "message #{message.id} recieved unread"
@@ -76,7 +77,7 @@ class Message < ActiveRecord::Base
           end
 
           if message.read_by
-            if message.read_by.split(",").include?(user.id.to_s)
+            if message.read_by.include?({ user: user.id.to_s, desks: user.desk_names_str })
               message.view_class = "message #{message.id} recieved read"
             else
               message.view_class = "message #{message.id} recieved unread"
@@ -91,10 +92,15 @@ class Message < ActiveRecord::Base
   end
 
   def mark_read_by(user)
+    hash = Hash.new
+    hash[:user] = user.id.to_s
+    hash[:desks] = user.desk_names_str
     if self.read_by
-      self.read_by += ",#{user.id.to_s}" unless self.read_by.split(",").include?(user.id.to_s)
+      self.read_by << hash
     else
-      self.read_by = user.id.to_s
+      reads = Array.new
+      reads << hash
+      self.read_by = reads
     end
     save
   end
@@ -102,14 +108,15 @@ class Message < ActiveRecord::Base
   def readers
     readers = ""
     if self.read_by
-      readit = self.read_by.split(",")
-      readit.each_with_index do |user_id, i|
-        if i == (readit.size - 1) and readit.size > 1
+      readit = self.read_by
+      readit.each_index do |index|
+        if index == (readit.size - 1) and readit.size > 1
           readers += " and " 
-        elsif i > 0
+        elsif index > 0
           readers += ", "
         end
-        readers += User.find(user_id).user_name
+        user = User.find(readit[index][:user].to_i)
+        readers += "#{user.desk_names_str} (#{user.user_name})"
       end
       readers += " read this."
     end

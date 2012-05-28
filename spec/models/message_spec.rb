@@ -224,16 +224,19 @@ describe Message do
     end 
 
     describe "mark_read_by" do
+      
+      let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
 
       before(:each) do
         @message = @user.messages.create(@msg_attr)
         @recipient_user = FactoryGirl.create(:user)
+        @recipient_user.authenticate_desk(cusn.abrev => 1)
       end
       
-      it "adds the given user id the message's read by list" do
+      it "adds the given desk(s) and user to the message's read by list" do
         @message.mark_read_by @recipient_user
         read_by_list = @message.read_by.split(",")
-        read_by_list.should include @recipient_user.id.to_s
+        read_by_list.should include([{ user: @recipient_user.id.to_s, desks: @recipient_user.desk_names_str }])
       end
 
       it "does not add duplicates to message's read by list" do
@@ -245,19 +248,27 @@ describe Message do
     end
 
     describe "readers" do
+      let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:cuss) { Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td") }
+      let(:aml) { Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
 
       before(:each) do
         @message = @user.messages.create(@msg_attr)
         @recipient_user = FactoryGirl.create(:user)
         @recipient_user2 = FactoryGirl.create(:user)
         @recipient_user3 = FactoryGirl.create(:user)
+        @recipient_user.authenticate_desk(cusn.abrev => 1)
+        @recipient_user2.authenticate_desk(cuss.abrev => 1)
+        @recipient_user3.authenticate_desk(aml.abrev => 1)
       end
 
       it "returns a list of the user names who read the message" do
         @message.mark_read_by @recipient_user
         @message.mark_read_by @recipient_user2
         @message.mark_read_by @recipient_user3
-        @message.readers.should == "#{@recipient_user.user_name}, #{@recipient_user2.user_name} and #{@recipient_user3.user_name} read this."
+        @message.readers.should == "#{@recipient_user.desk_names_str} (#{@recipient_user.user_name}), " +
+          "#{@recipient_user2.desk_names_str} (#{@recipient_user2.user_name}) and " +
+          "#{@recipient_user3.desk_names_str} (#{@recipient_user3.user_name}) read this."
       end
     end
   end

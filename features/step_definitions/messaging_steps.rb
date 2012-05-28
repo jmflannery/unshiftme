@@ -24,8 +24,8 @@ Given /^I click on the recieved message$/ do
   find("li.message.recieved.unread").click
 end
 
-Then /^I should see "(.*?)" read this$/ do |user|
-  page.should have_content("#{user} read this.")
+Then /^I should see desk "(.*?)" user "(.*?)" read this$/ do |desk_abrev, user_name|
+  page.should have_content("#{desk_abrev} (#{user_name}) read this.")
 end
 
 Then /^I should see a button for each desk indicating that I am not messaging that desk$/ do

@@ -48,4 +48,4 @@ Feature: Messaging
 
     Given I am in Bob's browser
     When I wait 1 second
-    Then I should see "bill" read this
+    Then I should see desk "CUSN" user "bill" read this
