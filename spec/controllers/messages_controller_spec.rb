@@ -65,7 +65,11 @@ describe MessagesController do
 
     let(:sender) { FactoryGirl.create(:user) }
     let(:message) { sender.messages.create!(attr) }
-    before(:each) { test_sign_in(user) }
+    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+    before(:each) do
+      user.authenticate_desk(cusn.abrev => 1)
+      test_sign_in(user)
+    end
 
     it "is successful" do
       post :update, id: message.id, format: :jd, remote: true
@@ -75,7 +79,7 @@ describe MessagesController do
     it "marks the message read by the current user" do
       post :update, id: message.id, format: :jd, remote: true
       message.reload
-      message.read_by.should == user.id.to_s
+      message.read_by.should == [{ user: user.id.to_s, desks: user.desk_names_str }]
     end
   end
 end
