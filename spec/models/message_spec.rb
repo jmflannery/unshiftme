@@ -307,12 +307,12 @@ describe Message do
 
       let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
       let(:user1) { FactoryGirl.create(:user) }
+      let(:recipient_user) { FactoryGirl.create(:user) }
       
       before(:each) do
-        @recipient_user = FactoryGirl.create(:user)
-        @recipient_user.authenticate_desk(cusn.abrev => 1)
-        @message = @user.messages.create(@msg_attr)
-        @message.mark_read_by @recipient_user
+        #@user.authenticate_desk(cusn.abrev => 1)
+        @message = FactoryGirl.create(:message, content: @msg_attr, user: @user)
+        @message.mark_read_by(recipient_user)
       end
 
       it "returns false if the message was sent by the given user" do
@@ -320,7 +320,29 @@ describe Message do
       end
 
       it "returns true if the message was sent by the given user" do
-        @message.was_read_by?(@recipient_user).should be_true
+        @message.was_read_by?(recipient_user).should be_true
+      end
+    end
+
+    describe "was_sent_to?" do
+
+      let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:user1) { FactoryGirl.create(:user) }
+      let(:recipient_user) { FactoryGirl.create(:user) }
+      
+      before(:each) do
+        recipient_user.authenticate_desk(cusn.abrev => 1)
+        FactoryGirl.create(:recipient, user: @user, desk_id: cusn.id)
+        @message = @user.messages.create(@msg_attr)
+        @message.set_recievers
+      end
+
+      it "returns false if the message was sent by the given user" do
+        @message.was_sent_to?(user1).should be_false
+      end
+
+      it "returns true if the message was sent by the given user" do
+        @message.was_sent_to?(recipient_user).should be_true
       end
     end
 

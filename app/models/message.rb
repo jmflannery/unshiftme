@@ -66,18 +66,13 @@ class Message < ActiveRecord::Base
         next
       end
 
-      msg_user = User.find_by_id(message.user_id)
-      if message.recievers
-        message.recievers.each do |reciever|
-          if user.id == reciever[:user_id] or (msg_user.desks.include?(reciever[:desk_id]) and !reciever[:user_id])
-            messages << message 
-          end
+      if message.was_sent_to?(user)
+        messages << message 
 
-          if message.was_read_by?(user)
-            message.view_class = "message #{message.id} recieved read"
-          else
-            message.view_class = "message #{message.id} recieved unread"
-          end
+        if message.was_read_by?(user)
+          message.view_class = "message #{message.id} recieved read"
+        else
+          message.view_class = "message #{message.id} recieved unread"
         end
       end
     end
@@ -92,19 +87,14 @@ class Message < ActiveRecord::Base
         messages << message
         next
       end
+      
+      if message.was_sent_to?(user)
+        messages << message 
 
-      msg_user = User.find_by_id(message.user_id)
-      if message.recievers
-        message.recievers.each do |reciever|
-          if user.id == reciever[:user_id] or (msg_user.desks.include?(reciever[:desk_id]) and !reciever[:user_id])
-            messages << message 
-          end
-
-          if message.was_read_by?(user)
-            message.view_class = "message #{message.id} recieved read"
-          else
-            message.view_class = "message #{message.id} recieved unread"
-          end
+        if message.was_read_by?(user)
+          message.view_class = "message #{message.id} recieved read"
+        else
+          message.view_class = "message #{message.id} recieved unread"
         end
       end
     end
@@ -141,6 +131,18 @@ class Message < ActiveRecord::Base
       readers += " read this."
     end
     readers
+  end
+
+  def was_sent_to?(user)
+    if self.recievers
+      msg_user = User.find(self.user_id)
+      self.recievers.each do |reciever|
+        if user.id == reciever[:user_id] or (msg_user.desks.include?(reciever[:desk_id]) and !reciever[:user_id])
+          return true 
+        end
+      end
+    end
+    false
   end
 
   def was_read_by?(user)
