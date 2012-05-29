@@ -6,8 +6,7 @@
 
   <ul class='inner_message'>
     <li>
-      <% user = User.find(message.user_id) %>
-      <div class="message_sender"><p><%= "#{user.desk_names_str} (#{user.user_name})" %></p></div>
+      <div class="message_sender"><p><%= "#{message.sent_by} (#{User.find(message.user_id).user_name})" %></p></div>
       <div class="message_timestamp"><p><%= message.created_at.strftime("%a %b %e %Y %T") %></p></div>
     </li>
     <li>

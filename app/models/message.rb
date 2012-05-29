@@ -4,6 +4,7 @@ class Message < ActiveRecord::Base
   attr_accessible :content, :attachment_id
 
   serialize :read_by
+  serialize :sent
   serialize :recievers
   
   belongs_to :user
@@ -30,8 +31,22 @@ class Message < ActiveRecord::Base
   end
 
   def set_sent_by
-    self.sent = user.desk_names
+    self.sent = [] 
+    user.desk_names.each do |desk_abrev|
+      self.sent << desk_abrev
+    end
     save
+  end
+  
+  def sent_by
+    sent_by = ""
+    if self.sent
+      self.sent.each_index do |index|
+        sent_by += "," unless index == 0
+        sent_by += self.sent[index]
+      end
+    end
+    sent_by
   end
 
   def self.for_user_before(user, time)

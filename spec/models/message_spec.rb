@@ -113,6 +113,26 @@ describe Message do
         @message.sent.should == [cusn.abrev, aml.abrev]
       end
     end
+
+    describe "sent_by" do
+
+      let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:cuss) { Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td") }
+      let(:aml) { Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
+
+      before do
+        @user.authenticate_desk(cusn.abrev => 1)
+        @user.authenticate_desk(cuss.abrev => 1)
+        @user.authenticate_desk(aml.abrev => 1)
+        @message = FactoryGirl.create(:message, user: @user)
+        @message.set_sent_by
+      end
+   
+      it "should return a formatted list of the message senders desk's" do
+        @message.sent_by.should == "CUSN,CUSS,AML"
+      end
+
+    end
       
     describe "for_user_before" do
       
