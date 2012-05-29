@@ -49,10 +49,18 @@ class Message < ActiveRecord::Base
     sent_by
   end
 
+  def was_sent_by?(user)
+    if self.user_id == user.id
+      true
+    else
+      false
+    end
+  end
+
   def self.for_user_before(user, time)
     messages = []
     self.before(time).each do |message|
-      if message.user_id == user.id
+      if message.was_sent_by?(user)
         message.view_class = "message #{message.id} owner"
         messages << message
         next
@@ -65,12 +73,8 @@ class Message < ActiveRecord::Base
             messages << message 
           end
 
-          if message.read_by
-            if message.read_by.include?({ user: user.id.to_s, desks: user.desk_names_str })
-              message.view_class = "message #{message.id} recieved read"
-            else
-              message.view_class = "message #{message.id} recieved unread"
-            end
+          if message.was_read_by?(user)
+            message.view_class = "message #{message.id} recieved read"
           else
             message.view_class = "message #{message.id} recieved unread"
           end
@@ -83,7 +87,7 @@ class Message < ActiveRecord::Base
   def self.for_user_between(user, timeFrom, timeTo)
     messages = []
     self.between(timeFrom, timeTo).each do |message|
-      if message.user_id == user.id
+      if message.was_sent_by?(user)
         message.view_class = "message #{message.id} owner"
         messages << message
         next
@@ -96,12 +100,8 @@ class Message < ActiveRecord::Base
             messages << message 
           end
 
-          if message.read_by
-            if message.read_by.include?({ user: user.id.to_s, desks: user.desk_names_str })
-              message.view_class = "message #{message.id} recieved read"
-            else
-              message.view_class = "message #{message.id} recieved unread"
-            end
+          if message.was_read_by?(user)
+            message.view_class = "message #{message.id} recieved read"
           else
             message.view_class = "message #{message.id} recieved unread"
           end
@@ -141,5 +141,16 @@ class Message < ActiveRecord::Base
       readers += " read this."
     end
     readers
+  end
+
+  def was_read_by?(user)
+    if self.read_by
+      self.read_by.each do |read_by|
+        if read_by[:user] == user.id.to_s
+          return true
+        end
+      end
+    end
+    false
   end
 end

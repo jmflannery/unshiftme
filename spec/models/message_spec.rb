@@ -131,9 +131,28 @@ describe Message do
       it "should return a formatted list of the message senders desk's" do
         @message.sent_by.should == "CUSN,CUSS,AML"
       end
-
     end
+
+    describe "was_sent_by?" do
+
+      let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:user1) { FactoryGirl.create(:user) }
       
+      before do
+        @user.authenticate_desk(cusn.abrev => 1)
+        @message = FactoryGirl.create(:message, user: @user)
+        @message.set_sent_by
+      end
+
+      it "returns false if the message was sent by the given user" do
+        @message.was_sent_by?(user1).should be_false
+      end
+
+      it "returns true if the message was sent by the given user" do
+        @message.was_sent_by?(@user).should be_true
+      end
+    end
+     
     describe "for_user_before" do
       
       let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
@@ -281,6 +300,27 @@ describe Message do
         @message.mark_read_by @recipient_user
         read_by_list = @message.read_by.split(",")
         read_by_list.uniq!.should be_nil
+      end
+    end
+
+    describe "was_read_by?" do
+
+      let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:user1) { FactoryGirl.create(:user) }
+      
+      before(:each) do
+        @recipient_user = FactoryGirl.create(:user)
+        @recipient_user.authenticate_desk(cusn.abrev => 1)
+        @message = @user.messages.create(@msg_attr)
+        @message.mark_read_by @recipient_user
+      end
+
+      it "returns false if the message was sent by the given user" do
+        @message.was_read_by?(user1).should be_false
+      end
+
+      it "returns true if the message was sent by the given user" do
+        @message.was_read_by?(@recipient_user).should be_true
       end
     end
 
