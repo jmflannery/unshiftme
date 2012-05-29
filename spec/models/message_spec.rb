@@ -144,7 +144,7 @@ describe Message do
         @message.set_sent_by
       end
 
-      it "returns false if the message was sent by the given user" do
+      it "returns false if the message was not sent by the given user" do
         @message.was_sent_by?(user1).should be_false
       end
 
