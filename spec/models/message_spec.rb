@@ -315,7 +315,7 @@ describe Message do
         @message.mark_read_by(recipient_user)
       end
 
-      it "returns false if the message was sent by the given user" do
+      it "returns false if the message was not sent by the given user" do
         @message.was_read_by?(user1).should be_false
       end
 
@@ -337,7 +337,7 @@ describe Message do
         @message.set_recievers
       end
 
-      it "returns false if the message was sent by the given user" do
+      it "returns false if the message was not sent by the given user" do
         @message.was_sent_to?(user1).should be_false
       end
 
