@@ -41,7 +41,6 @@ describe RecipientsController do
 
   describe "DELETE 'destroy'" do
    
-
     context "for a non-signed in user" do
       before(:each) do
         @user = FactoryGirl.create(:user)
