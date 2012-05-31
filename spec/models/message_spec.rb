@@ -76,7 +76,27 @@ describe Message do
 
   describe "method" do
 
-    describe "set_recievers" do 
+    describe "#broadcast" do
+
+      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:cuss) { FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td") }
+      let(:user1) { FactoryGirl.create(:user) }
+      let(:user2) { FactoryGirl.create(:user) }
+
+      before(:each) do
+        user1.authenticate_desk(cusn.abrev => 1)
+        FactoryGirl.create(:recipient, user: @user, desk_id: cusn.id)
+        user2.authenticate_desk(cuss.abrev => 1)
+        FactoryGirl.create(:recipient, user: @user, desk_id: cuss.id)
+        @message = FactoryGirl.create(:message, user: @user)
+      end
+
+      it "sends the message to each recipient desk" do
+        @message.broadcast
+      end
+    end
+
+    describe "#set_recievers" do 
 
       let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
       let(:aml) { Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
