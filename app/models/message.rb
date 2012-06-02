@@ -102,15 +102,10 @@ class Message < ActiveRecord::Base
   end
 
   def mark_read_by(user)
-    hash = Hash.new
-    hash[:user] = user.id.to_s
-    hash[:desks] = user.desk_names_str
     if self.read_by
-      self.read_by << hash
+      self.read_by.merge!(user.user_name => user.desk_names_str) unless self.read_by.has_key?(user.user_name)
     else
-      reads = Array.new
-      reads << hash
-      self.read_by = reads
+      self.read_by = { user.user_name => user.desk_names_str }
     end
     save
   end
@@ -118,15 +113,15 @@ class Message < ActiveRecord::Base
   def readers
     readers = ""
     if self.read_by
-      readit = self.read_by
-      readit.each_index do |index|
-        if index == (readit.size - 1) and readit.size > 1
+      users = self.read_by.keys
+      desks = self.read_by.values
+      users.each_index do |index|
+        if index == (users.size - 1) and users.size > 1
           readers += " and " 
         elsif index > 0
           readers += ", "
         end
-        user = User.find(readit[index][:user].to_i)
-        readers += "#{user.desk_names_str} (#{user.user_name})"
+        readers += "#{desks[index]} (#{users[index]})"
       end
       readers += " read this."
     end
@@ -146,13 +141,12 @@ class Message < ActiveRecord::Base
   end
 
   def was_read_by?(user)
+    read = false
     if self.read_by
-      self.read_by.each do |read_by|
-        if read_by[:user] == user.id.to_s
-          return true
-        end
+      if read_by.has_key?(user.user_name)
+        read = true
       end
     end
-    false
+    read
   end
 end

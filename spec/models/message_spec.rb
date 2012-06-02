@@ -304,14 +304,14 @@ describe Message do
       
       it "adds the given desk(s) and user to the message's read by list" do
         message.mark_read_by recipient_user
-        message.read_by.should include({ user: recipient_user.id.to_s, desks: recipient_user.desk_names_str })
+        message.read_by.should include({ recipient_user.user_name => recipient_user.desk_names_str })
       end
 
       it "does not add duplicates to message's read by list" do
-        pending
         message.mark_read_by recipient_user
         message.mark_read_by recipient_user
-        message.read_by.uniq!.should be_nil
+        message.read_by.delete(recipient_user.user_name)
+        message.read_by.should_not have_key(recipient_user.user_name)
       end
     end
 
@@ -370,12 +370,12 @@ describe Message do
         recipient_user.authenticate_desk(cusn.abrev => 1)
         recipient_user1.authenticate_desk(cuss.abrev => 1)
         recipient_user2.authenticate_desk(aml.abrev => 1)
-        message.mark_read_by recipient_user
-        message.mark_read_by recipient_user1
-        message.mark_read_by recipient_user2
+        message.mark_read_by(recipient_user)
+        message.mark_read_by(recipient_user1)
+        message.mark_read_by(recipient_user2)
       end
 
-      it "returns a list of the user names who read the message" do
+      it "returns a formated string list of the user names who read the message" do
         message.readers.should == "#{recipient_user.desk_names_str} (#{recipient_user.user_name}), " +
           "#{recipient_user1.desk_names_str} (#{recipient_user1.user_name}) and " +
           "#{recipient_user2.desk_names_str} (#{recipient_user2.user_name}) read this."
