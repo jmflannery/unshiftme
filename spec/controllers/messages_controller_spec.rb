@@ -79,7 +79,7 @@ describe MessagesController do
     it "marks the message read by the current user" do
       post :update, id: message.id, format: :jd, remote: true
       message.reload
-      message.read_by.should == [{ user: user.id.to_s, desks: user.desk_names_str }]
+      message.read_by.should == { user.user_name => user.desk_names_str }
     end
   end
 end
