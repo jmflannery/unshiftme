@@ -31,6 +31,17 @@ class Message < ActiveRecord::Base
     save
   end
 
+  def set_recieved_by(desk)
+    recip_user = User.find_by_id(desk.user_id)
+    name = recip_user ? recip_user.user_name : ""
+    if self.recievers
+      self.recievers.merge!(desk.abrev => name) unless self.recievers.has_key?(desk.abrev)
+    else
+      self.recievers = { desk.abrev => name }
+    end
+    save
+  end
+
   def set_sent_by
     self.sent = [] 
     user.desk_names.each do |desk_abrev|

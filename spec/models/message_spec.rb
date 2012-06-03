@@ -91,9 +91,9 @@ describe Message do
 
   describe "#set_recievers" do 
 
-    let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
     let(:aml) { Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
-    let(:user1) { FactoryGirl.create(:user) }
+    let(:user1) { FactoryGirl.create(:user, user_name: "fred") }
     let(:message) { FactoryGirl.create(:message, user: user) }
 
     before do
@@ -104,8 +104,35 @@ describe Message do
     end
 
     it "sets message.recievers to an array hashes, with desk_id and user_id" do
-      message.recievers.should == { cusn.abrev => user1.user_name, aml.abrev => "" }
+      message.recievers.should == { "CUSN" => "fred", "AML" => "" }
     end
+  end
+
+  describe "#set_recieved_by" do
+
+    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:aml) { FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td", user_id: 0) }
+    let(:user1) { FactoryGirl.create(:user, user_name: "herman") }
+    let(:message) { FactoryGirl.create(:message, user: user) }
+
+    before(:each) do
+      user1.authenticate_desk(cusn.abrev => 1)
+      cusn.reload 
+    end
+
+    context "when the recipient desk has no controlling user" do
+      before { message.set_recieved_by(aml) }
+      it "adds the desk abrev as a key to the recievers hash with an empty string as the value" do
+        message.recievers.should == { "AML" => "" }
+      end
+    end 
+
+    context "when the recipient desk has a controlling user" do
+      before { message.set_recieved_by(cusn) }
+      it "adds the desk abrev as a key to the recievers hash with the desk's controlling user_name as the value" do
+        message.recievers.should == { "CUSN" => "herman" }
+      end
+    end 
   end
 
   describe "#set_sent_by" do
