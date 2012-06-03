@@ -346,11 +346,11 @@ describe Message do
       message.set_recievers
     end
 
-    it "returns false if the message was not sent by the given user" do
+    it "returns false if the message was not sent to the given user" do
       message.was_sent_to?(user1).should be_false
     end
 
-    it "returns true if the message was sent by the given user" do
+    it "returns true if the message was sent to the given user" do
       message.was_sent_to?(recipient_user).should be_true
     end
   end

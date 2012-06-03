@@ -130,15 +130,17 @@ class Message < ActiveRecord::Base
   end
 
   def was_sent_to?(user)
+    sent_to = false
     if self.recievers
-      msg_user = User.find(self.user_id)
-      self.recievers.each do |reciever|
-        if user.id == reciever[:user_id] or (msg_user.desks.include?(reciever[:desk_id]) and !reciever[:user_id])
-          return true 
+      desks = user.desk_names
+      self.recievers.each_pair do |desk_abrev, user_name|
+        if desks.include?(desk_abrev) or user.user_name == user_name
+          sent_to = true 
+          break
         end
       end
     end
-    false
+    sent_to
   end
 
   def was_read_by?(user)
