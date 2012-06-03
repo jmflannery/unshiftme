@@ -18,15 +18,16 @@ class Message < ActiveRecord::Base
   scope :between, lambda { |timeFrom, timeTo| where("created_at >= ? and created_at <= ?", timeFrom, timeTo) }
 
   def set_recievers
-    recievers_list = []
     user.recipients.each do |recipient|
       desk = Desk.find_by_id(recipient.desk_id)
       recip_user = User.find_by_id(desk.user_id)
-      node = { desk_id: desk.id }
-      node = node.merge({ user_id: recip_user.id }) if recip_user
-      recievers_list << node
+      name = recip_user ? recip_user.user_name : ""
+      if self.recievers
+        self.recievers.merge!(desk.abrev => name) unless self.recievers.has_key?(desk.abrev)
+      else
+        self.recievers = { desk.abrev => name }
+      end
     end
-    self.recievers = recievers_list
     save
   end
 

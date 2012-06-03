@@ -104,7 +104,7 @@ describe Message do
     end
 
     it "sets message.recievers to an array hashes, with desk_id and user_id" do
-      message.recievers.should == [{ desk_id: cusn.id, user_id: user1.id }, { desk_id: aml.id }]
+      message.recievers.should == { cusn.abrev => user1.user_name, aml.abrev => "" }
     end
   end
 
