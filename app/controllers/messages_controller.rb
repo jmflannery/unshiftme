@@ -6,9 +6,9 @@ class MessagesController < ApplicationController
     @message = @user.messages.build(params[:message])
     if @message.save
       @message.view_class = "message #{@message.id} owner"
-      @message.set_recievers
       @user.recipients.each do |recipient|
         desk = Desk.find(recipient.desk_id)
+        @message.set_recieved_by(desk)
         if User.exists?(desk.user_id)
           recip_user = User.find(desk.user_id) 
           @user.desks.each { |desk_id| recip_user.add_recipient(Desk.find(desk_id)) }

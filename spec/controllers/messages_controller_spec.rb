@@ -46,17 +46,24 @@ describe MessagesController do
 
       let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
       let(:cuss) { FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td") }
-      let(:recip_user) { FactoryGirl.create(:user) }
+      let(:aml) { FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td") }
+      let(:recip_user) { FactoryGirl.create(:user, user_name: "samson") }
       before do
         recip_user.authenticate_desk(cuss.abrev => 1)
         user.authenticate_desk(cusn.abrev => 1)
         FactoryGirl.create(:recipient, user: user, desk_id: cuss.id)
+        FactoryGirl.create(:recipient, user: user, desk_id: aml.id)
       end
 
       it "adds the message sender's desk to the recipient list of all of the message's recipient users" do
         post :create, :message => attr, :format => :js
         recip_user.recipients.size.should == 1
         recip_user.recipients[0].desk_id.should == cusn.id
+      end
+
+      it "adds each recipient to the message's recievers hash" do
+        post :create, :message => attr, :format => :js
+        assigns(:message).recievers.should == { "CUSS" => "samson", "AML" => "" }
       end
     end
   end
