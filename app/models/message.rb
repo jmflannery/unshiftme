@@ -42,6 +42,28 @@ class Message < ActiveRecord::Base
     save
   end
 
+  def broadcast
+    user = User.find(user_id)
+    user.recipients.each do |recipient|
+      desk = Desk.find(recipient.desk_id)
+      set_recieved_by(desk)
+      if User.exists?(desk.user_id)
+        recip_user = User.find(desk.user_id) 
+        user.desks.each { |desk_id| recip_user.add_recipient(Desk.find(desk_id)) }
+        
+        data = { 
+          sender: user.user_name, 
+          chat_message: content,
+          from_desks: user.desk_names_str,
+          recipient_id: recipient.id,
+          timestamp: created_at.strftime("%a %b %e %Y %T"),
+          view_class: "message #{id.to_s} recieved unread"
+        }
+        PrivatePub.publish_to("/messages/#{recip_user.user_name}", data)
+      end
+    end
+  end
+
   def set_sent_by
     self.sent = [] 
     user.desk_names.each do |desk_abrev|

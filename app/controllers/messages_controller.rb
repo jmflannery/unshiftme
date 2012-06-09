@@ -6,24 +6,7 @@ class MessagesController < ApplicationController
     @message = @user.messages.build(params[:message])
     if @message.save
       @message.view_class = "message #{@message.id} owner"
-      @user.recipients.each do |recipient|
-        desk = Desk.find(recipient.desk_id)
-        @message.set_recieved_by(desk)
-        if User.exists?(desk.user_id)
-          recip_user = User.find(desk.user_id) 
-          @user.desks.each { |desk_id| recip_user.add_recipient(Desk.find(desk_id)) }
-          
-          data = { 
-            sender: @user.user_name, 
-            chat_message: @message.content,
-            from_desks: @user.desk_names_str,
-            recipient_id: recipient.id,
-            timestamp: @message.created_at.strftime("%a %b %e %Y %T"),
-            view_class: "message #{@message.id.to_s} recieved unread"
-          }
-          PrivatePub.publish_to("/messages/#{recip_user.user_name}", data)
-        end
-      end
+      @message.broadcast
       @message.set_sent_by
     else
       redirect_to new_session_path

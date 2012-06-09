@@ -84,7 +84,8 @@ describe Message do
     end
 
     it "sends the message to each recipient desk" do
-      pending
+      recipient_count = user.recipients.size
+      PrivatePub.should_receive(:publish_to).exactly(recipient_count).times
       message.broadcast
     end
   end
