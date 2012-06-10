@@ -72,6 +72,7 @@ describe Message do
 
     let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
     let(:cuss) { FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td") }
+    let(:glhs) { FactoryGirl.create(:desk, name: "Glasshouse", abrev: "GLHS", job_type: "td") }
     let(:user1) { FactoryGirl.create(:user) }
     let(:user2) { FactoryGirl.create(:user) }
     let(:message) { FactoryGirl.create(:message, user: user) }
@@ -87,6 +88,19 @@ describe Message do
       recipient_count = user.recipients.size
       PrivatePub.should_receive(:publish_to).exactly(recipient_count).times
       message.broadcast
+    end
+
+    it "stores each recipient desk and user (if one exists) in the serialized 'recievers' hash" do
+      message.broadcast
+      message.reload
+      message.recievers.should == { "CUSN" => user1.user_name, "CUSS" => user2.user_name }
+    end
+
+    it "adds the sender's desk to the recipient list of each of the sender's recipients" do
+      user.authenticate_desk(glhs.abrev => 1)
+      message.broadcast
+      user1.recipients[0].desk_id.should == glhs.id
+      user2.recipients[0].desk_id.should == glhs.id
     end
   end
 
