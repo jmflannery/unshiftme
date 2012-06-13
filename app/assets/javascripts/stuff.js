@@ -14,7 +14,7 @@ $.fn.hasClass = function(klas) {
   var klasses = $(this).getClassNames();
   for (i = 0; i < klasses.length; i += 1) {
     if (klasses[i] == klas) {
-      has = true;
+      has = i;
       break;
     }
   }
@@ -60,7 +60,7 @@ var hide_available_users = function() {
 var toggle_recipient = function() {
   $(this).toggleClass("off");
   $(this).toggleClass("on");
-  var classes = $(this).attr('class').split(" ");
+  var classes = $(this).getClassNames();
 
   var i;
   var status_index = -1;
