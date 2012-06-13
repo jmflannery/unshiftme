@@ -17,6 +17,10 @@
     @include mac-button-text-style;
   }
 
+  p {
+    margin: 0px;
+  }
+
   .mine {
     color: $blue;
   }
@@ -26,6 +30,9 @@
   }
 
   .off {
+  }
+
+  .all {
   }
 }
 

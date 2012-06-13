@@ -1,6 +1,9 @@
 <div id="content">
   <div id='recipient_desk_selection'>
     <%= render(partial: 'desks/recipient_desk', collection: @desks) %>
+    <div id='toggle_all_desks' class='recipient_desk all'>
+      <p>Message</br>all</p>
+    </div>
   </div>
 
   <div id="msg_input">

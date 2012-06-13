@@ -1,11 +1,24 @@
 // Returns the array of class names
 $.fn.getClassNames = function() {
-  var name = this.attr("className");
-  if (name != null) {
-    return name.split(" ");
+  var klasses = $(this).attr("class");
+  if (klasses != null) {
+    return klasses.split(" ");
   } else {
     return [];
   }
+};
+
+// returns true if the passed in string is a class of $(this)
+$.fn.hasClass = function(klas) {
+  var has = false;
+  var klasses = $(this).getClassNames();
+  for (i = 0; i < klasses.length; i += 1) {
+    if (klasses[i] == klas) {
+      has = true;
+      break;
+    }
+  }
+  return has;
 };
 
 ////////////////////////////////////////
@@ -106,6 +119,24 @@ var toggle_recipient = function() {
 $(function() {
   $(".recipient_desk.on").click(toggle_recipient);
   $(".recipient_desk.off").click(toggle_recipient);
+});
+
+///////////////////////////////////
+// Toggle all (desks)
+//////////////////////////////////
+
+var toggle_all_desks = function() {
+  $(this).toggleClass("all");
+  $(this).toggleClass("none");
+  if ($(this).hasClass("all")) {
+    $(this).html("<p>Message</br>all</p>"); 
+  } else {
+    $(this).html("<p>Message</br>none</p>"); 
+  }
+}
+
+$(function() {
+  $("#toggle_all_desks").click(toggle_all_desks);
 });
 
 ///////////////////////////////////
