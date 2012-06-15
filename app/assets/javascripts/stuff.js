@@ -128,11 +128,25 @@ $(function() {
 var toggle_all_desks = function() {
   $(this).toggleClass("all");
   $(this).toggleClass("none");
+
   if ($(this).hasClass("all")) {
     $(this).html("<p>Message</br>all</p>"); 
+
+    var data = { "desk_id": "all" };
+    
+    // POST - recipients#create
+    $.ajax( {
+      type: "POST", 
+      url: "/recipients",
+      data: data,
+      success: function(response) {
+        response;
+      }
+    });
   } else {
     $(this).html("<p>Message</br>none</p>"); 
   }
+
 }
 
 $(function() {

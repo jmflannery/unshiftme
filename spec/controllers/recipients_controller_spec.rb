@@ -37,6 +37,26 @@ describe RecipientsController do
         end.should change(Recipient, :count).by(1)
       end
     end
+
+    context "with desk_id 'all'" do
+      before(:each) do 
+        test_sign_in(user)
+        FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td")
+        FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td")
+        FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td")
+        FactoryGirl.create(:desk, name: "Yard Control", abrev: "YDCTL", job_type: "ops")
+        FactoryGirl.create(:desk, name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
+        FactoryGirl.create(:desk, name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
+      end
+
+      it "creates a recipient for all existing desks" do
+        post :create, desk_id: "all", format: :js
+        user.recipients.size.should == Desk.all.size
+        Desk.all.each do |desk|
+          user.should be_messaging desk.id 
+        end
+      end
+    end
   end
 
   describe "DELETE 'destroy'" do
@@ -78,6 +98,25 @@ describe RecipientsController do
         lambda do
           delete :destroy, id: @recipient.id, format: :js
         end.should change(Recipient, :count).by(-1)
+      end
+    end
+
+    context "for an authorized user with desk_id 'all'" do
+      before(:each) do 
+        @user = test_sign_in(FactoryGirl.create(:user))
+        FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td")
+        FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td")
+        FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td")
+        FactoryGirl.create(:desk, name: "Yard Control", abrev: "YDCTL", job_type: "ops")
+        FactoryGirl.create(:desk, name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
+        FactoryGirl.create(:desk, name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
+      end
+
+      it "destroys all of the current user's recipients" do
+        @user.add_recipients(Desk.all)
+        @user.recipients.size.should == Desk.all.size
+        delete :destroy, id: "all", format: :js
+        @user.recipients.should be_empty
       end
     end
   end
