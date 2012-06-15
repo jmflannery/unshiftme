@@ -116,6 +116,7 @@ describe RecipientsController do
         @user.add_recipients(Desk.all)
         @user.recipients.size.should == Desk.all.size
         delete :destroy, id: "all", format: :js
+        @user.reload
         @user.recipients.should be_empty
       end
     end
