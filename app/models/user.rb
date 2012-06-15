@@ -28,9 +28,11 @@ class User < ActiveRecord::Base
   end  
 
   def add_recipients(desks)
+    recipients = []
     desks.each do |desk|
-      add_recipient(desk)
+      recipients << add_recipient(desk)
     end
+    recipients
   end
 
   def add_recipient(desk)

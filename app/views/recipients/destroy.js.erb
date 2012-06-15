@@ -1,5 +1,4 @@
 <% if params[:id] == "all" %>
-
 <% else %>
-  $(<%= ".recipient_desk.#{@recipient.id}.off" %>).removeClass(<%= @recipient.id.to_s %>);
+  $("<%= ".recipient_desk.#{@recipient.id}.off" %>").removeClass("<%= @recipient.id.to_s %>");
 <% end %>

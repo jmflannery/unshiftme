@@ -265,7 +265,7 @@ describe User do
         @cusn = Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
         @cuss = Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td")
         @desks = [@cusn, @cuss]
-        @user.add_recipients(@desks)
+        @recipients = @user.add_recipients(@desks)
       end
 
       it "adds the list of desks to the user's recipients" do
@@ -280,6 +280,10 @@ describe User do
         @user.add_recipients(@desks)
         size2 = @user.recipients.size
         size2.should == size1
+      end
+
+      it "returns an array of the recipients added" do
+        @recipients.should == @user.recipients
       end
     end
 
