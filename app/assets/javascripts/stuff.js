@@ -129,8 +129,8 @@ var toggle_all_desks = function() {
   $(this).toggleClass("all");
   $(this).toggleClass("none");
 
-  if ($(this).hasClass("all")) {
-    $(this).html("<p>Message</br>all</p>"); 
+  if ($(this).hasClass("none")) {
+    $(this).html("<p>Message</br>none</p>"); 
 
     var data = { "desk_id": "all" };
     
@@ -144,7 +144,7 @@ var toggle_all_desks = function() {
       }
     });
   } else {
-    $(this).html("<p>Message</br>none</p>"); 
+    $(this).html("<p>Message</br>all</p>"); 
   }
 
 }

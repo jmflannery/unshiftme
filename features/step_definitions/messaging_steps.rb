@@ -51,7 +51,7 @@ When /^I click on each button$/ do
 end
 
 When /^I click Message "(.*?)"$/ do |action|
-  find("Message #{action}").click
+  find(".recipient_desk.#{action}").click
 end
 
 When /^I click "(.*?)"$/ do |desk_abrev|

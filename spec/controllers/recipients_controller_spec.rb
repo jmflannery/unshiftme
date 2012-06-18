@@ -17,7 +17,7 @@ describe RecipientsController do
 
     context "without a valid desk id" do
       before(:each) { test_sign_in(user) }
-      it "creates not a recipient" do
+      it "does not create a recipient" do
         lambda do
           post :create, desk_id: 0, format: :js
         end.should_not change(Recipient, :count)

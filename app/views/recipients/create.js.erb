@@ -1,3 +1,7 @@
-<% if @recipient %>
+<% if @recipients %>
+  <% @recipients.each do |recipient| %>
+    $('<%= "##{Desk.find(recipient.desk_id).abrev}" %>').addClass('<%= "#{recipient.id}" %>').addClass("on").removeClass("off"); 
+  <% end %>
+<% elsif @recipient %>
   $('<%= ".recipient_desk_id.#{@recipient.desk_id}" %>').parent().addClass('<%= "#{@recipient.id}" %>'); 
 <% end %>
