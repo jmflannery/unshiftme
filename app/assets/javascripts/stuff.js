@@ -132,21 +132,28 @@ var toggle_all_desks = function() {
   if ($(this).hasClass("none")) {
     $(this).html("<p>Message</br>none</p>"); 
 
-    var data = { "desk_id": "all" };
-    
-    // POST - recipients#create
+    // POST - recipients#create all
     $.ajax( {
       type: "POST", 
       url: "/recipients",
-      data: data,
+      data: { "desk_id": "all" },
       success: function(response) {
         response;
       }
     });
   } else {
     $(this).html("<p>Message</br>all</p>"); 
-  }
 
+    // DELETE - desks#destroy all
+    $.ajax( {
+      type: "POST", 
+      url: "/recipients/all",
+      data: { _method: 'delete' },
+      success: function(response) {
+        response;
+      }
+    });
+  }
 }
 
 $(function() {
