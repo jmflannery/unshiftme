@@ -28,22 +28,6 @@ Then /^I should see desk "(.*?)" user "(.*?)" read this$/ do |desk_abrev, user_n
   page.should have_content("#{desk_abrev} (#{user_name}) read this.")
 end
 
-Then /^I should see a button for each desk indicating that I am not messaging that desk$/ do
-  @test_records[:desk].each do |desk|
-    page.should have_selector("##{desk.abrev}.recipient_desk.off")
-  end
-end
-
-Then /^I should see a button for each desk indicating that I am not messaging that desk excluding my own desk "(.*?)"$/ do |desk_abrev|
-  @test_records[:desk].each do |desk|
-    if desk.abrev == desk_abrev
-      page.should have_selector("##{desk.abrev}.recipient_desk.mine")
-    else
-      page.should have_selector("##{desk.abrev}.recipient_desk.off")
-    end
-  end
-end
-
 When /^I click on each button$/ do
   @test_records[:desk].each do |desk|
     find("##{desk.abrev}").click
@@ -62,12 +46,23 @@ Then /^I should see that I am at "(.*?)"$/ do |desk|
   page.should have_selector("##{desk}.recipient_desk.mine")
 end
 
-Then /^I should see each button indicate that I am messaging that desk excluding my own desk "(.*?)"$/ do |desk_abrev|
+Then /^I should see each Desk Toggle Button indicate that I am messaging that desk, excluding my own desk "(.*?)"$/ do |desk_abrev|
+  @test_records[:desk].each do |desk|
+    if desk.abrev == desk_abrev
+      page.should have_selector("##{desk.abrev}.recipient_desk.mine")
+      page.should_not have_selector("##{desk.abrev}.on")
+    else
+      page.should have_selector("##{desk.abrev}.recipient_desk.on")
+    end
+  end
+end
+
+Then /^I should see each Desk Toggle Button indicate that I am not messaging that desk, excluding my own desk "(.*?)"$/ do |desk_abrev|
   @test_records[:desk].each do |desk|
     if desk.abrev == desk_abrev
       page.should have_selector("##{desk.abrev}.recipient_desk.mine")
     else
-      page.should have_selector("##{desk.abrev}.recipient_desk.on")
+      page.should have_selector("##{desk.abrev}.recipient_desk.off")
     end
   end
 end
@@ -78,16 +73,6 @@ end
 
 Then /^I should see that I am not messaging "(.*?)"$/ do |desk|
   page.should_not have_selector("##{desk}.recipient_desk.on")
-end
-
-Then /^I should see each button indicate that I am not messaging that desk excluding my own desk "(.*?)"$/ do |desk_abrev|
-  @test_records[:desk].each do |desk|
-    if desk.abrev == desk_abrev
-      page.should have_selector("##{desk.abrev}.recipient_desk.mine")
-    else
-      page.should have_selector("##{desk.abrev}.recipient_desk.off")
-    end
-  end
 end
 
 Then /^I should see that "(.*?)" is at "(.*?)" desk$/ do |user, desk|

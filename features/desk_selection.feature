@@ -21,13 +21,13 @@ Feature: Desk Selection
 
     And I am logged in as "bill" with password "secret" at "CUSN"
     When I go to the messaging page
-    Then I should see a button for each desk indicating that I am not messaging that desk excluding my own desk "CUSN"
+    Then I should see each Desk Toggle Button indicate that I am not messaging that desk, excluding my own desk "CUSN"
     And I should see that I am at "CUSN"
    
     When I click on each button
-    Then I should see each button indicate that I am messaging that desk excluding my own desk "CUSN"
+    Then I should see each Desk Toggle Button indicate that I am messaging that desk, excluding my own desk "CUSN"
     When I click on each button
-    Then I should see each button indicate that I am not messaging that desk excluding my own desk "CUSN"
+    Then I should see each Desk Toggle Button indicate that I am not messaging that desk, excluding my own desk "CUSN"
 
   Scenario: I should see who is currently at each desk in real time
             as users are signing in and signing out
@@ -84,6 +84,6 @@ Feature: Desk Selection
     And I am logged in as "bill" with password "secret" at "CUSN"
     When I go to the messaging page
     And I click Message "all"
-    Then I should see each button indicate that I am messaging that desk excluding my own desk "CUSN"
+    Then I should see each Desk Toggle Button indicate that I am messaging that desk, excluding my own desk "CUSN"
     When I click Message "none" 
-    Then I should see each button indicate that I am not messaging that desk excluding my own desk "CUSN"
+    Then I should see each Desk Toggle Button indicate that I am not messaging that desk, excluding my own desk "CUSN"
