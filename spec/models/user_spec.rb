@@ -262,8 +262,8 @@ describe User do
     describe "add_recipients" do
 
       before(:each) do
-        @cusn = Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
-        @cuss = Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td")
+        @cusn = FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td")
+        @cuss = FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td")
         @desks = [@cusn, @cuss]
         @recipients = @user.add_recipients(@desks)
       end
@@ -282,6 +282,14 @@ describe User do
         size2.should == size1
       end
 
+      it "doesn't add a desk as a recipient if the user is currently controlling that desk" do
+        aml = FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td")
+        @user.authenticate_desk(aml.abrev => 1)
+        @desks << aml
+        @user.add_recipients(@desks)
+        @user.should_not be_messaging aml.id
+      end
+
       it "returns an array of the recipients added" do
         @recipients.should == @user.recipients
       end
@@ -290,7 +298,7 @@ describe User do
     describe "add_recipient" do
 
       before(:each) do
-        @ydmstr = Desk.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
+        @ydmstr = FactoryGirl.create(:desk, name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
       end
 
       it "adds the desk id's to the user's recipients" do
@@ -304,6 +312,12 @@ describe User do
         @user.add_recipient(@ydmstr)
         size2 = @user.recipients.size
         size2.should == size1
+      end
+      
+      it "doesn't add a desk as a recipient if the user is currently controlling that desk" do
+        @user.authenticate_desk(@ydmstr.abrev => 1)
+        @user.add_recipient(@ydmstr)
+        @user.should_not be_messaging @ydmstr.id
       end
     end
     

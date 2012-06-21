@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
 
   def add_recipient(desk)
     recipient = nil
-    unless recipient_desk_ids.include?(desk.id)
+    unless recipient_desk_ids.include?(desk.id) or desks.include?(desk.id)
       recipient = recipients.create(desk_id: desk.id)
     end
     recipient
