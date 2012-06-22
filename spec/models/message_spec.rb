@@ -415,10 +415,10 @@ describe Message do
       message.mark_read_by(recipient_user2)
     end
 
-    it "returns a formated string list of the user names who read the message" do
-      message.readers.should == "#{recipient_user.desk_names_str} (#{recipient_user.user_name}), " +
-        "#{recipient_user1.desk_names_str} (#{recipient_user1.user_name}) and " +
-        "#{recipient_user2.desk_names_str} (#{recipient_user2.user_name}) read this."
+    it "returns a formated string list of the user's handles who read the message" do
+      message.readers.should == "#{recipient_user.user_name}@#{recipient_user.desk_names_str}, " +
+        "#{recipient_user1.user_name}@#{recipient_user1.desk_names_str} and " +
+        "#{recipient_user2.user_name}@#{recipient_user2.desk_names_str} read this."
     end
   end
 end

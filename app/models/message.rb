@@ -52,8 +52,8 @@ class Message < ActiveRecord::Base
         user.desks.each { |desk_id| recip_user.add_recipient(Desk.find(desk_id)) }
         
         data = { 
-          sender: user.user_name, 
           chat_message: content,
+          sender: user.handle,
           from_desks: user.desk_names_str,
           recipient_id: recipient.id,
           timestamp: created_at.strftime("%a %b %e %Y %T"),
@@ -155,7 +155,7 @@ class Message < ActiveRecord::Base
         elsif index > 0
           readers += ", "
         end
-        readers += "#{desks[index]} (#{users[index]})"
+        readers += "#{users[index]}@#{desks[index]}"
       end
       readers += " read this."
     end

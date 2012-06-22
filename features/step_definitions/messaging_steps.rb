@@ -7,12 +7,12 @@ Then /^I should not see recieved message "(.*?)" from desk "(.*?)" user "(.*?)"$
 end
 
 Then /^I should see my message "(.*?)" from desk "(.*?)" user "(.*?)"$/ do |message_content, desk_abrev, user_name|
-  page.should have_selector(".message_sender p", text: "#{desk_abrev} (#{user_name})")
+  page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}")
   page.should have_selector("li.message.owner", text: @message)
 end
 
 Then /^I should see recieved message "(.*?)" from desk "(.*?)" user "(.*?)"$/ do |message_content, desk_abrev, user_name|
-  page.should have_selector(".message_sender p", text: "#{desk_abrev} (#{user_name})")
+  page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}")
   page.should have_selector("li.message.recieved", text: message_content)
 end
 
@@ -25,7 +25,7 @@ Given /^I click on the recieved message$/ do
 end
 
 Then /^I should see desk "(.*?)" user "(.*?)" read this$/ do |desk_abrev, user_name|
-  page.should have_content("#{desk_abrev} (#{user_name}) read this.")
+  page.should have_content("#{user_name}@#{desk_abrev} read this.")
 end
 
 When /^I click on each button$/ do
