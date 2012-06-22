@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Message do
 
-  let(:user) { FactoryGirl.create(:user) } 
+  let(:user) { FactoryGirl.create(:user, user_name: "joe") } 
   let(:message) { user.messages.new(content: "this is THAT message") }
   
   it "creates a new instance given valid attibutes" do
@@ -167,6 +167,23 @@ describe Message do
     end
   end
 
+  describe "#sender_handle" do
+
+    let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:cuss) { Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td") }
+    let(:aml) { Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
+    let(:message) { FactoryGirl.create(:message, user: user) }
+
+    before do
+      user.authenticate_desk(cusn.abrev => 1, cuss.abrev => 1, aml.abrev => 1)
+      message.set_sent_by
+    end
+ 
+    it "should return a formatted list of the message senders desk's" do
+      message.sender_handle.should == "joe@CUSN,CUSS,AML"
+    end
+  end
+
   describe "#sent_by" do
 
     let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
@@ -175,9 +192,7 @@ describe Message do
     let(:message) { FactoryGirl.create(:message, user: user) }
 
     before do
-      user.authenticate_desk(cusn.abrev => 1)
-      user.authenticate_desk(cuss.abrev => 1)
-      user.authenticate_desk(aml.abrev => 1)
+      user.authenticate_desk(cusn.abrev => 1, cuss.abrev => 1, aml.abrev => 1)
       message.set_sent_by
     end
  

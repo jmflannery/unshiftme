@@ -71,6 +71,18 @@ class Message < ActiveRecord::Base
     end
     save
   end
+
+  def sender_handle
+    sender = self.user
+    sent_from = ""
+    if sent
+      sent.each_index do |index|
+        sent_from += "," unless index == 0
+        sent_from += sent[index]
+      end
+    end
+    "#{user.user_name}@#{sent_from}"
+  end 
   
   def sent_by
     sent_by = ""
