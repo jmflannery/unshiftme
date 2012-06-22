@@ -18,6 +18,10 @@ class User < ActiveRecord::Base
   validates :password_confirmation, presence: true 
 
   scope :online, lambda { where("status = true") }
+  
+  def handle
+    "#{user_name}@#{desk_names_str}"
+  end
 
   def recipient_desk_ids
     ids = []

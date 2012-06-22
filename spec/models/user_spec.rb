@@ -176,7 +176,20 @@ describe User do
   describe "method" do
     
     before(:each) do
-      @user.save
+      subject.save
+    end
+    
+    describe "handle" do
+
+      before do
+        FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td")
+        FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td")
+        @user.authenticate_desk("CUSN" => 1, "AML" => 1)
+      end
+
+      it "returns a string in the format user_name@desk,desk" do
+        subject.handle.should == "smith@CUSN,AML"
+      end
     end
 
     describe "Desk" do
