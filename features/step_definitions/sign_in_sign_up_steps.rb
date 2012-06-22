@@ -21,6 +21,7 @@ end
 
 Given /^I am logged in at "(.*?)"$/ do |desk|
   visit signin_path
+  sleep 1
   fill_in "User name", :with => @user.user_name
   fill_in "Password", :with => @user.password
   check desk
@@ -37,6 +38,7 @@ Given /^I am on the sign up page$/ do
 end
 
 Then /^I should see the sign in page$/ do
+  sleep 1
   page.should have_content("Sign in")
 end
 
