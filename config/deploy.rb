@@ -1,6 +1,3 @@
-set :rvm_ruby_string, ENV['GEM_HOME'].gsub(/.*\//,"") # Read from local system
-require "rvm/capistrano" # Load RVM's capistrano plugin.
-
 require "bundler/capistrano"
 
 server "50.56.191.206", :web, :app, :db, primary: true

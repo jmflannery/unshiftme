@@ -50,7 +50,6 @@ gem 'thin'
 
 # Deploy with Capistrano
 gem 'capistrano'
-gem "rvm-capistrano", "~> 1.2.2"
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
