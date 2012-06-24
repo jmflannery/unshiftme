@@ -121,6 +121,21 @@ describe User do
     end
   end
 
+  describe "desk associations" do
+
+    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:cuss) { FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td") }
+    before(:each) do
+      @user.normal_desks = [cusn.abrev, cuss.abrev]
+    end
+
+    it { should respond_to(:desks) }
+
+    it "has the right desks" do
+      @user.normal_desks.should == [cusn.abrev, cuss.abrev]
+    end
+  end
+  
   describe "attachment associations" do
 
     before { @user.save }

@@ -17,7 +17,7 @@ Feature: Sign up
     Given I am not a registered user
     And I am on the sign up page
     When I fill in "User name" with "fred"
-    #And I check desk "CUS North"
+    And I check desk "CUS North"
     And I fill in "password" with "secret"
     And I fill in "conformation" with "secret"
     And I press "Sign Up"

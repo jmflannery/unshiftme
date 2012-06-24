@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120520000717) do
+ActiveRecord::Schema.define(:version => 20120624044441) do
 
   create_table "attachments", :force => true do |t|
     t.integer  "user_id"
@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(:version => 20120520000717) do
     t.datetime "lastpoll"
     t.string   "user_name"
     t.boolean  "admin"
+    t.string   "normal_desks"
   end
 
 end

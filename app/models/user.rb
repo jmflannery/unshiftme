@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   has_many :recipients
   has_many :attachments
   
+  serialize :normal_desks
+  
   validates :user_name, presence: true, uniqueness: true
   
   #VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
