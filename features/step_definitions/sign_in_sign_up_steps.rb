@@ -29,7 +29,6 @@ Given /^I am logged in at "(.*?)"$/ do |desk|
 end
 
 When /^I check desk "(.*?)"$/ do |desk|
-  pending
   check desk
 end
 
