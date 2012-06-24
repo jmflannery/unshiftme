@@ -103,14 +103,19 @@ describe UsersController do
         end.should change(User, :count).by(1)
       end
 
-      it "should redirect to the user show page" do
+      it "should not sign the user in" do
         post :create, :user => @success_attr
-        response.should redirect_to(user_path(assigns(:user)))
+        controller.should_not be_signed_in
       end
 
-      it "should sign the user in" do
+      it "should redirect to the sign in page" do
         post :create, :user => @success_attr
-        controller.should be_signed_in
+        response.should redirect_to(signin_path)
+      end
+
+      it "should display a flash message" do
+        post :create, :user => @success_attr
+        flash[:success].should eql("Registration was successful! Sign in now to access Messenger.")
       end
 
       it "should create admin user if it is the first User to be created" do

@@ -13,6 +13,10 @@
         <%= render 'layouts/header' %>
       </div>
 
+      <% flash.each do |key, value| %>
+        <div class="alert-<%= key %>"><%= value %></div>
+      <% end %>
+      
       <%= yield %>
 
       <div id="footer"></div>

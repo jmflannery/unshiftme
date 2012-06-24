@@ -17,7 +17,9 @@ Feature: Sign up
     Given I am not a registered user
     And I am on the sign up page
     When I fill in "User name" with "fred"
+    #And I check desk "CUS North"
     And I fill in "password" with "secret"
     And I fill in "conformation" with "secret"
     And I press "Sign Up"
-    Then I should see my user home page 
+    Then I should see the sign in page
+    And I should see that registration was successful
