@@ -14,7 +14,11 @@ Feature: Sign up
     Then I should see the sign up page
     
   Scenario: Sign up success
-    Given I am not a registered user
+    Given the following desk records
+      | name         | abrev  | job_type | user_id |
+      | CUS North    | CUSN   | td       | 0       |
+      | CUS South    | CUSS   | td       | 0       |
+    And I am not a registered user
     And I am on the sign up page
     When I fill in "User name" with "fred"
     And I check desk "CUS North"

@@ -10,6 +10,15 @@
         <%= f.text_field :user_name %>
       </div>
       
+      <div id="select_normal_desk">
+        <div id="td_desks">
+          <%= render @td_desks if @td_desks %>
+        </div>
+        <div id="ops_desks">
+          <%= render @ops_desks if @ops_desks %>
+        </div>
+      </div>
+
       <div class="field">
         <%= f.label :password %> </br>
         <%= f.password_field :password, id: "password" %>

@@ -5,6 +5,8 @@ class UsersController < ApplicationController
   def new
     @user = User.new
     @title = "Sign Up"
+    @td_desks = Desk.of_type("td")
+    @ops_desks = Desk.of_type("ops")
   end
 
   def create
