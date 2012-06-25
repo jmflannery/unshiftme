@@ -44,6 +44,10 @@ Then /^I should see that registration was successful$/ do
   page.should have_content("Registration was successful! Sign in now to access Messenger.")
 end
 
+Then /^I should see that desk "(.*?)" is checked$/ do |desk_abrev|
+  find("input##{desk_abrev}").should be_checked
+end
+
 Then /^I should see the sign in page$/ do
   sleep 1
   page.should have_content("Sign in")

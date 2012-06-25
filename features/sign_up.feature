@@ -27,3 +27,4 @@ Feature: Sign up
     And I press "Sign Up"
     Then I should see the sign in page
     And I should see that registration was successful
+    And I should see that desk "CUSN" is checked
