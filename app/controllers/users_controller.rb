@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  include UsersHelper
+
   before_filter :authenticate, :only => [:show, :edit, :update]
   before_filter :correct_user, :only => [:show, :edit, :update]
 
@@ -10,7 +12,10 @@ class UsersController < ApplicationController
   end
 
   def create
+    normal_desks = parse_params_for_desks(params[:user])
+    normal_desks.each { |desk| params[:user].delete(desk) }
     @user = User.new(params[:user])
+    @user.normal_desks = normal_desks
     @user.toggle(:admin) if User.count == 0
     if @user.save
       flash[:success] = "Registration was successful! Sign in now to access Messenger."
