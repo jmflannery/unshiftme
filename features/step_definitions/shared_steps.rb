@@ -2,12 +2,12 @@ Given /^I am in (.*) browser$/ do |name|
   Capybara.session_name = name
 end
  
-Given /^I am logged in as "([^\"]*)" with password "([^\"]*)" at "([^\"]*)"$/ do |username, password, desk|
+Given /^I am logged in as "([^\"]*)" with password "([^\"]*)" at "([^\"]*)"$/ do |username, password, desks|
   unless username.blank?
     visit signin_path
     fill_in "User name", :with => username
     fill_in "Password", :with => password
-    check desk
+    desks.split(",").each { |desk| check desk }
     click_button "Sign In"
   end
 end
