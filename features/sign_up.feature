@@ -12,7 +12,8 @@ Feature: Sign up
     And I fill in "conformation" with ""
     And I press "Sign Up"
     Then I should see the sign up page
-    
+  
+  @javascript
   Scenario: Sign up success
     Given the following desk records
       | name         | abrev  | job_type | user_id |
@@ -28,6 +29,6 @@ Feature: Sign up
     Then I should see the sign in page
     And I should see that registration was successful
     When I fill in "User name" with "fred"
-    When I fill in "password" with ""
-    And I should see that desk "CUSN" is checked
-    And I should see that desk "CUSN" is not checked
+    And I press the "tab" key from the "User name" field
+    Then I should see that desk "CUSN" is checked
+    And I should see that desk "CUSS" is not checked

@@ -25,6 +25,10 @@ When /^I press the "(.*?)" key$/ do |key|
   find_field('message_content').native.send_key(key.to_sym)
 end
 
+When /^I press the "(.*?)" key from the "(.*?)" field$/ do |key, field|
+  find_field(field).native.send_key(key.to_sym)
+end
+
 When /^I fill in "(.*?)" with "(.*?)"$/ do |arg1, arg2|
   fill_in arg1, with: arg2
 end
