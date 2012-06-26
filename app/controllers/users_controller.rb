@@ -12,8 +12,8 @@ class UsersController < ApplicationController
   end
 
   def create
-    normal_desks = parse_params_for_desks(params[:user])
-    normal_desks.each { |desk| params[:user].delete(desk) }
+    normal_desks = parse_params_for_desks(params)
+    normal_desks.each { |desk| params.delete(desk) }
     @user = User.new(params[:user])
     @user.normal_desks = normal_desks
     @user.toggle(:admin) if User.count == 0

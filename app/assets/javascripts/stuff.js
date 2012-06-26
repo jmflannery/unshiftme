@@ -52,6 +52,38 @@ var hide_available_users = function() {
   $("#recipient_selection_section").html("<a href='/users' data-remote='true' format='js' id='users_button'>Add Available Users</a>");
 };
 
+////////////////////////////////////////
+// auto select jobs on signin page
+////////////////////////////////////////
+
+$(function() {
+  // if on the sign on page 
+  if ($("#signin").length > 0) {
+    // user name field loses focus
+    $("input#user_name").focusout(function(event) {
+      name = event.target.value;
+      if (name) { 
+        // GET - sessions#new
+        $.ajax( {
+          type: "GET", 
+          url: "/session/new.json",
+          data: { "user": name },
+          success: function(response) {
+            if (response.normal_desks) {
+              $("input:checkbox").removeAttr("checked");
+              var normal_desks = response.normal_desks.split(",");
+              var i;
+              for (i = 0; i < normal_desks.length; i++) {
+                $("input#" + normal_desks[i]).prop("checked", true);
+              }
+            }
+          }
+        });
+      }
+    });
+  }
+});
+
 ///////////////////////////////////
 // add recipient
 ///////////////////////////////////

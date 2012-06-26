@@ -27,5 +27,7 @@ Feature: Sign up
     And I press "Sign Up"
     Then I should see the sign in page
     And I should see that registration was successful
+    When I fill in "User name" with "fred"
+    When I fill in "password" with ""
     And I should see that desk "CUSN" is checked
     And I should see that desk "CUSN" is not checked

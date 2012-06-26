@@ -125,13 +125,11 @@ describe UsersController do
         assigns(:user).should_not be_admin
       end
 
-      before do
-        FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN")
-        FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS")
-        @success_attr.merge!({"CUSN" => "1", "CUSS" => "1"})
-      end
-      it "sets the user's normal_desks attribute" do
-        post :create, :user => @success_attr
+      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN") }
+      let(:aml) { @aml = FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS") }
+      
+      it "sets the user's normal_desks attribute, given valid parameters" do
+        post :create, user: @success_attr, cusn.abrev => "1", aml.abrev => 1
         assigns(:user).normal_desks.should == ["CUSN", "CUSS"]
       end
     end
