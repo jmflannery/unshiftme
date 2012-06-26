@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  include UsersHelper
+
   def new
     respond_to do |format| 
       format.html {
@@ -21,7 +23,7 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by_user_name(params[:user_name])
     if user && user.authenticate(params[:password])
-      desk_ok = user.authenticate_desk(params)
+      user.start_jobs(parse_params_for_desks(params))
       sign_in user
 
       data = { name: user.user_name, desks: user.desk_names_str }
