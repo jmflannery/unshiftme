@@ -49,3 +49,26 @@ Feature: Messaging
     Given I am in Bob's browser
     When I wait 1 second
     Then I should see desk "CUSN" user "bill" read this
+
+  @wwhat
+  Scenario: Users working more than one desk at once should only recieve each message once
+    Given the following desk records
+      | name         | abrev | job_type  | user_id |
+      | CUS North    | CUSN  | td        | 0       |
+      | CUS South    | CUSS  | td        | 0       |
+      | AML / NOL    | AML   | td        | 0       |
+      | Yard Control | YDCTL | ops       | 0       |
+    And the following user records
+      | user_name |
+      | bill      |
+      | jim       |
+    And I am in bill's browser
+    And I am logged in as "bill" with password "secret" at "CUSN,CUSS,AML"
+    Given I am in jim's browser
+    And I am logged in as "jim" with password "secret" at "YDCTL"
+    When I click "CUSN,CUSS,AML"
+    And I fill in "message_content" with "Yo Bill!"
+    And I press the "enter" key
+    Given I am in bill's browser
+    When I wait 1 second
+    Then I should see recieved message "Yo Bill!" from desk "YDCTL" user "jim" one time

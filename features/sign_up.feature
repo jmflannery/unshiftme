@@ -30,5 +30,6 @@ Feature: Sign up
     And I should see that registration was successful
     When I fill in "User name" with "fred"
     And I press the "tab" key from the "User name" field
+    And I wait 1 second
     Then I should see that desk "CUSN" is checked
     And I should see that desk "CUSS" is not checked

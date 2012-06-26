@@ -102,6 +102,14 @@ describe Message do
       user1.recipients[0].desk_id.should == glhs.id
       user2.recipients[0].desk_id.should == glhs.id
     end
+
+    it "does not broadcast a message more than once to a user working multiple jobs" do
+      user1.start_jobs([cusn.abrev, cuss.abrev])
+      FactoryGirl.create(:recipient, user: user, desk_id: cusn.id)
+      FactoryGirl.create(:recipient, user: user, desk_id: cuss.id)
+      PrivatePub.should_receive(:publish_to).exactly(1).times
+      message.broadcast
+    end
   end
 
   describe "#set_recievers" do 

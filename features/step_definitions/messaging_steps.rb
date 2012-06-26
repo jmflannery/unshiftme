@@ -16,6 +16,11 @@ Then /^I should see recieved message "(.*?)" from desk "(.*?)" user "(.*?)"$/ do
   page.should have_selector("li.message.recieved", text: message_content)
 end
 
+Then /^I should see recieved message "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |message_content, desk_abrev, user_name|
+  page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}", count: 1)
+  page.should have_selector("li.message.recieved", text: message_content, count: 1)
+end
+
 Then /^I should nothing in the "(.*?)" text field$/ do |textfield_id|
   find_field(textfield_id).value.should be_blank
 end
@@ -38,8 +43,8 @@ When /^I click Message "(.*?)"$/ do |action|
   find(".recipient_desk.#{action}").click
 end
 
-When /^I click "(.*?)"$/ do |desk_abrev|
-  find("##{desk_abrev}").click
+When /^I click "(.*?)"$/ do |desks|
+  desks.split(",").each { |desk| find("##{desk}").click }
 end
 
 Then /^I should see that I am at "(.*?)"$/ do |desk|
