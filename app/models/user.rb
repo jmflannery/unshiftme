@@ -89,6 +89,18 @@ class User < ActiveRecord::Base
     true
   end
 
+  def start_job(job_abrev)
+    job = Desk.find_by_abrev(job_abrev)
+    job.user_id = self.id
+    job.save
+  end
+   
+  def start_jobs(job_abrevs)
+    job_abrevs.each do |job_abrev|
+      start_job(job_abrev)
+    end
+  end
+
   def desks
     Desk.of_user(self.id).collect { |desk| desk.id }
   end

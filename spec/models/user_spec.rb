@@ -224,6 +224,28 @@ describe User do
         end
       end
 
+      describe "start_jobs" do
+      
+        let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+        let(:aml) { FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td") }
+
+        it "assignes the jobs to the user" do
+          subject.start_jobs([cusn.abrev, aml.abrev])
+          Desk.find_by_abrev("CUSN").user_id.should == subject.id  
+          Desk.find_by_abrev("AML").user_id.should == subject.id  
+        end
+      end
+
+      describe "start_job" do
+
+        let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+
+        it "assignes the job to the user" do
+          subject.start_job(cusn.abrev)
+          Desk.find_by_abrev("CUSN").user_id.should == subject.id  
+        end
+      end
+
       describe "desks" do
 
         before(:each) do
