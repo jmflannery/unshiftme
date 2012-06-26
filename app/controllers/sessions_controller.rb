@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
         user = User.find_by_user_name(params[:user])
         normal_desks = ""
         if user and user.normal_desks
-          user.normal_desks.each { |desk| puts "zdesk->#{desk}"; normal_desks += "#{desk}," }
+          user.normal_desks.each { |desk| normal_desks += "#{desk}," }
         end
         normal_desks.chomp!(",") unless normal_desks.blank?
         render json: { normal_desks: normal_desks }
