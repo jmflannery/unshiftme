@@ -6,7 +6,13 @@ class RecipientsController < ApplicationController
       @recipients = current_user.add_recipients(Desk.all)
     else
       desk = Desk.find_by_id(params[:desk_id])
-      @recipient = current_user.add_recipient(desk) if desk
+      recipient_user = User.find_by_id(desk.user_id) if desk
+      if recipient_user and recipient_user.desks.size > 1
+        desks = recipient_user.desks.map { |desk_id| Desk.find(desk_id) }
+        @recipients = current_user.add_recipients(desks)
+      else
+        @recipient = current_user.add_recipient(desk) if desk
+      end
     end
   end
 

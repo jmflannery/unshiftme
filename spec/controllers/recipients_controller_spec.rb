@@ -26,6 +26,7 @@ describe RecipientsController do
 
     context "with valid desk_id" do
       before(:each) { test_sign_in(user) }
+
       it "returns http success" do
         post :create, desk_id: cusn.id, format: :js
         response.should be_success
@@ -35,6 +36,22 @@ describe RecipientsController do
         lambda do
           post :create, desk_id: cusn.id, format: :js
         end.should change(Recipient, :count).by(1)
+      end
+
+      context "when the recipient user is controlling multiple desks" do
+        let(:recip_user) { FactoryGirl.create(:user) }
+        let(:cuss) { FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td") }
+        let(:aml) { FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AMl", job_type: "td") }
+        before(:each) do
+          test_sign_in(user)
+          recip_user.start_jobs([cusn.abrev, cuss.abrev, aml.abrev])
+        end
+
+        it "creates a recipient for each desk controlled by the recipient_user" do
+          lambda do
+            post :create, desk_id: cusn.id, format: :js
+          end.should change(Recipient, :count).by(3)
+        end
       end
     end
 
