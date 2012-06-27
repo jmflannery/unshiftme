@@ -87,3 +87,27 @@ Feature: Desk Selection
     Then I should see each Desk Toggle Button indicate that I am messaging that desk, excluding my own desk "CUSN"
     When I click Message "none" 
     Then I should see each Desk Toggle Button indicate that I am not messaging that desk, excluding my own desk "CUSN"
+
+  @multiple_desks
+  Scenario: Selecting a desk controlled by a user who is also controlling other desks,
+            should toggle all of the desks controlled by that user
+    Given the following desk records
+      | name         | abrev  | job_type | user_id |
+      | CUS North    | CUSN   | td       | 0       |
+      | CUS South    | CUSS   | td       | 0       |
+      | AML / NOL    | AML    | td       | 0       |
+      | Yard Control | YDCTL  | ops      | 0       |
+    And the following user records
+      | user_name |
+      | bill      |
+      | joe       |
+    And I am in bill's browser
+    And I am logged in as "bill" with password "secret" at "CUSN,CUSS,AML"
+
+    Given I am in joe's browser
+    And I am logged in as "joe" with password "secret" at "YDCTL"
+    When I go to the messaging page
+    Then I should see that "bill" is at "CUSN,CUSS,AML" desk
+
+    When I click "CUSN"
+    And I should see that I am messaging "CUSN,CUSS,AML"

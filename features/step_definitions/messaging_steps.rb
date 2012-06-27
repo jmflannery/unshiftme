@@ -72,19 +72,21 @@ Then /^I should see each Desk Toggle Button indicate that I am not messaging tha
   end
 end
 
-Then /^I should see that I am messaging "(.*?)"$/ do |desk|
-  page.should have_selector("##{desk}.recipient_desk.on")
+Then /^I should see that I am messaging "(.*?)"$/ do |desks|
+  desks.split(",").each { |desk| page.should have_selector("##{desk}.recipient_desk.on") }
 end
 
 Then /^I should see that I am not messaging "(.*?)"$/ do |desk|
   page.should_not have_selector("##{desk}.recipient_desk.on")
 end
 
-Then /^I should see that "(.*?)" is at "(.*?)" desk$/ do |user, desk|
-  if user == "nobody"
-    page.should have_selector("##{desk}", text: "(vacant)")
-  else
-    page.should have_selector("##{desk}", text: "(#{user})")
+Then /^I should see that "(.*?)" is at "(.*?)" desk$/ do |user, desks|
+  desks.split(",").each do |desk|
+    if user == "nobody"
+      page.should have_selector("##{desk}", text: "(vacant)")
+    else
+      page.should have_selector("##{desk}", text: "(#{user})")
+    end
   end
 end
 
