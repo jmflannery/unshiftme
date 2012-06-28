@@ -49,8 +49,8 @@ describe MessagesController do
       let(:aml) { FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td") }
       let(:recip_user) { FactoryGirl.create(:user, user_name: "samson") }
       before do
-        recip_user.authenticate_desk(cuss.abrev => 1)
-        user.authenticate_desk(cusn.abrev => 1)
+        recip_user.start_job(cuss.abrev)
+        user.start_job(cusn.abrev)
         FactoryGirl.create(:recipient, user: user, desk_id: cuss.id)
         FactoryGirl.create(:recipient, user: user, desk_id: aml.id)
       end
@@ -74,7 +74,7 @@ describe MessagesController do
     let(:message) { sender.messages.create!(attr) }
     let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
     before(:each) do
-      user.authenticate_desk(cusn.abrev => 1)
+      user.start_job(cusn.abrev)
       test_sign_in(user)
     end
 
