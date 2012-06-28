@@ -3,5 +3,5 @@
     $('<%= "##{Desk.find(recipient.desk_id).abrev}.recipient_desk.on" %>').removeClass('<%= "#{recipient.id}" %>').addClass("off").removeClass("on"); 
   <% end %>
 <% elsif @recipient %>
-  $("<%= ".recipient_desk.#{@recipient.id}.off" %>").removeClass("<%= @recipient.id.to_s %>");
+  $("<%= ".recipient_desk.#{@recipient.id}.on" %>").removeClass("<%= @recipient.id.to_s %>").addClass("off").removeClass("on");
 <% end %>

@@ -21,6 +21,36 @@ $.fn.hasClass = function(klas) {
   return has;
 };
 
+// returns the first class found that can be parsed to int, or false if none found
+$.fn.getNumberClass = function() {
+  var num = false;
+  var klasses = $(this).getClassNames();
+  for (i = 0; i < klasses.length; i += 1) {
+    if (!isNaN(klasses[i])) {
+      num = klasses[i];
+      break;
+    }
+  }
+  return num;
+};
+
+// returns "on" if the given element has the class "on"
+// returns "off" if the given element has the class "off"
+// returns false if class "on" or "off" is not found on given element
+// returns fasle if both "on" and "off" ar found
+$.fn.onOff = function() {
+  var on = $(this).hasClass("on");
+  var off = $(this).hasClass("off");
+  if (on && !off) {
+    status = "on";
+  } else if (off && !on) {
+    status = "off";
+  } else {
+    status = false;
+  }
+  return status;
+};
+
 ////////////////////////////////////////
 // Calculate Height
 ////////////////////////////////////////
@@ -88,62 +118,38 @@ $(function() {
 // add recipient
 ///////////////////////////////////
 
-//TODO: refactor, too ugly
 var toggle_recipient = function() {
-  $(this).toggleClass("off");
-  $(this).toggleClass("on");
-  var classes = $(this).getClassNames();
+  state = $(this).onOff();
+  
+  if (state && state == "off") { 
+    var innerEl = $(this).find(".recipient_desk_id");
+    desk = $(innerEl).getNumberClass();
 
-  var i;
-  var status_index = -1;
-  var recipient_index = -1;
-  for (i = 0; i < classes.length; i += 1) {
-    if (!isNaN(classes[i])) {
-      recipient_index = i;
-    } else if (classes[i] == "on" || classes[i] == "off") {
-      status_index = i;
-    }
-  }
- 
-  if (status_index > -1) { 
-    if (classes[status_index] == "on") {
-
-      var innerEl = $(this).find(".recipient_desk_id");
-      var innerClasses = innerEl.attr('class').split(" ");
-      var desk = 0;
-      if (innerClasses[1]) {
-        if (!isNaN(innerClasses[1])) {
-          desk = parseInt(innerClasses[1]);
-        }
-      }  
-
-      var data = { "desk_id": desk };
-      
+    if (desk) {
       // POST - recipients#create
       $.ajax( {
         type: "POST", 
         url: "/recipients",
-        data: data,
+        data: { "desk_id": desk },
         success: function(response) {
           response;
         }
       });
+    }
 
-    } else if (classes[status_index] == "off") {
-      
-      var data = { _method: 'delete' };
-
+  } else if (state && state == "on") {
+    var recipient_index = $(this).getNumberClass();
+    
+    if (recipient_index) {
       // DELETE - desks#destroy
-      if (classes[recipient_index] && !isNaN(classes[recipient_index]) && classes[recipient_index] > 0) {
-        $.ajax( {
-          type: "POST", 
-          url: "/recipients/" + parseInt(classes[recipient_index]),
-          data: data,
-          success: function(response) {
-            response;
-          }
-        });
-      }
+      $.ajax( {
+        type: "POST", 
+        url: "/recipients/" + recipient_index,
+        data: { _method: 'delete' },
+        success: function(response) {
+          response;
+        }
+      });
     }
   }
 };
