@@ -76,8 +76,8 @@ Then /^I should see that I am messaging "(.*?)"$/ do |desks|
   desks.split(",").each { |desk| page.should have_selector("##{desk}.recipient_desk.on") }
 end
 
-Then /^I should see that I am not messaging "(.*?)"$/ do |desk|
-  page.should_not have_selector("##{desk}.recipient_desk.on")
+Then /^I should see that I am not messaging "(.*?)"$/ do |desks|
+  desks.split(",").each { |desk| page.should_not have_selector("##{desk}.recipient_desk.on") }
 end
 
 Then /^I should see that "(.*?)" is at "(.*?)" desk$/ do |user, desks|
