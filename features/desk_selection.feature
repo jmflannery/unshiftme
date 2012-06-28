@@ -110,4 +110,10 @@ Feature: Desk Selection
     Then I should see that "bill" is at "CUSN,CUSS,AML" desk
 
     When I click "CUSN"
-    And I should see that I am messaging "CUSN,CUSS,AML"
+    Then I should see that I am messaging "CUSN,CUSS,AML"
+    When I click "CUSS"
+    Then I should see that I am not messaging "CUSN,CUSS,AML"
+    When I click "AML"
+    Then I should see that I am messaging "CUSN,CUSS,AML"
+    When I click "CUSN"
+    Then I should see that I am not messaging "CUSN,CUSS,AML"
