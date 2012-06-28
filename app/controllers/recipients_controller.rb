@@ -21,11 +21,23 @@ class RecipientsController < ApplicationController
       @recipients = current_user.recipients
       current_user.delete_all_recipients
     else
-      @recipient = current_user.recipients.find_by_id(params[:id])
-      if @recipient
-        @recipient.destroy
+      recipient = current_user.recipients.find_by_id(params[:id])
+      
+      if recipient
+        @recipients = []
+        
+        desk1 = Desk.find_by_id(recipient.desk_id)
+        recip_user = User.find_by_id(desk1.user_id) if desk1
+        if recip_user
+          @recipients = recip_user.desks.map { |desk_id| current_user.recipients.find_by_desk_id(desk_id) }
+          @recipients.each { |recip| recip.destroy }
+        else
+          recipient.destroy
+          @recipients << recipient
+        end
       else
         redirect_to root_path
+        flash[:error] = "Internal Server Error. Please log in again."
       end
     end
   end
