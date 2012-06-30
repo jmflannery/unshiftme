@@ -380,11 +380,12 @@ $(function() {
     // add click handler to new message element
     $("li.message.recieved.unread").click(read_message);
 
-    // show the sending desk as a recipient
-    var desks = data.from_desks.split(",");
-    for (var i = 0; i < desks.length; i++) {
-      selector = "#" + desks[i] + ".recipient_desk.off";
-      $(selector).removeClass("off").addClass("on").addClass(data.recipient_id);
+    // show the sending desk(s) as recipient(s)
+    for (var i = 0; i < data.recipient_ids.length; i++) {
+      if (data.recipient_ids[i] > 0) {
+        selector = "#" + data.from_desks[i] + ".recipient_desk.off";
+        $(selector).removeClass("off").addClass(data.recipient_ids[i].toString()).addClass("on");
+      }
     }
 
     // scroll to last message 

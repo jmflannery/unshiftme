@@ -101,5 +101,5 @@ Feature: Messaging
     When I wait 1 second
     Then I should see recieved message "Yo Jim!" from desk "CUSN,CUSS,AML" user "bill" one time
     And I should see that I am messaging "CUSN,CUSS,AML"
-    When I click "YDCTL"
+    When I click "AML"
     Then I should see that I am not messaging "CUSN,CUSS,AML"

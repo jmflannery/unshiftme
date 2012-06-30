@@ -53,13 +53,17 @@ class Message < ActiveRecord::Base
         unless sent_to.include?(recip_user.id)
           sent_to << recip_user.id
 
-          user.desks.each { |desk_id| recip_user.add_recipient(Desk.find(desk_id)) }
+          new_recip_ids = user.desks.map do |desk_id|
+            recip = recip_user.add_recipient(Desk.find(desk_id))
+            recip ? recip.id : 0
+          end
           
           data = { 
             chat_message: content,
             sender: user.handle,
-            from_desks: user.desk_names_str,
-            recipient_id: recipient.id,
+            from_desks: user.desk_names,
+            recipient_ids: new_recip_ids,
+            new_recipients: hash,
             timestamp: created_at.strftime("%a %b %e %Y %T"),
             view_class: "message #{id.to_s} recieved unread"
           }
