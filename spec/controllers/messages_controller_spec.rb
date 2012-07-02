@@ -15,7 +15,7 @@ describe MessagesController do
 
     let(:message) { user.messages.create(attr) }
     it "should deny access to 'update' for non-signed in users" do
-      post :update, message_id: message.id, format: :jd, remote: true
+      put :update, id: message.id, format: :js, remote: true
       response.should redirect_to(signin_path)
     end
   end
@@ -68,7 +68,7 @@ describe MessagesController do
     end
   end
 
-  describe "POST 'update'" do
+  describe "PUT 'update'" do
 
     let(:sender) { FactoryGirl.create(:user) }
     let(:message) { sender.messages.create!(attr) }
@@ -79,12 +79,12 @@ describe MessagesController do
     end
 
     it "is successful" do
-      post :update, id: message.id, format: :jd, remote: true
+      put :update, id: message.id, format: :jd, remote: true
       response.should be_success
     end
 
     it "marks the message read by the current user" do
-      post :update, id: message.id, format: :jd, remote: true
+      put :update, id: message.id, format: :jd, remote: true
       message.reload
       message.read_by.should == { user.user_name => user.desk_names_str }
     end
