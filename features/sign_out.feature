@@ -21,12 +21,27 @@ Feature: Sign out
       | name         | abrev  | job_type | user_id |
       | CUS North    | CUSN   | td       | 0       |
       | CUS South    | CUSS   | td       | 0       |
+      | AML / NOL    | AML    | td       | 0       |
     And I am registered user "fred" with password "secret"
     And I am logged in at "CUSN"
-    When I click "CUSS"
-    Then I should see that I am messaging "CUSS"
+    When I click "CUSS,AML"
+    Then I should see that I am messaging "CUSS,AML"
     When I click link "Sign out"
     Then I should see the sign in page
     
     Given I am logged in at "CUSN"
-    Then I should see that I am not messaging "CUSS"
+    Then I should see that I am not messaging "CUSS,AML"
+
+  @sign_out3
+  Scenario: Sign out signs me out of all desks I am working
+    Given the following desk records
+      | name         | abrev  | job_type | user_id |
+      | CUS North    | CUSN   | td       | 0       |
+      | CUS South    | CUSS   | td       | 0       |
+      | AML / NOL    | AML    | td       | 0       |
+    And I am registered user "bill" with password "secret"
+    And I am logged in as "bill" with password "secret" at "CUSN,CUSS,AML"
+    When I click link "Sign out"
+    And I wait 1 second
+    Then I should not be working any desks
+

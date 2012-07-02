@@ -20,6 +20,12 @@ class User < ActiveRecord::Base
   validates :password_confirmation, presence: true 
 
   scope :online, lambda { where("status = true") }
+
+  def self.sign_out_the_inactive
+    all.each do |user|
+      puts :d 
+    end
+  end
   
   def handle
     "#{user_name}@#{desk_names_str}"
@@ -56,13 +62,16 @@ class User < ActiveRecord::Base
   end
 
   def set_online
-    self.status = true
-    self.save validate: false
+    update_attribute(:status, true)
+    #self.status = true
+    update_attribute(:lastpoll, Time.now)
+    #self.save validate: false
   end
 
   def set_offline
-    self.status = false
-    self.save validate: false
+    update_attribute(:status, false)
+    #self.status = false
+    #self.save validate: false
   end
 
   def remove_stale_recipients

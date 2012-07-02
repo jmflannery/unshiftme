@@ -64,3 +64,7 @@ end
 Then /^I should see my user home page$/ do
   page.should have_content(@user.user_name)
 end
+
+Then /^I should not be working any desks$/ do
+  Desk.all.each { |desk| desk.user_id.should_not == @user.id }
+end

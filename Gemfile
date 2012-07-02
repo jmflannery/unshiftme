@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.0'
+gem 'rails', '3.2.6'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -10,16 +10,16 @@ gem 'pg'
 gem 'therubyracer'
 gem 'bcrypt-ruby', "~> 3.0.1"
 gem 'remotipart', "~> 1.0.2"
-gem 'paperclip', "~> 2.0"
-gem 'aws-sdk'
+gem 'paperclip', "~> 3.1.2"
 gem 'private_pub', "~> 1.0.1"
 gem "annotate", "~> 2.4.0"
+gem "whenever"
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails', "~> 3.2.3"
-  gem 'coffee-rails', "~> 3.2.1"
+  gem 'sass-rails', "~> 3.2.5"
+  gem 'coffee-rails', "~> 3.2.2"
   gem 'uglifier'
 end
 
@@ -33,7 +33,7 @@ group :test do
   gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
   #gem 'capybara', "~> 1.1.2"
   #gem 'capybara-webkit'
-  gem 'factory_girl_rails', "~> 3.0"
+  gem 'factory_girl_rails', "~> 3.5.0"
   gem 'faker'
   gem 'rb-inotify'
   gem 'libnotify'

@@ -63,7 +63,6 @@ class Message < ActiveRecord::Base
             sender: user.handle,
             from_desks: user.desk_names,
             recipient_ids: new_recip_ids,
-            new_recipients: hash,
             timestamp: created_at.strftime("%a %b %e %Y %T"),
             view_class: "message #{id.to_s} recieved unread"
           }
