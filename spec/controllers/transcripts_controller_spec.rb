@@ -69,7 +69,7 @@ describe TranscriptsController do
       end
 
       it "deny's access to 'show'" do
-        get :show, id: @transcript_id, user: @admin_user.id
+        get :show, id: @transcript.id, user: @admin_user.id
         response.should redirect_to(signin_path)
       end
     end
