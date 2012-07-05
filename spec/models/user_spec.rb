@@ -377,11 +377,19 @@ describe User do
 
     describe "set_online" do
 
-      before { subject.set_online }
+      before(:each) do
+        @time = Time.now
+        subject.set_online
+      end
 
       it "sets the user's online status to true" do
         subject.reload
         subject.status.should be_true
+      end
+
+      it "sets the user's lastpoll time to the current time" do
+        subject.reload
+        subject.lastpoll.should > @time
       end
     end
 
