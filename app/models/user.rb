@@ -24,8 +24,8 @@ class User < ActiveRecord::Base
 
   def self.sign_out_the_dead
     online.each do |user|
-      delta = Time.now - user.lastpoll
-      if delta >= 60
+      delta = Time.now - user.lastpoll if user.lastpoll
+      if delta and delta >= 60
         user.set_offline 
       end
     end
