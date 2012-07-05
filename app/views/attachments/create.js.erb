@@ -8,7 +8,3 @@ $('#messages_section').css("height", "+=45");
 // display the new message 
 display_new_message("<%= j(render(@message)) %>");
 
-// scroll to last message 
-<% unless @message.blank? %>
-  $('#messages_section').scrollTo("max");
-<% end %>
