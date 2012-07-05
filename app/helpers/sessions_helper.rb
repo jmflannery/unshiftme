@@ -9,7 +9,6 @@ module SessionsHelper
   def sign_out
     current_user.delete_all_recipients
     current_user.set_offline
-    current_user.leave_desk
     session[:user_id] = nil
     current_user = nil 
   end
