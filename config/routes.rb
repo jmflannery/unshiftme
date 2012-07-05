@@ -6,7 +6,7 @@ AmtrakMessenger::Application.routes.draw do
   resources :recipients, :only => [:create, :index, :destroy]
   resources :attachments, :only => [:create]
   resources :transcripts, :only => [:new, :create, :show, :index]
-  resource :session, :only => [:new, :create, :destroy]
+  resource :session, :only => [:new, :create, :update, :destroy]
 
   match "/signup", :to => "users#new"
   match "/signin", :to => "sessions#new"

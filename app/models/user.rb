@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  include SessionsHelper
 
   has_secure_password 
 
@@ -21,9 +22,12 @@ class User < ActiveRecord::Base
 
   scope :online, lambda { where("status = true") }
 
-  def self.sign_out_the_inactive
-    all.each do |user|
-      puts :d 
+  def self.sign_out_the_dead
+    online.each do |user|
+      delta = Time.now - user.lastpoll
+      if delta >= 60
+        user.set_offline 
+      end
     end
   end
   
@@ -63,15 +67,13 @@ class User < ActiveRecord::Base
 
   def set_online
     update_attribute(:status, true)
-    #self.status = true
     update_attribute(:lastpoll, Time.now)
-    #self.save validate: false
   end
 
   def set_offline
     update_attribute(:status, false)
-    #self.status = false
-    #self.save validate: false
+    leave_desk
+    delete_all_recipients
   end
 
   def remove_stale_recipients
@@ -128,10 +130,9 @@ class User < ActiveRecord::Base
   end
 
   def leave_desk
-    self.desks.each do |desk_id|
+    desks.each do |desk_id|
       desk = Desk.find(desk_id)
-      desk.user_id = 0
-      desk.save
+      desk.update_attributes({user_id: 0})
     end
   end
 

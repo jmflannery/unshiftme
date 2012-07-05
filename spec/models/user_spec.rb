@@ -18,6 +18,13 @@ require 'spec_helper'
 
 describe User do
 
+  let!(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+  let(:cuss) { FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td") }
+  let!(:aml) { FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td") }
+  let(:ydctl) { FactoryGirl.create(:desk, name: "Yard Control", abrev: "YDCTL", job_type: "ops") }
+  let(:ydmstr) { FactoryGirl.create(:desk, name: "Yard Master", abrev: "YDMSTR", job_type: "ops") }
+  let(:glhs) { FactoryGirl.create(:desk, name: "Glasshouse", abrev: "GLHS", job_type: "ops") }
+
   before(:each) do
     @user = User.new(user_name: "smith", password: "foobar", password_confirmation: "foobar")
   end
@@ -90,12 +97,8 @@ describe User do
   describe "message associations" do
 
     before { subject.save }
-    let!(:older_message) do
-      FactoryGirl.create(:message, user: subject, created_at: 1.day.ago)
-    end
-    let!(:newer_message) do
-      FactoryGirl.create(:message, user: subject, created_at: 1.minute.ago)
-    end
+    let!(:older_message) { FactoryGirl.create(:message, user: subject, created_at: 1.day.ago) }
+    let!(:newer_message) { FactoryGirl.create(:message, user: subject, created_at: 1.minute.ago) }
 
     it { should respond_to(:messages) }
 
@@ -107,12 +110,8 @@ describe User do
   describe "recipient associations" do
 
     before { subject.save }
-    let!(:recipient1) do
-      FactoryGirl.create(:recipient, user: subject)
-    end
-    let!(:recipient2) do
-      FactoryGirl.create(:recipient, user: subject)
-    end
+    let!(:recipient1) { FactoryGirl.create(:recipient, user: subject) }
+    let!(:recipient2) { FactoryGirl.create(:recipient, user: subject) }
 
     it { should respond_to(:recipients) }
 
@@ -123,8 +122,6 @@ describe User do
 
   describe "desk associations" do
 
-    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
-    let(:cuss) { FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td") }
     before(:each) do
       subject.normal_desks = [cusn.abrev, cuss.abrev]
     end
@@ -139,12 +136,8 @@ describe User do
   describe "attachment associations" do
 
     before { subject.save }
-    let!(:attachment1) do
-      FactoryGirl.create(:attachment, user: subject)
-    end
-    let!(:attachment2) do
-      FactoryGirl.create(:attachment, user: subject)
-    end
+    let!(:attachment1) { FactoryGirl.create(:attachment, user: subject) }
+    let!(:attachment2) { FactoryGirl.create(:attachment, user: subject) }
 
     it { should respond_to(:attachments) }
 
@@ -156,12 +149,8 @@ describe User do
   describe "transcript associations" do
 
     before { subject.save }
-    let!(:transcript1) do
-      FactoryGirl.create(:transcript, user: subject, watch_user_id: 11, start_time: 1.hour.ago, end_time: 1.minute.ago)
-    end
-    let!(:transcript2) do
-      FactoryGirl.create(:transcript, user: subject, watch_user_id: 22, start_time: 3.hours.ago, end_time: 4.hours.ago)
-    end
+    let!(:transcript1) { FactoryGirl.create(:transcript, user: subject, watch_user_id: 11, start_time: 1.hour.ago, end_time: 1.minute.ago) }
+    let!(:transcript2) { FactoryGirl.create(:transcript, user: subject, watch_user_id: 22, start_time: 3.hours.ago, end_time: 4.hours.ago) }
 
     it { should respond_to(:transcripts) }
 
@@ -184,7 +173,6 @@ describe User do
         online_users.should include @user1
         online_users.should_not include subject
       end
-
     end
   end
 
@@ -197,8 +185,8 @@ describe User do
     describe "handle" do
 
       before do
-        FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td")
-        FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td")
+        #FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td")
+        #FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td")
         subject.authenticate_desk("CUSN" => 1, "AML" => 1)
       end
 
@@ -211,8 +199,8 @@ describe User do
       
       before(:each) do
         @params = { key: "val", "CUSN" => 1, "AML" => 1, anotherkey: "val" }
-        FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td")
-        FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td")
+        #FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td")
+        #FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td")
       end
 
       describe "authenticate_desk" do
@@ -226,9 +214,6 @@ describe User do
 
       describe "start_jobs" do
       
-        let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
-        let(:aml) { FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td") }
-
         it "assignes the jobs to the user" do
           subject.start_jobs([cusn.abrev, aml.abrev])
           Desk.find_by_abrev("CUSN").user_id.should == subject.id  
@@ -237,8 +222,6 @@ describe User do
       end
 
       describe "start_job" do
-
-        let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
 
         it "assignes the job to the user" do
           subject.start_job(cusn.abrev)
@@ -303,8 +286,8 @@ describe User do
 
         it "relinqishes control of all desks belonging to the given user" do
           subject.leave_desk
-          Desk.find_by_abrev("CUSN").user_id.should_not == subject.id  
-          Desk.find_by_abrev("AML").user_id.should_not == subject.id  
+          Desk.find_by_abrev("CUSN").user_id.should == 0
+          Desk.find_by_abrev("AML").user_id.should == 0
         end
       end
     end
@@ -312,9 +295,7 @@ describe User do
     describe "add_recipients" do
 
       before(:each) do
-        @cusn = FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td")
-        @cuss = FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td")
-        @desks = [@cusn, @cuss]
+        @desks = [cusn, cuss]
         @recipients = subject.add_recipients(@desks)
       end
 
@@ -333,7 +314,6 @@ describe User do
       end
 
       it "doesn't add a desk as a recipient if the user is currently controlling that desk" do
-        aml = FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td")
         subject.authenticate_desk(aml.abrev => 1)
         @desks << aml
         subject.add_recipients(@desks)
@@ -347,41 +327,39 @@ describe User do
 
     describe "add_recipient" do
 
-      before(:each) do
-        @ydmstr = FactoryGirl.create(:desk, name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
-      end
+      #before(:each) do
+      #  @ydmstr = FactoryGirl.create(:desk, name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
+      #end
 
       it "adds the desk id's to the user's recipients" do
-        subject.add_recipient(@ydmstr)
-        subject.recipients[0].desk_id.should == @ydmstr.id
+        subject.add_recipient(ydmstr)
+        subject.recipients[0].desk_id.should == ydmstr.id
       end
 
       it "doesn't not add any duplicate recipients" do
-        subject.add_recipient(@ydmstr)
+        subject.add_recipient(ydmstr)
         size1 = subject.recipients.size
-        subject.add_recipient(@ydmstr)
+        subject.add_recipient(ydmstr)
         size2 = subject.recipients.size
         size2.should == size1
       end
       
       it "doesn't add a desk as a recipient if the user is currently controlling that desk" do
-        subject.authenticate_desk(@ydmstr.abrev => 1)
-        subject.add_recipient(@ydmstr)
-        subject.should_not be_messaging @ydmstr.id
+        subject.authenticate_desk(ydmstr.abrev => 1)
+        subject.add_recipient(ydmstr)
+        subject.should_not be_messaging ydmstr.id
       end
     end
     
     describe "recipient_desk_ids" do
 
       before(:each) do
-        @ydmstr = Desk.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
-        @glhse = Desk.create!(name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
-        subject.add_recipient(@ydmstr)
-        subject.add_recipient(@glhse)
+        subject.add_recipient(ydmstr)
+        subject.add_recipient(glhs)
       end
 
       it "returns an array of the user's recipient's desk_ids" do
-        subject.recipient_desk_ids.should == [@ydmstr.id, @glhse.id]
+        subject.recipient_desk_ids.should == [ydmstr.id, glhs.id]
       end
     end
 
@@ -411,20 +389,27 @@ describe User do
 
       before do 
         subject.set_online
+        subject.start_job(cusn.abrev)
+        subject.add_recipient(cuss)
         subject.set_offline
       end
 
       it "sets the user's online status to false" do
-        subject.reload
         subject.status.should be_false
+      end
+
+      it "signs the user out of all desks" do
+        subject.desks.should == []
+      end
+
+      it "deletes all of the users recipients" do
+        subject.reload
+        subject.recipients.should == []
       end
     end
 
     describe "messaging?" do
       
-      let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
-      let(:cuss) { Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td") }
-
       before do 
         @recipient = FactoryGirl.create(:recipient, user: subject, desk_id: cusn.id)
       end
@@ -436,7 +421,6 @@ describe User do
     end
 
     describe "recipient_id" do
-      let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
 
       before do
         @recipient = FactoryGirl.create(:recipient, user: subject, desk_id: cusn.id)
@@ -448,8 +432,7 @@ describe User do
     end
 
     describe "delete_all_recipients" do
-      let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
-      let(:aml) { Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
+      
       before do
         FactoryGirl.create(:recipient, user: subject, desk_id: cusn.id)
         FactoryGirl.create(:recipient, user: subject, desk_id: aml.id)
@@ -462,4 +445,46 @@ describe User do
       end
     end
   end
+
+  describe "class method" do
+
+    describe "#sign_out_the_dead" do
+      
+      let(:user1) { FactoryGirl.create(:user, user_name: "Jimbo") }
+
+      context "for users who have not had a heartbeat in over 60 seconds" do
+
+        before(:each) do
+          subject.save
+          subject.set_online
+          @recipient = subject.add_recipient(cuss)
+          subject.start_job(cusn.abrev)
+          subject.update_attribute(:lastpoll, 59.seconds.ago)
+          user1.set_online
+          user1.add_recipient(cusn)
+          user1.start_job(aml.abrev)
+          user1.update_attribute(:lastpoll, 65.seconds.ago)
+          User.sign_out_the_dead
+          subject.reload
+          user1.reload
+        end
+
+        it "sets online status to false" do
+          subject.status.should be_true
+          user1.status.should_not be_true
+        end
+
+        it "signs the user out of all desks" do
+          user1.desks.should == []
+          subject.desks.should == [cusn.id]
+        end
+
+        it "destroys all of the user's recipients" do
+          user1.recipients.should == []
+          subject.recipients.should == [@recipient]
+        end
+      end
+    end
+  end
 end
+
