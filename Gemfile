@@ -14,6 +14,7 @@ gem 'paperclip', "~> 3.1.2"
 gem 'private_pub', "~> 1.0.1"
 gem "annotate", "~> 2.4.0"
 gem "whenever"
+gem "rufus-scheduler"
 
 # Gems used only for assets and not required
 # in production environments by default.
