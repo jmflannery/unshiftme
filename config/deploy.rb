@@ -70,6 +70,13 @@ namespace :faye do
   end
 end
 
+namespace :rufus do
+  desc "start background worker to periodically cleanup inactive users"
+  task :cleanup_users do
+    run "cd #{deploy_to}/current && /usr/bin/env rake rufus:scheduler -D RAILS_ENV=production"
+  end
+end
+
 namespace :db do
   desc "Reset production database"
   task :reset do
