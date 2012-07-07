@@ -11,7 +11,7 @@
 #  password_digest :string(255)
 #  status          :boolean
 #  recipient_id    :integer
-#  lastpoll        :datetime
+#  heartbeat       :datetime
 #
 
 require 'spec_helper'
@@ -370,8 +370,8 @@ describe User do
         subject.timestamp_poll(@time)
       end
 
-      it "sets the lastpoll attribute to the given time" do
-        subject.lastpoll.should == @time
+      it "sets the heartbeat attribute to the given time" do
+        subject.heartbeat.should == @time
       end
     end    
 
@@ -387,9 +387,9 @@ describe User do
         subject.status.should be_true
       end
 
-      it "sets the user's lastpoll time to the current time" do
+      it "sets the user's heartbeat time to the current time" do
         subject.reload
-        subject.lastpoll.should > @time
+        subject.heartbeat.should > @time
       end
     end
 
@@ -467,11 +467,11 @@ describe User do
           subject.set_online
           @recipient = subject.add_recipient(cuss)
           subject.start_job(cusn.abrev)
-          subject.update_attribute(:lastpoll, 59.seconds.ago)
+          subject.update_attribute(:heartbeat, 59.seconds.ago)
           user1.set_online
           user1.add_recipient(cusn)
           user1.start_job(aml.abrev)
-          user1.update_attribute(:lastpoll, 65.seconds.ago)
+          user1.update_attribute(:heartbeat, 65.seconds.ago)
           User.sign_out_the_dead
           subject.reload
           user1.reload

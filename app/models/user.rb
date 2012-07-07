@@ -25,10 +25,10 @@ class User < ActiveRecord::Base
   def self.sign_out_the_dead
     logger.debug "Executing: User#sign_out_the_dead"
     online.each do |user|
-      delta = Time.now - user.lastpoll if user.lastpoll
+      delta = Time.now - user.heartbeat if user.heartbeat
       if delta and delta >= 20
         user.set_offline 
-        logger.debug "User: <#{user.user_name} ##{user.id}> has not had a heartbeat since #{user.lastpoll} and has been set to 'offline'"
+        logger.debug "User: <#{user.user_name} ##{user.id}> has not had a heartbeat since #{user.heartbeat} and has been set to 'offline'"
       end
     end
     logger.debug "Done executing: User#sign_out_the_dead"
@@ -64,13 +64,13 @@ class User < ActiveRecord::Base
   end
 
   def timestamp_poll(time)
-    self.lastpoll = time
+    self.heartbeat = time
     self.save validate: false
   end
 
   def set_online
     update_attribute(:status, true)
-    update_attribute(:lastpoll, Time.now)
+    update_attribute(:heartbeat, Time.now)
   end
 
   def set_offline
@@ -83,7 +83,7 @@ class User < ActiveRecord::Base
     stale_recipients = []
     self.recipients.each do |recipient|
       r_user = User.find_by_id(Desk.find(recipient.desk_id).user_id)
-      if r_user.status == false || (r_user.lastpoll < Time.now - 4) 
+      if r_user.status == false || (r_user.heartbeat < Time.now - 4) 
         stale_recipients << recipient 
         r_user.set_offline
       end
