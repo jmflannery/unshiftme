@@ -160,44 +160,62 @@ describe UsersController do
       test_sign_in(@user)
     end
 
-    describe "failure" do
+    context "format html" do
 
-      it "should render the 'edit' page" do
-        put :update, id: @user, user: @fail_attr
-        response.should render_template('edit')
+      describe "failure" do
+
+        it "should render the 'edit' page" do
+          put :update, id: @user, user: @fail_attr
+          response.should render_template('edit')
+        end
+
+        it "should have the right title" do
+          put :update, id: @user, user: @fail_attr
+          response.body.should have_selector("title", :content => "Edit user")
+        end
+
       end
 
-      it "should have the right title" do
-        put :update, id: @user, user: @fail_attr
-        response.body.should have_selector("title", :content => "Edit user")
-      end
+      describe "success" do
 
+        before(:each) do
+          @new_attr = { 
+            user_name: "fzbar",
+            password: "foobar",
+            password_confirmation: "foobar"
+          }
+        end
+
+        it "should change the user's attributes" do
+          put :update, id: @user, user: @new_attr
+          @user.reload
+          @user.user_name.should == @new_attr[:user_name]
+        end
+
+        it "should redirect to the user show page" do
+          put :update, id: @user, user: @success_attr
+          response.should redirect_to(user_path(@user))
+        end
+
+        it "should have a flash message" do
+          put :update, id: @user, user: @success_attr
+          flash[:success].should =~ /updated/
+        end
+      end
     end
-
-    describe "success" do
-
-      before(:each) do
-        @new_attr = { 
-          user_name: "fzbar",
-          password: "foobar",
-          password_confirmation: "foobar"
-        }
+    
+    context "format js" do
+  
+      it "returns http success" do
+        xhr :put, :update, id: @user, format: :js, remote: true
+        response.should be_success
       end
 
-      it "should change the user's attributes" do
-        put :update, id: @user, user: @new_attr
+      it "updates the authenticated user's heartbeat timestamp" do
+        before_request = Time.now
+        xhr :put, :update, id: @user, format: :js, remote: true
         @user.reload
-        @user.user_name.should == @new_attr[:user_name]
-      end
-
-      it "should redirect to the user show page" do
-        put :update, id: @user, user: @success_attr
-        response.should redirect_to(user_path(@user))
-      end
-
-      it "should have a flash message" do
-        put :update, id: @user, user: @success_attr
-        flash[:success].should =~ /updated/
+        @user.heartbeat.should > before_request
       end
     end
   end

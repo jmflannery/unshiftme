@@ -42,12 +42,20 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    if @user.update_attributes(params[:user])
-      flash[:success] = "Profile updated!"
-      redirect_to @user
-    else
-      @title = "Edit user"
-      render 'edit'
+    respond_to do |format|
+      format.html {
+        if @user.update_attributes(params[:user])
+          flash[:success] = "Profile updated!"
+          redirect_to @user
+        else
+          @title = "Edit user"
+          render 'edit'
+        end
+      }
+      format.js {
+        Rails.logger.debug "update_users.js"
+        @user.timestamp_poll(Time.now)
+      }
     end
   end
 
