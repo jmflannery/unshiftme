@@ -63,9 +63,12 @@ class User < ActiveRecord::Base
     recipient
   end
 
-  def timestamp_poll(time)
-    self.heartbeat = time
-    self.save validate: false
+  def do_heartbeat
+    update_attribute(:heartbeat, Time.now)
+  end
+
+  def set_heartbeat(time)
+    update_attribute(:heartbeat, time)
   end
 
   def set_online

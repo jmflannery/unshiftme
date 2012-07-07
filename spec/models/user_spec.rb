@@ -363,15 +363,21 @@ describe User do
       end
     end
 
-    describe "timestamp_poll" do
-
-      before(:each) do
-        @time = Time.now
-        subject.timestamp_poll(@time)
+    describe "#do_heartbeat" do
+      
+      it "set the heartbeart to the current time" do
+        time = Time.now
+        subject.do_heartbeat
+        subject.heartbeat.should > time
       end
+    end
+
+    describe "#set_heartbeat" do
+      let(:time) { Time.now }
 
       it "sets the heartbeat attribute to the given time" do
-        subject.heartbeat.should == @time
+        subject.set_heartbeat(time)
+        subject.heartbeat.should == time
       end
     end    
 

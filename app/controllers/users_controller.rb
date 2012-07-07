@@ -53,8 +53,7 @@ class UsersController < ApplicationController
         end
       }
       format.js {
-        Rails.logger.debug "update_users.js"
-        @user.timestamp_poll(Time.now)
+        @user.do_heartbeat
       }
     end
   end
