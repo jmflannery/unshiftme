@@ -53,6 +53,7 @@ class UsersController < ApplicationController
         end
       }
       format.js {
+        logger.debug "heartbeat=> <#{@user.user_name} ##{@user.id}>"
         @user.do_heartbeat
       }
     end

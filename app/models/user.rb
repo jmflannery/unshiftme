@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
   end
 
   def do_heartbeat
-    update_attribute(:heartbeat, Time.now)
+    touch :heartbeat
   end
 
   def set_heartbeat(time)

@@ -67,7 +67,7 @@ var heartbeat = function() {
   
     $.ajax( {
       type: "PUT",
-      url: "/users/" + user_id,
+      url: "/users/" + user_id + ".js",
       success: function(response) {
         response;
       }
