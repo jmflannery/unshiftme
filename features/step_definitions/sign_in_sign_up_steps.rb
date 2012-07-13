@@ -19,6 +19,14 @@ Given /^I am registered user "(.*?)" with password "(.*?)"$/ do |name, passwd|
                              password_confirmation: passwd)
 end
 
+Given /^I am registered administrative user "(.*?)" with password "(.*?)"$/ do |name, passwd|
+  @user = FactoryGirl.create(:user,
+                             user_name: name,
+                             admin: true,
+                             password: passwd,
+                             password_confirmation: passwd)
+end
+
 Given /^I am logged in at "(.*?)"$/ do |desk|
   visit signin_path
   sleep 1

@@ -30,7 +30,9 @@ class TranscriptsController < ApplicationController
   def index
     @title = "Transcripts"
     @user = current_user
-    @transcripts = Transcript.for_user(@user)
+    #@transcripts = Transcript.for_user(@user)
+    @transcripts = @user.transcripts
+    @transcript_count = @transcripts ? @transcripts.size : 0
   end
 
   private

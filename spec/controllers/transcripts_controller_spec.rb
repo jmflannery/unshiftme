@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe TranscriptsController do
+  render_views
 
   before(:each) do
     @admin_user = FactoryGirl.create(:user, admin: true)
@@ -117,12 +118,27 @@ describe TranscriptsController do
 
     before(:each) do
       test_sign_in(@admin_user)
-      @transcript = FactoryGirl.create(:transcript, user: @admin_user)
+      #@transcript = FactoryGirl.create(:transcript, user: @admin_user)
     end
 
     it "returns http success" do
-      get 'index', id: @transcript.id, user: @admin_user.id
+      get :index
       response.should be_success
+    end
+
+    it "has the right title" do
+      get :index
+      response.body.should have_selector("title", content: "Transcripts")
+    end
+
+    it "gets current user's transcripts" do
+      get :index
+      assigns(:transcripts).should include @transcript
+    end
+
+    it "gets a count of the current user's transcripts" do
+      get :index
+      assigns(:transcript_count).should == 1
     end
   end
 end
