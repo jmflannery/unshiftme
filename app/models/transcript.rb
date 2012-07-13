@@ -1,10 +1,10 @@
 class Transcript < ActiveRecord::Base
 
-  attr_accessible :watch_user_id, :start_time, :end_time
+  attr_accessible :transcript_user_id, :start_time, :end_time
 
   belongs_to :user
    
-  validates :watch_user_id, presence: true
+  validates :transcript_user_id, presence: true
   validates :start_time, presence: true
   validates :end_time, presence: true
   #validate :acceptable_start_date

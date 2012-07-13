@@ -149,8 +149,8 @@ describe User do
   describe "transcript associations" do
 
     before { subject.save }
-    let!(:transcript1) { FactoryGirl.create(:transcript, user: subject, watch_user_id: 11, start_time: 1.hour.ago, end_time: 1.minute.ago) }
-    let!(:transcript2) { FactoryGirl.create(:transcript, user: subject, watch_user_id: 22, start_time: 3.hours.ago, end_time: 4.hours.ago) }
+    let!(:transcript1) { FactoryGirl.create(:transcript, user: subject, transcript_user_id: 11, start_time: 1.hour.ago, end_time: 1.minute.ago) }
+    let!(:transcript2) { FactoryGirl.create(:transcript, user: subject, transcript_user_id: 22, start_time: 3.hours.ago, end_time: 4.hours.ago) }
 
     it { should respond_to(:transcripts) }
 

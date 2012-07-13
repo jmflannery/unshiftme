@@ -5,8 +5,8 @@
   <div class="center_spot">
     <%= form_for(@transcript) do |f|  %>
       <div class="field">
-        <%= f.label :watch_user_id %>
-        <%= f.select :watch_user_id, @online_users %>
+        <%= f.label :transcript_user_id %>
+        <%= f.select :transcript_user_id, @online_users %>
       </div> 
 
       <div class="field">

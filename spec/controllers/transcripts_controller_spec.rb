@@ -83,8 +83,18 @@ describe TranscriptsController do
     end
 
     it "returns http success" do
-      get :new, user: @admin_user.id, format: :js
+      get :new
       response.should be_success
+    end
+
+    it "gets the current user" do
+      get :new
+      assigns(:user).should == @admin_user
+    end
+
+    it "has the right title" do
+      get :new
+      response.body.should have_selector("title", content: "New Transcript")
     end
   end
 
@@ -104,8 +114,8 @@ describe TranscriptsController do
 
     before(:each) do
       test_sign_in(@admin_user)
-      @watch_user = FactoryGirl.create(:user)
-      @transcript = FactoryGirl.create(:transcript, user: @admin_user, watch_user_id: @watch_user.id)
+      @transcript_user = FactoryGirl.create(:user)
+      @transcript = FactoryGirl.create(:transcript, user: @admin_user, transcript_user_id: @transcript_user.id)
     end
 
     it "returns http success" do
