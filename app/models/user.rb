@@ -26,9 +26,9 @@ class User < ActiveRecord::Base
     logger.debug "Executing: User#sign_out_the_dead"
     online.each do |user|
       delta = Time.now - user.heartbeat if user.heartbeat
-      if delta and delta >= 20
-        user.set_offline 
-        logger.debug "User: <#{user.user_name} ##{user.id}> has not had a heartbeat since #{user.heartbeat} and has been set to 'offline'"
+      if delta and delta > 30
+        user.set_offline
+        logger.debug "User: <#{user.user_name} ##{user.id}> has not had a heartbeat in #{delta} seconds since #{user.heartbeat} and has been set to 'offline'"
       end
     end
     logger.debug "Done executing: User#sign_out_the_dead"

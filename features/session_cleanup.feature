@@ -1,5 +1,6 @@
 @javascript
 @auto_signout
+@ignore
 Feature: Periodic session clean up
   The system will regularly check the heartbeat timestamp for all signed in users.
   Those users with a heartbeat 20 or more seconds less than the current time,

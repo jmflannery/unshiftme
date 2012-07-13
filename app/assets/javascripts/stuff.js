@@ -55,11 +55,11 @@ $.fn.onOff = function() {
 // heartbeat
 ////////////////////////////////////////
 
-$(function() {
-  if ($('#content').length > 0) {
-    setTimeout(heartbeat, 20000);
-  }
-});
+//$(function() {
+//  if ($('#content').length > 0) {
+//    setTimeout(heartbeat, 20000);
+//  }
+//});
 
 var heartbeat = function() {
   // store the current user's name

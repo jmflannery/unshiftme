@@ -466,18 +466,18 @@ describe User do
       
       let(:user1) { FactoryGirl.create(:user, user_name: "Jimbo") }
 
-      context "for users who have not had a heartbeat in over 60 seconds" do
+      context "for users who have not had a heartbeat in over 30 seconds" do
 
         before(:each) do
           subject.save
           subject.set_online
           @recipient = subject.add_recipient(cuss)
           subject.start_job(cusn.abrev)
-          subject.update_attribute(:heartbeat, 19.seconds.ago)
+          subject.update_attribute(:heartbeat, 29.seconds.ago)
           user1.set_online
           user1.add_recipient(cusn)
           user1.start_job(aml.abrev)
-          user1.update_attribute(:heartbeat, 25.seconds.ago)
+          user1.update_attribute(:heartbeat, 35.seconds.ago)
           User.sign_out_the_dead
           subject.reload
           user1.reload
