@@ -78,6 +78,9 @@ describe TranscriptsController do
 
   describe "GET 'new'" do
 
+    let!(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let!(:cuss) { FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td") }
+
     before(:each) do
       test_sign_in(@admin_user)
     end
@@ -95,6 +98,12 @@ describe TranscriptsController do
     it "has the right title" do
       get :new
       response.body.should have_selector("title", content: "New Transcript")
+    end
+
+    it "gets all desks" do
+      get :new
+      assigns(:desks).should include cusn
+      assigns(:desks).should include cuss
     end
   end
 

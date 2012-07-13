@@ -1,7 +1,7 @@
 <div id="transcripts">
   <%= link_to "Back", transcripts_path %>
   <%= link_to "Live Messages", user_path(@user) %>
-  <h2><%= "Transcript for #{@watch_user.user_name}" %></h2>
+  <h2><%= "Transcript for #{@transcript_user.user_name}" %></h2>
   <p><%= "From #{@start_time} to #{@end_time}" %></p>
 
   <div id="messages_section">

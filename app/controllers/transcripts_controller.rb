@@ -8,6 +8,7 @@ class TranscriptsController < ApplicationController
     @title = "New Transcript"
     @transcript = Transcript.new
     @online_users = User.all.map { |user| [@user.user_name, @user.id] } 
+    @desks = Desk.all
   end
 
   def create
@@ -21,7 +22,7 @@ class TranscriptsController < ApplicationController
   def show
     @user = current_user
     @transcript = Transcript.find(params[:id])
-    @watch_user = User.find(@transcript.transcript_user_id)
+    @transcript_user = User.find(@transcript.transcript_user_id)
     @start_time = @transcript.start_time.strftime("%a %b %e %Y %T")
     @end_time = @transcript.end_time.strftime("%a %b %e %Y %T")
     @messages = Message.for_user_between(@watch_user, @transcript.start_time, @transcript.end_time)
