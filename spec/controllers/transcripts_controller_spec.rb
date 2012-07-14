@@ -102,20 +102,42 @@ describe TranscriptsController do
 
     it "gets all desks" do
       get :new
-      assigns(:desks).should include cusn
-      assigns(:desks).should include cuss
+      assigns(:desks).should include cusn.abrev
+      assigns(:desks).should include cusn.abrev
     end
   end
 
-  describe "GET 'create'" do
+  describe "POST 'create'" do
+    let(:transcript_user) { FactoryGirl.create(:user) }
+    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:transcript_attrs) {{ transcript_user_id: transcript_user.user_name,
+                              transcript_desk_id: cusn.abrev,
+                              start_time: "2012-04-29 17:52:39",
+                              end_time: "2012-04-29 18:30:22"
+    }}
 
     before(:each) do
       test_sign_in(@admin_user)
     end
 
-    it "returns http success" do
-      post :create, user: @admin_user.id, format: :js
-      response.should be_success
+    it "redirects to the transcript show page" do
+      post :create, transcript: transcript_attrs
+      response.should redirect_to transcript_path(assigns(:transcript))
+    end
+
+    context "with no transcript user or desk id" do
+      before { transcript_attrs.merge!({transcript_user_id: "", transcript_desk_id: ""}) }
+     
+      it "should redirect to the new transcript page" do
+        post :create, transcript: transcript_attrs
+        response.should redirect_to new_transcript_path
+      end
+
+      it "should not create a transcript" do
+        lambda do
+          post :create, transcript: transcript_attrs
+        end.should_not change(Transcript, :count)
+      end
     end
   end
 
@@ -128,7 +150,7 @@ describe TranscriptsController do
     end
 
     it "returns http success" do
-      get 'show', id: @transcript.id
+      get 'show', id: @transcript
       response.should be_success
     end
   end
