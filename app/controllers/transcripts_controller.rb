@@ -2,6 +2,7 @@ class TranscriptsController < ApplicationController
   before_filter :authenticate, only: [:new, :create, :show, :index]
   before_filter :authenticate_admin, only: [:new, :create, :show, :index]
   before_filter :authorized_user, only: [:show]
+  before_filter :build_transcript_attributes, only: [:create]
 
   def new
     @user = current_user
@@ -12,34 +13,17 @@ class TranscriptsController < ApplicationController
   end
 
   def create
-    user = User.find_by_user_name(params[:transcript][:transcript_user_id])
-    desk = Desk.find_by_abrev(params[:transcript][:transcript_desk_id])
-    #puts "user: #{user.nil?}, desk: #{desk.nil?}"
-    transcript_ok = !desk.nil? or !user.nil?
-    #puts "ok: #{transcript_ok.to_s}"
-    if user
-      params[:transcript].merge!({transcript_user_id: user.id})
-    else
-      params[:transcript].delete(:transcript_user_id)
-    end
-    if desk
-      params[:transcript].merge!({transcript_desk_id: desk.id})
-    else
-      params[:transcript].delete(:transcript_desk_id)
-    end
     @user = current_user
-    @transcript = @user.transcripts.build(params[:transcript])
-    if transcript_ok and @transcript.save 
+    @transcript = @user.transcripts.build(@attrs)
+    if (@attrs.has_key?(:transcript_desk_id) or @attrs.has_key?(:transcript_user_id)) and @transcript.save
       redirect_to transcript_path(@transcript)
     else
-      #puts @transcript.errors.inspect
       redirect_to new_transcript_path
     end
   end
 
   def show
     @user = current_user
-    #@transcript = Transcript.find(params[:id])
     @transcript_user = User.find(@transcript.transcript_user_id)
     @start_time = @transcript.start_time.strftime("%a %b %e %Y %T")
     @end_time = @transcript.end_time.strftime("%a %b %e %Y %T")
@@ -49,7 +33,6 @@ class TranscriptsController < ApplicationController
   def index
     @title = "Transcripts"
     @user = current_user
-    #@transcripts = Transcript.for_user(@user)
     @transcripts = @user.transcripts
     @transcript_count = @transcripts ? @transcripts.size : 0
   end
@@ -63,5 +46,21 @@ class TranscriptsController < ApplicationController
     def authorized_user
       @transcript = current_user.transcripts.find_by_id(params[:id])
       redirect_to signin_path if @transcript.nil?
+    end
+
+    def build_transcript_attributes
+      @attrs = params[:transcript]
+      user = User.find_by_user_name(@attrs[:transcript_user_id])
+      desk = Desk.find_by_abrev(@attrs[:transcript_desk_id])
+      if user
+        @attrs.merge!({transcript_user_id: user.id})
+      else
+        @attrs.delete(:transcript_user_id)
+      end
+      if desk
+        @attrs.merge!({transcript_desk_id: desk.id})
+      else
+        @attrs.delete(:transcript_desk_id)
+      end
     end
 end

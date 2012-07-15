@@ -108,8 +108,9 @@ describe TranscriptsController do
   end
 
   describe "POST 'create'" do
-    let(:transcript_user) { FactoryGirl.create(:user) }
-    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+
+    let!(:transcript_user) { FactoryGirl.create(:user) }
+    let!(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
     let(:transcript_attrs) {{ transcript_user_id: transcript_user.user_name,
                               transcript_desk_id: cusn.abrev,
                               start_time: "2012-04-29 17:52:39",
@@ -120,23 +121,62 @@ describe TranscriptsController do
       test_sign_in(@admin_user)
     end
 
-    it "redirects to the transcript show page" do
-      post :create, transcript: transcript_attrs
-      response.should redirect_to transcript_path(assigns(:transcript))
-    end
-
     context "with no transcript user or desk id" do
       before { transcript_attrs.merge!({transcript_user_id: "", transcript_desk_id: ""}) }
      
-      it "should redirect to the new transcript page" do
+      it "redirects to the new transcript page" do
         post :create, transcript: transcript_attrs
         response.should redirect_to new_transcript_path
       end
 
-      it "should not create a transcript" do
+      it "does not create a transcript" do
         lambda do
           post :create, transcript: transcript_attrs
         end.should_not change(Transcript, :count)
+      end
+    end
+
+    context "with a transcript user and no transcript desk" do
+      before { transcript_attrs.merge!({transcript_desk_id: ""}) }
+     
+      it "redirects to the transcript show page" do
+        post :create, transcript: transcript_attrs
+        response.should redirect_to transcript_path(assigns(:transcript))
+      end
+
+      it "creates a transcript" do
+        lambda do
+          post :create, transcript: transcript_attrs
+        end.should change(Transcript, :count).by(1)
+      end
+    end
+    
+    context "with a transcript desk and no transcript user" do
+      before { transcript_attrs.merge!({transcript_user_id: ""}) }
+     
+      it "redirects to the transcript show page" do
+        post :create, transcript: transcript_attrs
+        response.should redirect_to transcript_path(assigns(:transcript))
+      end
+
+      it "creates a transcript" do
+        lambda do
+          post :create, transcript: transcript_attrs
+        end.should change(Transcript, :count).by(1)
+      end
+    end
+    
+    context "with a transcript desk and a transcript user" do
+      
+      it "redirects to the transcript show page" do
+        post :create, transcript: transcript_attrs
+        response.should redirect_to transcript_path(assigns(:transcript))
+      end
+
+      it "creates a transcript" do
+        lambda do
+          post :create, transcript: transcript_attrs
+        end.should change(Transcript, :count).by(1)
       end
     end
   end
