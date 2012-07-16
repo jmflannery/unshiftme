@@ -2,6 +2,10 @@ Then /^I should see the Transcript page$/ do
   page.should have_content("Transcripts")
 end
 
+Then /^I should see the Create Transcript page$/ do
+  page.should have_content("Create a new Transcript")
+end
+
 Then /^I should see a New Transcripts button$/ do
   page.should have_selector("a", content: "New Transcript")
 end
