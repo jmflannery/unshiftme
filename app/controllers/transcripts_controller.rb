@@ -8,7 +8,7 @@ class TranscriptsController < ApplicationController
     @user = current_user
     @title = "New Transcript"
     @transcript = Transcript.new
-    @online_users = User.online.map { |user| user.user_name } 
+    @users = User.all.map { |user| user.user_name } 
     @desks = Desk.all.map { |desk| desk.abrev }
   end
 
