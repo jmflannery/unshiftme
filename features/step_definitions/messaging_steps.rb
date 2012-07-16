@@ -1,3 +1,21 @@
+Given /^the following messages$/ do |table|
+  @messages = []
+  table.hashes.each do |hash|
+    message = Message.new
+    message.content = hash["content"] 
+    message.user = @test_records[:user].select { |user| user.user_name == hash["user"] }.first
+    message.sent = [hash["from"]]
+    to_user = hash["to_user"]
+    to_desk = hash["to_desk"]
+    message.recievers = {to_desk => to_user}
+    read_user = hash["read_user"]
+    read_desk = hash["read_desk"]
+    message.read_by = {read_desk => read_user}
+    message.save
+    @messages << message
+  end
+end
+
 When /^I go to the messaging page$/ do
 end
 

@@ -41,6 +41,24 @@ When /^I click link "(.*?)"$/ do |arg1|
   click_link arg1 
 end
 
+When /^I select "(.*?)" for "(.*?)"$/ do |item, field|
+  select(item, from: field)
+end
+
 When /^I wait (\d+) seconds?$/ do |seconds|
   sleep seconds.to_i
 end
+
+When /^I select date "(.*?)" for "(.*?)"$/ do |time_str, field|
+  time = DateTime.parse(time_str)
+  select(time.strftime("%Y"), from: "#{field}_1i")
+  select(time.strftime("%B"), from: "#{field}_2i")
+  select(time.strftime("%d"), from: "#{field}_3i")
+  select(time.strftime("%H"), from: "#{field}_4i")
+  select(time.strftime("%M"), from: "#{field}_5i")
+end
+
+Then /^I should see "(.*?)"$/ do |text|
+  page.should have_content(text)
+end
+
