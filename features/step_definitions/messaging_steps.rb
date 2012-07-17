@@ -43,7 +43,12 @@ Given /^I click on the recieved message$/ do
   find("li.message.recieved.unread").click
 end
 
-Then /^I should see desk "(.*?)" user "(.*?)" read this$/ do |desk_abrev, user_name|
+Then /^I should see desk "(.*?)" user "(.*?)" read "(.*?)"$/ do |desk_abrev, user_name, content|
+  page.should have_content("#{user_name}@#{desk_abrev} read this.")
+end
+
+Then /^I should not see desk "(.*?)" user "(.*?)" read "(.*?)"$/ do |desk_abrev, user_name, content|
+  pending
   page.should have_content("#{user_name}@#{desk_abrev} read this.")
 end
 
