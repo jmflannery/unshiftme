@@ -28,9 +28,9 @@ Feature: Transcripts
 
     When I select "AML" for "Transcript desk"
     And I select "jeff" for "Transcript user"
-    And I select date "2012-06-22 16:30:30" for "transcript_start_time"
-    And I select date "2012-06-22 17:15:30" for "transcript_end_time"
+    And I select date "2012-06-22 16:30" for "transcript_start_time"
+    And I select date "2012-06-22 17:15" for "transcript_end_time"
     And I press "Create Transcript"
     Then I should see "Transcript for jeff"
-    #And I should see "Transcript for" 
+    And I should see "Friday, June 22 2012 16:30 to Friday, June 22 2012 17:15" 
 
