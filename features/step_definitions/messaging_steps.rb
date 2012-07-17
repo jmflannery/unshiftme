@@ -11,6 +11,7 @@ Given /^the following messages$/ do |table|
     read_user = hash["read_user"]
     read_desk = hash["read_desk"]
     message.read_by = {read_desk => read_user}
+    message.created_at = DateTime.parse(hash["created_at"]) if hash["created_at"]
     message.save
     @messages << message
   end
@@ -24,14 +25,9 @@ Then /^I should not see recieved message "(.*?)" from desk "(.*?)" user "(.*?)"$
   page.should_not have_content message_content
 end
 
-Then /^I should see my message "(.*?)" from desk "(.*?)" user "(.*?)"$/ do |message_content, desk_abrev, user_name|
+Then /^I should see sent message "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |message_content, desk_abrev, user_name|
   page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}")
   page.should have_selector("li.message.owner", text: @message)
-end
-
-Then /^I should see recieved message "(.*?)" from desk "(.*?)" user "(.*?)"$/ do |message_content, desk_abrev, user_name|
-  page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}")
-  page.should have_selector("li.message.recieved", text: message_content)
 end
 
 Then /^I should see recieved message "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |message_content, desk_abrev, user_name|
@@ -111,3 +107,4 @@ end
 Given /^I log out$/ do
   click_link "Sign out"
 end
+

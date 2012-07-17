@@ -33,7 +33,7 @@ Feature: Messaging
     And I click "CUSN"
     And I fill in "message_content" with "Hi Bill!"
     And I press the "enter" key
-    Then I should see my message "Hi Bill!" from desk "CUSS" user "bob"
+    Then I should see sent message "Hi Bill!" from desk "CUSS" user "bob" one time
     And I should nothing in the "message_content" text field
 
     Given I am in Sam's browser
@@ -42,7 +42,7 @@ Feature: Messaging
 
     Given I am in Bill's browser
     When I wait 1 second
-    Then I should see recieved message "Hi Bill!" from desk "CUSS" user "bob"
+    Then I should see recieved message "Hi Bill!" from desk "CUSS" user "bob" one time
     And I should see that I am messaging "CUSS"
 
     Given I click on the recieved message
@@ -71,6 +71,7 @@ Feature: Messaging
     When I click "CUSN"
     And I fill in "message_content" with "Yo Bill!"
     And I press the "enter" key
+    Then I should see sent message "Yo Bill!" from desk "YDCTL" user "jim" one time
     
     Given I am in bill's browser
     When I wait 1 second
@@ -103,3 +104,4 @@ Feature: Messaging
     And I should see that I am messaging "CUSN,CUSS,AML"
     When I click "AML"
     Then I should see that I am not messaging "CUSN,CUSS,AML"
+
