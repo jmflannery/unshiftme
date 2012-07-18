@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
   scope :online, lambda { where("status = true") }
 
   def self.all_user_names
-    @users = User.all.map { |user| user.user_name } 
+    User.all.map { |user| user.user_name } 
   end
 
   def self.sign_out_the_dead
