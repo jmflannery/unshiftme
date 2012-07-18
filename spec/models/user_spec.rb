@@ -499,6 +499,16 @@ describe User do
         end
       end
     end
+
+    describe "all_user_names" do
+      let!(:user0) { FactoryGirl.create(:user, user_name: "jack") }
+      let!(:user1) { FactoryGirl.create(:user, user_name: "jill") }
+
+      it "returns a list of the user_names of all users in the system" do
+        User.all_user_names.should include "jack"
+        User.all_user_names.should include "jill"
+      end
+    end
   end
 end
 
