@@ -11,9 +11,10 @@ Given /^the following messages$/ do |table|
     read_user = hash["read_user"]
     read_desk = hash["read_desk"]
     message.read_by = {read_desk => read_user}
-    message.created_at = DateTime.parse(hash["created_at"]) if hash["created_at"]
+    message.created_at = DateTime.parse("#{hash["created_at"]}-0500") if hash["created_at"]
     message.save
     @messages << message
+    message.reload
   end
 end
 
@@ -44,6 +45,7 @@ Given /^I click on the recieved message$/ do
 end
 
 Then /^I should see desk "(.*?)" user "(.*?)" read "(.*?)"$/ do |desk_abrev, user_name, content|
+  pending
   page.should have_content("#{user_name}@#{desk_abrev} read this.")
 end
 
