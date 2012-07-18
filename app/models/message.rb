@@ -115,7 +115,7 @@ class Message < ActiveRecord::Base
     messages = []
     self.before(time).each do |message|
       if message.was_sent_by?(user)
-        message.view_class = "message #{message.id} owner"
+        message.view_class = "message msg-#{message.id} owner"
         messages << message
         next
       end
@@ -124,9 +124,9 @@ class Message < ActiveRecord::Base
         messages << message 
 
         if message.was_read_by?(user)
-          message.view_class = "message #{message.id} recieved read"
+          message.view_class = "message msg-#{message.id} recieved read"
         else
-          message.view_class = "message #{message.id} recieved unread"
+          message.view_class = "message msg-#{message.id} recieved unread"
         end
       end
     end
@@ -137,7 +137,7 @@ class Message < ActiveRecord::Base
     messages = []
     self.between(timeFrom, timeTo).each do |message|
       if message.was_sent_by?(user)
-        message.view_class = "message #{message.id} owner"
+        message.view_class = "message msg-#{message.id} owner"
         messages << message
         next
       end
@@ -146,9 +146,9 @@ class Message < ActiveRecord::Base
         messages << message 
 
         if message.was_read_by?(user)
-          message.view_class = "message #{message.id} recieved read"
+          message.view_class = "message msg-#{message.id} recieved read"
         else
-          message.view_class = "message #{message.id} recieved unread"
+          message.view_class = "message msg-#{message.id} recieved unread"
         end
       end
     end

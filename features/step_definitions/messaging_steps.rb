@@ -1,39 +1,46 @@
 Given /^the following messages$/ do |table|
   @messages = []
   table.hashes.each do |hash|
-    message = Message.new
-    message.content = hash["content"] 
-    message.user = @test_records[:user].select { |user| user.user_name == hash["user"] }.first
+    user = @test_records[:user].select { |user| user.user_name == hash["user"] }.first
+    message = user.messages.new
+    message.content = hash["content"]
+    message.id = hash["id"]
     message.sent = [hash["from"]]
     to_user = hash["to_user"]
     to_desk = hash["to_desk"]
     message.recievers = {to_desk => to_user}
     read_user = hash["read_user"]
     read_desk = hash["read_desk"]
-    message.read_by = {read_desk => read_user}
+    message.read_by = {read_user => read_desk}
     message.created_at = DateTime.parse("#{hash["created_at"]}-0500") if hash["created_at"]
     message.save
     @messages << message
-    message.reload
   end
 end
 
 When /^I go to the messaging page$/ do
 end
 
-Then /^I should not see recieved message "(.*?)" from desk "(.*?)" user "(.*?)"$/ do |message_content, desk_abrev, user_name|
-  page.should_not have_selector(".message_sender p", text: "#{desk_abrev} (#{user_name})")
-  page.should_not have_content message_content
+Then /^I should not see recieved message (\d+) "(.*?)" from desk "(.*?)" user "(.*?)"$/ do |id, content, desk_abrev, user_name|
+  page.should_not have_selector("li.message.msg-#{id}.recieved.read")
 end
 
-Then /^I should see sent message "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |message_content, desk_abrev, user_name|
-  page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}")
-  page.should have_selector("li.message.owner", text: @message)
+Then /^I should see sent message (\d+) "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |id, content, desk_abrev, user_name|
+  selector = "li.message.msg-#{id}.owner" 
+  page.should have_selector(selector, count: 1)
+  within(selector) do
+    page.should have_content(content)
+    page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}")
+  end
 end
 
-Then /^I should see recieved message "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |message_content, desk_abrev, user_name|
-  page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}", count: 1)
-  page.should have_selector("li.message.recieved", text: message_content, count: 1)
+Then /^I should see recieved message (\d+) "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |id, content, desk_abrev, user_name|
+  selector = "li.message.msg-#{id}.recieved.read" 
+  page.should have_selector(selector, count: 1)
+  within(selector) do
+    page.should have_content(content)
+    page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}")
+  end
 end
 
 Then /^I should nothing in the "(.*?)" text field$/ do |textfield_id|
@@ -44,14 +51,14 @@ Given /^I click on the recieved message$/ do
   find("li.message.recieved.unread").click
 end
 
-Then /^I should see desk "(.*?)" user "(.*?)" read "(.*?)"$/ do |desk_abrev, user_name, content|
-  pending
-  page.should have_content("#{user_name}@#{desk_abrev} read this.")
+Then /^I should see desk "(.*?)" user "(.*?)" read message (\d+)$/ do |desk_abrev, user_name, id|
+  within("li.message.msg-#{id}") do
+    page.should have_content("#{user_name}@#{desk_abrev} read this.")
+  end
 end
 
-Then /^I should not see desk "(.*?)" user "(.*?)" read "(.*?)"$/ do |desk_abrev, user_name, content|
-  pending
-  page.should have_content("#{user_name}@#{desk_abrev} read this.")
+Then /^I should not see desk "(.*?)" user "(.*?)" read message (\d+)$/ do |desk_abrev, user_name, id|
+  page.should_not have_selector("li.message.msg-#{id}")
 end
 
 When /^I click on each button$/ do
