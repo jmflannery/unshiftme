@@ -6,6 +6,10 @@ class Desk < ActiveRecord::Base
   
   default_scope order("id")
 
+  def self.all_short_names
+    Desk.all.map { |desk| desk.abrev }
+  end
+
   def description
     desc = name
     desc += " (#{User.find_by_id(user_id).user_name})" if user_id && user_id > 0

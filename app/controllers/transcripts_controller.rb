@@ -9,7 +9,7 @@ class TranscriptsController < ApplicationController
     @title = "New Transcript"
     @transcript = Transcript.new
     @users = User.all_user_names
-    @desks = Desk.all.map { |desk| desk.abrev }
+    @desks = Desk.all_short_names
   end
 
   def create

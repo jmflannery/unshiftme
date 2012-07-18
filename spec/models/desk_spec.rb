@@ -3,10 +3,15 @@ require 'spec_helper'
 describe Desk do
 
   before(:each) do
-    @desk = Desk.new(name: "CUS North", abrev: "CUSN", job_type: "td")
+    @cusn = Desk.create(name: "CUS North", abrev: "CUSN", job_type: "td")
+    @cuss = Desk.create(name: "CUS South", abrev: "CUSS", job_type: "td")
+    @aml = Desk.create(name: "AML / NOL", abrev: "AML", job_type: "td")
+    @ydctl = Desk.create(name: "Yard Control", abrev: "YDCTL", job_type: "ops")
+    @ydmstr = Desk.create(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
+    @glhs = Desk.create(name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
   end
 
-  subject { @desk }
+  subject { @cusn }
 
   it { should respond_to(:name) }
   it { should respond_to(:abrev) }
@@ -16,15 +21,6 @@ describe Desk do
 
   describe "scope" do
     
-    before(:each) do
-      @cusn = Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
-      @cuss = Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td")
-      @aml = Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td")
-      @ydctl = Desk.create!(name: "Yard Control", abrev: "YDCTL", job_type: "ops")
-      @ydmstr = Desk.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
-      @glhse = Desk.create!(name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
-    end
-
     describe "of_type" do
 
       before(:each) do
@@ -43,8 +39,8 @@ describe Desk do
         @td_desks.should_not include @ydctl
         @ops_desks.should include @ydmstr
         @td_desks.should_not include @ydmstr
-        @ops_desks.should include @glhse
-        @td_desks.should_not include @glhse
+        @ops_desks.should include @glhs
+        @td_desks.should_not include @glhs
       end
     end
 
@@ -78,6 +74,20 @@ describe Desk do
         @cusn.description == "#{@cusn.name} (#{user.user_name})"
         @cuss.description == "#{@cuss.name}"
       end 
+    end
+  end
+
+  describe "class method" do
+
+    describe "all_short_names" do
+      it "should return a list of all the desk abrevs of all desks in the system" do
+        Desk.all_short_names.should include @cusn.abrev
+        Desk.all_short_names.should include @cuss.abrev
+        Desk.all_short_names.should include @aml.abrev
+        Desk.all_short_names.should include @ydctl.abrev
+        Desk.all_short_names.should include @ydmstr.abrev
+        Desk.all_short_names.should include @glhs.abrev
+      end
     end
   end
 end
