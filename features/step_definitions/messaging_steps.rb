@@ -44,6 +44,21 @@ Then /^I should see recieved message (\d+) "(.*?)" from desk "(.*?)" user "(.*?)
   end
 end
 
+Then /^I should not see recieved message "(.*?)" from desk "(.*?)" user "(.*?)"$/ do |message_content, desk_abrev, user_name|
+  page.should_not have_selector(".message_sender p", text: "#{desk_abrev} (#{user_name})")
+  page.should_not have_content message_content
+end
+
+Then /^I should see sent message "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |message_content, desk_abrev, user_name|
+  page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}")
+  page.should have_selector("li.message.owner", text: @message)
+end
+
+Then /^I should see recieved message "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |message_content, desk_abrev, user_name|
+  page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}", count: 1)
+  page.should have_selector("li.message.recieved", text: message_content, count: 1)
+end
+
 Then /^I should nothing in the "(.*?)" text field$/ do |textfield_id|
   find_field(textfield_id).value.should be_blank
 end
@@ -60,6 +75,10 @@ end
 
 Then /^I should not see desk "(.*?)" user "(.*?)" read message (\d+)$/ do |desk_abrev, user_name, id|
   page.should_not have_selector("li.message.msg-#{id}")
+end
+
+Then /^I should see desk "(.*?)" user "(.*?)" read this$/ do |desk_abrev, user_name|
+  page.should have_content("#{user_name}@#{desk_abrev} read this.")
 end
 
 When /^I click on each button$/ do
