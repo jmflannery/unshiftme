@@ -5,6 +5,7 @@ describe Transcript do
   before(:each) do
     @user = FactoryGirl.create(:user)
     @transcript = @user.transcripts.build(transcript_user_id: 22,
+                                          transcript_desk_id: 2,
                                           start_time: 3.minutes.ago,
                                           end_time: 3.second.ago)
   end
@@ -12,14 +13,15 @@ describe Transcript do
   subject { @transcript }
 
   it { should respond_to(:transcript_user_id) }
+  it { should respond_to(:transcript_desk_id) }
   it { should respond_to(:start_time) }
   it { should respond_to(:end_time) }
 
   it { should be_valid }
 
-  describe "when transcript_user_id is not present" do
-    before { @transcript.transcript_user_id = nil }
-    it { should_not be_valid }
+  describe "when transcript_user_id and transcript_desk_id are not present" do
+    before { @transcript.transcript_user_id = @transcript.transcript_desk_id = nil }
+    it { pending; should_not be_valid }
   end
   
   describe "when start_time is not present" do
