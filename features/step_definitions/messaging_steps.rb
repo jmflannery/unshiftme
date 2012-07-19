@@ -35,7 +35,6 @@ Then /^I should see sent message (\d+) "(.*?)" from desk "(.*?)" user "(.*?)" on
 end
 
 Then /^I should see recieved message (\d+) "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |id, content, desk_abrev, user_name|
-  save_and_open_page
   selector = "li.message.msg-#{id}.recieved.read" 
   page.should have_selector(selector, count: 1)
   within(selector) do
