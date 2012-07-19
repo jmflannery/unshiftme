@@ -14,10 +14,10 @@ Feature: Transcripts
       | CUS South | CUSS  | 0       |
       | AML / NOL | AML   | 0       |
     And the following messages
-      | content    | id | user | to_user | to_desk | read_user | read_desk | from | created_at         |
-      | Hi Jeff!   | 1  | bob  | jeff    | AML     | jeff      | AML       | CUSS | "2012-06-22 17:13" |
-      | Hello, Bob | 2  | jeff | bob     | CUSS    | bob       | CUSS      | AML  | "2012-06-22 17:14" |
-      | Whats up?  | 3  | bob  | jeff    | AML     | jeff      | AML       | CUSS | "2012-06-22 17:16" |
+      | id | content    | user | from | to_user | to_desk | read | created_at         |
+      | 1  | Hi Jeff!   | bob  | CUSS | jeff    | AML     | t    | "2012-06-22 17:13" |
+      | 2  | Hello, Bob | jeff | AML  | bob     | CUSS    | t    | "2012-06-22 17:14" |
+      | 3  | Whats up?  | bob  | CUSS | jeff    | AML     | t    | "2012-06-22 17:16" |
     And I am logged in as "bill" with password "secret" at "CUSS"
     When I click link "Transcripts"
     Then I should see the Transcript page
@@ -39,5 +39,5 @@ Feature: Transcripts
     And I should see sent message 2 "Hello, Bob" from desk "AML" user "jeff" one time
     And I should see desk "CUSS" user "bob" read message 2
     And I should not see recieved message 3 "Whats up?" from desk "CUSS" user "bob"
-    And I should not see desk "CUSS" user "bob" read message 3
+    And I should not see desk "AML" user "jeff" read message 3
  

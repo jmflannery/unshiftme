@@ -3,15 +3,15 @@ Given /^the following messages$/ do |table|
   table.hashes.each do |hash|
     user = @test_records[:user].select { |user| user.user_name == hash["user"] }.first
     message = user.messages.new
-    message.content = hash["content"]
-    message.id = hash["id"]
-    message.sent = [hash["from"]]
-    to_user = hash["to_user"]
-    to_desk = hash["to_desk"]
+    message.content = hash["content"] if hash.has_key?("content")
+    message.id = hash["id"] if hash.has_key?("id")
+    message.sent = [hash["from"]] if hash.has_key?("from")
+    to_user = hash.has_key?("to_user") ? hash["to_user"] : ""
+    to_desk = hash.has_key?("to_desk") ? hash["to_desk"] : ""
     message.recievers = {to_desk => to_user}
-    read_user = hash["read_user"]
-    read_desk = hash["read_desk"]
-    message.read_by = {read_user => read_desk}
+    if hash.has_key?("read") and hash["read"] == "t"
+      message.read_by = {to_user => to_desk}
+    end
     message.created_at = DateTime.parse("#{hash["created_at"]}-0500") if hash["created_at"]
     message.save
     @messages << message
@@ -35,6 +35,7 @@ Then /^I should see sent message (\d+) "(.*?)" from desk "(.*?)" user "(.*?)" on
 end
 
 Then /^I should see recieved message (\d+) "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |id, content, desk_abrev, user_name|
+  save_and_open_page
   selector = "li.message.msg-#{id}.recieved.read" 
   page.should have_selector(selector, count: 1)
   within(selector) do
