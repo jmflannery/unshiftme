@@ -265,29 +265,29 @@ describe Message do
 
     context "for messages created by the given user" do
       let(:messages) { Message.for_user_before(user, Time.now) }
-      it "sets message view_class attribute to 'owner'" do
+      it "sets message view_class attribute to 'message owner'" do
         messages.should include message           
         index = messages.index(message) 
-        messages[index].view_class.should == "message #{messages[index].id} owner"
+        messages[index].view_class.should == "message msg-#{messages[index].id} owner"
       end
     end
 
     context "for messages recieved and read by the given user" do
       let(:messages) { Message.for_user_before(user1, Time.now) }
       before { message.mark_read_by(user1) }
-      it "sets message view_class attribute to 'recieved_message read' " do
+      it "sets message view_class attribute to 'message recieved read' " do
         messages.should include message
         index = messages.index(message) 
-        messages[index].view_class.should == "message #{messages[index].id} recieved read"
+        messages[index].view_class.should == "message msg-#{messages[index].id} recieved read"
       end
     end
 
     context "for messages recieved and not read by the given user" do
       let(:messages) { Message.for_user_before(user1, Time.now) }
-      it "sets message view_class attribute to 'recieved_message unread'" do
+      it "sets message view_class attribute to 'message recieved unread'" do
         messages.should include message
         index = messages.index(message) 
-        messages[index].view_class.should == "message #{messages[index].id} recieved unread"
+        messages[index].view_class.should == "message msg-#{messages[index].id} recieved unread"
       end
     end
   end 
@@ -328,29 +328,29 @@ describe Message do
 
     context "for messages created by the given user" do
       let(:messages) { Message.for_user_between(user, 1.hour.ago, Time.now) }
-      it "sets message view_class attribute to 'owner'" do
+      it "sets message view_class attribute to 'message owner'" do
         messages.should include message           
         index = messages.index(message) 
-        messages[index].view_class.should == "message #{messages[index].id} owner"
+        messages[index].view_class.should == "message msg-#{messages[index].id} owner"
       end
     end
 
     context "for messages recieved and read by the given user" do
       let(:messages) { Message.for_user_between(user1, 1.hour.ago, Time.now) }
       before { message.mark_read_by(user1) }
-      it "sets message view_class attribute to 'recieved_message read' " do
+      it "sets message view_class attribute to 'message recieved read' " do
         messages.should include message
         index = messages.index(message) 
-        messages[index].view_class.should == "message #{messages[index].id} recieved read"
+        messages[index].view_class.should == "message msg-#{messages[index].id} recieved read"
       end
     end
 
     context "for messages recieved and not read by the given user" do
       let(:messages) { Message.for_user_between(user1, 1.hour.ago, Time.now) }
-      it "sets message view_class attribute to 'recieved_message unread'" do
+      it "sets message view_class attribute to 'message recieved unread'" do
         messages.should include message
         index = messages.index(message) 
-        messages[index].view_class.should == "message #{messages[index].id} recieved unread"
+        messages[index].view_class.should == "message msg-#{messages[index].id} recieved unread"
       end
     end
   end 
