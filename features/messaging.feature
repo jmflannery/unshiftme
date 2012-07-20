@@ -3,10 +3,12 @@
 Feature: Messaging
   As a registered user
   I want to send and recieve messages
-  So I can do my job
+  So I can communicate easily and efficiently with other employees
 
   @messaging1
-  Scenario: Send and recieve messages
+  Scenario: Send, recieve, and read messages: Messages are routed to all of the sending user's recipients.
+    Users that are not recipients will not receive messages. When a message is recieved, the recieving user
+    can communicate that the message was read by clicking the message.
     Given the following desk records
       | name      | abrev | job_type | user_id |
       | CUS North | CUSN  | td       | 0       |
@@ -31,6 +33,7 @@ Feature: Messaging
     And I am logged in as "bob" with password "secret" at "CUSS"
     When I go to the messaging page
     And I click "CUSN"
+    And I should see that I am messaging "CUSN"
     And I fill in "message_content" with "Hi Bill!"
     And I press the "enter" key
     Then I should see sent message "Hi Bill!" from desk "CUSS" user "bob" one time
@@ -52,7 +55,9 @@ Feature: Messaging
     Then I should see desk "CUSN" user "bill" read this
 
   @messaging2
-  Scenario: Users working more than one desk at once should only recieve each message once
+  Scenario: When a user is working more than one desk at once, and another user has all of the
+    first user's desks as recipients and sends them a message, the recieving user should only
+    recieve the message once
     Given the following desk records
       | name         | abrev | job_type  | user_id |
       | CUS North    | CUSN  | td        | 0       |
@@ -69,6 +74,7 @@ Feature: Messaging
     Given I am in jim's browser
     And I am logged in as "jim" with password "secret" at "YDCTL"
     When I click "CUSN"
+    And I should see that I am messaging "CUSN,CUSS,AML"
     And I fill in "message_content" with "Yo Bill!"
     And I press the "enter" key
     Then I should see sent message "Yo Bill!" from desk "YDCTL" user "jim" one time
@@ -78,7 +84,8 @@ Feature: Messaging
     Then I should see recieved message "Yo Bill!" from desk "YDCTL" user "jim" one time
     
   @messaging3
-  Scenario: When a user recieves a message from a user working multiple desks
+  Scenario: When a user receives a message from a user working multiple desks, the
+    sending user's desks will automatically become recipients of the receiving user
     Given the following desk records
       | name         | abrev | job_type  | user_id |
       | CUS North    | CUSN  | td        | 0       |
