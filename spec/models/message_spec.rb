@@ -422,27 +422,38 @@ describe Message do
   end
 
   describe "#readers" do
-    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
-    let(:cuss) { FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td") }
-    let(:aml) { FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td") }
-    let(:recipient_user) { FactoryGirl.create(:user) }
-    let(:recipient_user1) { FactoryGirl.create(:user) }
-    let(:recipient_user2) { FactoryGirl.create(:user) }
     let(:message) { FactoryGirl.create(:message, user: user) }
+    
+    context "with no message readers" do
 
-    before(:each) do
-      recipient_user.authenticate_desk(cusn.abrev => 1)
-      recipient_user1.authenticate_desk(cuss.abrev => 1)
-      recipient_user2.authenticate_desk(aml.abrev => 1)
-      message.mark_read_by(recipient_user)
-      message.mark_read_by(recipient_user1)
-      message.mark_read_by(recipient_user2)
+      it "returns an empty string" do
+        message.readers.should == ""
+      end
     end
 
-    it "returns a formated string list of the user's handles who read the message" do
-      message.readers.should == "#{recipient_user.user_name}@#{recipient_user.desk_names_str}, " +
-        "#{recipient_user1.user_name}@#{recipient_user1.desk_names_str} and " +
-        "#{recipient_user2.user_name}@#{recipient_user2.desk_names_str} read this."
+    context "with message readers" do
+
+      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:cuss) { FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td") }
+      let(:aml) { FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td") }
+      let(:recipient_user) { FactoryGirl.create(:user) }
+      let(:recipient_user1) { FactoryGirl.create(:user) }
+      let(:recipient_user2) { FactoryGirl.create(:user) }
+
+      before(:each) do
+        recipient_user.authenticate_desk(cusn.abrev => 1)
+        recipient_user1.authenticate_desk(cuss.abrev => 1)
+        recipient_user2.authenticate_desk(aml.abrev => 1)
+        message.mark_read_by(recipient_user)
+        message.mark_read_by(recipient_user1)
+        message.mark_read_by(recipient_user2)
+      end
+
+      it "returns a formated string list of the user's handles who read the message" do
+        message.readers.should == "#{recipient_user.user_name}@#{recipient_user.desk_names_str}, " +
+          "#{recipient_user1.user_name}@#{recipient_user1.desk_names_str} and " +
+          "#{recipient_user2.user_name}@#{recipient_user2.desk_names_str} read this."
+      end
     end
   end
 end
