@@ -15,8 +15,7 @@
         <div class="message_content"><%= link_to(message.content, attachment.payload.url) if attachment %></div>
       <% else %>
         <div class="message_content"><p><%= message.content %></p></div>
-        <!--<div class="read_by"><p><#%= message.readers if message.readers and message.user_id == current_user.id %></p></div> -->
-        <div class="read_by"><p><%= message.readers if message.readers %></p></div> 
+        <div class="read_by"><p><%= message.readers unless message.was_sent_to?(@user) %></p></div>
       <% end %>  
     </li>
   </ul>

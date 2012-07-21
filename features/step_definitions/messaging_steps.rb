@@ -15,14 +15,12 @@ Given /^the following messages$/ do |table|
     if hash.has_key?("created_at")
       if hash["created_at"].include?("ago")
         number, period, ago = hash["created_at"].split(".")
-        puts "#{number} #{period} #{ago}"
         num = number.to_i
         message.created_at = num.send(period).ago
       else
         message.created_at = DateTime.parse("#{hash["created_at"]}-0500")
       end
     end
-    puts message.created_at.to_s
     message.save
     @messages << message
   end
@@ -31,7 +29,7 @@ end
 When /^I go to the messaging page$/ do
 end
 
-Then /^I should not see recieved message (\d+) "(.*?)" from desk "(.*?)" user "(.*?)"$/ do |id, content, desk_abrev, user_name|
+Then /^I should not see recieved message (\d+) "(.*?)"$/ do |id, content|
   page.should_not have_selector("li.message.msg-#{id}.recieved.read")
 end
 
@@ -48,8 +46,20 @@ Then /^I should see recieved message (\d+) "(.*?)" from desk "(.*?)" user "(.*?)
   selector = "li.message.msg-#{id}.recieved.read" 
   page.should have_selector(selector, count: 1)
   within(selector) do
-    page.should have_content(content)
     page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}")
+    page.should have_content(content)
+  end
+end
+
+Then /^I should see desk "(.*?)" user "(.*?)" read message (\d+)$/ do |desk_abrev, user_name, id|
+  within("li.message.msg-#{id}") do
+    page.should have_content("#{user_name}@#{desk_abrev} read this.")
+  end
+end
+
+Then /^I should not see desk "(.*?)" user "(.*?)" read message (\d+)$/ do |desk_abrev, user_name, id|
+  within("li.message.msg-#{id}") do
+    page.should_not have_content("#{user_name}@#{desk_abrev} read this.")
   end
 end
 
@@ -68,26 +78,16 @@ Then /^I should see recieved message "(.*?)" from desk "(.*?)" user "(.*?)" one 
   page.should have_selector("li.message.recieved", text: message_content, count: 1)
 end
 
+Then /^I should see desk "(.*?)" user "(.*?)" read this$/ do |desk_abrev, user_name|
+  page.should have_content("#{user_name}@#{desk_abrev} read this.")
+end
+
 Then /^I should nothing in the "(.*?)" text field$/ do |textfield_id|
   find_field(textfield_id).value.should be_blank
 end
 
 Given /^I click on the recieved message$/ do
   find("li.message.recieved.unread").click
-end
-
-Then /^I should see desk "(.*?)" user "(.*?)" read message (\d+)$/ do |desk_abrev, user_name, id|
-  within("li.message.msg-#{id}") do
-    page.should have_content("#{user_name}@#{desk_abrev} read this.")
-  end
-end
-
-Then /^I should not see desk "(.*?)" user "(.*?)" read message (\d+)$/ do |desk_abrev, user_name, id|
-  page.should_not have_selector("li.message.msg-#{id}")
-end
-
-Then /^I should see desk "(.*?)" user "(.*?)" read this$/ do |desk_abrev, user_name|
-  page.should have_content("#{user_name}@#{desk_abrev} read this.")
 end
 
 When /^I click on each button$/ do
