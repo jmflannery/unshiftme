@@ -18,7 +18,7 @@ Feature: Transcripts
       | 1  | Hi Jeff!   | bob  | CUSS | jeff    | AML     | t    | "2012-06-22 17:13" |
       | 2  | Hello, Bob | jeff | AML  | bob     | CUSS    | t    | "2012-06-22 17:14" |
       | 3  | Whats up?  | bob  | CUSS | jeff    | AML     | t    | "2012-06-22 17:16" |
-    And I am logged in as "bill" with password "secret" at "CUSS"
+    And I am logged in as "bill" with password "secret" at ""
     When I click link "Transcripts"
     Then I should see the Transcript page
     And I should see a New Transcripts button
