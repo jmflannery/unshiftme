@@ -62,7 +62,7 @@ Feature: Transcripts
     When I go to the transcript listing page
     Then I should see the Transcripts page
     And I should see that I have 1 Transcripts
-    And I should see "Transcript1 for jeff from Jun 22 2012 16:30 to Jun 22 2012 17:15"
+    And I should see "Transcript for jeff from Jun 22 2012 16:30 to Jun 22 2012 17:15"
     
     When I click link "Transcript for jeff from Jun 22 2012 16:30 to Jun 22 2012 17:15"
     Then I should see "Transcript for jeff from Jun 22 2012 16:30 to Jun 22 2012 17:15"
