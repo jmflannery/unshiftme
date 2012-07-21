@@ -105,8 +105,8 @@ describe Transcript do
         subject.update_attribute(:transcript_desk_id, cusn.id)
       end
 
-      it "returns the name including the id, transcript user and desk and start and end_times" do
-        subject.name.should == "Transcript1 for CUSN jack from Jun 22 2012 16:30 to Jun 22 2012 17:15"
+      it "returns the name including the transcript user and desk and start and end_times" do
+        subject.name.should == "Transcript for CUSN jack from Jun 22 2012 16:30 to Jun 22 2012 17:15"
       end
     end
 
@@ -117,8 +117,8 @@ describe Transcript do
         subject.update_attribute(:transcript_desk_id, 0)
       end
 
-      it "returns the name including the id, transcript user and start and end_times" do
-        subject.name.should == "Transcript1 for jack from Jun 22 2012 16:30 to Jun 22 2012 17:15"
+      it "returns the name including the transcript user and start and end_times" do
+        subject.name.should == "Transcript for jack from Jun 22 2012 16:30 to Jun 22 2012 17:15"
       end
     end
 
@@ -129,8 +129,8 @@ describe Transcript do
         subject.update_attribute(:transcript_user_id, 0)
       end
 
-      it "returns the name including the id, transcript desk and start and end_times" do
-        subject.name.should == "Transcript1 for CUSN from Jun 22 2012 16:30 to Jun 22 2012 17:15"
+      it "returns the name including the transcript desk and start and end_times" do
+        subject.name.should == "Transcript for CUSN from Jun 22 2012 16:30 to Jun 22 2012 17:15"
       end
     end
   end

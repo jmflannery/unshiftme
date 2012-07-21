@@ -32,8 +32,7 @@ Feature: Transcripts
     And I select date "2012-06-22 16:30" for "transcript_start_time"
     And I select date "2012-06-22 17:15" for "transcript_end_time"
     And I press "Create Transcript"
-    Then I should see "Transcript for jeff"
-    And I should see "Friday, June 22 2012 16:30 to Friday, June 22 2012 17:15" 
+    Then I should see "Transcript for AML jeff from Jun 22 2012 16:30 to Jun 22 2012 17:15"
     And I should see recieved message 1 "Hi Jeff!" from desk "CUSS" user "bob" one time
     And I should see desk "AML" user "jeff" read message 1
     And I should see sent message 2 "Hello, Bob" from desk "AML" user "jeff" one time
@@ -65,9 +64,8 @@ Feature: Transcripts
     And I should see that I have 1 Transcripts
     And I should see "Transcript1 for jeff from Jun 22 2012 16:30 to Jun 22 2012 17:15"
     
-    When I click link "Transcript1 for jeff from Jun 22 2012 16:30 to Jun 22 2012 17:15"
-    Then I should see "Transcript for jeff"
-    And I should see "Friday, June 22 2012 16:30 to Friday, June 22 2012 17:15" 
+    When I click link "Transcript for jeff from Jun 22 2012 16:30 to Jun 22 2012 17:15"
+    Then I should see "Transcript for jeff from Jun 22 2012 16:30 to Jun 22 2012 17:15"
     And I should see recieved message 1 "Hi Jeff!" from desk "CUSS" user "bob" one time
     And I should see desk "AML" user "jeff" read message 1
     And I should see sent message 2 "Hello, Bob" from desk "AML" user "jeff" one time

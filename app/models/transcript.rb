@@ -39,6 +39,6 @@ class Transcript < ActiveRecord::Base
     user_desk += user_name
     start_str = start_time.strftime("%b %d %Y %H:%M")
     end_str = end_time.strftime("%b %d %Y %H:%M")
-    "Transcript#{id} for #{user_desk} from #{start_str} to #{end_str}"
+    "Transcript for #{user_desk} from #{start_str} to #{end_str}"
   end
 end
