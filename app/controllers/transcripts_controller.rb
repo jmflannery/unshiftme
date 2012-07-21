@@ -25,9 +25,6 @@ class TranscriptsController < ApplicationController
   def show
     @user = current_user
     @transcript_user = User.find(@transcript.transcript_user_id)
-    #format = "%A, %B %d %Y %H:%M"
-    #@start_time = @transcript.start_time.strftime(format)
-    #@end_time = @transcript.end_time.strftime(format)
     @messages = Message.for_user_between(@transcript_user, @transcript.start_time, @transcript.end_time)
   end
 
