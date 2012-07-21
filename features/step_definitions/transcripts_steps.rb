@@ -1,4 +1,9 @@
-Then /^I should see the Transcript page$/ do
+When /^I go to the transcript listing page$/ do
+  visit transcripts_path 
+end
+
+Then /^I should see the Transcripts page$/ do
+  page.should have_css("title", content: "Transcripts") 
   page.should have_content("Transcripts")
 end
 
