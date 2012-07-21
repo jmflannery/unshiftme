@@ -46,13 +46,14 @@ describe Message do
 
   describe "scope" do
      
-    let(:today_message) { FactoryGirl.create(:message, user: user, created_at: 23.hours.ago) }
+    let(:today_message) { FactoryGirl.create(:message, user: user, created_at: 24.hours.ago) }
     let(:yesterday_message) { FactoryGirl.create(:message, user: user, created_at: 25.hours.ago) }
-    
+
     describe "before" do
 
       it "returns messages created between the given time and 24 hours earlier" do
-        todays_messages = Message.before(Time.now)
+        puts "scope: #{Time.now.to_s}"
+        todays_messages = Message.before(1.second.ago)
         todays_messages.should include today_message
         todays_messages.should_not include yesterday_message
       end
@@ -61,7 +62,7 @@ describe Message do
     describe "between" do
 
       it "returns messages created between the given from and to times" do
-        messages = Message.between(24.hours.ago, 20.hours.ago)
+        messages = Message.between(1441.minutes.ago, 20.hours.ago)
         messages.should include today_message
         messages.should_not include yesterday_message
       end
@@ -230,14 +231,14 @@ describe Message do
   end
    
   describe "#for_user_before" do
-    
+   
     let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
 
     let(:user1) { FactoryGirl.create(:user) }
     let(:user2) { FactoryGirl.create(:user) }
 
     let(:message) { FactoryGirl.create(:message, user: user) }
-    let(:message1) { FactoryGirl.create(:message, user: user1) }
+    let(:message1) { FactoryGirl.create(:message, user: user1, created_at: 1439.minutes.ago) }
     let(:message2) { FactoryGirl.create(:message, user: user2) }
     let(:old_message) { FactoryGirl.create(:message, user: user, created_at: 25.hours.ago) }
 
@@ -251,15 +252,16 @@ describe Message do
     end
 
     it "returns messages that were sent or recieved by the given user" do
-      messages = Message.for_user_before(user1, Time.now)
+      messages = Message.for_user_before(user1, 0.seconds.ago)
       messages.should include message
       messages.should include message1
       messages.should_not include message2
     end
      
     it "returns messages created between the given time and 24 hours earlier than the given time" do
-      messages = Message.for_user_before(user1, Time.now)
+      messages = Message.for_user_before(user1, 0.seconds.ago)
       messages.should include message
+      messages.should include message1
       messages.should_not include old_message
     end
 
