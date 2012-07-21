@@ -39,5 +39,4 @@ Feature: Transcripts
     And I should see sent message 2 "Hello, Bob" from desk "AML" user "jeff" one time
     And I should see desk "CUSS" user "bob" read message 2
     And I should not see recieved message 3 "Whats up?" from desk "CUSS" user "bob"
-    And I should not see desk "AML" user "jeff" read message 3
  
