@@ -12,7 +12,17 @@ Given /^the following messages$/ do |table|
     if hash.has_key?("read") and hash["read"] == "t"
       message.read_by = {to_user => to_desk}
     end
-    message.created_at = DateTime.parse("#{hash["created_at"]}-0500") if hash["created_at"]
+    if hash.has_key?("created_at")
+      if hash["created_at"].include?("ago")
+        number, period, ago = hash["created_at"].split(".")
+        puts "#{number} #{period} #{ago}"
+        num = number.to_i
+        message.created_at = num.send(period).ago
+      else
+        message.created_at = DateTime.parse("#{hash["created_at"]}-0500")
+      end
+    end
+    puts message.created_at.to_s
     message.save
     @messages << message
   end
