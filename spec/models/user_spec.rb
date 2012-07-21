@@ -154,8 +154,8 @@ describe User do
 
     it { should respond_to(:transcripts) }
 
-    it "has the right transcripts" do
-      subject.transcripts.should == [transcript1, transcript2]
+    it "has the right transcripts in descending order" do
+      subject.transcripts.should == [transcript2, transcript1]
     end
   end
 
