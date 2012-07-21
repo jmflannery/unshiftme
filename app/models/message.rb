@@ -14,8 +14,12 @@ class Message < ActiveRecord::Base
 
   default_scope order("created_at DESC")
 
-  scope :before, lambda { |time| where("created_at >= ? and created_at <= ?", time - 1.day, time) }
-  scope :between, lambda { |timeFrom, timeTo| where("created_at >= ? and created_at <= ?", timeFrom, timeTo) }
+  scope :before, lambda { |time|
+    where("created_at >= ? and created_at <= ?", time - 24.hours, time)
+  }
+  scope :between, lambda { |timeFrom, timeTo|
+    where("created_at >= ? and created_at <= ?", timeFrom, timeTo)
+  }
 
   def set_recievers
     user.recipients.each do |recipient|
