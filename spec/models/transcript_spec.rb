@@ -54,6 +54,17 @@ describe Transcript do
 #    it { should_not be_valid }
 #  end
 
+  describe "default scope order" do
+    before do
+      subject.save
+      @t2 = FactoryGirl.create(:transcript)
+    end
+
+    it "defualts to descending order" do
+      Transcript.all.should == [@t2, subject]
+    end
+  end
+
   describe "user associations" do
 
     it { should respond_to(:user) }
