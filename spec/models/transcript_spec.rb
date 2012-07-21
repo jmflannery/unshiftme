@@ -6,8 +6,8 @@ describe Transcript do
     @user = FactoryGirl.create(:user)
     @transcript = @user.transcripts.build(transcript_user_id: 22,
                                           transcript_desk_id: 2,
-                                          start_time: 3.minutes.ago,
-                                          end_time: 3.second.ago)
+                                          start_time: "2012-06-22 16:30",
+                                          end_time: "2012-06-22 17:15")
   end
 
   subject { @transcript }
@@ -80,6 +80,46 @@ describe Transcript do
         @transcripts.should include @transcript
         @transcripts.should include @transcript1
         @transcripts.should_not include @other_transcript
+      end
+    end
+  end
+
+  describe "#name" do
+
+    context "with a transcript user and desk" do
+      let(:transcript_user) { FactoryGirl.create(:user, user_name: "jack") }
+      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+      before do 
+        subject.update_attribute(:transcript_user_id, transcript_user.id)
+        subject.update_attribute(:transcript_desk_id, cusn.id)
+      end
+
+      it "returns the name including the id, transcript user and desk and start and end_times" do
+        subject.name.should == "Transcript1 for CUSN jack from Jun 22 2012 16:30 to Jun 22 2012 17:15"
+      end
+    end
+
+    context "with a trancript user and no desk" do
+      let(:transcript_user) { FactoryGirl.create(:user, user_name: "jack") }
+      before do 
+        subject.update_attribute(:transcript_user_id, transcript_user.id)
+        subject.update_attribute(:transcript_desk_id, 0)
+      end
+
+      it "returns the name including the id, transcript user and start and end_times" do
+        subject.name.should == "Transcript1 for jack from Jun 22 2012 16:30 to Jun 22 2012 17:15"
+      end
+    end
+
+    context "with a trancript desk and no user" do
+      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+      before do 
+        subject.update_attribute(:transcript_desk_id, cusn.id)
+        subject.update_attribute(:transcript_user_id, 0)
+      end
+
+      it "returns the name including the id, transcript desk and start and end_times" do
+        subject.name.should == "Transcript1 for CUSN from Jun 22 2012 16:30 to Jun 22 2012 17:15"
       end
     end
   end
