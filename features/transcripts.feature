@@ -57,15 +57,15 @@ Feature: Transcripts
       | 2  | Hello, Bob | jeff | AML  | bob     | CUSS    | t    | "2012-06-22 17:14" |
       | 3  | Whats up?  | bob  | CUSS | jeff    | AML     | t    | "2012-06-22 17:16" |
     And the following transcript records
-      | user_id | transcript_user_id | transcript_desk_id | start_time       | end_time         | 
-      | 1       | 2                  | 0                  | 2012-06-22 16:30 | 2012-06-22 16:30 |
+      | id | user_id | transcript_user_id | transcript_desk_id | start_time       | end_time         | 
+      | 1  | 1       | 2                  | 0                  | 2012-06-22 16:30 | 2012-06-22 17:15 |
     And I am logged in as "bill" with password "secret" at ""
     When I go to the transcript listing page
     Then I should see the Transcripts page
     And I should see that I have 1 Transcripts
     And I should see "Transcript1 for jeff from Jun 22 2012 16:30 to Jun 22 2012 17:15"
     
-    When I click "Transcript1 for jeff from Jun 22 2012 16:30 to Jun 22 2012 17:15"
+    When I click link "Transcript1 for jeff from Jun 22 2012 16:30 to Jun 22 2012 17:15"
     Then I should see "Transcript for jeff"
     And I should see "Friday, June 22 2012 16:30 to Friday, June 22 2012 17:15" 
     And I should see recieved message 1 "Hi Jeff!" from desk "CUSS" user "bob" one time
