@@ -26,7 +26,6 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
     @title = @user.handle
     @messages = Message.for_user_before(@user, Time.now)
     @message = Message.new
@@ -36,12 +35,10 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
     @title = "Edit user"
   end
 
   def update
-    @user = User.find(params[:id])
     respond_to do |format|
       format.html {
         if @user.update_attributes(params[:user])
