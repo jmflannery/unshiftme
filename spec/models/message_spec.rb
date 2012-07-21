@@ -52,7 +52,6 @@ describe Message do
     describe "before" do
 
       it "returns messages created between the given time and 24 hours earlier" do
-        puts "scope: #{Time.now.to_s}"
         todays_messages = Message.before(1.second.ago)
         todays_messages.should include today_message
         todays_messages.should_not include yesterday_message
