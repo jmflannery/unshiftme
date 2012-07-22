@@ -384,23 +384,52 @@ describe Message do
 
   describe "#was_sent_to?" do
 
-    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
     let(:user1) { FactoryGirl.create(:user) }
+    let(:user2) { FactoryGirl.create(:user) }
+    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
     let(:recipient_user) { FactoryGirl.create(:user) }
     let(:message) { FactoryGirl.create(:message, user: user) }
+
+    context "when the message was not sent to the given user, or the given user's desks" do
+      it "returns false if the message was not sent to the given user" do
+        message.was_sent_to?(user1).should be_false
+      end
+    end
+
+    context "when the message was sent to the given user and desk" do
+      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+      before(:each) do
+        recipient_user.start_job(cusn.abrev)
+        FactoryGirl.create(:recipient, user: user, desk_id: cusn.id)
+        message.set_recievers
+      end
+      it "returns true" do
+        message.was_sent_to?(recipient_user).should be_true
+      end
+    end
     
-    before(:each) do
-      recipient_user.authenticate_desk(cusn.abrev => 1)
-      FactoryGirl.create(:recipient, user: user, desk_id: cusn.id)
-      message.set_recievers
+    context "when the message was sent to the given user's desks but no specified user" do
+      before(:each) do
+        FactoryGirl.create(:recipient, user: user, desk_id: cusn.id)
+        message.set_recievers
+        recipient_user.start_job(cusn.abrev)
+      end
+      it "returns true" do
+        message.was_sent_to?(recipient_user).should be_true
+      end
     end
-
-    it "returns false if the message was not sent to the given user" do
-      message.was_sent_to?(user1).should be_false
-    end
-
-    it "returns true if the message was sent to the given user" do
-      message.was_sent_to?(recipient_user).should be_true
+    
+    context "when the message was sent to the given user's desks but to a different user" do
+      before(:each) do
+        user2.start_job(cusn.abrev)
+        FactoryGirl.create(:recipient, user: user, desk_id: cusn.id)
+        message.set_recievers
+        user2.leave_desk
+        recipient_user.start_job(cusn.abrev)
+      end
+      it "returns false" do
+        message.was_sent_to?(recipient_user).should be_false
+      end
     end
   end
 
@@ -440,3 +469,4 @@ describe Message do
     end
   end
 end
+
