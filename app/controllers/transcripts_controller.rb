@@ -26,6 +26,7 @@ class TranscriptsController < ApplicationController
     @user = current_user
     @transcript_user = User.find(@transcript.transcript_user_id)
     @messages = Message.for_user_between(@transcript_user, @transcript.start_time, @transcript.end_time)
+    @messages.each { |message| message.set_view_class(@transcript_user) }
   end
 
   def index

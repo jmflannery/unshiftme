@@ -117,21 +117,9 @@ class Message < ActiveRecord::Base
 
   def self.for_user_before(user, time)
     messages = []
-    self.before(time).each do |message|
-      if message.was_sent_by?(user)
-        message.view_class = "message msg-#{message.id} owner"
+    before(time).each do |message|
+      if message.was_sent_by?(user) or message.was_sent_to?(user)
         messages << message
-        next
-      end
-
-      if message.was_sent_to?(user)
-        messages << message 
-
-        if message.was_read_by?(user)
-          message.view_class = "message msg-#{message.id} recieved read"
-        else
-          message.view_class = "message msg-#{message.id} recieved unread"
-        end
       end
     end
     messages
@@ -139,24 +127,26 @@ class Message < ActiveRecord::Base
 
   def self.for_user_between(user, timeFrom, timeTo)
     messages = []
-    self.between(timeFrom, timeTo).each do |message|
-      if message.was_sent_by?(user)
-        message.view_class = "message msg-#{message.id} owner"
+    between(timeFrom, timeTo).each do |message|
+      if message.was_sent_by?(user) or message.was_sent_to?(user)
         messages << message
-        next
-      end
-      
-      if message.was_sent_to?(user)
-        messages << message 
-
-        if message.was_read_by?(user)
-          message.view_class = "message msg-#{message.id} recieved read"
-        else
-          message.view_class = "message msg-#{message.id} recieved unread"
-        end
       end
     end
     messages
+  end
+
+  def set_view_class(current_user)
+    if was_sent_by?(current_user)
+      update_attribute(:view_class, "message msg-#{id} owner")
+    end
+    
+    if was_sent_to?(current_user)
+      if was_read_by?(current_user)
+        update_attribute(:view_class, "message msg-#{id} recieved read")
+      else
+        update_attribute(:view_class, "message msg-#{id} recieved unread")
+      end
+    end
   end
 
   def mark_read_by(user)

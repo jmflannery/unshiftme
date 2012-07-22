@@ -28,6 +28,7 @@ class UsersController < ApplicationController
   def show
     @title = @user.handle
     @messages = Message.for_user_before(@user, Time.now)
+    @messages.each { |message| message.set_view_class(@user) }
     @message = Message.new
     @attachment = Attachment.new
     @my_recipients = Recipient.for_user(@user.id)

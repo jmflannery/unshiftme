@@ -263,34 +263,6 @@ describe Message do
       messages.should include message1
       messages.should_not include old_message
     end
-
-    context "for messages created by the given user" do
-      let(:messages) { Message.for_user_before(user, Time.now) }
-      it "sets message view_class attribute to 'message owner'" do
-        messages.should include message           
-        index = messages.index(message) 
-        messages[index].view_class.should == "message msg-#{messages[index].id} owner"
-      end
-    end
-
-    context "for messages recieved and read by the given user" do
-      let(:messages) { Message.for_user_before(user1, Time.now) }
-      before { message.mark_read_by(user1) }
-      it "sets message view_class attribute to 'message recieved read' " do
-        messages.should include message
-        index = messages.index(message) 
-        messages[index].view_class.should == "message msg-#{messages[index].id} recieved read"
-      end
-    end
-
-    context "for messages recieved and not read by the given user" do
-      let(:messages) { Message.for_user_before(user1, Time.now) }
-      it "sets message view_class attribute to 'message recieved unread'" do
-        messages.should include message
-        index = messages.index(message) 
-        messages[index].view_class.should == "message msg-#{messages[index].id} recieved unread"
-      end
-    end
   end 
 
   describe "#for_user_between" do
@@ -326,35 +298,46 @@ describe Message do
       messages.should include message
       messages.should_not include old_message
     end
+  end 
+
+  describe "#set_view_class" do
+    let(:message) { FactoryGirl.create(:message, user: user) }
 
     context "for messages created by the given user" do
-      let(:messages) { Message.for_user_between(user, 1.hour.ago, Time.now) }
       it "sets message view_class attribute to 'message owner'" do
-        messages.should include message           
-        index = messages.index(message) 
-        messages[index].view_class.should == "message msg-#{messages[index].id} owner"
+        message.set_view_class(user)
+        message.view_class.should == "message msg-#{message.id} owner"
       end
     end
 
     context "for messages recieved and read by the given user" do
-      let(:messages) { Message.for_user_between(user1, 1.hour.ago, Time.now) }
-      before { message.mark_read_by(user1) }
+      let(:user1) { FactoryGirl.create(:user) }
+      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+      before do
+        user1.start_job(cusn.abrev)
+        message.set_recieved_by(cusn)
+        message.mark_read_by(user1)
+      end
+
       it "sets message view_class attribute to 'message recieved read' " do
-        messages.should include message
-        index = messages.index(message) 
-        messages[index].view_class.should == "message msg-#{messages[index].id} recieved read"
+        message.set_view_class(user1)
+        message.view_class.should == "message msg-#{message.id} recieved read"
       end
     end
 
     context "for messages recieved and not read by the given user" do
-      let(:messages) { Message.for_user_between(user1, 1.hour.ago, Time.now) }
+      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:user1) { FactoryGirl.create(:user) }
+      before do
+        user1.start_job(cusn.abrev)
+        message.set_recieved_by(cusn)
+      end
       it "sets message view_class attribute to 'message recieved unread'" do
-        messages.should include message
-        index = messages.index(message) 
-        messages[index].view_class.should == "message msg-#{messages[index].id} recieved unread"
+        message.set_view_class(user1)
+        message.view_class.should == "message msg-#{message.id} recieved unread"
       end
     end
-  end 
+  end
 
   describe "#mark_read_by" do
     
