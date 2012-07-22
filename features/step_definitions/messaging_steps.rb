@@ -33,6 +33,10 @@ Then /^I should not see recieved message (\d+) "(.*?)"$/ do |id, content|
   page.should_not have_selector("li.message.msg-#{id}.recieved.read")
 end
 
+Then /^I should not see unread recieved message (\d+) "(.*?)"$/ do |id, content|
+  page.should_not have_selector("li.message.msg-#{id}.recieved.unread")
+end
+
 Then /^I should see sent message (\d+) "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |id, content, desk_abrev, user_name|
   selector = "li.message.msg-#{id}.owner" 
   page.should have_selector(selector, count: 1)
@@ -44,6 +48,15 @@ end
 
 Then /^I should see recieved message (\d+) "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |id, content, desk_abrev, user_name|
   selector = "li.message.msg-#{id}.recieved.read" 
+  page.should have_selector(selector, count: 1)
+  within(selector) do
+    page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}")
+    page.should have_content(content)
+  end
+end
+
+Then /^I should see unread recieved message (\d+) "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |id, content, desk_abrev, user_name|
+  selector = "li.message.msg-#{id}.recieved.unread" 
   page.should have_selector(selector, count: 1)
   within(selector) do
     page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}")
