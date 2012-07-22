@@ -181,7 +181,7 @@ class Message < ActiveRecord::Base
     if self.recievers
       desks = user.desk_names
       self.recievers.each_pair do |desk_abrev, user_name|
-        if desks.include?(desk_abrev) or user.user_name == user_name
+        if user.user_name == user_name or (desks.include?(desk_abrev) and user_name.blank?)
           sent_to = true 
           break
         end
