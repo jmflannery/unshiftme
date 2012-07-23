@@ -1,1 +1,1 @@
-$("li.message.recieved.unread." + <%= @message.id.to_s %>).removeClass('unread').addClass('read');
+$("li.message.recieved.unread.msg-" + <%= @message.id.to_s %>).removeClass('unread').addClass('read');

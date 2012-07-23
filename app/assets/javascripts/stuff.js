@@ -232,10 +232,9 @@ var read_message = function(message_id) {
   var i;
   var message_id = 0;
   for (i = 0; i < classes.length; i += 1) {
-    var clas = parseInt(classes[i]);
-    if (!isNaN(clas)) {
-      message_id = clas;
-      console.log(clas);
+    if (classes[i].indexOf("msg-") != -1) {
+      var klas = classes[i].substring(4, classes[i].length);
+      message_id = parseInt(klas);
     }
   }
 
