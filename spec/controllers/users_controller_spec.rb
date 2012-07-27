@@ -93,6 +93,12 @@ describe UsersController do
         post :create, :user => @fail_attr
         response.should render_template :new
       end
+
+      it "renders a checkbox for each workstation" do
+        workstation = FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", user_id: 0)
+        post :create, user: @fail_attr
+        response.body.should have_selector("input##{workstation.abrev}")
+      end
     end
 
     describe "success" do

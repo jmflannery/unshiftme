@@ -12,7 +12,7 @@ class Desk < ActiveRecord::Base
 
   def description
     desc = name
-    desc += " (#{User.find_by_id(user_id).user_name})" if user_id && user_id > 0
+    desc += " (#{User.find_by_id(user_id).user_name})" if User.exists?(user_id)
     desc
   end
 end

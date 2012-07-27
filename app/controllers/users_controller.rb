@@ -21,6 +21,9 @@ class UsersController < ApplicationController
       redirect_to signin_path
     else
       @title = "Sign Up"
+      @td_desks = Desk.of_type("td")
+      @ops_desks = Desk.of_type("ops")
+      @user = User.new
       render 'new'
     end
   end
