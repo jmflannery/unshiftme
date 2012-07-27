@@ -2,7 +2,7 @@ class TranscriptsController < ApplicationController
   before_filter :authenticate, only: [:new, :create, :show, :index]
   before_filter :authenticate_admin, only: [:new, :create, :show, :index]
   before_filter :authorized_user, only: [:show]
-  before_filter :build_transcript_attributes, only: [:create]
+  before_filter :validate_transcript_attributes, only: [:create]
 
   def new
     @user = current_user
@@ -15,7 +15,7 @@ class TranscriptsController < ApplicationController
   def create
     @user = current_user
     @transcript = @user.transcripts.build(@attrs)
-    if (@attrs.has_key?(:transcript_desk_id) or @attrs.has_key?(:transcript_user_id)) and @transcript.save
+    if @transcript.save
       redirect_to transcript_path(@transcript)
     else
       redirect_to new_transcript_path
@@ -47,7 +47,7 @@ class TranscriptsController < ApplicationController
       redirect_to signin_path if @transcript.nil?
     end
 
-    def build_transcript_attributes
+    def validate_transcript_attributes
       @attrs = params[:transcript]
       user = User.find_by_user_name(@attrs[:transcript_user_id])
       desk = Desk.find_by_abrev(@attrs[:transcript_desk_id])
@@ -60,6 +60,9 @@ class TranscriptsController < ApplicationController
         @attrs.merge!({transcript_desk_id: desk.id})
       else
         @attrs.delete(:transcript_desk_id)
+      end
+      unless @attrs[:transcript_user_id] or @attrs[:transcript_desk_id]
+        redirect_to new_transcript_path 
       end
     end
 end

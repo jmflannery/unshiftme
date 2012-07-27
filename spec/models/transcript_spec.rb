@@ -19,11 +19,6 @@ describe Transcript do
 
   it { should be_valid }
 
-  describe "when transcript_user_id and transcript_desk_id are not present" do
-    before { @transcript.transcript_user_id = @transcript.transcript_desk_id = nil }
-    it { pending; should_not be_valid }
-  end
-  
   describe "when start_time is not present" do
     before { @transcript.start_time = nil }
     it { should_not be_valid }
