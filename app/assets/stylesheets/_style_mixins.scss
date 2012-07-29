@@ -30,7 +30,8 @@
 
 @mixin message_section_style {
   margin: 0 auto;
-  width: 99.302326%; // 854 / 860
+  //width: 99.302326%; // 854 / 860
+  width: 98%;
   background-color: #000000;
   overflow: auto;
   color: $blue;

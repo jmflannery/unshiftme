@@ -1,39 +1,43 @@
 <div id="content" class=<%= "#{@user.id}" %>>
-  <div id='recipient_desk_selection'>
+
+  <div id='recipient_workstation_selection'>
     <%= render(partial: 'desks/recipient_desk', collection: @desks) %>
     <div id='toggle_all_desks' class='recipient_desk all'>
       <p>Message</br>all</p>
     </div>
   </div>
 
-  <div id="msg_input">
-    
-    <% if signed_in? %>
-      <%= form_for(@message, remote: true, format: :js) do |f| %>
-        <%= f.text_field :content, maxlength: 300 %>
+  <div id="messages">
+
+    <div id='upload_button'>
+      <%= link_to("Show File Uploader", "#", id: "attach_button") %>
+    </div>
+
+    <div id="upload_section">
+      <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
+        <%= f.file_field("payload") %>
+        <%= f.submit "Upload" %>
+      <% end %>  
+    </div>
+
+    <div id="msg_input">
+      <% if signed_in? %>
+        <%= form_for(@message, remote: true, format: :js) do |f| %>
+          <%= f.text_field :content, maxlength: 300 %>
+        <% end %>
       <% end %>
-    <% end %>
-  </div>
+    </div>
 
-  <div id='upload_button'>
-    <%= link_to("Show File Uploader", "#", id: "attach_button") %>
-  </div>
+    <div id="messages_section">
+      <ul id="message_list">
+        <%= render(@messages) %>
+      </ul>
+    </div>
 
-  <div id="upload_section">
-    <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
-      <%= f.file_field("payload") %>
-      <%= f.submit "Upload" %>
-    <% end %>  
-  </div>
-
-  <div id="messages_section">
-    <ul id="message_list">
-      <%= render(@messages) %>
-    </ul>
-  </div>
-
-  <%= subscribe_to "/messages/#{@user.user_name}" %> 
-  <%= subscribe_to "/desks/#{@user.user_name}" %> 
-  <%= subscribe_to "/readers/#{@user.user_name}" %> 
-
+  </div> <!-- end #messages -->
 </div> <!-- end #content -->
+
+<%= subscribe_to "/messages/#{@user.user_name}" %> 
+<%= subscribe_to "/desks/#{@user.user_name}" %> 
+<%= subscribe_to "/readers/#{@user.user_name}" %> 
+
