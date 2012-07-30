@@ -50,11 +50,11 @@
       ul.inner_message {
         .message_sender {
           text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
-          font-weight: bold;
+          //font-weight: bold;
         } // end .message_sender
         .message_timestamp {
           text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
-          font-weight: bold;
+          //font-weight: bold;
         } // end .message_timestamp
       }
     }
@@ -70,10 +70,12 @@
         .message_sender {
           text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
           font-weight: bold;
+          font-size: .9em;
         } // end .message_sender
         .message_timestamp {
           text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
           font-weight: bold;
+          font-size: .9em;
         } // end .message_timestamp
       }
     }
@@ -98,7 +100,7 @@
     li.message {
       padding: 6px;
       margin: 4px;
-      font-size: 1.2em;
+      font-size: 0.9em;
       @include rounded-corners(8px);
     
       ul.inner_message {
@@ -117,7 +119,9 @@
         } // end .message_sender 
         
         .message_content {
+          //font-weight: bold;
           clear: both;
+          font-size: 1.3em;
         } // end .message_content
           
         .message_timestamp {

@@ -3,7 +3,7 @@
 @import "style_mixins";
 
 #recipient_workstation_selection {
-  width: 50%;
+  width: 20%;
   float: right;
   color: $near-white;
   font-size: .86em;
@@ -39,7 +39,7 @@
 }
 
 #messages {
-  width: 50%;
+  width: 80%;
   float: left;
 
   #upload_button {
