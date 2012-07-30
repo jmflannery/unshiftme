@@ -12,7 +12,20 @@ class Desk < ActiveRecord::Base
 
   def description
     desc = name
-    desc += " (#{User.find_by_id(user_id).user_name})" if User.exists?(user_id)
+    desc += " (#{User.find_by_id(user_id).user_name}" if User.exists?(user_id)
     desc
   end
+
+  def view_class(user)
+    view_class = "recipient_desk"
+    if user.desks.include?(id)
+      view_class += " mine"
+    elsif user.messaging?(id)
+      view_class += " on #{user.recipient_id(id)}"
+    else
+      view_class += " off"
+    end
+    view_class
+  end
+
 end

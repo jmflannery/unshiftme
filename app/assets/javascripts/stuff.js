@@ -37,7 +37,7 @@ $.fn.getNumberClass = function() {
 // returns "on" if the given element has the class "on"
 // returns "off" if the given element has the class "off"
 // returns false if class "on" or "off" is not found on given element
-// returns fasle if both "on" and "off" ar found
+// returns fasle if both "on" and "off" are found
 $.fn.onOff = function() {
   var on = $(this).hasClass("on");
   var off = $(this).hasClass("off");

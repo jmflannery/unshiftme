@@ -60,7 +60,7 @@ describe Desk do
 
   describe "method" do
 
-    describe "description" do
+    describe "#description" do
 
       let(:user) { FactoryGirl.create(:user, user_name: "epresley") }
 
@@ -74,6 +74,32 @@ describe Desk do
         @cusn.description == "#{@cusn.name} (#{user.user_name})"
         @cuss.description == "#{@cuss.name}"
       end 
+    end
+  end
+
+  describe "#view_class" do
+
+    let(:user) { FactoryGirl.create(:user, user_name: "epresley") }
+    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+
+    context "when the workstation is owned by the given user" do
+      before { user.start_job(cusn.abrev) }
+      it "should have the right view class" do
+        cusn.view_class(user).should == "recipient_desk mine"
+      end
+    end
+
+    context "when the workstation is a recipient of the given user" do
+      before { @recip = FactoryGirl.create(:recipient, user: user, desk_id: cusn.id) }
+      it "should have the right view class" do
+        cusn.view_class(user).should == "recipient_desk on #{@recip.id}"
+      end
+    end
+    
+    context "when the workstation is not a recipient of the given user" do
+      it "should have the right view class" do
+        cusn.view_class(user).should == "recipient_desk off"
+      end
     end
   end
 
