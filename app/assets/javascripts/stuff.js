@@ -140,6 +140,20 @@ $(function() {
 });
 
 ///////////////////////////////////
+// put data in recipients
+//////////////////////////////////
+
+var putData = function() {
+};
+
+$(function() {
+  if ($('#recipient_workstation_selection').length > 0) {
+    $('#CUSN').data("desk_status", "owner");
+    console.log($('#CUSN').data("desk_status"));
+  }
+});
+
+///////////////////////////////////
 // add recipient
 ///////////////////////////////////
 

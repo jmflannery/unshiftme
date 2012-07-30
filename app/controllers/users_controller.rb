@@ -34,7 +34,7 @@ class UsersController < ApplicationController
     @messages.each { |message| message.set_view_class(@user) }
     @message = Message.new
     @attachment = Attachment.new
-    @my_recipients = Recipient.for_user(@user.id)
+    #@my_recipients = Recipient.for_user(@user.id)
     @desks = Desk.all
   end
 
