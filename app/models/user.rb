@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
 
   def add_recipient(workstation)
     recipient = nil
-    unless recipient_workstation_ids.include?(workstation.id) or workstations.include?(workstation.id)
+    unless recipient_workstation_ids.include?(workstation.id) or workstation_ids.include?(workstation.id)
       recipient = recipients.create(workstation_id: workstation.id)
     end
     recipient
@@ -122,7 +122,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def workstations
+  def workstation_ids
     Workstation.of_user(self.id).collect { |workstation| workstation.id }
   end
 
@@ -140,7 +140,7 @@ class User < ActiveRecord::Base
   end
 
   def leave_workstation
-    workstations.each do |workstation_id|
+    workstation_ids.each do |workstation_id|
       workstation = Workstation.find(workstation_id)
       workstation.update_attributes({user_id: 0})
     end

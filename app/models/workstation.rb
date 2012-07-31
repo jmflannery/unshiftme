@@ -18,7 +18,7 @@ class Workstation < ActiveRecord::Base
 
   def view_class(user)
     view_class = "recipient_workstation"
-    if user.workstations.include?(id)
+    if user.workstation_ids.include?(id)
       view_class += " mine"
     elsif user.messaging?(id)
       view_class += " on #{user.recipient_id(id)}"

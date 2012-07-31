@@ -229,20 +229,20 @@ describe User do
         end
       end
 
-      describe "workstations" do
+      describe "workstation_ids" do
 
         before(:each) do
           subject.authenticate_workstation(@params)
         end
 
         it "returns a list of all the workstation id's under the control of the user" do
-          subject.workstations.should be_kind_of Array
-          subject.workstations.should == [Workstation.find_by_abrev("CUSN").id, Workstation.find_by_abrev("AML").id]
+          subject.workstation_ids.should be_kind_of Array
+          subject.workstation_ids.should == [Workstation.find_by_abrev("CUSN").id, Workstation.find_by_abrev("AML").id]
         end
 
         it "returns an empty list of the user has no workstations" do
           @user2 = FactoryGirl.build(:user)
-          @user2.workstations.should == []
+          @user2.workstation_ids.should == []
         end
       end
       
@@ -295,28 +295,28 @@ describe User do
     describe "add_recipients" do
 
       before(:each) do
-        @workstations = [cusn, cuss]
-        @recipients = subject.add_recipients(@workstations)
+        @workstation_ids = [cusn, cuss]
+        @recipients = subject.add_recipients(@workstation_ids)
       end
 
       it "adds the list of workstations to the user's recipients" do
-        subject.recipients.size.should == @workstations.size
+        subject.recipients.size.should == @workstation_ids.size
         subject.recipients.each do |recipient|
-          @workstations.map { |d| d.id }.should include recipient.workstation_id
+          @workstation_ids.map { |d| d.id }.should include recipient.workstation_id
         end
       end
 
       it "doesn't add any duplicate recipients" do
         size1 = subject.recipients.size
-        subject.add_recipients(@workstations)
+        subject.add_recipients(@workstation_ids)
         size2 = subject.recipients.size
         size2.should == size1
       end
 
       it "doesn't add a workstation as a recipient if the user is currently controlling that workstation" do
         subject.authenticate_workstation(aml.abrev => 1)
-        @workstations << aml
-        subject.add_recipients(@workstations)
+        @workstation_ids << aml
+        subject.add_recipients(@workstation_ids)
         subject.should_not be_messaging aml.id
       end
 
@@ -413,7 +413,7 @@ describe User do
       end
 
       it "signs the user out of all workstations" do
-        subject.workstations.should == []
+        subject.workstation_ids.should == []
       end
 
       it "deletes all of the users recipients" do
@@ -489,8 +489,8 @@ describe User do
         end
 
         it "signs the user out of all workstations" do
-          user1.workstations.should == []
-          subject.workstations.should == [cusn.id]
+          user1.workstation_ids.should == []
+          subject.workstation_ids.should == [cusn.id]
         end
 
         it "destroys all of the user's recipients" do

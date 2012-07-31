@@ -7,8 +7,8 @@ class RecipientsController < ApplicationController
     else
       workstation = Workstation.find_by_id(params[:workstation_id])
       recipient_user = User.find_by_id(workstation.user_id) if workstation
-      if recipient_user and recipient_user.workstations.size > 1
-        workstations = recipient_user.workstations.map { |workstation_id| Workstation.find(workstation_id) }
+      if recipient_user and recipient_user.workstation_ids.size > 1
+        workstations = recipient_user.workstation_ids.map { |workstation_id| Workstation.find(workstation_id) }
         @recipients = current_user.add_recipients(workstations)
       else
         @recipient = current_user.add_recipient(workstation) if workstation
@@ -29,7 +29,7 @@ class RecipientsController < ApplicationController
         workstation1 = Workstation.find_by_id(recipient.workstation_id)
         recip_user = User.find_by_id(workstation1.user_id) if workstation1
         if recip_user
-          @recipients = recip_user.workstations.map { |workstation_id| current_user.recipients.find_by_workstation_id(workstation_id) }
+          @recipients = recip_user.workstation_ids.map { |workstation_id| current_user.recipients.find_by_workstation_id(workstation_id) }
           @recipients.each { |recip| recip.destroy }
         else
           recipient.destroy

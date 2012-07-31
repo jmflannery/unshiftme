@@ -57,7 +57,7 @@ class Message < ActiveRecord::Base
         unless sent_to.include?(recip_user.id)
           sent_to << recip_user.id
 
-          new_recip_ids = user.workstations.map do |workstation_id|
+          new_recip_ids = user.workstation_ids.map do |workstation_id|
             recip = recip_user.add_recipient(Workstation.find(workstation_id))
             recip ? recip.id : 0
           end
