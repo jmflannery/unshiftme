@@ -43,11 +43,7 @@ class User < ActiveRecord::Base
   end
 
   def recipient_workstation_ids
-    ids = []
-    recipients.each do |recipient|
-      ids << recipient.workstation_id
-    end
-    ids
+    recipients.map { |recipient| recipient.workstation_id }
   end  
 
   def add_recipients(workstations)
