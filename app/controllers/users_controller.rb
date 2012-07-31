@@ -7,22 +7,22 @@ class UsersController < ApplicationController
   def new
     @user = User.new
     @title = "Sign Up"
-    @td_desks = Desk.of_type("td")
-    @ops_desks = Desk.of_type("ops")
+    @td_workstations = Workstation.of_type("td")
+    @ops_workstations = Workstation.of_type("ops")
   end
 
   def create
-    normal_desks = parse_params_for_desks(params)
+    normal_workstations = parse_params_for_workstations(params)
     @user = User.new(params[:user])
-    @user.normal_desks = normal_desks
+    @user.normal_workstations = normal_workstations
     @user.toggle(:admin) if User.count == 0
     if @user.save
       flash[:success] = "Registration was successful! Sign in now to access Messenger."
       redirect_to signin_path
     else
       @title = "Sign Up"
-      @td_desks = Desk.of_type("td")
-      @ops_desks = Desk.of_type("ops")
+      @td_workstations = Workstation.of_type("td")
+      @ops_workstations = Workstation.of_type("ops")
       @user = User.new
       render 'new'
     end
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
     @message = Message.new
     @attachment = Attachment.new
     #@my_recipients = Recipient.for_user(@user.id)
-    @desks = Desk.all
+    @workstations = Workstation.all
   end
 
   def edit

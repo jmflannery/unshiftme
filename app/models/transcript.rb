@@ -1,6 +1,6 @@
 class Transcript < ActiveRecord::Base
 
-  attr_accessible :transcript_desk_id, :transcript_user_id, :start_time, :end_time
+  attr_accessible :transcript_workstation_id, :transcript_user_id, :start_time, :end_time
 
   belongs_to :user
    
@@ -32,13 +32,13 @@ class Transcript < ActiveRecord::Base
   end
 
   def name
-    desk_abrev = Desk.exists?(transcript_desk_id) ? Desk.find(transcript_desk_id).abrev : ""
+    workstation_abrev = Workstation.exists?(transcript_workstation_id) ? Workstation.find(transcript_workstation_id).abrev : ""
     user_name = User.exists?(transcript_user_id) ? User.find(transcript_user_id).user_name : ""
-    user_desk = desk_abrev
-    user_desk += " " unless user_name.blank? or desk_abrev.blank?
-    user_desk += user_name
+    user_workstation = workstation_abrev
+    user_workstation += " " unless user_name.blank? or workstation_abrev.blank?
+    user_workstation += user_name
     start_str = start_time.strftime("%b %d %Y %H:%M")
     end_str = end_time.strftime("%b %d %Y %H:%M")
-    "Transcript for #{user_desk} from #{start_str} to #{end_str}"
+    "Transcript for #{user_workstation} from #{start_str} to #{end_str}"
   end
 end

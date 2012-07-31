@@ -12,7 +12,7 @@
 class Recipient < ActiveRecord::Base
   belongs_to :user
 
-  attr_accessible :desk_id
+  attr_accessible :workstation_id
   
   #validates :recipient_user_id, :uniqueness => { :scope => :user_id }
 

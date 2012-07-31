@@ -15,14 +15,14 @@ Feature: Sign up
   
   @javascript
   Scenario: Sign up success
-    Given the following desk records
+    Given the following workstation records
       | name         | abrev  | job_type | user_id |
       | CUS North    | CUSN   | td       | 0       |
       | CUS South    | CUSS   | td       | 0       |
     And I am not a registered user
     And I am on the sign up page
     When I fill in "User name" with "fred"
-    And I check desk "CUS North"
+    And I check workstation "CUS North"
     And I fill in "password" with "secret"
     And I fill in "conformation" with "secret"
     And I press "Sign Up"
@@ -31,5 +31,5 @@ Feature: Sign up
     When I fill in "User name" with "fred"
     And I press the "tab" key from the "User name" field
     And I wait 1 second
-    Then I should see that desk "CUSN" is checked
-    And I should see that desk "CUSS" is not checked
+    Then I should see that workstation "CUSN" is checked
+    And I should see that workstation "CUSS" is not checked

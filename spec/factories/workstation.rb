@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :desk, class: Desk do |desk|
+  factory :workstation, class: Workstation do |workstation|
     sequence(:name) { |n| "CUS North #{n}" }
     sequence(:abrev) { |n| "CUS#{n}" }
     job_type "td"

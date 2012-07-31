@@ -47,7 +47,7 @@ module SessionsHelper
 
     def send_user_in_or_out_message(data)
       User.online.each do |online_user|
-        PrivatePub.publish_to("/desks/#{online_user.user_name}", data)
+        PrivatePub.publish_to("/workstations/#{online_user.user_name}", data)
       end
     end
 

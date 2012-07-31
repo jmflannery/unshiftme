@@ -1,8 +1,8 @@
 <div id="content" class=<%= "#{@user.id}" %>>
 
   <div id='recipient_workstation_selection'>
-    <%= render(partial: 'desks/recipient_desk', collection: @desks) %>
-    <div id='toggle_all_desks' class='recipient_desk all'>
+    <%= render(partial: 'workstations/recipient_workstation', collection: @workstations) %>
+    <div id='toggle_all_workstations' class='recipient_workstation all'>
       <p>Message</br>all</p>
     </div>
   </div>
@@ -38,6 +38,6 @@
 </div> <!-- end #content -->
 
 <%= subscribe_to "/messages/#{@user.user_name}" %> 
-<%= subscribe_to "/desks/#{@user.user_name}" %> 
+<%= subscribe_to "/workstations/#{@user.user_name}" %> 
 <%= subscribe_to "/readers/#{@user.user_name}" %> 
 

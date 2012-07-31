@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :transcript, class: Transcript do |transcript|
     transcript.transcript_user_id 22
-    transcript.transcript_desk_id 11
+    transcript.transcript_workstation_id 11
     transcript.start_time "2012-04-29 17:52:39"
     transcript.end_time "2012-04-29 18:52:39"
     association :user, factory: :user

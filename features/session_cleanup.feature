@@ -8,7 +8,7 @@ Feature: Periodic session clean up
 
   @auto_signout1
   Scenario: Auto sign out
-    Given the following desk records
+    Given the following workstation records
       | name         | abrev  | job_type | user_id |
       | CUS North    | CUSN   | td       | 0       |
       | CUS South    | CUSS   | td       | 0       |
@@ -18,7 +18,7 @@ Feature: Periodic session clean up
     And I click "AML"
     And My last heartbeat was 22 seconds ago
     When I close the browser without signing out
-    Then I should not be working any desks
+    Then I should not be working any workstations
     And I should have no recipients
 
   

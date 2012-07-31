@@ -27,17 +27,17 @@ Given /^I am registered administrative user "(.*?)" with password "(.*?)"$/ do |
                              password_confirmation: passwd)
 end
 
-Given /^I am logged in at "(.*?)"$/ do |desk|
+Given /^I am logged in at "(.*?)"$/ do |workstation|
   visit signin_path
   sleep 1
   fill_in "User name", :with => @user.user_name
   fill_in "Password", :with => @user.password
-  check desk
+  check workstation
   click_button "Sign In"
 end
 
-When /^I check desk "(.*?)"$/ do |desk|
-  check desk
+When /^I check workstation "(.*?)"$/ do |workstation|
+  check workstation
 end
 
 Given /^I am on the sign in page$/ do
@@ -52,12 +52,12 @@ Then /^I should see that registration was successful$/ do
   page.should have_content("Registration was successful! Sign in now to access Messenger.")
 end
 
-Then /^I should see that desk "(.*?)" is checked$/ do |desk_abrev|
-  find("input##{desk_abrev}").should be_checked
+Then /^I should see that workstation "(.*?)" is checked$/ do |workstation_abrev|
+  find("input##{workstation_abrev}").should be_checked
 end
 
-Then /^I should see that desk "(.*?)" is not checked$/ do |desk_abrev|
-  find("input##{desk_abrev}").should_not be_checked
+Then /^I should see that workstation "(.*?)" is not checked$/ do |workstation_abrev|
+  find("input##{workstation_abrev}").should_not be_checked
 end
 
 Then /^I should see the sign in page$/ do
@@ -73,6 +73,6 @@ Then /^I should see my user home page$/ do
   page.should have_content(@user.user_name)
 end
 
-Then /^I should not be working any desks$/ do
-  Desk.all.each { |desk| desk.user_id.should_not == @user.id }
+Then /^I should not be working any workstations$/ do
+  Workstation.all.each { |workstation| workstation.user_id.should_not == @user.id }
 end

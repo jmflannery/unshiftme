@@ -78,8 +78,8 @@ describe TranscriptsController do
 
   describe "GET 'new'" do
 
-    let!(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
-    let!(:cuss) { FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td") }
+    let!(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let!(:cuss) { FactoryGirl.create(:workstation, name: "CUS South", abrev: "CUSS", job_type: "td") }
 
     before(:each) do
       test_sign_in(@admin_user)
@@ -100,19 +100,19 @@ describe TranscriptsController do
       response.body.should have_selector("title", content: "New Transcript")
     end
 
-    it "gets all desks" do
+    it "gets all workstations" do
       get :new
-      assigns(:desks).should include cusn.abrev
-      assigns(:desks).should include cusn.abrev
+      assigns(:workstations).should include cusn.abrev
+      assigns(:workstations).should include cusn.abrev
     end
   end
 
   describe "POST 'create'" do
 
     let!(:transcript_user) { FactoryGirl.create(:user) }
-    let!(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let!(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
     let(:transcript_attrs) {{ transcript_user_id: transcript_user.user_name,
-                              transcript_desk_id: cusn.abrev,
+                              transcript_workstation_id: cusn.abrev,
                               start_time: "2012-04-29 17:52:39",
                               end_time: "2012-04-29 18:30:22"
     }}
@@ -121,8 +121,8 @@ describe TranscriptsController do
       test_sign_in(@admin_user)
     end
 
-    context "with no transcript user or desk id" do
-      before { transcript_attrs.merge!({transcript_user_id: "", transcript_desk_id: ""}) }
+    context "with no transcript user or workstation id" do
+      before { transcript_attrs.merge!({transcript_user_id: "", transcript_workstation_id: ""}) }
      
       it "redirects to the new transcript page" do
         post :create, transcript: transcript_attrs
@@ -136,8 +136,8 @@ describe TranscriptsController do
       end
     end
 
-    context "with a transcript user and no transcript desk" do
-      before { transcript_attrs.merge!({transcript_desk_id: ""}) }
+    context "with a transcript user and no transcript workstation" do
+      before { transcript_attrs.merge!({transcript_workstation_id: ""}) }
      
       it "redirects to the transcript show page" do
         post :create, transcript: transcript_attrs
@@ -151,7 +151,7 @@ describe TranscriptsController do
       end
     end
     
-    context "with a transcript desk and no transcript user" do
+    context "with a transcript workstation and no transcript user" do
       before { transcript_attrs.merge!({transcript_user_id: ""}) }
      
       it "redirects to the transcript show page" do
@@ -166,7 +166,7 @@ describe TranscriptsController do
       end
     end
     
-    context "with a transcript desk and a transcript user" do
+    context "with a transcript workstation and a transcript user" do
       
       it "redirects to the transcript show page" do
         post :create, transcript: transcript_attrs

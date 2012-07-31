@@ -18,12 +18,12 @@ require 'spec_helper'
 
 describe User do
 
-  let!(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
-  let(:cuss) { FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td") }
-  let!(:aml) { FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td") }
-  let(:ydctl) { FactoryGirl.create(:desk, name: "Yard Control", abrev: "YDCTL", job_type: "ops") }
-  let(:ydmstr) { FactoryGirl.create(:desk, name: "Yard Master", abrev: "YDMSTR", job_type: "ops") }
-  let(:glhs) { FactoryGirl.create(:desk, name: "Glasshouse", abrev: "GLHS", job_type: "ops") }
+  let!(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
+  let(:cuss) { FactoryGirl.create(:workstation, name: "CUS South", abrev: "CUSS", job_type: "td") }
+  let!(:aml) { FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML", job_type: "td") }
+  let(:ydctl) { FactoryGirl.create(:workstation, name: "Yard Control", abrev: "YDCTL", job_type: "ops") }
+  let(:ydmstr) { FactoryGirl.create(:workstation, name: "Yard Master", abrev: "YDMSTR", job_type: "ops") }
+  let(:glhs) { FactoryGirl.create(:workstation, name: "Glasshouse", abrev: "GLHS", job_type: "ops") }
 
   before(:each) do
     @user = User.new(user_name: "smith", password: "foobar", password_confirmation: "foobar")
@@ -120,16 +120,16 @@ describe User do
     end
   end
 
-  describe "desk associations" do
+  describe "workstation associations" do
 
     before(:each) do
-      subject.normal_desks = [cusn.abrev, cuss.abrev]
+      subject.normal_workstations = [cusn.abrev, cuss.abrev]
     end
 
-    it { should respond_to(:normal_desks) }
+    it { should respond_to(:normal_workstations) }
 
-    it "has the right desks" do
-      subject.normal_desks.should == [cusn.abrev, cuss.abrev]
+    it "has the right workstations" do
+      subject.normal_workstations.should == [cusn.abrev, cuss.abrev]
     end
   end
   
@@ -185,30 +185,30 @@ describe User do
     describe "handle" do
 
       before do
-        #FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td")
-        #FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td")
-        subject.authenticate_desk("CUSN" => 1, "AML" => 1)
+        #FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td")
+        #FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML", job_type: "td")
+        subject.authenticate_workstation("CUSN" => 1, "AML" => 1)
       end
 
-      it "returns a string in the format user_name@desk,desk" do
+      it "returns a string in the format user_name@workstation,workstation" do
         subject.handle.should == "smith@CUSN,AML"
       end
     end
 
-    describe "Desk" do
+    describe "Workstation" do
       
       before(:each) do
         @params = { key: "val", "CUSN" => 1, "AML" => 1, anotherkey: "val" }
-        #FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td")
-        #FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td")
+        #FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td")
+        #FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML", job_type: "td")
       end
 
-      describe "authenticate_desk" do
+      describe "authenticate_workstation" do
         
-        it "parses the user params and assiges control of each desk to the user" do
-          subject.authenticate_desk(@params)
-          Desk.find_by_abrev("CUSN").user_id.should == subject.id  
-          Desk.find_by_abrev("AML").user_id.should == subject.id  
+        it "parses the user params and assiges control of each workstation to the user" do
+          subject.authenticate_workstation(@params)
+          Workstation.find_by_abrev("CUSN").user_id.should == subject.id  
+          Workstation.find_by_abrev("AML").user_id.should == subject.id  
         end
       end
 
@@ -216,8 +216,8 @@ describe User do
       
         it "assignes the jobs to the user" do
           subject.start_jobs([cusn.abrev, aml.abrev])
-          Desk.find_by_abrev("CUSN").user_id.should == subject.id  
-          Desk.find_by_abrev("AML").user_id.should == subject.id  
+          Workstation.find_by_abrev("CUSN").user_id.should == subject.id  
+          Workstation.find_by_abrev("AML").user_id.should == subject.id  
         end
       end
 
@@ -225,69 +225,69 @@ describe User do
 
         it "assignes the job to the user" do
           subject.start_job(cusn.abrev)
-          Desk.find_by_abrev("CUSN").user_id.should == subject.id  
+          Workstation.find_by_abrev("CUSN").user_id.should == subject.id  
         end
       end
 
-      describe "desks" do
+      describe "workstations" do
 
         before(:each) do
-          subject.authenticate_desk(@params)
+          subject.authenticate_workstation(@params)
         end
 
-        it "returns a list of all the desk id's under the control of the user" do
-          subject.desks.should be_kind_of Array
-          subject.desks.should == [Desk.find_by_abrev("CUSN").id, Desk.find_by_abrev("AML").id]
+        it "returns a list of all the workstation id's under the control of the user" do
+          subject.workstations.should be_kind_of Array
+          subject.workstations.should == [Workstation.find_by_abrev("CUSN").id, Workstation.find_by_abrev("AML").id]
         end
 
-        it "returns an empty list of the user has no desks" do
+        it "returns an empty list of the user has no workstations" do
           @user2 = FactoryGirl.build(:user)
-          @user2.desks.should == []
+          @user2.workstations.should == []
         end
       end
       
-      describe "desk_names" do
+      describe "workstation_names" do
 
         before(:each) do
-          subject.authenticate_desk(@params)
+          subject.authenticate_workstation(@params)
         end
 
-        it "returns a list of all the desk abreviation names under the control of the user" do
-          subject.desk_names.should == [Desk.find_by_abrev("CUSN").abrev, Desk.find_by_abrev("AML").abrev]
+        it "returns a list of all the workstation abreviation names under the control of the user" do
+          subject.workstation_names.should == [Workstation.find_by_abrev("CUSN").abrev, Workstation.find_by_abrev("AML").abrev]
         end
 
-        it "returns an empty list of the user has no desks" do
+        it "returns an empty list of the user has no workstations" do
           @user2 = FactoryGirl.build(:user)
-          @user2.desk_names.should == []
+          @user2.workstation_names.should == []
         end
       end
 
-      describe "desk_names_str" do
+      describe "workstation_names_str" do
 
         before(:each) do
-          subject.authenticate_desk(@params)
+          subject.authenticate_workstation(@params)
         end
 
-        it "returns a list of all the desk abreviation names under the control of the user as a string seperated by commas" do
-          subject.desk_names_str.should == "#{Desk.find_by_abrev("CUSN").abrev},#{Desk.find_by_abrev("AML").abrev}"
+        it "returns a list of all the workstation abreviation names under the control of the user as a string seperated by commas" do
+          subject.workstation_names_str.should == "#{Workstation.find_by_abrev("CUSN").abrev},#{Workstation.find_by_abrev("AML").abrev}"
         end
 
-        it "returns an empty string of the user has no desks" do
+        it "returns an empty string of the user has no workstations" do
           @user2 = FactoryGirl.build(:user)
-          @user2.desk_names_str.should == ""
+          @user2.workstation_names_str.should == ""
         end
       end
 
-      describe "leave_desk" do
+      describe "leave_workstation" do
 
         before(:each) do
-          subject.authenticate_desk(@params)
+          subject.authenticate_workstation(@params)
         end
 
-        it "relinqishes control of all desks belonging to the given user" do
-          subject.leave_desk
-          Desk.find_by_abrev("CUSN").user_id.should == 0
-          Desk.find_by_abrev("AML").user_id.should == 0
+        it "relinqishes control of all workstations belonging to the given user" do
+          subject.leave_workstation
+          Workstation.find_by_abrev("CUSN").user_id.should == 0
+          Workstation.find_by_abrev("AML").user_id.should == 0
         end
       end
     end
@@ -295,28 +295,28 @@ describe User do
     describe "add_recipients" do
 
       before(:each) do
-        @desks = [cusn, cuss]
-        @recipients = subject.add_recipients(@desks)
+        @workstations = [cusn, cuss]
+        @recipients = subject.add_recipients(@workstations)
       end
 
-      it "adds the list of desks to the user's recipients" do
-        subject.recipients.size.should == @desks.size
+      it "adds the list of workstations to the user's recipients" do
+        subject.recipients.size.should == @workstations.size
         subject.recipients.each do |recipient|
-          @desks.map { |d| d.id }.should include recipient.desk_id
+          @workstations.map { |d| d.id }.should include recipient.workstation_id
         end
       end
 
       it "doesn't add any duplicate recipients" do
         size1 = subject.recipients.size
-        subject.add_recipients(@desks)
+        subject.add_recipients(@workstations)
         size2 = subject.recipients.size
         size2.should == size1
       end
 
-      it "doesn't add a desk as a recipient if the user is currently controlling that desk" do
-        subject.authenticate_desk(aml.abrev => 1)
-        @desks << aml
-        subject.add_recipients(@desks)
+      it "doesn't add a workstation as a recipient if the user is currently controlling that workstation" do
+        subject.authenticate_workstation(aml.abrev => 1)
+        @workstations << aml
+        subject.add_recipients(@workstations)
         subject.should_not be_messaging aml.id
       end
 
@@ -328,12 +328,12 @@ describe User do
     describe "add_recipient" do
 
       #before(:each) do
-      #  @ydmstr = FactoryGirl.create(:desk, name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
+      #  @ydmstr = FactoryGirl.create(:workstation, name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
       #end
 
-      it "adds the desk id's to the user's recipients" do
+      it "adds the workstation id's to the user's recipients" do
         subject.add_recipient(ydmstr)
-        subject.recipients[0].desk_id.should == ydmstr.id
+        subject.recipients[0].workstation_id.should == ydmstr.id
       end
 
       it "doesn't not add any duplicate recipients" do
@@ -344,22 +344,22 @@ describe User do
         size2.should == size1
       end
       
-      it "doesn't add a desk as a recipient if the user is currently controlling that desk" do
-        subject.authenticate_desk(ydmstr.abrev => 1)
+      it "doesn't add a workstation as a recipient if the user is currently controlling that workstation" do
+        subject.authenticate_workstation(ydmstr.abrev => 1)
         subject.add_recipient(ydmstr)
         subject.should_not be_messaging ydmstr.id
       end
     end
     
-    describe "recipient_desk_ids" do
+    describe "recipient_workstation_ids" do
 
       before(:each) do
         subject.add_recipient(ydmstr)
         subject.add_recipient(glhs)
       end
 
-      it "returns an array of the user's recipient's desk_ids" do
-        subject.recipient_desk_ids.should == [ydmstr.id, glhs.id]
+      it "returns an array of the user's recipient's workstation_ids" do
+        subject.recipient_workstation_ids.should == [ydmstr.id, glhs.id]
       end
     end
 
@@ -412,8 +412,8 @@ describe User do
         subject.status.should be_false
       end
 
-      it "signs the user out of all desks" do
-        subject.desks.should == []
+      it "signs the user out of all workstations" do
+        subject.workstations.should == []
       end
 
       it "deletes all of the users recipients" do
@@ -425,10 +425,10 @@ describe User do
     describe "messaging?" do
       
       before do 
-        @recipient = FactoryGirl.create(:recipient, user: subject, desk_id: cusn.id)
+        @recipient = FactoryGirl.create(:recipient, user: subject, workstation_id: cusn.id)
       end
       
-      it "returns true if the given desk is a recipient of the user" do
+      it "returns true if the given workstation is a recipient of the user" do
         subject.messaging?(cusn.id).should be_true
         subject.messaging?(cuss.id).should be_false
       end
@@ -437,10 +437,10 @@ describe User do
     describe "recipient_id" do
 
       before do
-        @recipient = FactoryGirl.create(:recipient, user: subject, desk_id: cusn.id)
+        @recipient = FactoryGirl.create(:recipient, user: subject, workstation_id: cusn.id)
       end
       
-      it "returns the recipient_id associated with the given desk_id" do
+      it "returns the recipient_id associated with the given workstation_id" do
         subject.recipient_id(cusn.id).should eq(@recipient.id)
       end
     end
@@ -448,8 +448,8 @@ describe User do
     describe "delete_all_recipients" do
       
       before do
-        FactoryGirl.create(:recipient, user: subject, desk_id: cusn.id)
-        FactoryGirl.create(:recipient, user: subject, desk_id: aml.id)
+        FactoryGirl.create(:recipient, user: subject, workstation_id: cusn.id)
+        FactoryGirl.create(:recipient, user: subject, workstation_id: aml.id)
       end
       it "deletes all of the user's recipients" do
         subject.recipients.size.should == 2
@@ -488,9 +488,9 @@ describe User do
           user1.status.should_not be_true
         end
 
-        it "signs the user out of all desks" do
-          user1.desks.should == []
-          subject.desks.should == [cusn.id]
+        it "signs the user out of all workstations" do
+          user1.workstations.should == []
+          subject.workstations.should == [cusn.id]
         end
 
         it "destroys all of the user's recipients" do

@@ -2,16 +2,16 @@ class RecipientsController < ApplicationController
   before_filter :authenticate
 
   def create
-    if params[:desk_id] == "all"
-      @recipients = current_user.add_recipients(Desk.all)
+    if params[:workstation_id] == "all"
+      @recipients = current_user.add_recipients(Workstation.all)
     else
-      desk = Desk.find_by_id(params[:desk_id])
-      recipient_user = User.find_by_id(desk.user_id) if desk
-      if recipient_user and recipient_user.desks.size > 1
-        desks = recipient_user.desks.map { |desk_id| Desk.find(desk_id) }
-        @recipients = current_user.add_recipients(desks)
+      workstation = Workstation.find_by_id(params[:workstation_id])
+      recipient_user = User.find_by_id(workstation.user_id) if workstation
+      if recipient_user and recipient_user.workstations.size > 1
+        workstations = recipient_user.workstations.map { |workstation_id| Workstation.find(workstation_id) }
+        @recipients = current_user.add_recipients(workstations)
       else
-        @recipient = current_user.add_recipient(desk) if desk
+        @recipient = current_user.add_recipient(workstation) if workstation
       end
     end
   end
@@ -26,10 +26,10 @@ class RecipientsController < ApplicationController
       if recipient
         @recipients = []
         
-        desk1 = Desk.find_by_id(recipient.desk_id)
-        recip_user = User.find_by_id(desk1.user_id) if desk1
+        workstation1 = Workstation.find_by_id(recipient.workstation_id)
+        recip_user = User.find_by_id(workstation1.user_id) if workstation1
         if recip_user
-          @recipients = recip_user.desks.map { |desk_id| current_user.recipients.find_by_desk_id(desk_id) }
+          @recipients = recip_user.workstations.map { |workstation_id| current_user.recipients.find_by_workstation_id(workstation_id) }
           @recipients.each { |recip| recip.destroy }
         else
           recipient.destroy

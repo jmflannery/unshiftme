@@ -18,9 +18,9 @@ class Attachment < ActiveRecord::Base
   def set_recievers
     recievers_list = []
     user.recipients.each do |recipient|
-      desk = Desk.find_by_id(recipient.desk_id)
-      recip_user = User.find_by_id(desk.user_id)
-      node = { desk_id: desk.id }
+      workstation = Workstation.find_by_id(recipient.workstation_id)
+      recip_user = User.find_by_id(workstation.user_id)
+      node = { workstation_id: workstation.id }
       node = node.merge({ user_id: recip_user.id }) if recip_user
       recievers_list << node
     end

@@ -124,12 +124,12 @@ $(function() {
           url: "/session/new.json",
           data: { "user": name },
           success: function(response) {
-            if (response.normal_desks) {
+            if (response.normal_workstations) {
               $("input:checkbox").removeAttr("checked");
-              var normal_desks = response.normal_desks.split(",");
+              var normal_workstations = response.normal_workstations.split(",");
               var i;
-              for (i = 0; i < normal_desks.length; i++) {
-                $("input#" + normal_desks[i]).prop("checked", true);
+              for (i = 0; i < normal_workstations.length; i++) {
+                $("input#" + normal_workstations[i]).prop("checked", true);
               }
             }
           }
@@ -148,8 +148,8 @@ var putData = function() {
 
 $(function() {
   if ($('#recipient_workstation_selection').length > 0) {
-    $('#CUSN').data("desk_status", "owner");
-    console.log($('#CUSN').data("desk_status"));
+    $('#CUSN').data("workstation_status", "owner");
+    console.log($('#CUSN').data("workstation_status"));
   }
 });
 
@@ -161,15 +161,15 @@ var toggle_recipient = function() {
   state = $(this).onOff();
   
   if (state && state == "off") { 
-    var innerEl = $(this).find(".recipient_desk_id");
-    desk = $(innerEl).getNumberClass();
+    var innerEl = $(this).find(".recipient_workstation_id");
+    workstation = $(innerEl).getNumberClass();
 
-    if (desk) {
+    if (workstation) {
       // POST - recipients#create
       $.ajax( {
         type: "POST", 
         url: "/recipients",
-        data: { "desk_id": desk },
+        data: { "workstation_id": workstation },
         success: function(response) {
           response;
         }
@@ -180,7 +180,7 @@ var toggle_recipient = function() {
     var recipient_index = $(this).getNumberClass();
     
     if (recipient_index) {
-      // DELETE - desks#destroy
+      // DELETE - workstations#destroy
       $.ajax( {
         type: "POST", 
         url: "/recipients/" + recipient_index,
@@ -194,15 +194,15 @@ var toggle_recipient = function() {
 };
 
 $(function() {
-  $(".recipient_desk.on").click(toggle_recipient);
-  $(".recipient_desk.off").click(toggle_recipient);
+  $(".recipient_workstation.on").click(toggle_recipient);
+  $(".recipient_workstation.off").click(toggle_recipient);
 });
 
 ///////////////////////////////////
-// Toggle all (desks)
+// Toggle all (workstations)
 //////////////////////////////////
 
-var toggle_all_desks = function() {
+var toggle_all_workstations = function() {
   $(this).toggleClass("all");
   $(this).toggleClass("none");
 
@@ -213,7 +213,7 @@ var toggle_all_desks = function() {
     $.ajax( {
       type: "POST", 
       url: "/recipients",
-      data: { "desk_id": "all" },
+      data: { "workstation_id": "all" },
       success: function(response) {
         response;
       }
@@ -221,7 +221,7 @@ var toggle_all_desks = function() {
   } else {
     $(this).html("<p>Message</br>all</p>"); 
 
-    // DELETE - desks#destroy all
+    // DELETE - workstations#destroy all
     $.ajax( {
       type: "POST", 
       url: "/recipients/all",
@@ -234,7 +234,7 @@ var toggle_all_desks = function() {
 }
 
 $(function() {
-  $("#toggle_all_desks").click(toggle_all_desks);
+  $("#toggle_all_workstations").click(toggle_all_workstations);
 });
 
 ///////////////////////////////////
@@ -300,24 +300,24 @@ $(function() {
 
 
 ////////////////////////////////////
-// Desk radio buttons
+// Workstation radio buttons
 ////////////////////////////////////
 $(function() {
-  $("#td_desks input").click(function() {
-    $("#ops_desks input").removeAttr("checked");
+  $("#td_workstations input").click(function() {
+    $("#ops_workstations input").removeAttr("checked");
   });
   $("input#YDCTL").click(function() {
-    $("#td_desks input").removeAttr("checked");
+    $("#td_workstations input").removeAttr("checked");
     $("input#YDMSTR").removeAttr("checked");
     $("input#GLHSE").removeAttr("checked");
   });
   $("input#YDMSTR").click(function() {
-    $("#td_desks input").removeAttr("checked");
+    $("#td_workstations input").removeAttr("checked");
     $("input#YDCTL").removeAttr("checked");
     $("input#GLHSE").removeAttr("checked");
   });
   $("input#GLHSE").click(function() {
-    $("#td_desks input").removeAttr("checked");
+    $("#td_workstations input").removeAttr("checked");
     $("input#YDCTL").removeAttr("checked");
     $("input#YDMSTR").removeAttr("checked");
   });
@@ -418,10 +418,10 @@ $(function() {
     // add click handler to new message element
     $("li.message.recieved.unread").click(read_message);
 
-    // show the sending desk(s) as recipient(s)
+    // show the sending workstation(s) as recipient(s)
     for (var i = 0; i < data.recipient_ids.length; i++) {
       if (data.recipient_ids[i] > 0) {
-        selector = "#" + data.from_desks[i] + ".recipient_desk.off";
+        selector = "#" + data.from_workstations[i] + ".recipient_workstation.off";
         $(selector).removeClass("off").addClass(data.recipient_ids[i].toString()).addClass("on");
       }
     }
@@ -451,10 +451,10 @@ $(function() {
   user_name = $("#main_menu").attr("class");
 
   // register callback
-  PrivatePub.subscribe("/desks/" + user_name, function(data, channel) {
-    var desks = data.desks.split(",");
-    for (var i = 0; i < desks.length; i++) {
-      selector = "#" + desks[i] + " .recipient_user_id"
+  PrivatePub.subscribe("/workstations/" + user_name, function(data, channel) {
+    var workstations = data.workstations.split(",");
+    for (var i = 0; i < workstations.length; i++) {
+      selector = "#" + workstations[i] + " .recipient_user_id"
       $(selector).html("(" + data.name + ")");
     }
   });

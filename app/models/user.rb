@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   has_many :recipients
   has_many :attachments
   
-  serialize :normal_desks
+  serialize :normal_workstations
   
   validates :user_name, presence: true, uniqueness: true
   
@@ -39,30 +39,30 @@ class User < ActiveRecord::Base
   end
 
   def handle
-    "#{user_name}@#{desk_names_str}"
+    "#{user_name}@#{workstation_names_str}"
   end
 
-  def recipient_desk_ids
+  def recipient_workstation_ids
     ids = []
     recipients.each do |recipient|
-      ids << recipient.desk_id
+      ids << recipient.workstation_id
     end
     ids
   end  
 
-  def add_recipients(desks)
+  def add_recipients(workstations)
     recipients = []
-    desks.each do |desk|
-      recipient = add_recipient(desk)
+    workstations.each do |workstation|
+      recipient = add_recipient(workstation)
       recipients << recipient if recipient
     end
     recipients
   end
 
-  def add_recipient(desk)
+  def add_recipient(workstation)
     recipient = nil
-    unless recipient_desk_ids.include?(desk.id) or desks.include?(desk.id)
-      recipient = recipients.create(desk_id: desk.id)
+    unless recipient_workstation_ids.include?(workstation.id) or workstations.include?(workstation.id)
+      recipient = recipients.create(workstation_id: workstation.id)
     end
     recipient
   end
@@ -82,14 +82,14 @@ class User < ActiveRecord::Base
 
   def set_offline
     update_attribute(:status, false)
-    leave_desk
+    leave_workstation
     delete_all_recipients
   end
 
   def remove_stale_recipients
     stale_recipients = []
     self.recipients.each do |recipient|
-      r_user = User.find_by_id(Desk.find(recipient.desk_id).user_id)
+      r_user = User.find_by_id(Workstation.find(recipient.workstation_id).user_id)
       if r_user.status == false || (r_user.heartbeat < Time.now - 4) 
         stale_recipients << recipient 
         r_user.set_offline
@@ -99,19 +99,19 @@ class User < ActiveRecord::Base
     self.save validate: false
   end
 
-  def authenticate_desk(params)
+  def authenticate_workstation(params)
     params.each do |key, val|
-      desk = Desk.find_by_abrev(key)
-      if desk
-        desk.user_id = self.id
-        desk.save
+      workstation = Workstation.find_by_abrev(key)
+      if workstation
+        workstation.user_id = self.id
+        workstation.save
       end
     end
     true
   end
 
   def start_job(job_abrev)
-    job = Desk.find_by_abrev(job_abrev)
+    job = Workstation.find_by_abrev(job_abrev)
     job.user_id = self.id
     job.save
   end
@@ -122,43 +122,43 @@ class User < ActiveRecord::Base
     end
   end
 
-  def desks
-    Desk.of_user(self.id).collect { |desk| desk.id }
+  def workstations
+    Workstation.of_user(self.id).collect { |workstation| workstation.id }
   end
 
-  def desk_names
-    Desk.of_user(self.id).collect { |desk| desk.abrev }
+  def workstation_names
+    Workstation.of_user(self.id).collect { |workstation| workstation.abrev }
   end
 
-  def desk_names_str
-    desks = ""
-    desk_names.each_with_index do |desk_name, i|
-      desks += "," unless i == 0
-      desks += desk_name
+  def workstation_names_str
+    workstations = ""
+    workstation_names.each_with_index do |workstation_name, i|
+      workstations += "," unless i == 0
+      workstations += workstation_name
     end
-    desks
+    workstations
   end
 
-  def leave_desk
-    desks.each do |desk_id|
-      desk = Desk.find(desk_id)
-      desk.update_attributes({user_id: 0})
+  def leave_workstation
+    workstations.each do |workstation_id|
+      workstation = Workstation.find(workstation_id)
+      workstation.update_attributes({user_id: 0})
     end
   end
 
-  def messaging?(desk_id)
+  def messaging?(workstation_id)
     recipients.each do |recipient|
-      if recipient.desk_id == desk_id
+      if recipient.workstation_id == workstation_id
         return true
       end
     end
     false
   end
 
-  def recipient_id(desk_id)
+  def recipient_id(workstation_id)
     recipient_id = nil  
     recipients.each do |recipient|
-      if recipient.desk_id == desk_id
+      if recipient.workstation_id == workstation_id
         recipient_id = recipient.id 
         break
       end

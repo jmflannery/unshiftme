@@ -95,7 +95,7 @@ describe UsersController do
       end
 
       it "renders a checkbox for each workstation" do
-        workstation = FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", user_id: 0)
+        workstation = FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", user_id: 0)
         post :create, user: @fail_attr
         response.body.should have_selector("input##{workstation.abrev}")
       end
@@ -131,12 +131,12 @@ describe UsersController do
         assigns(:user).should_not be_admin
       end
 
-      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN") }
-      let(:aml) { @aml = FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS") }
+      let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN") }
+      let(:aml) { @aml = FactoryGirl.create(:workstation, name: "CUS South", abrev: "CUSS") }
       
-      it "sets the user's normal_desks attribute, given valid parameters" do
+      it "sets the user's normal_workstations attribute, given valid parameters" do
         post :create, user: @success_attr, cusn.abrev => "1", aml.abrev => 1
-        assigns(:user).normal_desks.should == ["CUSN", "CUSS"]
+        assigns(:user).normal_workstations.should == ["CUSN", "CUSS"]
       end
     end
   end

@@ -7,7 +7,7 @@ Feature: Sign out
   
   @sign_out1
   Scenario: Sign out
-    Given the following desk records
+    Given the following workstation records
       | name         | abrev  | job_type | user_id |
       | CUS North    | CUSN   | td       | 0       |
     And I am registered user "fred" with password "secret"
@@ -17,7 +17,7 @@ Feature: Sign out
 
   @sign_out2
   Scenario: Sign out clears my recipients
-    Given the following desk records
+    Given the following workstation records
       | name         | abrev  | job_type | user_id |
       | CUS North    | CUSN   | td       | 0       |
       | CUS South    | CUSS   | td       | 0       |
@@ -33,8 +33,8 @@ Feature: Sign out
     Then I should see that I am not messaging "CUSS,AML"
 
   @sign_out3
-  Scenario: Sign out signs me out of all desks I am working
-    Given the following desk records
+  Scenario: Sign out signs me out of all workstations I am working
+    Given the following workstation records
       | name         | abrev  | job_type | user_id |
       | CUS North    | CUSN   | td       | 0       |
       | CUS South    | CUSS   | td       | 0       |
@@ -43,5 +43,5 @@ Feature: Sign out
     And I am logged in as "bill" with password "secret" at "CUSN,CUSS,AML"
     When I click link "Sign out"
     And I wait 1 second
-    Then I should not be working any desks
+    Then I should not be working any workstations
 

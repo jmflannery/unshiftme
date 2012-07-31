@@ -7,10 +7,10 @@ Given /^the following messages$/ do |table|
     message.id = hash["id"] if hash.has_key?("id")
     message.sent = [hash["from"]] if hash.has_key?("from")
     to_user = hash.has_key?("to_user") ? hash["to_user"] : ""
-    to_desk = hash.has_key?("to_desk") ? hash["to_desk"] : ""
-    message.recievers = {to_desk => to_user}
+    to_workstation = hash.has_key?("to_workstation") ? hash["to_workstation"] : ""
+    message.recievers = {to_workstation => to_user}
     if hash.has_key?("read") and hash["read"] == "t"
-      message.read_by = {to_user => to_desk}
+      message.read_by = {to_user => to_workstation}
     end
     if hash.has_key?("created_at")
       if hash["created_at"].include?("ago")
@@ -37,62 +37,62 @@ Then /^I should not see unread recieved message (\d+) "(.*?)"$/ do |id, content|
   page.should_not have_selector("li.message.msg-#{id}.recieved.unread")
 end
 
-Then /^I should see sent message (\d+) "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |id, content, desk_abrev, user_name|
+Then /^I should see sent message (\d+) "(.*?)" from workstation "(.*?)" user "(.*?)" one time$/ do |id, content, workstation_abrev, user_name|
   selector = "li.message.msg-#{id}.owner" 
   page.should have_selector(selector, count: 1)
   within(selector) do
     page.should have_content(content)
-    page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}")
+    page.should have_selector(".message_sender p", text: "#{user_name}@#{workstation_abrev}")
   end
 end
 
-Then /^I should see recieved message (\d+) "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |id, content, desk_abrev, user_name|
+Then /^I should see recieved message (\d+) "(.*?)" from workstation "(.*?)" user "(.*?)" one time$/ do |id, content, workstation_abrev, user_name|
   selector = "li.message.msg-#{id}.recieved.read" 
   page.should have_selector(selector, count: 1)
   within(selector) do
-    page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}")
+    page.should have_selector(".message_sender p", text: "#{user_name}@#{workstation_abrev}")
     page.should have_content(content)
   end
 end
 
-Then /^I should see unread recieved message (\d+) "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |id, content, desk_abrev, user_name|
+Then /^I should see unread recieved message (\d+) "(.*?)" from workstation "(.*?)" user "(.*?)" one time$/ do |id, content, workstation_abrev, user_name|
   selector = "li.message.msg-#{id}.recieved.unread" 
   page.should have_selector(selector, count: 1)
   within(selector) do
-    page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}")
+    page.should have_selector(".message_sender p", text: "#{user_name}@#{workstation_abrev}")
     page.should have_content(content)
   end
 end
 
-Then /^I should see desk "(.*?)" user "(.*?)" read message (\d+)$/ do |desk_abrev, user_name, id|
+Then /^I should see workstation "(.*?)" user "(.*?)" read message (\d+)$/ do |workstation_abrev, user_name, id|
   within("li.message.msg-#{id}") do
-    page.should have_content("#{user_name}@#{desk_abrev} read this.")
+    page.should have_content("#{user_name}@#{workstation_abrev} read this.")
   end
 end
 
-Then /^I should not see desk "(.*?)" user "(.*?)" read message (\d+)$/ do |desk_abrev, user_name, id|
+Then /^I should not see workstation "(.*?)" user "(.*?)" read message (\d+)$/ do |workstation_abrev, user_name, id|
   within("li.message.msg-#{id}") do
-    page.should_not have_content("#{user_name}@#{desk_abrev} read this.")
+    page.should_not have_content("#{user_name}@#{workstation_abrev} read this.")
   end
 end
 
-Then /^I should not see recieved message "(.*?)" from desk "(.*?)" user "(.*?)"$/ do |message_content, desk_abrev, user_name|
-  page.should_not have_selector(".message_sender p", text: "#{desk_abrev} (#{user_name})")
+Then /^I should not see recieved message "(.*?)" from workstation "(.*?)" user "(.*?)"$/ do |message_content, workstation_abrev, user_name|
+  page.should_not have_selector(".message_sender p", text: "#{workstation_abrev} (#{user_name})")
   page.should_not have_content message_content
 end
 
-Then /^I should see sent message "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |message_content, desk_abrev, user_name|
-  page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}")
+Then /^I should see sent message "(.*?)" from workstation "(.*?)" user "(.*?)" one time$/ do |message_content, workstation_abrev, user_name|
+  page.should have_selector(".message_sender p", text: "#{user_name}@#{workstation_abrev}")
   page.should have_selector("li.message.owner", text: @message)
 end
 
-Then /^I should see recieved message "(.*?)" from desk "(.*?)" user "(.*?)" one time$/ do |message_content, desk_abrev, user_name|
-  page.should have_selector(".message_sender p", text: "#{user_name}@#{desk_abrev}", count: 1)
+Then /^I should see recieved message "(.*?)" from workstation "(.*?)" user "(.*?)" one time$/ do |message_content, workstation_abrev, user_name|
+  page.should have_selector(".message_sender p", text: "#{user_name}@#{workstation_abrev}", count: 1)
   page.should have_selector("li.message.recieved", text: message_content, count: 1)
 end
 
-Then /^I should see desk "(.*?)" user "(.*?)" read this$/ do |desk_abrev, user_name|
-  page.should have_content("#{user_name}@#{desk_abrev} read this.")
+Then /^I should see workstation "(.*?)" user "(.*?)" read this$/ do |workstation_abrev, user_name|
+  page.should have_content("#{user_name}@#{workstation_abrev} read this.")
 end
 
 Then /^I should nothing in the "(.*?)" text field$/ do |textfield_id|
@@ -104,58 +104,58 @@ Given /^I click on the recieved message$/ do
 end
 
 When /^I click on each button$/ do
-  @test_records[:desk].each do |desk|
-    find("##{desk.abrev}").click
+  @test_records[:workstation].each do |workstation|
+    find("##{workstation.abrev}").click
   end
 end
 
 When /^I click Message "(.*?)"$/ do |action|
-  find(".recipient_desk.#{action}").click
+  find(".recipient_workstation.#{action}").click
 end
 
-When /^I click "(.*?)"$/ do |desks|
-  desks.split(",").each { |desk| find("##{desk}").click }
+When /^I click "(.*?)"$/ do |workstations|
+  workstations.split(",").each { |workstation| find("##{workstation}").click }
 end
 
-Then /^I should see that I am at "(.*?)"$/ do |desk|
-  page.should have_selector("##{desk}.recipient_desk.mine")
+Then /^I should see that I am at "(.*?)"$/ do |workstation|
+  page.should have_selector("##{workstation}.recipient_workstation.mine")
 end
 
-Then /^I should see each Desk Toggle Button indicate that I am messaging that desk, excluding my own desk "(.*?)"$/ do |desk_abrev|
-  @test_records[:desk].each do |desk|
-    if desk.abrev == desk_abrev
-      page.should have_selector("##{desk.abrev}.recipient_desk.mine")
-      page.should_not have_selector("##{desk.abrev}.on")
+Then /^I should see each Workstation Toggle Button indicate that I am messaging that workstation, excluding my own workstation "(.*?)"$/ do |workstation_abrev|
+  @test_records[:workstation].each do |workstation|
+    if workstation.abrev == workstation_abrev
+      page.should have_selector("##{workstation.abrev}.recipient_workstation.mine")
+      page.should_not have_selector("##{workstation.abrev}.on")
     else
-      page.should have_selector("##{desk.abrev}.recipient_desk.on")
+      page.should have_selector("##{workstation.abrev}.recipient_workstation.on")
     end
   end
 end
 
-Then /^I should see each Desk Toggle Button indicate that I am not messaging that desk, excluding my own desk "(.*?)"$/ do |desk_abrev|
-  @test_records[:desk].each do |desk|
-    if desk.abrev == desk_abrev
-      page.should have_selector("##{desk.abrev}.recipient_desk.mine")
+Then /^I should see each Workstation Toggle Button indicate that I am not messaging that workstation, excluding my own workstation "(.*?)"$/ do |workstation_abrev|
+  @test_records[:workstation].each do |workstation|
+    if workstation.abrev == workstation_abrev
+      page.should have_selector("##{workstation.abrev}.recipient_workstation.mine")
     else
-      page.should have_selector("##{desk.abrev}.recipient_desk.off")
+      page.should have_selector("##{workstation.abrev}.recipient_workstation.off")
     end
   end
 end
 
-Then /^I should see that I am messaging "(.*?)"$/ do |desks|
-  desks.split(",").each { |desk| page.should have_selector("##{desk}.recipient_desk.on") }
+Then /^I should see that I am messaging "(.*?)"$/ do |workstations|
+  workstations.split(",").each { |workstation| page.should have_selector("##{workstation}.recipient_workstation.on") }
 end
 
-Then /^I should see that I am not messaging "(.*?)"$/ do |desks|
-  desks.split(",").each { |desk| page.should_not have_selector("##{desk}.recipient_desk.on") }
+Then /^I should see that I am not messaging "(.*?)"$/ do |workstations|
+  workstations.split(",").each { |workstation| page.should_not have_selector("##{workstation}.recipient_workstation.on") }
 end
 
-Then /^I should see that "(.*?)" is at "(.*?)" desk$/ do |user, desks|
-  desks.split(",").each do |desk|
+Then /^I should see that "(.*?)" is at "(.*?)" workstation$/ do |user, workstations|
+  workstations.split(",").each do |workstation|
     if user == "nobody"
-      page.should have_selector("##{desk}", text: "(vacant)")
+      page.should have_selector("##{workstation}", text: "(vacant)")
     else
-      page.should have_selector("##{desk}", text: "(#{user})")
+      page.should have_selector("##{workstation}", text: "(#{user})")
     end
   end
 end

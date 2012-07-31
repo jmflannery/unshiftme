@@ -9,7 +9,7 @@ class TranscriptsController < ApplicationController
     @title = "New Transcript"
     @transcript = Transcript.new
     @users = User.all_user_names
-    @desks = Desk.all_short_names
+    @workstations = Workstation.all_short_names
   end
 
   def create
@@ -50,18 +50,18 @@ class TranscriptsController < ApplicationController
     def validate_transcript_attributes
       @attrs = params[:transcript]
       user = User.find_by_user_name(@attrs[:transcript_user_id])
-      desk = Desk.find_by_abrev(@attrs[:transcript_desk_id])
+      workstation = Workstation.find_by_abrev(@attrs[:transcript_workstation_id])
       if user
         @attrs.merge!({transcript_user_id: user.id})
       else
         @attrs.delete(:transcript_user_id)
       end
-      if desk
-        @attrs.merge!({transcript_desk_id: desk.id})
+      if workstation
+        @attrs.merge!({transcript_workstation_id: workstation.id})
       else
-        @attrs.delete(:transcript_desk_id)
+        @attrs.delete(:transcript_workstation_id)
       end
-      unless @attrs[:transcript_user_id] or @attrs[:transcript_desk_id]
+      unless @attrs[:transcript_user_id] or @attrs[:transcript_workstation_id]
         redirect_to new_transcript_path 
       end
     end

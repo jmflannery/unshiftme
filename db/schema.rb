@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120713200930) do
+ActiveRecord::Schema.define(:version => 20120731131904) do
 
   create_table "attachments", :force => true do |t|
     t.integer  "user_id"
@@ -23,15 +23,6 @@ ActiveRecord::Schema.define(:version => 20120713200930) do
     t.string   "payload_content_type"
     t.integer  "payload_file_size"
     t.datetime "payload_updated_at"
-  end
-
-  create_table "desks", :force => true do |t|
-    t.string   "name",       :limit => 32
-    t.string   "abrev",      :limit => 12
-    t.integer  "user_id"
-    t.datetime "created_at",               :null => false
-    t.datetime "updated_at",               :null => false
-    t.string   "job_type",   :limit => 32
   end
 
   create_table "messages", :force => true do |t|
@@ -47,9 +38,9 @@ ActiveRecord::Schema.define(:version => 20120713200930) do
 
   create_table "recipients", :force => true do |t|
     t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.integer  "desk_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.integer  "workstation_id"
   end
 
   create_table "sessions", :force => true do |t|
@@ -67,20 +58,29 @@ ActiveRecord::Schema.define(:version => 20120713200930) do
     t.integer  "transcript_user_id"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
-    t.integer  "transcript_desk_id"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+    t.integer  "transcript_workstation_id"
   end
 
   create_table "users", :force => true do |t|
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.string   "password_digest"
     t.boolean  "status"
     t.datetime "heartbeat"
     t.string   "user_name"
     t.boolean  "admin"
-    t.string   "normal_desks"
+    t.string   "normal_workstations"
+  end
+
+  create_table "workstations", :force => true do |t|
+    t.string   "name",       :limit => 32
+    t.string   "abrev",      :limit => 12
+    t.integer  "user_id"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.string   "job_type",   :limit => 32
   end
 
 end

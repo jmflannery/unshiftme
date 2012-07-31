@@ -16,13 +16,13 @@ describe Recipient do
   let(:sender) { FactoryGirl.create(:user) }
   let(:reciever) { FactoryGirl.create(:user) }
 
-  let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
-  let(:attr) { { desk_id: cusn.id } }
+  let(:cusn) { Workstation.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+  let(:attr) { { workstation_id: cusn.id } }
 
   let(:recipient) { sender.recipients.create!(attr) }
 
   before(:each) do
-    reciever.authenticate_desk(cusn.abrev => 1)
+    reciever.authenticate_workstation(cusn.abrev => 1)
   end
 
   it "should create a new instance given valid attributes" do

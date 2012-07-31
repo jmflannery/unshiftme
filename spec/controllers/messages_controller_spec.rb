@@ -44,21 +44,21 @@ describe MessagesController do
         end.should change(Message, :count).by(1)
       end
 
-      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
-      let(:cuss) { FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td") }
-      let(:aml) { FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td") }
+      let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:cuss) { FactoryGirl.create(:workstation, name: "CUS South", abrev: "CUSS", job_type: "td") }
+      let(:aml) { FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML", job_type: "td") }
       let(:recip_user) { FactoryGirl.create(:user, user_name: "samson") }
       before do
         recip_user.start_job(cuss.abrev)
         user.start_job(cusn.abrev)
-        FactoryGirl.create(:recipient, user: user, desk_id: cuss.id)
-        FactoryGirl.create(:recipient, user: user, desk_id: aml.id)
+        FactoryGirl.create(:recipient, user: user, workstation_id: cuss.id)
+        FactoryGirl.create(:recipient, user: user, workstation_id: aml.id)
       end
 
-      it "adds the message sender's desk to the recipient list of all of the message's recipient users" do
+      it "adds the message sender's workstation to the recipient list of all of the message's recipient users" do
         post :create, :message => attr, :format => :js
         recip_user.recipients.size.should == 1
-        recip_user.recipients[0].desk_id.should == cusn.id
+        recip_user.recipients[0].workstation_id.should == cusn.id
       end
 
       it "adds each recipient to the message's recievers hash" do
@@ -72,7 +72,7 @@ describe MessagesController do
 
     let(:sender) { FactoryGirl.create(:user) }
     let(:message) { sender.messages.create!(attr) }
-    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
     before(:each) do
       user.start_job(cusn.abrev)
       test_sign_in(user)
@@ -86,7 +86,7 @@ describe MessagesController do
     it "marks the message read by the current user" do
       put :update, id: message.id, format: :jd, remote: true
       message.reload
-      message.read_by.should == { user.user_name => user.desk_names_str }
+      message.read_by.should == { user.user_name => user.workstation_names_str }
     end
   end
 end

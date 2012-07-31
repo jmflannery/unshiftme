@@ -7,7 +7,7 @@ Feature: Heartbeat
 
   @heartbeat1
   Scenario: Heartbeat
-  Given the following desk records
+  Given the following workstation records
      | name         | abrev  | job_type | user_id |
      | CUS North    | CUSN   | td       | 0       |
    And I am registered user "fred" with password "secret"

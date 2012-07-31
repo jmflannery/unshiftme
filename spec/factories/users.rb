@@ -3,7 +3,7 @@ FactoryGirl.define do
     sequence(:user_name) { |n| "person#{n}" }
     password "secret"
     password_confirmation "secret"
-    normal_desks []
+    normal_workstations []
     admin false
     status false
   end

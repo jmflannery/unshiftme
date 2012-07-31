@@ -5,17 +5,17 @@ class SessionsController < ApplicationController
     respond_to do |format| 
       format.html {
         @title = "Sign in"
-        @td_desks = Desk.of_type("td")
-        @ops_desks = Desk.of_type("ops")
+        @td_workstations = Workstation.of_type("td")
+        @ops_workstations = Workstation.of_type("ops")
       }
       format.json { 
         user = User.find_by_user_name(params[:user])
-        normal_desks = ""
-        if user and user.normal_desks
-          user.normal_desks.each { |desk| normal_desks += "#{desk}," }
+        normal_workstations = ""
+        if user and user.normal_workstations
+          user.normal_workstations.each { |workstation| normal_workstations += "#{workstation}," }
         end
-        normal_desks.chomp!(",") unless normal_desks.blank?
-        render json: { normal_desks: normal_desks }
+        normal_workstations.chomp!(",") unless normal_workstations.blank?
+        render json: { normal_workstations: normal_workstations }
       }
     end
   end
@@ -23,10 +23,10 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by_user_name(params[:user_name])
     if user && user.authenticate(params[:password])
-      user.start_jobs(parse_params_for_desks(params))
+      user.start_jobs(parse_params_for_workstations(params))
       sign_in user
 
-      data = { name: user.user_name, desks: user.desk_names_str }
+      data = { name: user.user_name, workstations: user.workstation_names_str }
       send_user_in_or_out_message(data)
 
       redirect_to user
@@ -38,7 +38,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    data = { name: "vacant", desks: current_user.desk_names_str }
+    data = { name: "vacant", workstations: current_user.workstation_names_str }
     send_user_in_or_out_message(data)
     
     sign_out

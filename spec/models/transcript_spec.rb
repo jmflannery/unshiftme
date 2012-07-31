@@ -5,7 +5,7 @@ describe Transcript do
   before(:each) do
     @user = FactoryGirl.create(:user)
     @transcript = @user.transcripts.build(transcript_user_id: 22,
-                                          transcript_desk_id: 2,
+                                          transcript_workstation_id: 2,
                                           start_time: "2012-06-22 16:30",
                                           end_time: "2012-06-22 17:15")
   end
@@ -13,7 +13,7 @@ describe Transcript do
   subject { @transcript }
 
   it { should respond_to(:transcript_user_id) }
-  it { should respond_to(:transcript_desk_id) }
+  it { should respond_to(:transcript_workstation_id) }
   it { should respond_to(:start_time) }
   it { should respond_to(:end_time) }
 
@@ -92,24 +92,24 @@ describe Transcript do
 
   describe "#name" do
 
-    context "with a transcript user and desk" do
+    context "with a transcript user and workstation" do
       let(:transcript_user) { FactoryGirl.create(:user, user_name: "jack") }
-      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
       before do 
         subject.update_attribute(:transcript_user_id, transcript_user.id)
-        subject.update_attribute(:transcript_desk_id, cusn.id)
+        subject.update_attribute(:transcript_workstation_id, cusn.id)
       end
 
-      it "returns the name including the transcript user and desk and start and end_times" do
+      it "returns the name including the transcript user and workstation and start and end_times" do
         subject.name.should == "Transcript for CUSN jack from Jun 22 2012 16:30 to Jun 22 2012 17:15"
       end
     end
 
-    context "with a trancript user and no desk" do
+    context "with a trancript user and no workstation" do
       let(:transcript_user) { FactoryGirl.create(:user, user_name: "jack") }
       before do 
         subject.update_attribute(:transcript_user_id, transcript_user.id)
-        subject.update_attribute(:transcript_desk_id, 0)
+        subject.update_attribute(:transcript_workstation_id, 0)
       end
 
       it "returns the name including the transcript user and start and end_times" do
@@ -117,14 +117,14 @@ describe Transcript do
       end
     end
 
-    context "with a trancript desk and no user" do
-      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+    context "with a trancript workstation and no user" do
+      let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
       before do 
-        subject.update_attribute(:transcript_desk_id, cusn.id)
+        subject.update_attribute(:transcript_workstation_id, cusn.id)
         subject.update_attribute(:transcript_user_id, 0)
       end
 
-      it "returns the name including the transcript desk and start and end_times" do
+      it "returns the name including the transcript workstation and start and end_times" do
         subject.name.should == "Transcript for CUSN from Jun 22 2012 16:30 to Jun 22 2012 17:15"
       end
     end

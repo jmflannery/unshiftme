@@ -1,4 +1,4 @@
-class Desk < ActiveRecord::Base
+class Workstation < ActiveRecord::Base
   attr_accessible :name, :abrev, :job_type, :user_id
 
   scope :of_type, lambda { |type| where("job_type = ?", type) }
@@ -7,7 +7,7 @@ class Desk < ActiveRecord::Base
   default_scope order("id")
 
   def self.all_short_names
-    Desk.all.map { |desk| desk.abrev }
+    Workstation.all.map { |workstation| workstation.abrev }
   end
 
   def description
@@ -17,8 +17,8 @@ class Desk < ActiveRecord::Base
   end
 
   def view_class(user)
-    view_class = "recipient_desk"
-    if user.desks.include?(id)
+    view_class = "recipient_workstation"
+    if user.workstations.include?(id)
       view_class += " mine"
     elsif user.messaging?(id)
       view_class += " on #{user.recipient_id(id)}"
@@ -27,5 +27,5 @@ class Desk < ActiveRecord::Base
     end
     view_class
   end
-
 end
+

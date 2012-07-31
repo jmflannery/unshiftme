@@ -70,43 +70,43 @@ describe Message do
 
   describe "#broadcast" do
 
-    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
-    let(:cuss) { FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td") }
-    let(:glhs) { FactoryGirl.create(:desk, name: "Glasshouse", abrev: "GLHS", job_type: "td") }
+    let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:cuss) { FactoryGirl.create(:workstation, name: "CUS South", abrev: "CUSS", job_type: "td") }
+    let(:glhs) { FactoryGirl.create(:workstation, name: "Glasshouse", abrev: "GLHS", job_type: "td") }
     let(:user1) { FactoryGirl.create(:user) }
     let(:user2) { FactoryGirl.create(:user) }
     let(:message) { FactoryGirl.create(:message, user: user) }
 
     before(:each) do
-      user1.authenticate_desk(cusn.abrev => 1)
-      FactoryGirl.create(:recipient, user: user, desk_id: cusn.id)
-      user2.authenticate_desk(cuss.abrev => 1)
-      FactoryGirl.create(:recipient, user: user, desk_id: cuss.id)
+      user1.authenticate_workstation(cusn.abrev => 1)
+      FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
+      user2.authenticate_workstation(cuss.abrev => 1)
+      FactoryGirl.create(:recipient, user: user, workstation_id: cuss.id)
     end
 
-    it "sends the message to each recipient desk" do
+    it "sends the message to each recipient workstation" do
       recipient_count = user.recipients.size
       PrivatePub.should_receive(:publish_to).exactly(recipient_count).times
       message.broadcast
     end
 
-    it "stores each recipient desk and user (if one exists) in the serialized 'recievers' hash" do
+    it "stores each recipient workstation and user (if one exists) in the serialized 'recievers' hash" do
       message.broadcast
       message.reload
       message.recievers.should == { "CUSN" => user1.user_name, "CUSS" => user2.user_name }
     end
 
-    it "adds the sender's desk to the recipient list of each of the sender's recipients" do
-      user.authenticate_desk(glhs.abrev => 1)
+    it "adds the sender's workstation to the recipient list of each of the sender's recipients" do
+      user.authenticate_workstation(glhs.abrev => 1)
       message.broadcast
-      user1.recipients[0].desk_id.should == glhs.id
-      user2.recipients[0].desk_id.should == glhs.id
+      user1.recipients[0].workstation_id.should == glhs.id
+      user2.recipients[0].workstation_id.should == glhs.id
     end
 
     it "does not broadcast a message more than once to a user working multiple jobs" do
       user1.start_jobs([cusn.abrev, cuss.abrev])
-      FactoryGirl.create(:recipient, user: user, desk_id: cusn.id)
-      FactoryGirl.create(:recipient, user: user, desk_id: cuss.id)
+      FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
+      FactoryGirl.create(:recipient, user: user, workstation_id: cuss.id)
       PrivatePub.should_receive(:publish_to).exactly(1).times
       message.broadcast
     end
@@ -114,45 +114,45 @@ describe Message do
 
   describe "#set_recievers" do 
 
-    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
-    let(:aml) { Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
+    let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:aml) { Workstation.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
     let(:user1) { FactoryGirl.create(:user, user_name: "fred") }
     let(:message) { FactoryGirl.create(:message, user: user) }
 
     before do
-      user1.authenticate_desk(cusn.abrev => 1)
-      FactoryGirl.create(:recipient, user: user, desk_id: cusn.id)
-      FactoryGirl.create(:recipient, user: user, desk_id: aml.id)
+      user1.authenticate_workstation(cusn.abrev => 1)
+      FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
+      FactoryGirl.create(:recipient, user: user, workstation_id: aml.id)
       message.set_recievers
     end
 
-    it "sets message.recievers to an array hashes, with desk_id and user_id" do
+    it "sets message.recievers to an array hashes, with workstation_id and user_id" do
       message.recievers.should == { "CUSN" => "fred", "AML" => "" }
     end
   end
 
   describe "#set_recieved_by" do
 
-    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
-    let(:aml) { FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td", user_id: 0) }
+    let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:aml) { FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML", job_type: "td", user_id: 0) }
     let(:user1) { FactoryGirl.create(:user, user_name: "herman") }
     let(:message) { FactoryGirl.create(:message, user: user) }
 
     before(:each) do
-      user1.authenticate_desk(cusn.abrev => 1)
+      user1.authenticate_workstation(cusn.abrev => 1)
       cusn.reload 
     end
 
-    context "when the recipient desk has no controlling user" do
+    context "when the recipient workstation has no controlling user" do
       before { message.set_recieved_by(aml) }
-      it "adds the desk abrev as a key to the recievers hash with an empty string as the value" do
+      it "adds the workstation abrev as a key to the recievers hash with an empty string as the value" do
         message.recievers.should == { "AML" => "" }
       end
     end 
 
-    context "when the recipient desk has a controlling user" do
+    context "when the recipient workstation has a controlling user" do
       before { message.set_recieved_by(cusn) }
-      it "adds the desk abrev as a key to the recievers hash with the desk's controlling user_name as the value" do
+      it "adds the workstation abrev as a key to the recievers hash with the workstation's controlling user_name as the value" do
         message.recievers.should == { "CUSN" => "herman" }
       end
     end 
@@ -160,62 +160,62 @@ describe Message do
 
   describe "#set_sent_by" do
 
-    let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
-    let(:aml) { Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
+    let(:cusn) { Workstation.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:aml) { Workstation.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
     let(:message) { FactoryGirl.create(:message, user: user) }
     
     before do
-      user.authenticate_desk(cusn.abrev => 1)
-      user.authenticate_desk(aml.abrev => 1)
+      user.authenticate_workstation(cusn.abrev => 1)
+      user.authenticate_workstation(aml.abrev => 1)
       message.set_sent_by
     end
 
-    it "sets message.sent to an array of strings of the desk_abrev's owned by the message sender " do
+    it "sets message.sent to an array of strings of the workstation_abrev's owned by the message sender " do
       message.sent.should == [cusn.abrev, aml.abrev]
     end
   end
 
   describe "#sender_handle" do
 
-    let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
-    let(:cuss) { Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td") }
-    let(:aml) { Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
+    let(:cusn) { Workstation.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:cuss) { Workstation.create!(name: "CUS South", abrev: "CUSS", job_type: "td") }
+    let(:aml) { Workstation.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
     let(:message) { FactoryGirl.create(:message, user: user) }
 
     before do
-      user.authenticate_desk(cusn.abrev => 1, cuss.abrev => 1, aml.abrev => 1)
+      user.authenticate_workstation(cusn.abrev => 1, cuss.abrev => 1, aml.abrev => 1)
       message.set_sent_by
     end
  
-    it "should return a formatted list of the message senders desk's" do
+    it "should return a formatted list of the message senders workstation's" do
       message.sender_handle.should == "joe@CUSN,CUSS,AML"
     end
   end
 
   describe "#sent_by" do
 
-    let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
-    let(:cuss) { Desk.create!(name: "CUS South", abrev: "CUSS", job_type: "td") }
-    let(:aml) { Desk.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
+    let(:cusn) { Workstation.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:cuss) { Workstation.create!(name: "CUS South", abrev: "CUSS", job_type: "td") }
+    let(:aml) { Workstation.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
     let(:message) { FactoryGirl.create(:message, user: user) }
 
     before do
-      user.authenticate_desk(cusn.abrev => 1, cuss.abrev => 1, aml.abrev => 1)
+      user.authenticate_workstation(cusn.abrev => 1, cuss.abrev => 1, aml.abrev => 1)
       message.set_sent_by
     end
  
-    it "should return a formatted list of the message senders desk's" do
+    it "should return a formatted list of the message senders workstation's" do
       message.sent_by.should == "CUSN,CUSS,AML"
     end
   end
 
   describe "#was_sent_by?" do
 
-    let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:cusn) { Workstation.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
     let(:user1) { FactoryGirl.create(:user) }
     
     before do
-      user.authenticate_desk(cusn.abrev => 1)
+      user.authenticate_workstation(cusn.abrev => 1)
       @message = FactoryGirl.create(:message, user: user)
       @message.set_sent_by
     end
@@ -231,7 +231,7 @@ describe Message do
    
   describe "#for_user_before" do
    
-    let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:cusn) { Workstation.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
 
     let(:user1) { FactoryGirl.create(:user) }
     let(:user2) { FactoryGirl.create(:user) }
@@ -242,8 +242,8 @@ describe Message do
     let(:old_message) { FactoryGirl.create(:message, user: user, created_at: 25.hours.ago) }
 
     before(:each) do
-      user1.authenticate_desk(cusn.abrev => 1)
-      FactoryGirl.create(:recipient, user: user, desk_id: cusn.id)
+      user1.authenticate_workstation(cusn.abrev => 1)
+      FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
       message.set_recievers
       message1.set_recievers
       message2.set_recievers
@@ -267,7 +267,7 @@ describe Message do
 
   describe "#for_user_between" do
     
-    let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:cusn) { Workstation.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
 
     let(:user1) { FactoryGirl.create(:user) }
     let(:user2) { FactoryGirl.create(:user) }
@@ -278,8 +278,8 @@ describe Message do
     let(:old_message) { FactoryGirl.create(:message, user: user, created_at: 25.hours.ago) }
 
     before(:each) do
-      user1.authenticate_desk(cusn.abrev => 1)
-      FactoryGirl.create(:recipient, user: user, desk_id: cusn.id)
+      user1.authenticate_workstation(cusn.abrev => 1)
+      FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
       message.set_recievers
       message1.set_recievers
       message2.set_recievers
@@ -312,7 +312,7 @@ describe Message do
 
     context "for messages recieved and read by the given user" do
       let(:user1) { FactoryGirl.create(:user) }
-      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
       before do
         user1.start_job(cusn.abrev)
         message.set_recieved_by(cusn)
@@ -326,7 +326,7 @@ describe Message do
     end
 
     context "for messages recieved and not read by the given user" do
-      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
       let(:user1) { FactoryGirl.create(:user) }
       before do
         user1.start_job(cusn.abrev)
@@ -341,17 +341,17 @@ describe Message do
 
   describe "#mark_read_by" do
     
-    let(:cusn) { Desk.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:cusn) { Workstation.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
     let(:recipient_user) { FactoryGirl.create(:user) }
     let(:message) { FactoryGirl.create(:message, user: user) }
 
     before(:each) do
-      recipient_user.authenticate_desk(cusn.abrev => 1)
+      recipient_user.authenticate_workstation(cusn.abrev => 1)
     end
     
-    it "adds the given desk(s) and user to the message's read by list" do
+    it "adds the given workstation(s) and user to the message's read by list" do
       message.mark_read_by recipient_user
-      message.read_by.should include({ recipient_user.user_name => recipient_user.desk_names_str })
+      message.read_by.should include({ recipient_user.user_name => recipient_user.workstation_names_str })
     end
 
     it "does not add duplicates to message's read by list" do
@@ -364,7 +364,7 @@ describe Message do
 
   describe "#was_read_by?" do
 
-    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
     let(:user1) { FactoryGirl.create(:user) }
     let(:recipient_user) { FactoryGirl.create(:user) }
     let(:message) { FactoryGirl.create(:message, user: user) }
@@ -386,21 +386,21 @@ describe Message do
 
     let(:user1) { FactoryGirl.create(:user) }
     let(:user2) { FactoryGirl.create(:user) }
-    let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+    let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
     let(:recipient_user) { FactoryGirl.create(:user) }
     let(:message) { FactoryGirl.create(:message, user: user) }
 
-    context "when the message was not sent to the given user, or the given user's desks" do
+    context "when the message was not sent to the given user, or the given user's workstations" do
       it "returns false if the message was not sent to the given user" do
         message.was_sent_to?(user1).should be_false
       end
     end
 
-    context "when the message was sent to the given user and desk" do
-      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
+    context "when the message was sent to the given user and workstation" do
+      let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
       before(:each) do
         recipient_user.start_job(cusn.abrev)
-        FactoryGirl.create(:recipient, user: user, desk_id: cusn.id)
+        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
         message.set_recievers
       end
       it "returns true" do
@@ -408,9 +408,9 @@ describe Message do
       end
     end
     
-    context "when the message was sent to the given user's desks but no specified user" do
+    context "when the message was sent to the given user's workstations but no specified user" do
       before(:each) do
-        FactoryGirl.create(:recipient, user: user, desk_id: cusn.id)
+        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
         message.set_recievers
         recipient_user.start_job(cusn.abrev)
       end
@@ -419,12 +419,12 @@ describe Message do
       end
     end
     
-    context "when the message was sent to the given user's desks but to a different user" do
+    context "when the message was sent to the given user's workstations but to a different user" do
       before(:each) do
         user2.start_job(cusn.abrev)
-        FactoryGirl.create(:recipient, user: user, desk_id: cusn.id)
+        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
         message.set_recievers
-        user2.leave_desk
+        user2.leave_workstation
         recipient_user.start_job(cusn.abrev)
       end
       it "returns false" do
@@ -445,26 +445,26 @@ describe Message do
 
     context "with message readers" do
 
-      let(:cusn) { FactoryGirl.create(:desk, name: "CUS North", abrev: "CUSN", job_type: "td") }
-      let(:cuss) { FactoryGirl.create(:desk, name: "CUS South", abrev: "CUSS", job_type: "td") }
-      let(:aml) { FactoryGirl.create(:desk, name: "AML / NOL", abrev: "AML", job_type: "td") }
+      let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:cuss) { FactoryGirl.create(:workstation, name: "CUS South", abrev: "CUSS", job_type: "td") }
+      let(:aml) { FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML", job_type: "td") }
       let(:recipient_user) { FactoryGirl.create(:user) }
       let(:recipient_user1) { FactoryGirl.create(:user) }
       let(:recipient_user2) { FactoryGirl.create(:user) }
 
       before(:each) do
-        recipient_user.authenticate_desk(cusn.abrev => 1)
-        recipient_user1.authenticate_desk(cuss.abrev => 1)
-        recipient_user2.authenticate_desk(aml.abrev => 1)
+        recipient_user.authenticate_workstation(cusn.abrev => 1)
+        recipient_user1.authenticate_workstation(cuss.abrev => 1)
+        recipient_user2.authenticate_workstation(aml.abrev => 1)
         message.mark_read_by(recipient_user)
         message.mark_read_by(recipient_user1)
         message.mark_read_by(recipient_user2)
       end
 
       it "returns a formated string list of the user's handles who read the message" do
-        message.readers.should == "#{recipient_user.user_name}@#{recipient_user.desk_names_str}, " +
-          "#{recipient_user1.user_name}@#{recipient_user1.desk_names_str} and " +
-          "#{recipient_user2.user_name}@#{recipient_user2.desk_names_str} read this."
+        message.readers.should == "#{recipient_user.user_name}@#{recipient_user.workstation_names_str}, " +
+          "#{recipient_user1.user_name}@#{recipient_user1.workstation_names_str} and " +
+          "#{recipient_user2.user_name}@#{recipient_user2.workstation_names_str} read this."
       end
     end
   end
