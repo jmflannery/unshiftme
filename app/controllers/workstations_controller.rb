@@ -1,6 +1,7 @@
 class WorkstationsController < ApplicationController
 
-  def show
-    render json: {"hello" => "i love you"}
+  def index
+    render json: Workstation.all.to_json
   end
 end
+
