@@ -107,10 +107,10 @@ var putData = function() {
       url: "/workstations.json",
       success: function(response) {
         for (var i = 0; i < response.length; i++) {
-          var html = "<div id=" + response[i].abrev + " >";
+          var html = "<div id=" + response[i].abrev + " class=recipient_workstation >";
           html += "<p>" + response[i].name + "</p>";
           html += "</div>";
-          var workstation = $(html).data("id", response[i].id);
+          var workstation = $(html).data("id", response[i].id).addClass("off");
           workstation_section.append(workstation);
         }
       }
