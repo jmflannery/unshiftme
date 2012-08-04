@@ -1,55 +1,11 @@
-// Returns the array of class names
-$.fn.getClassNames = function() {
-  var klasses = $(this).attr("class");
-  if (klasses != null) {
-    return klasses.split(" ");
-  } else {
-    return [];
-  }
-};
+////////////////////////////////////////
+// Get the user's id
+////////////////////////////////////////
 
-// returns true if the passed in string is a class of $(this)
-$.fn.hasClass = function(klas) {
-  var has = false;
-  var klasses = $(this).getClassNames();
-  for (i = 0; i < klasses.length; i += 1) {
-    if (klasses[i] == klas) {
-      has = i;
-      break;
-    }
-  }
-  return has;
-};
-
-// returns the first class found that can be parsed to int, or false if none found
-$.fn.getNumberClass = function() {
-  var num = false;
-  var klasses = $(this).getClassNames();
-  for (i = 0; i < klasses.length; i += 1) {
-    if (!isNaN(klasses[i])) {
-      num = klasses[i];
-      break;
-    }
-  }
-  return num;
-};
-
-// returns "on" if the given element has the class "on"
-// returns "off" if the given element has the class "off"
-// returns false if class "on" or "off" is not found on given element
-// returns fasle if both "on" and "off" are found
-$.fn.onOff = function() {
-  var on = $(this).hasClass("on");
-  var off = $(this).hasClass("off");
-  if (on && !off) {
-    status = "on";
-  } else if (off && !on) {
-    status = "off";
-  } else {
-    status = false;
-  }
-  return status;
-};
+$(function() {
+  user_name = $("#main_menu").attr("class");
+  
+});
 
 ////////////////////////////////////////
 // heartbeat
@@ -146,12 +102,26 @@ $(function() {
 var putData = function() {
 };
 
-$(function() {
-  if ($('#recipient_workstation_selection').length > 0) {
-    $('#CUSN').data("workstation_status", "owner");
-    console.log($('#CUSN').data("workstation_status"));
-  }
-});
+//$(function() {
+//  workstation_section = $('#recipient_workstation_selection');
+//  if (workstation_section.length > 0) {
+//    $.ajax( {
+//      type: "GET",
+//      url: "/workstations.json",
+//      success: function(response) {
+//       console.log(response);
+//        for (var i = 0; i < response.length; i++) {
+//          var html = "<div id=" + response[i].abrev + " >";
+//          html += "<p>" + response[i].name + "</p>";
+//         html += "</div>";
+//          workstation_section.append(html);
+//          $("#" + response[i].abrev).data("id", response[i].id)
+//          console.log("id=" + $("#" + response[i].abrev).data("id"));
+//        }
+//      }
+//    });
+//  }
+//});
 
 ///////////////////////////////////
 // add recipient
@@ -388,7 +358,7 @@ $(function() {
     $("input#message_content").val("");
 
     // create the new message html 
-    html ="<li class='" + data.view_class + "'>" +
+    var html ="<li class='" + data.view_class + "'>" +
             "<ul class='inner_message'>" +
               "<li>" +
                 "<div class='message_sender'>" +
