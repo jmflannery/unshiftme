@@ -29,13 +29,23 @@ class UsersController < ApplicationController
   end
 
   def show
-    @title = @user.handle
-    @messages = Message.for_user_before(@user, Time.now)
-    @messages.each { |message| message.set_view_class(@user) }
-    @message = Message.new
-    @attachment = Attachment.new
-    #@my_recipients = Recipient.for_user(@user.id)
-    @workstations = Workstation.all
+    respond_to do |format|
+      format.html {
+        @title = @user.handle
+        @messages = Message.for_user_before(@user, Time.now)
+        @messages.each { |message| message.set_view_class(@user) }
+        @message = Message.new
+        @attachment = Attachment.new
+        #@my_recipients = Recipient.for_user(@user.id)
+        @workstations = Workstation.all
+      }
+      format.json {
+        user = User.find_by_user_name(params[:id]) if params[:id]
+        json = {}
+        json[:id] = user.id if user
+        render json: json.as_json
+      }
+    end
   end
 
   def edit
@@ -63,7 +73,7 @@ class UsersController < ApplicationController
   private
 
     def correct_user
-      @user = User.find(params[:id])
+      @user = User.find_by_user_name(params[:id])
       redirect_to root_path unless current_user?(@user)
     end
 end
