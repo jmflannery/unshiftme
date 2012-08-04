@@ -22,6 +22,10 @@ class User < ActiveRecord::Base
 
   scope :online, lambda { where("status = true") }
 
+  def to_param
+    user_name
+  end
+
   def self.all_user_names
     User.all.map { |user| user.user_name } 
   end
