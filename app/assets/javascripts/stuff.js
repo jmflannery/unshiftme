@@ -99,7 +99,7 @@ $(function() {
 // create the workstation html elements
 /////////////////////////////////////////
 
-var putData = function() {
+var build_workstation_buttons = function() {
   workstation_section = $('#recipient_workstation_selection');
   if (workstation_section.length > 0) {
     $.ajax( {
@@ -118,7 +118,7 @@ var putData = function() {
   }
 };
 
-$(putData);
+$(build_workstation_buttons);
 
 ///////////////////////////////////
 // add recipient
