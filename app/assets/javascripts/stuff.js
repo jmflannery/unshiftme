@@ -95,33 +95,30 @@ $(function() {
   }
 });
 
-///////////////////////////////////
-// put data in recipients
-//////////////////////////////////
+/////////////////////////////////////////
+// create the workstation html elements
+/////////////////////////////////////////
 
 var putData = function() {
+  workstation_section = $('#recipient_workstation_selection');
+  if (workstation_section.length > 0) {
+    $.ajax( {
+      type: "GET",
+      url: "/workstations.json",
+      success: function(response) {
+        for (var i = 0; i < response.length; i++) {
+          var html = "<div id=" + response[i].abrev + " >";
+          html += "<p>" + response[i].name + "</p>";
+          html += "</div>";
+          var workstation = $(html).data("id", response[i].id);
+          workstation_section.append(workstation);
+        }
+      }
+    });
+  }
 };
 
-//$(function() {
-//  workstation_section = $('#recipient_workstation_selection');
-//  if (workstation_section.length > 0) {
-//    $.ajax( {
-//      type: "GET",
-//      url: "/workstations.json",
-//      success: function(response) {
-//       console.log(response);
-//        for (var i = 0; i < response.length; i++) {
-//          var html = "<div id=" + response[i].abrev + " >";
-//          html += "<p>" + response[i].name + "</p>";
-//         html += "</div>";
-//          workstation_section.append(html);
-//          $("#" + response[i].abrev).data("id", response[i].id)
-//          console.log("id=" + $("#" + response[i].abrev).data("id"));
-//        }
-//      }
-//    });
-//  }
-//});
+$(putData);
 
 ///////////////////////////////////
 // add recipient
