@@ -99,8 +99,9 @@ $(function() {
 // create the workstation html elements
 /////////////////////////////////////////
 
+// get the workstation data
 var build_workstation_buttons = function() {
-  workstation_section = $('#recipient_workstation_selection');
+  var workstation_section = $('#recipient_workstation_selection');
   if (workstation_section.length > 0) {
     $.ajax( {
       type: "GET",
@@ -118,7 +119,34 @@ var build_workstation_buttons = function() {
   }
 };
 
+// get the user data
+var build_user_workstation_info = function() {
+  var workstation_section = $('#recipient_workstation_selection');
+  var user_name = $("#main_menu").attr("class");
+  if (workstation_section.length > 0) {
+    $.ajax( {
+      type: "GET",
+      url: "/users/" + user_name + ".json",
+      success: function(response) {
+        console.log("id: " + response.id);
+        console.log("user name: " + response.user_name);
+        console.log("Workstations:");
+        for (var i = 0; i < response.workstations.length; i++) {
+          console.log(response.workstations[i].name);
+          $("#" + response.workstations[i].name).addClass("mine").removeClass("off");
+        }
+        console.log("Recipient Workstations:");
+        for (var i = 0; i < response.recipient_workstations.length; i++) {
+          console.log(response.recipient_workstations[i].name);
+          $("#" + response.recipient_workstations[i].name).addClass("on").removeClass("off");
+        }
+      }
+    });
+  }
+};
+
 $(build_workstation_buttons);
+$(build_user_workstation_info);
 
 ///////////////////////////////////
 // add recipient
