@@ -41,9 +41,7 @@ class UsersController < ApplicationController
       }
       format.json {
         user = User.find_by_user_name(params[:id]) if params[:id]
-        json = {}
-        json[:id] = user.id if user
-        render json: json.as_json
+        render json: user.as_json
       }
     end
   end

@@ -83,10 +83,9 @@ describe UsersController do
         response.should be_success
       end
 
-      let(:expected) { { id: @user.id }.to_json }
       it "should return the correct user id" do
         get :show, id: @user, format: :json
-        response.body.should == expected  
+        response.body.should == @user.as_json  
       end
     end
   end
