@@ -42,6 +42,17 @@ class User < ActiveRecord::Base
     logger.debug "Done executing: User#sign_out_the_dead"
   end
 
+  def as_json
+    json = {}
+    json[:id] = id
+    json[:user_name] = user_name
+    json[:workstations] = workstation_names.map { |name| {name: name} }
+    json[:recipient_workstations] = recipients.map do |recipient|
+      { name: Workstation.find(recipient.workstation_id).abrev }
+    end
+    json.to_json
+  end
+
   def handle
     "#{user_name}@#{workstation_names_str}"
   end

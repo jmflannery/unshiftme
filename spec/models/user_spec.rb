@@ -195,6 +195,25 @@ describe User do
       end
     end
 
+    describe "#as_json" do
+      
+      let(:user1) { FactoryGirl.create(:user, user_name: "Jimbo") }
+      before(:each) do
+        @user.start_jobs([cusn.abrev, aml.abrev])
+        user1.start_job(cuss.abrev)
+        @user.add_recipient(cuss)
+        @expected = { id: @user.id,
+                      user_name: "smith",
+                      workstations: [{name: "CUSN"}, {name: "AML"}],
+                      recipient_workstations: [{name: "CUSS"}]
+        }.to_json
+      end
+
+      it "returns the user's info as json" do
+        @user.as_json.should == @expected
+      end
+    end
+
     describe "Workstation" do
       
       before(:each) do
