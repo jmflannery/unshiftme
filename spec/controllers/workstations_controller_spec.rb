@@ -19,7 +19,7 @@ describe WorkstationsController do
 
       it "returns all Workstations json" do
         get :index, format: :json
-        puts response.body.should == Workstation.all.to_json
+        response.body.should == Workstation.all.to_json(only: [:id, :name, :abrev])
       end
     end
   end 
