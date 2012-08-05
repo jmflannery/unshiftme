@@ -201,11 +201,11 @@ describe User do
       before(:each) do
         @user.start_jobs([cusn.abrev, aml.abrev])
         user1.start_job(cuss.abrev)
-        @user.add_recipient(cuss)
+        recipient = @user.add_recipient(cuss)
         @expected = { id: @user.id,
                       user_name: "smith",
                       workstations: [{name: "CUSN"}, {name: "AML"}],
-                      recipient_workstations: [{name: "CUSS"}]
+                      recipient_workstations: [{ name: "CUSS", recipient_id: recipient.id }]
         }.to_json
       end
 

@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
     json[:user_name] = user_name
     json[:workstations] = workstation_names.map { |name| {name: name} }
     json[:recipient_workstations] = recipients.map do |recipient|
-      { name: Workstation.find(recipient.workstation_id).abrev }
+      { name: Workstation.find(recipient.workstation_id).abrev, recipient_id: recipient.id }
     end
     json.to_json
   end
