@@ -1,7 +1,7 @@
 <% if @recipients %>
   <% @recipients.each do |recipient| %>
-    $('<%= "##{Workstation.find(recipient.workstation_id).abrev}.recipient_workstation.off" %>').addClass('<%= "#{recipient.id}" %>').addClass("on").removeClass("off"); 
+    $('<%= "##{Workstation.find(recipient.workstation_id).abrev}.recipient_workstation.off" %>').data("recipient_id", <%= "#{recipient.id}" %>').turnOn(); 
   <% end %>
 <% elsif @recipient %>
-  $('<%= ".recipient_workstation_id.#{@recipient.workstation_id}" %>').parent().addClass('<%= "#{@recipient.id}" %>').addClass("on").removeClass("off");
+    $('<%= "##{Workstation.find(@recipient.workstation_id).abrev}.recipient_workstation.off" %>').data("recipient_id", <%= "#{@recipient.id}" %>').turnOn();
 <% end %>

@@ -116,7 +116,7 @@ var build_workstation_buttons = function() {
             html += "<p>(vacant)</p>"
           }
           html += "</div>";
-          var workstation = $(html).data("id", response[i].id).addClass("off");
+          var workstation = $(html).data("workstation_id", response[i].id).turnOff().click(toggle_recipient);
           workstation_section.append(workstation);
         }
       }
@@ -133,17 +133,11 @@ var build_user_workstation_info = function() {
       type: "GET",
       url: "/users/" + user_name + ".json",
       success: function(response) {
-        console.log("id: " + response.id);
-        console.log("user name: " + response.user_name);
-        console.log("Workstations:");
         for (var i = 0; i < response.workstations.length; i++) {
-          console.log(response.workstations[i].name);
           $("#" + response.workstations[i].name).addClass("mine").removeClass("off");
         }
-        console.log("Recipient Workstations:");
         for (var i = 0; i < response.recipient_workstations.length; i++) {
-          console.log(response.recipient_workstations[i].name);
-          $("#" + response.recipient_workstations[i].name).turnOn().data("recipient_id", response.recipient_workstations[i].id);
+          $("#" + response.recipient_workstations[i].name).turnOn().data("recipient_id", response.recipient_workstations[i].recipient_id);
         }
       }
     });
@@ -158,18 +152,17 @@ $(build_user_workstation_info);
 ///////////////////////////////////
 
 var toggle_recipient = function() {
-  state = $(this).onOrOff();
+  var state = $(this).onOrOff();
   
   if (state && state == "off") { 
-    var innerEl = $(this).find(".recipient_workstation_id");
-    workstation = $(innerEl).getNumberClass();
+    var workstation_id = $(this).data("workstation_id");
 
-    if (workstation) {
+    if (workstation_id) {
       // POST - recipients#create
       $.ajax( {
         type: "POST", 
         url: "/recipients",
-        data: { "workstation_id": workstation },
+        data: { "workstation_id": workstation_id },
         success: function(response) {
           response;
         }
@@ -177,13 +170,13 @@ var toggle_recipient = function() {
     }
 
   } else if (state && state == "on") {
-    var recipient_index = $(this).getNumberClass();
+    var recipient_id = $(this).data("recipient_id");
     
-    if (recipient_index) {
-      // DELETE - workstations#destroy
+    if (recipient_id) {
+      // DELETE - recipients#destroy
       $.ajax( {
         type: "POST", 
-        url: "/recipients/" + recipient_index,
+        url: "/recipients/" + recipient_id,
         data: { _method: 'delete' },
         success: function(response) {
           response;
@@ -192,11 +185,6 @@ var toggle_recipient = function() {
     }
   }
 };
-
-$(function() {
-  $(".recipient_workstation.on").click(toggle_recipient);
-  $(".recipient_workstation.off").click(toggle_recipient);
-});
 
 ///////////////////////////////////
 // Toggle all (workstations)
