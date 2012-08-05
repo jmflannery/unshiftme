@@ -218,8 +218,6 @@ describe User do
       
       before(:each) do
         @params = { key: "val", "CUSN" => 1, "AML" => 1, anotherkey: "val" }
-        #FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td")
-        #FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML", job_type: "td")
       end
 
       describe "authenticate_workstation" do
@@ -346,10 +344,6 @@ describe User do
 
     describe "add_recipient" do
 
-      #before(:each) do
-      #  @ydmstr = FactoryGirl.create(:workstation, name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
-      #end
-
       it "adds the workstation id's to the user's recipients" do
         subject.add_recipient(ydmstr)
         subject.recipients[0].workstation_id.should == ydmstr.id
@@ -367,6 +361,11 @@ describe User do
         subject.authenticate_workstation(ydmstr.abrev => 1)
         subject.add_recipient(ydmstr)
         subject.should_not be_messaging ydmstr.id
+      end
+
+      it "returns the newly created recipient" do
+        recipient_id = subject.add_recipient(ydmstr)
+        recipient_id.should == subject.recipients[0]
       end
     end
     
