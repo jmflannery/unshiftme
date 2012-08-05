@@ -143,7 +143,7 @@ var build_user_workstation_info = function() {
         console.log("Recipient Workstations:");
         for (var i = 0; i < response.recipient_workstations.length; i++) {
           console.log(response.recipient_workstations[i].name);
-          $("#" + response.recipient_workstations[i].name).addClass("on").removeClass("off");
+          $("#" + response.recipient_workstations[i].name).turnOn().data("recipient_id", response.recipient_workstations[i].id);
         }
       }
     });
@@ -158,7 +158,7 @@ $(build_user_workstation_info);
 ///////////////////////////////////
 
 var toggle_recipient = function() {
-  state = $(this).onOff();
+  state = $(this).onOrOff();
   
   if (state && state == "off") { 
     var innerEl = $(this).find(".recipient_workstation_id");

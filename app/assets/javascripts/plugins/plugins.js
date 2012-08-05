@@ -38,7 +38,7 @@ $.fn.getNumberClass = function() {
 // returns "off" if the given element has the class "off"
 // returns false if class "on" or "off" is not found on given element
 // returns fasle if both "on" and "off" are found
-$.fn.onOff = function() {
+$.fn.onOrOff = function() {
   var on = $(this).hasClass("on");
   var off = $(this).hasClass("off");
   if (on && !off) {
@@ -51,3 +51,32 @@ $.fn.onOff = function() {
   return status;
 };
 
+$.fn.turnOn = function() {
+  if ($(this).hasClass("off")) {
+    $(this).removeClass("off")
+  }
+  $(this).addClass("on");
+
+  return this;
+}
+
+$.fn.turnOff = function() {
+  if ($(this).hasClass("on")) {
+    $(this).removeClass("on")
+  }
+  $(this).addClass("off");
+ 
+  return this;
+}
+
+$.fn.toggleOnOff = function() {
+  if ($(this).hasClass("off")) {
+    $(this).removeClass("off")
+    $(this).addClass("on")
+  } else if ($(this).hasClass("on")) {
+    $(this).removeClass("on")
+    $(this).addClass("off")
+  }
+  
+  return this;
+}
