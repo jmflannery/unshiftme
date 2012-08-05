@@ -103,6 +103,29 @@ describe Workstation do
 
     describe "as_json" do
 
+      let(:user1) { FactoryGirl.create(:user, user_name: "pricilla") }
+      before(:each) do
+        user.start_jobs([cusn.abrev, aml.abrev])
+        user1.start_job([cuss.abrev])
+        user.add_recipient(cuss)
+        array = []
+        Workstation.all.each do |workstation|
+          hash = {}
+          hash[:long_name] = workstation.name
+          hash[:name] = workstation.abrev
+          if User.exists?(workstation.user_id)
+            user = User.find(workstation.user_id)
+            hash[:user_id] = user.id
+            hash[:user_name] = user.user_name
+          end
+          array << hash
+        end
+        @expected = array.as_json
+      end
+
+      it "should return json information of all of the desks" do
+        Workstation.as_json.should == @expected
+      end
     end
 
     describe "all_short_names" do

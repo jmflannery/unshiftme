@@ -6,6 +6,22 @@ class Workstation < ActiveRecord::Base
   
   default_scope order("id")
 
+  def self.as_json
+    array = []
+    all.each do |workstation|
+      hash = {}
+      hash[:long_name] = workstation.name
+      hash[:name] = workstation.abrev
+      if User.exists?(workstation.user_id)
+        user = User.find(workstation.user_id)
+        hash[:user_id] = user.id
+        hash[:user_name] = user.user_name
+      end
+      array << hash
+    end
+    array.as_json
+  end
+
   def self.all_short_names
     Workstation.all.map { |workstation| workstation.abrev }
   end
