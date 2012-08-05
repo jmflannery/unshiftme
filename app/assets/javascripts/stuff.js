@@ -108,8 +108,13 @@ var build_workstation_buttons = function() {
       url: "/workstations.json",
       success: function(response) {
         for (var i = 0; i < response.length; i++) {
-          var html = "<div id=" + response[i].abrev + " class=recipient_workstation >";
-          html += "<p>" + response[i].name + "</p>";
+          var html = "<div id=" + response[i].name + " class=recipient_workstation >";
+          html += "<p>" + response[i].long_name + "</p>";
+          if (response[i].user_name && response[i].user_name.length > 0) {
+            html += "<p>(" + response[i].user_name + ")</p>";
+          } else {
+            html += "<p>(vacant)</p>"
+          }
           html += "</div>";
           var workstation = $(html).data("id", response[i].id).addClass("off");
           workstation_section.append(workstation);
