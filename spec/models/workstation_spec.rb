@@ -111,6 +111,7 @@ describe Workstation do
         array = []
         Workstation.all.each do |workstation|
           hash = {}
+          hash[:id] = workstation.id
           hash[:long_name] = workstation.name
           hash[:name] = workstation.abrev
           if User.exists?(workstation.user_id)

@@ -10,6 +10,7 @@ class Workstation < ActiveRecord::Base
     array = []
     all.each do |workstation|
       hash = {}
+      hash[:id] = workstation.id
       hash[:long_name] = workstation.name
       hash[:name] = workstation.abrev
       if User.exists?(workstation.user_id)
@@ -19,7 +20,7 @@ class Workstation < ActiveRecord::Base
       end
       array << hash
     end
-    array.to_json
+    array.as_json
   end
 
   def self.all_short_names
