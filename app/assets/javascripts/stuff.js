@@ -113,7 +113,7 @@ var build_workstation_buttons = function() {
           if (response[i].user_name && response[i].user_name.length > 0) {
             html += "<p><span id=user_at_" + response[i].name + ">(" + response[i].user_name + ")</span></p>";
           } else {
-            html += "<p>(vacant)</p>"
+            html += "<p><span id=user_at_" + response[i].name + ">(vacant)</span></p>"
           }
           html += "</div>";
           var workstation = $(html).data("workstation_id", response[i].id).turnOff().click(toggle_recipient);
@@ -442,7 +442,7 @@ $(function() {
   PrivatePub.subscribe("/workstations/" + user_name, function(data, channel) {
     var workstations = data.workstations.split(",");
     for (var i = 0; i < workstations.length; i++) {
-      selector = "#user_at_" + workstations[i];
+      var selector = "#user_at_" + workstations[i];
       $(selector).html("(" + data.name + ")");
     }
   });
