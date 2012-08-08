@@ -410,7 +410,7 @@ $(function() {
     for (var i = 0; i < data.recipient_ids.length; i++) {
       if (data.recipient_ids[i] > 0) {
         selector = "#" + data.from_workstations[i] + ".recipient_workstation.off";
-        $(selector).removeClass("off").addClass(data.recipient_ids[i].toString()).addClass("on");
+        $(selector).turnOn().data("recipient_id", data.recipient_ids[i]);
       }
     }
 
