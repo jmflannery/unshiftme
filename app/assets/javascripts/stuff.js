@@ -102,13 +102,14 @@ $(function() {
 // get the workstation data
 var build_workstation_buttons = function() {
   var workstation_section = $('#recipient_workstation_selection');
+  var html = "";
   if (workstation_section.length > 0) {
     $.ajax( {
       type: "GET",
       url: "/workstations.json",
       success: function(response) {
         for (var i = 0; i < response.length; i++) {
-          var html = "<div id=" + response[i].name + " class=recipient_workstation >";
+          html = "<div id=" + response[i].name + " class=recipient_workstation >";
           html += "<p>" + response[i].long_name + "</p>";
           if (response[i].user_name && response[i].user_name.length > 0) {
             html += "<p><span id=user_at_" + response[i].name + ">(" + response[i].user_name + ")</span></p>";
@@ -119,6 +120,9 @@ var build_workstation_buttons = function() {
           var workstation = $(html).data("workstation_id", response[i].id).turnOff().click(toggle_recipient);
           workstation_section.append(workstation);
         }
+        html = "<div id='toggle_all_workstations' class='recipient_workstation all'><p>Message</br>all</p></div>";
+        var toggle_all_button = $(html).click(toggle_all_workstations);
+        workstation_section.append(toggle_all_button);
       }
     });
   }
@@ -220,10 +224,6 @@ var toggle_all_workstations = function() {
     });
   }
 }
-
-$(function() {
-  $("#toggle_all_workstations").click(toggle_all_workstations);
-});
 
 ///////////////////////////////////
 // acknowledge (read) message
