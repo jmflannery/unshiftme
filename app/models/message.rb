@@ -68,7 +68,7 @@ class Message < ActiveRecord::Base
             from_workstations: user.workstation_names,
             recipient_ids: new_recip_ids,
             timestamp: created_at.strftime("%a %b %e %Y %T"),
-            view_class: "message msg-#{id.to_s} recieved unread"
+            message_id: id.to_s
           }
           PrivatePub.publish_to("/messages/#{recip_user.user_name}", data)
         end

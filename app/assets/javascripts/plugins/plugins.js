@@ -80,3 +80,8 @@ $.fn.toggleOnOff = function() {
   
   return this;
 }
+
+$.fn.read = function() {
+  $(this).removeClass('unread').addClass('read');
+}
+

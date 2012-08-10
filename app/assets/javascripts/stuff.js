@@ -1,3 +1,17 @@
+///////////////////////////////////////////////
+// Find a message list element by message id
+///////////////////////////////////////////////
+
+findMessage = function(message_id) {
+  var message = 0;
+  $("#message_list li.message").each(function(index) {
+    if ($(this).data("message_id") == message_id) {
+      message = $(this);
+    }
+  });
+  return message;
+}
+
 ////////////////////////////////////////
 // Get the user's id
 ////////////////////////////////////////
@@ -230,24 +244,18 @@ var toggle_all_workstations = function() {
 ///////////////////////////////////
 
 var read_message = function(message_id) {
-  var classes = $(this).attr("class").split(" ");
-  var i;
-  var message_id = 0;
-  for (i = 0; i < classes.length; i += 1) {
-    if (classes[i].indexOf("msg-") != -1) {
-      var klas = classes[i].substring(4, classes[i].length);
-      message_id = parseInt(klas);
+  if ($(this).hasClass("recieved") && $(this).hasClass("unread")) {
+    var message_id = $(this).data("message_id");
+     
+    if (message_id) {
+      $.ajax( {
+        type: "PUT",
+        url: "/messages/" + message_id,
+        success: function(response) {
+          response;
+        }
+      });
     }
-  }
-
-  if (message_id) {
-    $.ajax( {
-      type: "PUT",
-      url: "/messages/" + message_id,
-      success: function(response) {
-        response;
-      }
-    });
   }
 };
 
@@ -376,7 +384,7 @@ $(function() {
     $("input#message_content").val("");
 
     // create the new message html 
-    var html ="<li class='" + data.view_class + "'>" +
+    var html ="<li class='message recieved unread'>" +
             "<ul class='inner_message'>" +
               "<li>" +
                 "<div class='message_sender'>" +
@@ -401,7 +409,7 @@ $(function() {
        "</li>"; 
     
     // display the new message 
-    display_new_message(html);
+    display_new_message(html, data.message_id);
 
     // add click handler to new message element
     $("li.message.recieved.unread").click(read_message);
@@ -421,12 +429,13 @@ $(function() {
   });
 });
 
-var display_new_message = function(message_html) {
+var display_new_message = function(message_html, message_id) {
   message_list_item = $("li.message:first-child");
+  var message = $(message_html).data("message_id", message_id);
   if (message_list_item[0]) {
-    message_list_item.before(message_html);
+    message_list_item.before(message);
   } else {
-    $("ul#message_list").html(message_html);
+    $("ul#message_list").html(message);
   }
 };
 
