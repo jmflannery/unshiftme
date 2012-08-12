@@ -20,7 +20,7 @@ class Workstation < ActiveRecord::Base
       end
       array << hash
     end
-    array.as_json
+    array.to_json
   end
 
   def self.all_short_names
