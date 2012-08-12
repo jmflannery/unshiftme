@@ -36,8 +36,6 @@ class UsersController < ApplicationController
         @messages.each { |message| message.set_view_class(@user) }
         @message = Message.new
         @attachment = Attachment.new
-        #@my_recipients = Recipient.for_user(@user.id)
-        @workstations = Workstation.all
       }
       format.json {
         user = User.find_by_user_name(params[:id]) if params[:id]
