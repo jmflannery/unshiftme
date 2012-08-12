@@ -61,7 +61,7 @@ class Message < ActiveRecord::Base
             recip = recip_user.add_recipient(Workstation.find(workstation_id))
             recip ? recip.id : 0
           end
-          
+
           data = { 
             chat_message: content,
             sender: user.handle,
@@ -137,14 +137,14 @@ class Message < ActiveRecord::Base
 
   def set_view_class(current_user)
     if was_sent_by?(current_user)
-      update_attribute(:view_class, "message msg-#{id} owner")
+      self.view_class = "message msg-#{id} owner"
     end
     
     if was_sent_to?(current_user)
       if was_read_by?(current_user)
-        update_attribute(:view_class, "message msg-#{id} recieved read")
+        self.view_class = "message msg-#{id} recieved read"
       else
-        update_attribute(:view_class, "message msg-#{id} recieved unread")
+        self.view_class = "message msg-#{id} recieved unread"
       end
     end
   end
