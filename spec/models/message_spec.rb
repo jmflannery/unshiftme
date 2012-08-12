@@ -78,9 +78,9 @@ describe Message do
     let(:message) { FactoryGirl.create(:message, user: user) }
 
     before(:each) do
-      user1.authenticate_workstation(cusn.abrev => 1)
+      user1.start_job(cusn.abrev)
       FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-      user2.authenticate_workstation(cuss.abrev => 1)
+      user2.start_job(cuss.abrev)
       FactoryGirl.create(:recipient, user: user, workstation_id: cuss.id)
     end
 
@@ -97,7 +97,7 @@ describe Message do
     end
 
     it "adds the sender's workstation to the recipient list of each of the sender's recipients" do
-      user.authenticate_workstation(glhs.abrev => 1)
+      user.start_job(glhs.abrev)
       message.broadcast
       user1.recipients[0].workstation_id.should == glhs.id
       user2.recipients[0].workstation_id.should == glhs.id
@@ -120,7 +120,7 @@ describe Message do
     let(:message) { FactoryGirl.create(:message, user: user) }
 
     before do
-      user1.authenticate_workstation(cusn.abrev => 1)
+      user1.start_job(cusn.abrev)
       FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
       FactoryGirl.create(:recipient, user: user, workstation_id: aml.id)
       message.set_recievers
@@ -139,7 +139,7 @@ describe Message do
     let(:message) { FactoryGirl.create(:message, user: user) }
 
     before(:each) do
-      user1.authenticate_workstation(cusn.abrev => 1)
+      user1.start_job(cusn.abrev)
       cusn.reload 
     end
 
@@ -165,8 +165,7 @@ describe Message do
     let(:message) { FactoryGirl.create(:message, user: user) }
     
     before do
-      user.authenticate_workstation(cusn.abrev => 1)
-      user.authenticate_workstation(aml.abrev => 1)
+      user.start_jobs([cusn.abrev, aml.abrev])
       message.set_sent_by
     end
 
@@ -183,7 +182,7 @@ describe Message do
     let(:message) { FactoryGirl.create(:message, user: user) }
 
     before do
-      user.authenticate_workstation(cusn.abrev => 1, cuss.abrev => 1, aml.abrev => 1)
+      user.start_jobs([cusn.abrev, cuss.abrev, aml.abrev])
       message.set_sent_by
     end
  
@@ -200,7 +199,7 @@ describe Message do
     let(:message) { FactoryGirl.create(:message, user: user) }
 
     before do
-      user.authenticate_workstation(cusn.abrev => 1, cuss.abrev => 1, aml.abrev => 1)
+      user.start_jobs([cusn.abrev, cuss.abrev, aml.abrev])
       message.set_sent_by
     end
  
@@ -215,7 +214,7 @@ describe Message do
     let(:user1) { FactoryGirl.create(:user) }
     
     before do
-      user.authenticate_workstation(cusn.abrev => 1)
+      user.start_job(cusn.abrev)
       @message = FactoryGirl.create(:message, user: user)
       @message.set_sent_by
     end
@@ -242,7 +241,7 @@ describe Message do
     let(:old_message) { FactoryGirl.create(:message, user: user, created_at: 25.hours.ago) }
 
     before(:each) do
-      user1.authenticate_workstation(cusn.abrev => 1)
+      user1.start_job(cusn.abrev)
       FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
       message.set_recievers
       message1.set_recievers
@@ -278,7 +277,7 @@ describe Message do
     let(:old_message) { FactoryGirl.create(:message, user: user, created_at: 25.hours.ago) }
 
     before(:each) do
-      user1.authenticate_workstation(cusn.abrev => 1)
+      user1.start_job(cusn.abrev)
       FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
       message.set_recievers
       message1.set_recievers
@@ -346,7 +345,7 @@ describe Message do
     let(:message) { FactoryGirl.create(:message, user: user) }
 
     before(:each) do
-      recipient_user.authenticate_workstation(cusn.abrev => 1)
+      recipient_user.start_job(cusn.abrev)
     end
     
     it "adds the given workstation(s) and user to the message's read by list" do
@@ -453,9 +452,9 @@ describe Message do
       let(:recipient_user2) { FactoryGirl.create(:user) }
 
       before(:each) do
-        recipient_user.authenticate_workstation(cusn.abrev => 1)
-        recipient_user1.authenticate_workstation(cuss.abrev => 1)
-        recipient_user2.authenticate_workstation(aml.abrev => 1)
+        recipient_user.start_job(cusn.abrev)
+        recipient_user1.start_job(cuss.abrev)
+        recipient_user2.start_job(aml.abrev)
         message.mark_read_by(recipient_user)
         message.mark_read_by(recipient_user1)
         message.mark_read_by(recipient_user2)

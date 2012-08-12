@@ -38,19 +38,19 @@ describe Attachment do
       let(:cusn) { Workstation.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
       let(:aml) { Workstation.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
       
-      let(:reciever) { FactoryGirl.create(:user) }
+      let(:receiver) { FactoryGirl.create(:user) }
 
       let(:attachment1) { FactoryGirl.create(:attachment, user: user) }
 
       before do
-        reciever.authenticate_workstation(cusn.abrev => 1)
+        receiver.start_job(cusn.abrev)
         FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
         FactoryGirl.create(:recipient, user: user, workstation_id: aml.id)
         attachment1.set_recievers
       end
 
       it "sets attachment.recievers to an array of hashes, with workstation_id and user_id" do
-        attachment1.recievers.should == [{ workstation_id: cusn.id, user_id: reciever.id }, { workstation_id: aml.id }]
+        attachment1.recievers.should == [{ workstation_id: cusn.id, user_id: receiver.id }, { workstation_id: aml.id }]
       end
     end
   end

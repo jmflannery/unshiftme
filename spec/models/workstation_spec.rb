@@ -48,8 +48,7 @@ describe Workstation do
 
       before(:each) do
         @user = FactoryGirl.create(:user)
-        @params = { key: "val", "CUSN" => 1, "AML" => 1, anotherkey: "val" }
-        @user.authenticate_workstation(@params)
+        @user.start_jobs([cusn.abrev, aml.abrev])
       end
       
       it "returns a list of all Workstations belonging to the given user" do
@@ -62,11 +61,8 @@ describe Workstation do
 
     describe "#description" do
 
-
       before(:each) do
-        cusn = Workstation.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
-        cuss = Workstation.create!(name: "CUS South", abrev: "CUSS", job_type: "td")
-        user.authenticate_workstation(cusn.abrev => 1)
+        user.start_job(cusn.abrev)
       end
     
       it "returns a string of the workstation name and workstation user (if the workstation has a user)" do
@@ -121,7 +117,7 @@ describe Workstation do
           end
           array << hash
         end
-        @expected = array.as_json
+        @expected = array.to_json
       end
 
       it "should return json information of all of the desks" do

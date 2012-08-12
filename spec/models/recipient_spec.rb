@@ -22,7 +22,7 @@ describe Recipient do
   let(:recipient) { sender.recipients.create!(attr) }
 
   before(:each) do
-    reciever.authenticate_workstation(cusn.abrev => 1)
+    reciever.start_job(cusn.abrev)
   end
 
   it "should create a new instance given valid attributes" do
