@@ -54,8 +54,10 @@ var heartbeat = function() {
 // resize the '#messages_section' to be 68% of the window
 var calculate_message_section_height = function() {
   height = $(window).outerHeight(true);
-  calculated_height = (height * 68) / 100;  
-  $('#messages_section').height(calculated_height);
+  outer_height = (height * 80) / 100;
+  inner_height = (outer_height * 75) / 100;
+  $('#content').height(outer_height);
+  $('#messages_section').height(inner_height);
   //$('#messages_section').scrollTo("max");
 };
 
