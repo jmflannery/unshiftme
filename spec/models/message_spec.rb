@@ -303,9 +303,9 @@ describe Message do
     let(:message) { FactoryGirl.create(:message, user: user) }
 
     context "for messages created by the given user" do
-      it "sets message view_class attribute to 'message owner'" do
+      it "sets message view_class attribute to 'message msg-id owner'" do
         message.set_view_class(user)
-        message.view_class.should == "message owner"
+        message.view_class.should == "message msg-#{message.id} owner"
       end
     end
 
@@ -318,9 +318,9 @@ describe Message do
         message.mark_read_by(user1)
       end
 
-      it "sets message view_class attribute to 'message recieved read' " do
+      it "sets message view_class attribute to 'message msg-id recieved read' " do
         message.set_view_class(user1)
-        message.view_class.should == "message recieved read"
+        message.view_class.should == "message msg-#{message.id} recieved read"
       end
     end
 
@@ -331,9 +331,9 @@ describe Message do
         user1.start_job(cusn.abrev)
         message.set_recieved_by(cusn)
       end
-      it "sets message view_class attribute to 'message recieved unread'" do
+      it "sets message view_class attribute to 'message msg-id recieved unread'" do
         message.set_view_class(user1)
-        message.view_class.should == "message recieved unread"
+        message.view_class.should == "message msg-#{message.id} recieved unread"
       end
     end
   end
