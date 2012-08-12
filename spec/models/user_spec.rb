@@ -36,6 +36,7 @@ describe User do
   it { should respond_to(:password_confirmation) }
   it { should respond_to(:admin) }
   it { should respond_to(:authenticate) }
+  it { should respond_to(:workstation_names) }
 
   it { should be_valid }
 
@@ -185,9 +186,7 @@ describe User do
     describe "handle" do
 
       before do
-        #FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td")
-        #FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML", job_type: "td")
-        subject.authenticate_workstation("CUSN" => 1, "AML" => 1)
+        subject.start_jobs(["CUSN", "AML"])
       end
 
       it "returns a string in the format user_name@workstation,workstation" do
@@ -213,132 +212,112 @@ describe User do
         @user.as_json.should == @expected
       end
     end
-
-    describe "Workstation" do
-      
-      before(:each) do
-        @params = { key: "val", "CUSN" => 1, "AML" => 1, anotherkey: "val" }
+    
+    describe "start_jobs" do
+    
+      it "assignes the jobs to the user" do
+        subject.start_jobs([cusn.abrev, aml.abrev])
+        Workstation.find_by_abrev("CUSN").user_id.should == subject.id  
+        Workstation.find_by_abrev("AML").user_id.should == subject.id  
       end
+    end
 
-      describe "authenticate_workstation" do
-        
-        it "parses the user params and assiges control of each workstation to the user" do
-          subject.authenticate_workstation(@params)
-          Workstation.find_by_abrev("CUSN").user_id.should == subject.id  
-          Workstation.find_by_abrev("AML").user_id.should == subject.id  
-        end
+    describe "start_job" do
+
+      it "assignes the job to the user" do
+        subject.start_job(cusn.abrev)
+        Workstation.find_by_abrev("CUSN").user_id.should == subject.id  
       end
+    end
 
-      describe "start_jobs" do
-      
-        it "assignes the jobs to the user" do
-          subject.start_jobs([cusn.abrev, aml.abrev])
-          Workstation.find_by_abrev("CUSN").user_id.should == subject.id  
-          Workstation.find_by_abrev("AML").user_id.should == subject.id  
-        end
-      end
+    describe "workstation_ids" do
 
-      describe "start_job" do
-
-        it "assignes the job to the user" do
-          subject.start_job(cusn.abrev)
-          Workstation.find_by_abrev("CUSN").user_id.should == subject.id  
-        end
-      end
-
-      describe "workstation_ids" do
-
-        before(:each) do
-          subject.authenticate_workstation(@params)
-        end
-
+      context "when the user is controlling one or more workstations (by calling start_job or start_jobs)" do
+        before { subject.start_jobs(["CUSN", "AML"]) }
         it "returns a list of all the workstation id's under the control of the user" do
-          subject.workstation_ids.should be_kind_of Array
           subject.workstation_ids.should == [Workstation.find_by_abrev("CUSN").id, Workstation.find_by_abrev("AML").id]
         end
-
-        it "returns an empty list of the user has no workstations" do
-          @user2 = FactoryGirl.build(:user)
-          @user2.workstation_ids.should == []
-        end
       end
-      
-      describe "workstation_names" do
 
-        before(:each) do
-          subject.authenticate_workstation(@params)
-        end
+      it "returns an empty list of the user has no workstations" do
+        subject.workstation_ids.should == []
+      end
+    end
+    
+    describe "workstation_names" do
 
-        it "returns a list of all the workstation abreviation names under the control of the user" do
-          subject.workstation_names.should == [Workstation.find_by_abrev("CUSN").abrev, Workstation.find_by_abrev("AML").abrev]
-        end
-
-        it "returns an empty list of the user has no workstations" do
-          @user2 = FactoryGirl.build(:user)
-          @user2.workstation_names.should == []
+      context "when the user is controlling one or more workstations (by calling start_job or start_jobs)" do
+        before { subject.start_jobs(["CUSN", "AML"]) }
+        it "returns a list of all of the user's workstation names" do
+          subject.workstation_names.should == ["CUSN", "AML"]
         end
       end
 
-      describe "workstation_names_str" do
-
-        before(:each) do
-          subject.authenticate_workstation(@params)
+      context "when the user is not controlling any workstations" do
+        it "returns an empty list" do
+          subject.workstation_names.should == []
         end
+      end
+    end
 
-        it "returns a list of all the workstation abreviation names under the control of the user as a string seperated by commas" do
-          subject.workstation_names_str.should == "#{Workstation.find_by_abrev("CUSN").abrev},#{Workstation.find_by_abrev("AML").abrev}"
-        end
+    describe "workstation_names_str" do
 
-        it "returns an empty string of the user has no workstations" do
-          @user2 = FactoryGirl.build(:user)
-          @user2.workstation_names_str.should == ""
+      context "when the user is controlling one or more workstations (by calling start_job or start_jobs)" do
+        before { subject.start_jobs(["CUSN", "AML"]) }
+        it "returns a list of all of the user's workstation names as a string seperated by commas" do
+          subject.workstation_names_str.should == "CUSN,AML"
         end
       end
 
-      describe "leave_workstation" do
-
-        before(:each) do
-          subject.authenticate_workstation(@params)
+      context "when the user is not controlling any workstations" do
+        it "returns an empty string" do
+          subject.workstation_names_str.should == ""
         end
+      end
+    end
 
-        it "relinqishes control of all workstations belonging to the given user" do
-          subject.leave_workstation
-          Workstation.find_by_abrev("CUSN").user_id.should == 0
-          Workstation.find_by_abrev("AML").user_id.should == 0
-        end
+    describe "leave_workstation" do
+
+      before(:each) { subject.start_jobs(["CUSN", "AML"]) }
+
+      it "relinqishes control of all workstations belonging to the given user" do
+        subject.leave_workstation
+        Workstation.find_by_abrev("CUSN").user_id.should == 0
+        Workstation.find_by_abrev("AML").user_id.should == 0
       end
     end
 
     describe "add_recipients" do
 
-      before(:each) do
-        @workstation_ids = [cusn, cuss]
-        @recipients = subject.add_recipients(@workstation_ids)
-      end
+      let(:workstations) { [cusn, cuss] }
 
       it "adds the list of workstations to the user's recipients" do
-        subject.recipients.size.should == @workstation_ids.size
-        subject.recipients.each do |recipient|
-          @workstation_ids.map { |d| d.id }.should include recipient.workstation_id
+        subject.add_recipients(workstations)
+        subject.recipients.size.should == workstations.size
+        workstations.each do |workstation|
+          subject.recipients.map { |recipient| workstation.id }.should include workstation.id
         end
       end
 
       it "doesn't add any duplicate recipients" do
+        subject.add_recipients(workstations)
         size1 = subject.recipients.size
-        subject.add_recipients(@workstation_ids)
+        subject.add_recipients(workstations)
         size2 = subject.recipients.size
         size2.should == size1
       end
 
-      it "doesn't add a workstation as a recipient if the user is currently controlling that workstation" do
-        subject.authenticate_workstation(aml.abrev => 1)
-        @workstation_ids << aml
-        subject.add_recipients(@workstation_ids)
-        subject.should_not be_messaging aml.id
+      context "when the user is currently controlling a workstation" do
+        before { subject.start_job("AML") }
+        it "doesn't add the workstation as a recipient" do
+          subject.add_recipients([aml])
+          subject.should_not be_messaging aml.id
+        end
       end
 
       it "returns an array of the recipients added" do
-        @recipients.should == subject.recipients
+        recipients = subject.add_recipients(workstations)
+        recipients.should == subject.recipients
       end
     end
 
@@ -357,15 +336,17 @@ describe User do
         size2.should == size1
       end
       
-      it "doesn't add a workstation as a recipient if the user is currently controlling that workstation" do
-        subject.authenticate_workstation(ydmstr.abrev => 1)
-        subject.add_recipient(ydmstr)
-        subject.should_not be_messaging ydmstr.id
+      context "when the user is currently controlling a workstation" do
+        before { subject.start_job("AML") }
+        it "doesn't add the workstation as a recipient" do
+          subject.add_recipient(aml)
+          subject.should_not be_messaging aml.id
+        end
       end
 
       it "returns the newly created recipient" do
-        recipient_id = subject.add_recipient(ydmstr)
-        recipient_id.should == subject.recipients[0]
+        recipient = subject.add_recipient(ydmstr)
+        recipient.should == subject.recipients[0]
       end
     end
     

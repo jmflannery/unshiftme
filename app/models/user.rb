@@ -1,8 +1,11 @@
 class User < ActiveRecord::Base
   include SessionsHelper
 
+  after_initialize :init
+
   has_secure_password 
 
+  attr_accessor :workstation_names
   attr_accessible :user_name, :password, :password_confirmation 
   
   has_many :messages
@@ -12,15 +15,17 @@ class User < ActiveRecord::Base
   
   serialize :normal_workstations
   
-  validates :user_name, presence: true, uniqueness: true
-  
   #VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   #validates :email, presence: true, uniqueness: true, format: { with: VALID_EMAIL_REGEX }
-
+  validates :user_name, presence: true, uniqueness: true
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true 
 
   scope :online, lambda { where("status = true") }
+
+  def init
+    self.workstation_names = Workstation.of_user(self.id).collect { |workstation| workstation.abrev }
+  end
 
   def to_param
     user_name
@@ -110,21 +115,11 @@ class User < ActiveRecord::Base
     self.save validate: false
   end
 
-  def authenticate_workstation(params)
-    params.each do |key, val|
-      workstation = Workstation.find_by_abrev(key)
-      if workstation
-        workstation.user_id = self.id
-        workstation.save
-      end
-    end
-    true
-  end
-
   def start_job(job_abrev)
     job = Workstation.find_by_abrev(job_abrev)
     job.user_id = self.id
     job.save
+    workstation_names << job_abrev
   end
    
   def start_jobs(job_abrevs)
@@ -135,10 +130,6 @@ class User < ActiveRecord::Base
 
   def workstation_ids
     Workstation.of_user(self.id).collect { |workstation| workstation.id }
-  end
-
-  def workstation_names
-    Workstation.of_user(self.id).collect { |workstation| workstation.abrev }
   end
 
   def workstation_names_str
@@ -155,6 +146,7 @@ class User < ActiveRecord::Base
       workstation = Workstation.find(workstation_id)
       workstation.update_attributes({user_id: 0})
     end
+    workstation_names = []
   end
 
   def messaging?(workstation_id)
