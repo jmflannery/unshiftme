@@ -137,14 +137,14 @@ class Message < ActiveRecord::Base
 
   def set_view_class(current_user)
     if was_sent_by?(current_user)
-      update_attribute(:view_class, "message msg-#{id} owner")
+      update_attribute(:view_class, "message owner")
     end
     
     if was_sent_to?(current_user)
       if was_read_by?(current_user)
-        update_attribute(:view_class, "message msg-#{id} recieved read")
+        update_attribute(:view_class, "message recieved read")
       else
-        update_attribute(:view_class, "message msg-#{id} recieved unread")
+        update_attribute(:view_class, "message recieved unread")
       end
     end
   end

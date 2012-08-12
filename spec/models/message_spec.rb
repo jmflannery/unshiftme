@@ -305,7 +305,7 @@ describe Message do
     context "for messages created by the given user" do
       it "sets message view_class attribute to 'message owner'" do
         message.set_view_class(user)
-        message.view_class.should == "message msg-#{message.id} owner"
+        message.view_class.should == "message owner"
       end
     end
 
@@ -320,7 +320,7 @@ describe Message do
 
       it "sets message view_class attribute to 'message recieved read' " do
         message.set_view_class(user1)
-        message.view_class.should == "message msg-#{message.id} recieved read"
+        message.view_class.should == "message recieved read"
       end
     end
 
@@ -333,7 +333,7 @@ describe Message do
       end
       it "sets message view_class attribute to 'message recieved unread'" do
         message.set_view_class(user1)
-        message.view_class.should == "message msg-#{message.id} recieved unread"
+        message.view_class.should == "message recieved unread"
       end
     end
   end
