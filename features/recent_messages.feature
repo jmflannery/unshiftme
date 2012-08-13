@@ -33,7 +33,8 @@ Feature: Messages
   Scenario: Recent messages: When the current user loads the messaging page, messages
     sent to the current user's workstations, while the workstation was vacant during the last 24 hours
     will be visible. Messages sent to the user's workstation while another user was working
-    the workstation during the last 24 hours will not be visible
+    the workstation during the last 24 hours will not be visible. Visible received messages can then
+    be acknowledged by clicking the message
     Given the following user records
       | user_name | id |
       | sam       | 3  |
