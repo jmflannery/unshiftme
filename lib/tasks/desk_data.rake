@@ -9,6 +9,12 @@ namespace :db do
       Workstation.create!(name: "Yard Control", abrev: "YDCTL", job_type: "ops")
       Workstation.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
       Workstation.create!(name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
+      Workstation.create!(name: "CCC", abrev: "CCC", job_type: "ops")
+    end
+
+    desc "Truncate the workstation data"
+    task truncate: :environment do
+      Workstation.delete_all
     end
   end
 end
