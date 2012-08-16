@@ -3,67 +3,77 @@ require 'spec_helper'
 describe Message do
 
   let(:user) { FactoryGirl.create(:user, user_name: "joe") } 
-  let(:message) { user.messages.new(content: "this is THAT message") }
-  
-  it "creates a new instance given valid attibutes" do
-    message.save
+  before(:each) do
+    @message = user.messages.new(content: "this is THAT message")
   end
   
+  subject { @message }
+ 
+  let(:message) { user.messages.new(content: "this is THAT message") }
+
+  it { should be_valid }
+  it { should respond_to(:content) }
+
+  context "without a user_id" do
+    before { subject.user_id = nil }
+    it { should_not be_valid }
+  end
+
+  context "with blank content" do
+    before { subject.content = "     " }
+    it { should_not be_valid }
+  end
+
+  context "with content 300 char long" do
+    before{ subject.content = "a" * 300 }
+    it { should be_valid }
+  end
+  
+  context "with content longer than 300 char" do
+    before { subject.content = "a" * 301 }
+    it { should_not be_valid }
+  end
+
+  context "without a user_id" do
+    before { subject.user_id = nil }
+    it { should_not be_valid }
+  end
+
   describe "user associations" do
 
-    before(:each) do
-      message.save
-    end
-
     it "has a user attribute" do
-      message.should respond_to(:user)
+      subject.should respond_to(:user)
     end
 
     it "has the right associated user" do
-      message.user_id.should == user.id
-      message.user.should == user
+      subject.user_id.should == user.id
+      subject.user.should == user
     end
   end
   
-  describe "validations" do
+  describe "named scope" do
 
-    it "requires a user id" do
-      Message.new(@msg_attr).should_not be_valid
-    end
-
-    it "requires nonblank content" do
-      user.messages.build(:content => "  ").should_not be_valid
-    end
-     
-    it "accepts a 300 character message" do
-      user.messages.build(:content => "a" * 300).should be_valid
-    end
-
-    it "rejects long content" do
-      user.messages.build(:content => "a" * 301).should_not be_valid
-    end
-  end
-
-  describe "scope" do
-     
-    let(:today_message) { FactoryGirl.create(:message, user: user, created_at: 24.hours.ago) }
-    let(:yesterday_message) { FactoryGirl.create(:message, user: user, created_at: 25.hours.ago) }
-
-    describe "before" do
-
-      it "returns messages created between the given time and 24 hours earlier" do
-        todays_messages = Message.before(1.second.ago)
-        todays_messages.should include today_message
-        todays_messages.should_not include yesterday_message
-      end
+    before(:each) do
+      subject.created_at = 1.second.ago
+      subject.save
+      @yesterday_message = FactoryGirl.create(:message, user: user, created_at: 25.hours.ago)
     end
 
     describe "between" do
 
+      it "returns messages created between the given time and 24 hours earlier" do
+        messages = Message.before(1.second.ago)
+        messages.should include subject
+        messages.should_not include @yesterday_message
+      end
+    end
+
+    describe "between" do
+    
       it "returns messages created between the given from and to times" do
-        messages = Message.between(1441.minutes.ago, 20.hours.ago)
-        messages.should include today_message
-        messages.should_not include yesterday_message
+        messages = Message.between(20.hours.ago, 1.second.ago)
+        messages.should include subject
+        messages.should_not include @yesterday_message
       end
     end
   end
@@ -75,85 +85,79 @@ describe Message do
     let(:glhs) { FactoryGirl.create(:workstation, name: "Glasshouse", abrev: "GLHS", job_type: "td") }
     let(:user1) { FactoryGirl.create(:user) }
     let(:user2) { FactoryGirl.create(:user) }
-    let(:message) { FactoryGirl.create(:message, user: user) }
 
     before(:each) do
       user1.start_job(cusn.abrev)
       FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
       user2.start_job(cuss.abrev)
       FactoryGirl.create(:recipient, user: user, workstation_id: cuss.id)
+      subject.save
     end
 
     it "sends the message to each recipient workstation" do
       recipient_count = user.recipients.size
       PrivatePub.should_receive(:publish_to).exactly(recipient_count).times
-      message.broadcast
+      subject.broadcast
     end
 
     it "stores each recipient workstation and user (if one exists) in the serialized 'recievers' hash" do
-      message.broadcast
-      message.reload
-      message.recievers.should == { "CUSN" => user1.user_name, "CUSS" => user2.user_name }
+      subject.broadcast
+      subject.reload
+      subject.recievers.should == { "CUSN" => user1.user_name, "CUSS" => user2.user_name }
     end
 
     it "adds the sender's workstation to the recipient list of each of the sender's recipients" do
       user.start_job(glhs.abrev)
-      message.broadcast
+      subject.broadcast
       user1.recipients[0].workstation_id.should == glhs.id
       user2.recipients[0].workstation_id.should == glhs.id
     end
 
     it "does not broadcast a message more than once to a user working multiple jobs" do
-      user1.start_jobs([cusn.abrev, cuss.abrev])
-      FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-      FactoryGirl.create(:recipient, user: user, workstation_id: cuss.id)
+      user1.start_job(cuss.abrev)
       PrivatePub.should_receive(:publish_to).exactly(1).times
-      message.broadcast
+      subject.broadcast
     end
   end
 
   describe "#set_recievers" do 
 
     let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
-    let(:aml) { Workstation.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
+    let(:aml) { FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML", job_type: "td") }
     let(:user1) { FactoryGirl.create(:user, user_name: "fred") }
-    let(:message) { FactoryGirl.create(:message, user: user) }
 
     before do
-      user1.start_job(cusn.abrev)
       FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
       FactoryGirl.create(:recipient, user: user, workstation_id: aml.id)
-      message.set_recievers
+      user1.start_job(cusn.abrev)
+      subject.set_recievers
     end
 
     it "sets message.recievers to an array hashes, with workstation_id and user_id" do
-      message.recievers.should == { "CUSN" => "fred", "AML" => "" }
+      subject.recievers.should == { "CUSN" => "fred", "AML" => "" }
     end
   end
 
   describe "#set_recieved_by" do
 
     let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
-    let(:aml) { FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML", job_type: "td", user_id: 0) }
+    let(:aml) { FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML", job_type: "td") }
     let(:user1) { FactoryGirl.create(:user, user_name: "herman") }
-    let(:message) { FactoryGirl.create(:message, user: user) }
-
-    before(:each) do
-      user1.start_job(cusn.abrev)
-      cusn.reload 
-    end
 
     context "when the recipient workstation has no controlling user" do
-      before { message.set_recieved_by(aml) }
+      before { subject.set_recieved_by(aml) }
       it "adds the workstation abrev as a key to the recievers hash with an empty string as the value" do
-        message.recievers.should == { "AML" => "" }
+        subject.recievers.should == { "AML" => "" }
       end
     end 
 
     context "when the recipient workstation has a controlling user" do
-      before { message.set_recieved_by(cusn) }
+      before do
+        user1.start_job(cusn.abrev)
+        subject.set_recieved_by(cusn.reload)
+      end
       it "adds the workstation abrev as a key to the recievers hash with the workstation's controlling user_name as the value" do
-        message.recievers.should == { "CUSN" => "herman" }
+        subject.recievers.should == { "CUSN" => "herman" }
       end
     end 
   end
@@ -162,15 +166,14 @@ describe Message do
 
     let(:cusn) { Workstation.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
     let(:aml) { Workstation.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
-    let(:message) { FactoryGirl.create(:message, user: user) }
     
     before do
       user.start_jobs([cusn.abrev, aml.abrev])
-      message.set_sent_by
+      subject.set_sent_by
     end
 
     it "sets message.sent to an array of strings of the workstation_abrev's owned by the message sender " do
-      message.sent.should == [cusn.abrev, aml.abrev]
+      subject.sent.should == [cusn.abrev, aml.abrev]
     end
   end
 
@@ -179,15 +182,14 @@ describe Message do
     let(:cusn) { Workstation.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
     let(:cuss) { Workstation.create!(name: "CUS South", abrev: "CUSS", job_type: "td") }
     let(:aml) { Workstation.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
-    let(:message) { FactoryGirl.create(:message, user: user) }
 
     before do
       user.start_jobs([cusn.abrev, cuss.abrev, aml.abrev])
-      message.set_sent_by
+      subject.set_sent_by
     end
  
     it "should return a formatted list of the message senders workstation's" do
-      message.sender_handle.should == "joe@CUSN,CUSS,AML"
+      subject.sender_handle.should == "joe@CUSN,CUSS,AML"
     end
   end
 
@@ -196,15 +198,14 @@ describe Message do
     let(:cusn) { Workstation.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
     let(:cuss) { Workstation.create!(name: "CUS South", abrev: "CUSS", job_type: "td") }
     let(:aml) { Workstation.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
-    let(:message) { FactoryGirl.create(:message, user: user) }
 
     before do
       user.start_jobs([cusn.abrev, cuss.abrev, aml.abrev])
-      message.set_sent_by
+      subject.set_sent_by
     end
  
     it "should return a formatted list of the message senders workstation's" do
-      message.sent_by.should == "CUSN,CUSS,AML"
+      subject.sent_by.should == "CUSN,CUSS,AML"
     end
   end
 
@@ -215,16 +216,15 @@ describe Message do
     
     before do
       user.start_job(cusn.abrev)
-      @message = FactoryGirl.create(:message, user: user)
-      @message.set_sent_by
+      subject.set_sent_by
     end
 
     it "returns false if the message was not sent by the given user" do
-      @message.was_sent_by?(user1).should be_false
+      subject.was_sent_by?(user1).should be_false
     end
 
     it "returns true if the message was sent by the given user" do
-      @message.was_sent_by?(user).should be_true
+      subject.was_sent_by?(user).should be_true
     end
   end
    
@@ -235,7 +235,6 @@ describe Message do
     let(:user1) { FactoryGirl.create(:user) }
     let(:user2) { FactoryGirl.create(:user) }
 
-    let(:message) { FactoryGirl.create(:message, user: user) }
     let(:message1) { FactoryGirl.create(:message, user: user1, created_at: 1439.minutes.ago) }
     let(:message2) { FactoryGirl.create(:message, user: user2) }
     let(:old_message) { FactoryGirl.create(:message, user: user, created_at: 25.hours.ago) }
@@ -243,7 +242,7 @@ describe Message do
     before(:each) do
       user1.start_job(cusn.abrev)
       FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-      message.set_recievers
+      subject.set_recievers
       message1.set_recievers
       message2.set_recievers
       old_message.set_recievers
@@ -251,14 +250,14 @@ describe Message do
 
     it "returns messages that were sent or recieved by the given user" do
       messages = Message.for_user_before(user1, 0.seconds.ago)
-      messages.should include message
+      messages.should include subject
       messages.should include message1
       messages.should_not include message2
     end
      
     it "returns messages created between the given time and 24 hours earlier than the given time" do
       messages = Message.for_user_before(user1, 0.seconds.ago)
-      messages.should include message
+      messages.should include subject
       messages.should include message1
       messages.should_not include old_message
     end
