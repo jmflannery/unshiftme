@@ -182,7 +182,7 @@ class Message < ActiveRecord::Base
       workstations = user.workstation_names
       self.recievers.each_pair do |workstation_abrev, user_name|
         if user.user_name == user_name or (workstations.include?(workstation_abrev) and user_name.blank?)
-          sent_to = true 
+          sent_to = true
           break
         end
       end
