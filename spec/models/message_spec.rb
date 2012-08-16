@@ -14,10 +14,9 @@ describe Message do
   
   subject { @message }
  
-  let(:message) { user.messages.new(content: "this is THAT message") }
-
   it { should be_valid }
   it { should respond_to(:content) }
+  it { should respond_to(:user_id) }
 
   context "without a user_id" do
     before { subject.user_id = nil }
