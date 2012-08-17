@@ -8,6 +8,7 @@ class Message < ActiveRecord::Base
   serialize :recievers
   
   belongs_to :user
+  has_many :receivers
   
   validates :content, :presence => true, :length => { :maximum => 300 }
   validates :user_id, :presence => true

@@ -55,6 +55,10 @@ describe Message do
     end
   end
   
+  describe "receiver associations" do
+    it { should have_many(:receivers) }
+  end
+
   describe "named scope" do
 
     before(:each) do
