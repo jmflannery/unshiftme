@@ -30,6 +30,7 @@ end
 
 group :test do
   gem 'rspec-rails'
+  gem 'shoulda-matchers'
   gem 'cucumber-rails'
   gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
   #gem 'capybara', "~> 1.1.2"
