@@ -383,6 +383,7 @@ describe Message do
       let(:old_message) { FactoryGirl.create(:message, user: user, created_at: 25.hours.ago) }
 
       before(:each) do
+        subject.save
         user1.start_job(cusn.abrev)
         FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
         subject.set_receivers
@@ -416,6 +417,7 @@ describe Message do
       let(:old_message) { FactoryGirl.create(:message, user: user, created_at: 25.hours.ago) }
 
       before(:each) do
+        subject.save
         user1.start_job(cusn.abrev)
         FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
         subject.set_receivers
