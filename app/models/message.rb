@@ -5,7 +5,6 @@ class Message < ActiveRecord::Base
 
   serialize :read_by
   serialize :sent
-  serialize :recievers
   
   belongs_to :user
   has_many :receivers
@@ -22,29 +21,19 @@ class Message < ActiveRecord::Base
     where("created_at >= ? and created_at <= ?", timeFrom, timeTo)
   }
 
-  def set_recievers
+  def set_receivers
     user.recipients.each do |recipient|
       workstation = Workstation.find_by_id(recipient.workstation_id)
-      recip_user = User.find_by_id(workstation.user_id)
-      name = recip_user ? recip_user.user_name : ""
-      if self.recievers
-        self.recievers.merge!(workstation.abrev => name) unless self.recievers.has_key?(workstation.abrev)
-      else
-        self.recievers = { workstation.abrev => name }
-      end
+      set_received_by(workstation)
     end
-    save
   end
 
-  def set_recieved_by(workstation)
+  def set_received_by(workstation)
+    receiver = self.receivers.new
+    receiver.workstation = workstation
     recip_user = User.find_by_id(workstation.user_id)
-    name = recip_user ? recip_user.user_name : ""
-    if self.recievers
-      self.recievers.merge!(workstation.abrev => name) unless self.recievers.has_key?(workstation.abrev)
-    else
-      self.recievers = { workstation.abrev => name }
-    end
-    save
+    receiver.user = recip_user if recip_user
+    receiver.save
   end
 
   def broadcast
@@ -52,7 +41,6 @@ class Message < ActiveRecord::Base
     sent_to = []
     user.recipients.each do |recipient|
       workstation = Workstation.find(recipient.workstation_id)
-      set_recieved_by(workstation)
       if User.exists?(workstation.user_id)
         recip_user = User.find(workstation.user_id) 
         unless sent_to.include?(recip_user.id)
@@ -179,13 +167,10 @@ class Message < ActiveRecord::Base
 
   def was_sent_to?(user)
     sent_to = false
-    if self.recievers
-      workstations = user.workstation_names
-      self.recievers.each_pair do |workstation_abrev, user_name|
-        if user.user_name == user_name or (workstations.include?(workstation_abrev) and user_name.blank?)
-          sent_to = true
-          break
-        end
+    self.receivers.each do |receiver|
+      if receiver.user_id == user.id or (user.workstation_ids.include?(receiver.workstation_id) and receiver.user == nil)
+        sent_to = true
+        break
       end
     end
     sent_to

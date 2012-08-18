@@ -7,7 +7,7 @@ class AttachmentsController < ApplicationController
       @attachment.set_recievers
         
       @message = current_user.messages.create(content: @attachment.payload_file_name, attachment_id: @attachment.id)
-      @message.set_recievers 
+      @message.set_receivers 
       @message.view_class = "message #{@message.id} owner"
 
       current_user.recipients.each do |recipient|

@@ -20,50 +20,35 @@ describe MessagesController do
     end
   end
   
-  describe "POST 'create'" do
+  describe "POST create" do
 
+    let(:attr) { { "content" => "i like turtles" } }
+    let(:message) { mock_model(Message).as_null_object }
     before(:each) do
       test_sign_in(user)
+      Message.stub(:new).and_return(message)
+    end
+
+    it "creates a new message" do
+      Message.should_receive(:new).with(attr, {}).and_return(message)
+      xhr :post, :create,  message: attr
     end
     
-    describe "failure" do
-
-      let(:attr) { { :content => "i like turtles" } }
-      it "should not create a message" do
-        lambda do
-          post :create, :message => @attr, format: :js
-        end.should_not change(Message, :count)
-      end
-    end
-
-    describe "success" do
-
-      it "should create a message" do
-        lambda do
-          post :create, :message => attr, format: :js
-        end.should change(Message, :count).by(1)
+    context "on successful message save" do
+           
+      it "broadcasts the message" do
+        message.should_receive(:broadcast)
+        xhr :post, :create,  message: attr
       end
 
-      let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
-      let(:cuss) { FactoryGirl.create(:workstation, name: "CUS South", abrev: "CUSS", job_type: "td") }
-      let(:aml) { FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML", job_type: "td") }
-      let(:recip_user) { FactoryGirl.create(:user, user_name: "samson") }
-      before do
-        recip_user.start_job(cuss.abrev)
-        user.start_job(cusn.abrev)
-        FactoryGirl.create(:recipient, user: user, workstation_id: cuss.id)
-        FactoryGirl.create(:recipient, user: user, workstation_id: aml.id)
+      it "sets the message's receivers" do
+        message.should_receive(:set_receivers)
+        xhr :post, :create,  message: attr
       end
 
-      it "adds the message sender's workstation to the recipient list of all of the message's recipient users" do
-        post :create, :message => attr, :format => :js
-        recip_user.recipients.size.should == 1
-        recip_user.recipients[0].workstation_id.should == cusn.id
-      end
-
-      it "adds each recipient to the message's recievers hash" do
-        post :create, :message => attr, :format => :js
-        assigns(:message).recievers.should == { "CUSS" => "samson", "AML" => "" }
+      it "sets the message's sending workstations" do
+        message.should_receive(:set_sent_by)
+        xhr :post, :create,  message: attr
       end
     end
   end

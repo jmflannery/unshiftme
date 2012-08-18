@@ -3,13 +3,12 @@ class MessagesController < ApplicationController
   
   def create
     @user = current_user
-    @message = @user.messages.build(params[:message])
+    @message = @user.messages.new(params[:message])
     if @message.save
       @message.view_class = "message #{@message.id} owner"
       @message.broadcast
+      @message.set_receivers
       @message.set_sent_by
-    else
-      redirect_to new_session_path
     end
   end
   

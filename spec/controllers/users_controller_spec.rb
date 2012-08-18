@@ -66,9 +66,9 @@ describe UsersController do
 
       it "should have an array of the given user's messages" do
         message = FactoryGirl.create(:message, user: @user)
-        message.set_recievers
+        message.set_receivers
         other_message = FactoryGirl.create(:message)
-        other_message.set_recievers
+        other_message.set_receivers
         get :show, :id => @user
         messages = assigns(:messages)
         messages.should include message

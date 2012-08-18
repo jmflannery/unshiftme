@@ -105,12 +105,6 @@ describe Message do
       subject.broadcast
     end
 
-    it "stores each recipient workstation and user (if one exists) in the serialized 'recievers' hash" do
-      subject.broadcast
-      subject.reload
-      subject.recievers.should == { "CUSN" => user1.user_name, "CUSS" => user2.user_name }
-    end
-
     it "adds the sender's workstation to the recipient list of each of the sender's recipients" do
       user.start_job(glhs.abrev)
       subject.broadcast
@@ -125,7 +119,7 @@ describe Message do
     end
   end
 
-  describe "#set_recievers" do 
+  describe "#set_receivers" do
 
     let(:user1) { FactoryGirl.create(:user, user_name: "fred") }
 
@@ -133,32 +127,37 @@ describe Message do
       FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
       FactoryGirl.create(:recipient, user: user, workstation_id: aml.id)
       user1.start_job(cusn.abrev)
-      subject.set_recievers
+      subject.set_receivers
     end
 
     it "sets message.recievers to an array hashes, with workstation_id and user_id" do
-      subject.recievers.should == { "CUSN" => "fred", "AML" => "" }
+      subject.receivers[0].workstation.should == cusn
+      subject.receivers[0].user.should == user1
+      subject.receivers[1].workstation.should == aml
+      subject.receivers[1].user.should == nil
     end
   end
 
-  describe "#set_recieved_by" do
+  describe "#set_received_by" do
 
     let(:user1) { FactoryGirl.create(:user, user_name: "herman") }
 
     context "when the recipient workstation has no controlling user" do
-      before { subject.set_recieved_by(aml) }
-      it "adds the workstation abrev as a key to the recievers hash with an empty string as the value" do
-        subject.recievers.should == { "AML" => "" }
+      before { subject.set_received_by(aml) }
+      it "creates a receiver for the given message with the workstation and no user" do
+        subject.receivers[0].workstation.should == aml
+        subject.receivers[0].user.should == nil
       end
     end 
 
     context "when the recipient workstation has a controlling user" do
       before do
         user1.start_job(cusn.abrev)
-        subject.set_recieved_by(cusn.reload)
+        subject.set_received_by(cusn.reload)
       end
-      it "adds the workstation abrev as a key to the recievers hash with the workstation's controlling user_name as the value" do
-        subject.recievers.should == { "CUSN" => "herman" }
+      it "creates a receiver for the given message with the workstation and the user" do
+        subject.receivers[0].workstation.should == cusn
+        subject.receivers[0].user.should == user1
       end
     end 
   end
@@ -230,7 +229,7 @@ describe Message do
       let(:user1) { FactoryGirl.create(:user) }
       before do
         user1.start_job(cusn.abrev)
-        subject.set_recieved_by(cusn)
+        subject.set_received_by(cusn)
         subject.mark_read_by(user1)
       end
 
@@ -244,7 +243,7 @@ describe Message do
       let(:user1) { FactoryGirl.create(:user) }
       before do
         user1.start_job(cusn.abrev)
-        subject.set_recieved_by(cusn)
+        subject.set_received_by(cusn)
       end
       it "sets message view_class attribute to 'message msg-id recieved unread'" do
         subject.set_view_class(user1)
@@ -299,7 +298,7 @@ describe Message do
     let(:recipient_user) { FactoryGirl.create(:user) }
 
     context "when the message was not sent to the given user, or the given user's workstations" do
-      it "returns false if the message was not sent to the given user" do
+      it "returns false" do
         subject.was_sent_to?(user1).should be_false
       end
     end
@@ -308,7 +307,7 @@ describe Message do
       before(:each) do
         recipient_user.start_job(cusn.abrev)
         FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-        subject.set_recievers
+        subject.set_receivers
       end
       it "returns true" do
         subject.was_sent_to?(recipient_user).should be_true
@@ -318,7 +317,7 @@ describe Message do
     context "when the message was sent to the given user's workstations but no specified user" do
       before(:each) do
         FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-        subject.set_recievers
+        subject.set_receivers
         recipient_user.start_job(cusn.abrev)
       end
       it "returns true" do
@@ -330,7 +329,7 @@ describe Message do
       before(:each) do
         user2.start_job(cusn.abrev)
         FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-        subject.set_recievers
+        subject.set_receivers
         user2.leave_workstation
         recipient_user.start_job(cusn.abrev)
       end
@@ -386,10 +385,10 @@ describe Message do
       before(:each) do
         user1.start_job(cusn.abrev)
         FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-        subject.set_recievers
-        message1.set_recievers
-        message2.set_recievers
-        old_message.set_recievers
+        subject.set_receivers
+        message1.set_receivers
+        message2.set_receivers
+        old_message.set_receivers
       end
 
       it "returns messages that were sent or recieved by the given user" do
@@ -419,10 +418,10 @@ describe Message do
       before(:each) do
         user1.start_job(cusn.abrev)
         FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-        subject.set_recievers
-        message1.set_recievers
-        message2.set_recievers
-        old_message.set_recievers
+        subject.set_receivers
+        message1.set_receivers
+        message2.set_receivers
+        old_message.set_receivers
       end
 
       it "returns messages that were sent or recieved by the given user" do
