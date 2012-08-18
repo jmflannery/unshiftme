@@ -8,7 +8,10 @@ Given /^the following messages$/ do |table|
     message.sent = [hash["from"]] if hash.has_key?("from")
     to_user = hash.has_key?("to_user") ? hash["to_user"] : ""
     to_workstation = hash.has_key?("to_workstation") ? hash["to_workstation"] : ""
-    message.recievers = {to_workstation => to_user}
+    receiver = message.receivers.new
+    receiver.workstation = Workstation.find_by_abrev(to_workstation) unless to_workstation.blank?
+    receiver.user = User.find_by_user_name(to_user) unless to_user.blank?
+    receiver.save
     if hash.has_key?("read") and hash["read"] == "t"
       message.read_by = {to_user => to_workstation}
     end
