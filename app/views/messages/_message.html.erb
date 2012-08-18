@@ -10,7 +10,7 @@
       <div class="message_timestamp"><p><%= message.created_at.strftime("%a %b %e %Y %T") %></p></div>
     </li>
     <li>
-      <% if message.attachment_id %>
+      <% if message.attachment_id and Attachment.exists?(message.attachment_id) %>
         <% attachment = Attachment.find(message.attachment_id) %>
         <div class="message_content"><%= link_to(message.content, attachment.payload.url) if attachment %></div>
       <% else %>
