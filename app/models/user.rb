@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 
   has_secure_password 
 
-  attr_accessor :workstation_names
+  attr_accessor :workstation_list
   attr_accessible :user_name, :password, :password_confirmation 
   
   has_many :messages
@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   scope :online, lambda { where("status = true") }
 
   def init
-    self.workstation_names = Workstation.of_user(self.id).collect { |workstation| workstation.abrev }
+    self.workstation_list = Workstation.of_user(self.id)
   end
 
   def to_param
@@ -119,7 +119,7 @@ class User < ActiveRecord::Base
     job = Workstation.find_by_abrev(job_abrev)
     job.user_id = self.id
     job.save
-    workstation_names << job_abrev
+    workstation_list << job
   end
    
   def start_jobs(job_abrevs)
@@ -128,8 +128,12 @@ class User < ActiveRecord::Base
     end
   end
 
+  def workstation_names
+    workstation_list.map { |workstation| workstation.abrev }
+  end
+
   def workstation_ids
-    Workstation.of_user(self.id).collect { |workstation| workstation.id }
+    workstation_list.map { |workstation| workstation.id }
   end
 
   def workstation_names_str
@@ -146,7 +150,7 @@ class User < ActiveRecord::Base
       workstation = Workstation.find(workstation_id)
       workstation.update_attributes({user_id: 0})
     end
-    workstation_names = []
+    workstation_list = []
   end
 
   def messaging?(workstation_id)
