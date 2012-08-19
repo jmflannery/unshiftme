@@ -1,10 +1,17 @@
 class Workstation < ActiveRecord::Base
   attr_accessible :name, :abrev, :job_type, :user_id
 
+  belongs_to :user
+
   scope :of_type, lambda { |type| where("job_type = ?", type) }
   scope :of_user, lambda { |user_id| where("user_id = ?", user_id) }
   
   default_scope order("id")
+
+  def set_user(user)
+    self.user = user
+    save
+  end
 
   def self.as_json
     array = []

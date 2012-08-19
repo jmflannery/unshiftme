@@ -19,6 +19,8 @@ describe Workstation do
 
   it { should be_valid }
 
+  it { should belong_to(:user) }
+
   describe "scope" do
     
     describe "of_type" do
@@ -58,6 +60,15 @@ describe Workstation do
   end
 
   describe "method" do
+
+    describe "#set_user" do
+      
+      it "sets the workstation's user" do
+        subject.set_user(user)
+        subject.user.should == user
+        subject.user_id.should == user.id
+      end
+    end
 
     describe "#description" do
 
