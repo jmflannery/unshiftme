@@ -58,6 +58,10 @@ describe Message do
   describe "receiver associations" do
     it { should have_many(:receivers) }
   end
+  
+  describe "sender_workstation associations" do
+    it { should have_many(:sender_workstations) }
+  end
 
   describe "named scope" do
 
@@ -162,15 +166,16 @@ describe Message do
     end 
   end
 
-  describe "#set_sent_by" do
+  describe "#set_sender_workstations" do
 
     before do
       user.start_jobs([cusn.abrev, aml.abrev])
-      subject.set_sent_by
+      subject.set_sender_workstations
     end
 
-    it "sets message.sent to an array of strings of the workstation_abrev's owned by the message sender " do
-      subject.sent.should == [cusn.abrev, aml.abrev]
+    it "sets the sender_workstations of the message" do
+      subject.sender_workstations[0].workstation.should == cusn
+      subject.sender_workstations[1].workstation.should == aml
     end
   end
 
@@ -178,7 +183,7 @@ describe Message do
 
     before do
       user.start_jobs([cusn.abrev, cuss.abrev, aml.abrev])
-      subject.set_sent_by
+      subject.set_sender_workstations
     end
  
     it "should return a formatted list of the message senders workstation's" do
@@ -190,7 +195,7 @@ describe Message do
 
     before do
       user.start_jobs([cusn.abrev, cuss.abrev, aml.abrev])
-      subject.set_sent_by
+      subject.set_sender_workstations
     end
  
     it "should return a formatted list of the message senders workstation's" do
@@ -204,7 +209,7 @@ describe Message do
     
     before do
       user.start_job(cusn.abrev)
-      subject.set_sent_by
+      subject.set_sender_workstations
     end
 
     it "returns false if the message was not sent by the given user" do

@@ -4,10 +4,10 @@ class Message < ActiveRecord::Base
   attr_accessible :content, :attachment_id
 
   serialize :read_by
-  serialize :sent
   
   belongs_to :user
   has_many :receivers
+  has_many :sender_workstations
   
   validates :content, :presence => true, :length => { :maximum => 300 }
   validates :user_id, :presence => true
@@ -65,33 +65,23 @@ class Message < ActiveRecord::Base
     end
   end
 
-  def set_sent_by
-    self.sent = [] 
-    user.workstation_names.each do |workstation_abrev|
-      self.sent << workstation_abrev
+  def set_sender_workstations
+    user.workstations.each do |workstation|
+      sender_workstation = self.sender_workstations.new
+      sender_workstation.workstation = workstation    
+      sender_workstation.save
     end
-    save
   end
 
   def sender_handle
-    sender = self.user
-    sent_from = ""
-    if sent
-      sent.each_index do |index|
-        sent_from += "," unless index == 0
-        sent_from += sent[index]
-      end
-    end
-    "#{user.user_name}@#{sent_from}"
+    "#{user.user_name}@#{sent_by}"
   end 
   
   def sent_by
     sent_by = ""
-    if self.sent
-      self.sent.each_index do |index|
-        sent_by += "," unless index == 0
-        sent_by += self.sent[index]
-      end
+    self.sender_workstations.each_index do |index|
+      sent_by += "," unless index == 0
+      sent_by += sender_workstations[index].workstation.abrev
     end
     sent_by
   end
