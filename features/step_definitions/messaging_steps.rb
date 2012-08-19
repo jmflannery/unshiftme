@@ -5,7 +5,9 @@ Given /^the following messages$/ do |table|
     message = user.messages.new
     message.content = hash["content"] if hash.has_key?("content")
     message.id = hash["id"] if hash.has_key?("id")
-    message.sent = [hash["from"]] if hash.has_key?("from")
+    sender = message.sender_workstations.new
+    sender.workstation = Workstation.find_by_abrev(hash["from"]) if hash.has_key?("from")
+    sender.save
     to_user = hash.has_key?("to_user") ? hash["to_user"] : ""
     to_workstation = hash.has_key?("to_workstation") ? hash["to_workstation"] : ""
     receiver = message.receivers.new
