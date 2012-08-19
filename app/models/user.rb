@@ -1,16 +1,14 @@
 class User < ActiveRecord::Base
   include SessionsHelper
 
-  after_initialize :init
-
   has_secure_password 
 
-  attr_accessor :workstation_list
   attr_accessible :user_name, :password, :password_confirmation 
   
+  has_many :workstations
   has_many :messages
-  has_many :transcripts
   has_many :recipients
+  has_many :transcripts
   has_many :attachments
   
   serialize :normal_workstations
@@ -22,10 +20,6 @@ class User < ActiveRecord::Base
   validates :password_confirmation, presence: true 
 
   scope :online, lambda { where("status = true") }
-
-  def init
-    self.workstation_list = Workstation.of_user(self.id)
-  end
 
   def to_param
     user_name
@@ -115,25 +109,23 @@ class User < ActiveRecord::Base
     self.save validate: false
   end
 
-  def start_job(job_abrev)
-    job = Workstation.find_by_abrev(job_abrev)
-    job.user_id = self.id
-    job.save
-    workstation_list << job
+  def start_job(abrev)
+    workstation = Workstation.find_by_abrev(abrev)
+    workstation.set_user(self) if workstation
   end
    
-  def start_jobs(job_abrevs)
-    job_abrevs.each do |job_abrev|
-      start_job(job_abrev)
+  def start_jobs(abrevs)
+    abrevs.each do |abrev|
+      start_job(abrev)
     end
   end
 
   def workstation_names
-    workstation_list.map { |workstation| workstation.abrev }
+    self.workstations.map { |workstation| workstation.abrev }
   end
 
   def workstation_ids
-    workstation_list.map { |workstation| workstation.id }
+    self.workstations.map { |workstation| workstation.id }
   end
 
   def workstation_names_str
@@ -146,11 +138,11 @@ class User < ActiveRecord::Base
   end
 
   def leave_workstation
-    workstation_ids.each do |workstation_id|
-      workstation = Workstation.find(workstation_id)
-      workstation.update_attributes({user_id: 0})
+    workstations.each do |workstation|
+      workstation.user_id = 0
+      workstation.save
     end
-    workstation_list = []
+    save
   end
 
   def messaging?(workstation_id)

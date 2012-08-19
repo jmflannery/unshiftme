@@ -94,6 +94,10 @@ describe User do
       specify { user_with_invalid_password.should be_false }
     end
   end
+
+  describe "workstation associations" do
+    it { should have_many(:workstations) }
+  end
   
   describe "message associations" do
 
@@ -282,8 +286,8 @@ describe User do
 
       it "relinqishes control of all workstations belonging to the given user" do
         subject.leave_workstation
-        Workstation.find_by_abrev("CUSN").user_id.should == 0
-        Workstation.find_by_abrev("AML").user_id.should == 0
+        Workstation.find_by_abrev("CUSN").user.should == nil
+        Workstation.find_by_abrev("AML").user.should == nil
       end
     end
 
@@ -412,7 +416,8 @@ describe User do
       end
 
       it "signs the user out of all workstations" do
-        subject.workstation_ids.should == []
+        subject.reload
+        subject.workstations.should == []
       end
 
       it "deletes all of the users recipients" do
