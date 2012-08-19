@@ -8,7 +8,7 @@ class MessagesController < ApplicationController
       @message.view_class = "message #{@message.id} owner"
       @message.broadcast
       @message.set_receivers
-      @message.set_sent_by
+      @message.set_sender_workstations
     end
   end
   

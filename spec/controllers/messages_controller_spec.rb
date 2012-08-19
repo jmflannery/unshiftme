@@ -47,7 +47,7 @@ describe MessagesController do
       end
 
       it "sets the message's sending workstations" do
-        message.should_receive(:set_sent_by)
+        message.should_receive(:set_sender_workstations)
         xhr :post, :create,  message: attr
       end
     end
