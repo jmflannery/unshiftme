@@ -15,10 +15,10 @@ class Message < ActiveRecord::Base
   default_scope order("created_at DESC")
 
   scope :before, lambda { |time|
-    where("created_at >= ? and created_at <= ?", time - 24.hours, time)
+    where("messages.created_at >= ? and messages.created_at <= ?", time - 24.hours, time)
   }
   scope :between, lambda { |timeFrom, timeTo|
-    where("created_at >= ? and created_at <= ?", timeFrom, timeTo)
+    where("messages.created_at >= ? and messages.created_at <= ?", timeFrom, timeTo)
   }
   scope :sent_to, lambda { |user_id|
     joins("inner join receivers on receivers.message_id = messages.id").where("receivers.user_id = ?", user_id)
