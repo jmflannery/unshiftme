@@ -23,6 +23,10 @@ class Message < ActiveRecord::Base
   scope :sent_to, lambda { |user_id|
     joins("inner join receivers on receivers.message_id = messages.id").where("receivers.user_id = ?", user_id)
   }
+  scope :sent_to_workstation, lambda { |workstation_id|
+    joins("inner join receivers on receivers.message_id = messages.id")
+    .where("receivers.workstation_id = ? and receivers.user_id is null", workstation_id)
+  }
 
   def set_receivers
     user.recipients.each do |recipient|
