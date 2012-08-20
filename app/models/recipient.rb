@@ -11,6 +11,7 @@
 
 class Recipient < ActiveRecord::Base
   belongs_to :user
+  belongs_to :workstation
 
   attr_accessible :workstation_id
   

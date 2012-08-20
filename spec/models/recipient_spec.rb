@@ -40,4 +40,8 @@ describe Recipient do
       recipient.user.should == sender
     end
   end
+
+  describe "workstation association" do
+    it { recipient.should belong_to(:workstation) }
+  end
 end
