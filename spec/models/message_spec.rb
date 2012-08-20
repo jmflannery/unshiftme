@@ -65,10 +65,11 @@ describe Message do
 
   describe "named scope" do
 
+    let(:user1) { FactoryGirl.create(:user) }
+    let!(:yesterday_message) { FactoryGirl.create(:message, user: user, created_at: 25.hours.ago) }
     before(:each) do
       subject.created_at = 1.second.ago
       subject.save
-      @yesterday_message = FactoryGirl.create(:message, user: user, created_at: 25.hours.ago)
     end
 
     describe "between" do
@@ -76,7 +77,7 @@ describe Message do
       it "returns messages created between the given time and 24 hours earlier" do
         messages = Message.before(1.second.ago)
         messages.should include subject
-        messages.should_not include @yesterday_message
+        messages.should_not include yesterday_message
       end
     end
 
@@ -85,7 +86,26 @@ describe Message do
       it "returns messages created between the given from and to times" do
         messages = Message.between(20.hours.ago, 1.second.ago)
         messages.should include subject
-        messages.should_not include @yesterday_message
+        messages.should_not include yesterday_message
+      end
+    end
+
+    describe "sent_to" do
+       
+      before do
+        cusn.set_user(user1)
+        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
+        subject.set_receivers
+        yesterday_message.user = user1
+        yesterday_message.set_receivers
+      end
+
+      it "returns messages sent to the given user" do
+        Message.sent_to(user1.id).should include subject
+      end
+
+      it "does not return messages not sent to the given user" do
+        Message.sent_to(user1.id).should_not include yesterday_message
       end
     end
   end
