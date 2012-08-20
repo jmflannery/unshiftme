@@ -456,9 +456,9 @@ describe Message do
       let(:user1) { FactoryGirl.create(:user) }
       let(:user2) { FactoryGirl.create(:user) }
 
-      let(:message1) { FactoryGirl.create(:message, user: user1, created_at: 1439.minutes.ago) }
+      let(:message1) { FactoryGirl.create(:message, user: user1, content: "message one", created_at: 1439.minutes.ago) }
       let(:message2) { FactoryGirl.create(:message, user: user2) }
-      let(:old_message) { FactoryGirl.create(:message, user: user, created_at: 25.hours.ago) }
+      let(:old_message) { FactoryGirl.create(:message, user: user, content: "message two", created_at: 25.hours.ago) }
 
       before(:each) do
         subject.save
