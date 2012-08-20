@@ -20,7 +20,7 @@ class Message < ActiveRecord::Base
   scope :between, lambda { |timeFrom, timeTo|
     where("messages.created_at >= ? and messages.created_at <= ?", timeFrom, timeTo)
   }
-  scope :sent_to, lambda { |user_id|
+  scope :sent_to_user, lambda { |user_id|
     joins("inner join receivers on receivers.message_id = messages.id").where("receivers.user_id = ?", user_id)
   }
   scope :sent_to_workstation, lambda { |workstation_id|

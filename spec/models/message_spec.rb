@@ -99,7 +99,7 @@ describe Message do
       end
     end
 
-    describe "sent_to" do
+    describe "sent_to_user" do
        
       let(:user1) { FactoryGirl.create(:user) }
       before do
@@ -111,11 +111,11 @@ describe Message do
       end
 
       it "returns messages sent to the given user" do
-        Message.sent_to(user1.id).should include subject
+        Message.sent_to_user(user1.id).should include subject
       end
 
       it "does not return messages not sent to the given user" do
-        Message.sent_to(user1.id).should_not include message
+        Message.sent_to_user(user1.id).should_not include message
       end
     end
 
