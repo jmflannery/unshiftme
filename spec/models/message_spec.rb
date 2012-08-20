@@ -99,6 +99,24 @@ describe Message do
       end
     end
 
+    describe "sent_by_user" do
+      
+      let(:message1) { FactoryGirl.create(:message) }
+      before do
+        subject.save
+        subject.set_sender_workstations
+        message1.set_sender_workstations
+      end
+
+      it "returns messages sent by the given user" do
+        Message.sent_by_user(user.id).should include subject
+      end
+
+      it "does not return messages not sent by the given user" do
+        Message.sent_by_user(user.id).should_not include message1
+      end
+    end
+
     describe "sent_to_user" do
        
       let(:user1) { FactoryGirl.create(:user) }
