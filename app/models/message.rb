@@ -33,29 +33,28 @@ class Message < ActiveRecord::Base
     joins(:receivers).where("receivers.workstation_id in (#{workstation_ids.join(",")}) and receivers.user_id is null")
   }
   scope :sent_to_user_or_workstations, lambda { |user_id, workstation_ids|
-    (joins(:receivers)
-     .where("
-     ((receivers.user_id = ?) or (receivers.workstation_id in (#{workstation_ids.join(",")}) and receivers.user_id is null)))) or (messages.user_id = ?)", user_id, user_id)
+    sent_to_user(user_id).or(sent_to_workstations(workstation_ids))
   }
-  scope :sent_to_user_or_workstations_before, lambda { |user_id, workstation_ids, time|
-    puts sent_to_user_or_workstations(user_id, workstation_ids).before(time).to_sql
-    sent_to_user_or_workstations(user_id, workstation_ids).before(time)
-  }
-
+  
   def self.for_user_before(user, time)
-    Message.sent_to_user_or_workstations_before(user.id, user.workstation_ids, time)
+    if (user.workstation_ids.blank?)
+      Message.sent_by_user(user.id).before(time) |
+      Message.sent_to_user(user.id).before(time)
+    else
+      Message.sent_by_user(user.id).before(time) |
+      Message.sent_to_user_or_workstations(user.id, user.workstation_ids).before(time)
+    end
   end
 
   def self.for_user_between(user, timeFrom, timeTo)
-    messages = []
-    between(timeFrom, timeTo).each do |message|
-      if message.was_sent_by?(user) or message.was_sent_to?(user)
-        messages << message
-      end
+    if (user.workstation_ids.blank?)
+      Message.sent_by_user(user.id).between(timeFrom, timeTo) | 
+      Message.sent_to_user(user.id).between(timeFrom, timeTo)
+    else
+      Message.sent_by_user(user.id).between(timeFrom, timeTo) | 
+      Message.sent_to_user_or_workstations(user.id, user.workstation_ids).between(timeFrom, timeTo)
     end
-    messages
   end
-
 
   def set_receivers
     user.recipients.each do |recipient|
@@ -130,26 +129,6 @@ class Message < ActiveRecord::Base
     end
   end
 
-  #def self.for_user_before(user, time)
-  #  messages = []
-  #  before(time).each do |message|
-  #    if message.was_sent_by?(user) or message.was_sent_to?(user)
-  #      messages << message
-  #    end
-  #  end
-  #  messages
-  #end
-
-  #def self.for_user_between(user, timeFrom, timeTo)
-  #  messages = []
-  #  between(timeFrom, timeTo).each do |message|
-  #    if message.was_sent_by?(user) or message.was_sent_to?(user)
-  #      messages << message
-  #    end
-  #  end
-  #  messages
-  #end
-
   def set_view_class(current_user)
     if was_sent_by?(current_user)
       self.view_class = "message msg-#{id} owner"
@@ -212,3 +191,4 @@ class Message < ActiveRecord::Base
     read
   end
 end
+

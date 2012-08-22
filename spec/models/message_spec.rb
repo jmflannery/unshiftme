@@ -311,7 +311,7 @@ describe Message do
         subject.mark_read_by(user1)
       end
 
-      it "sets message view_class attribute to 'message msg-id recieved read' " do
+      it "sets message view_class attribute to 'message msg-id recieved read'" do
         subject.set_view_class(user1)
         subject.view_class.should == "message msg-#{subject.id} recieved read"
       end
@@ -454,67 +454,80 @@ describe Message do
     describe "#for_user_before" do
    
       let(:user1) { FactoryGirl.create(:user) }
-      let(:user2) { FactoryGirl.create(:user) }
-
-      let(:message1) { FactoryGirl.create(:message, user: user1, content: "message one", created_at: 1439.minutes.ago) }
-      let(:message2) { FactoryGirl.create(:message, user: user2) }
-      let(:old_message) { FactoryGirl.create(:message, user: user, content: "message two", created_at: 25.hours.ago) }
-
-      before(:each) do
-        subject.save
-        user1.start_job(cusn.abrev)
-        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-        subject.set_receivers
-        message1.set_receivers
-        message2.set_receivers
-        old_message.set_receivers
-      end
-
-      it "returns messages that were sent or recieved by the given user" do
-        messages = Message.for_user_before(user1, 0.seconds.ago)
-        messages.should include subject
-        messages.should include message1
-        messages.should_not include message2
-      end
-       
-      it "returns messages created between the given time and 24 hours earlier than the given time" do
-        messages = Message.for_user_before(user1, 0.seconds.ago)
-        messages.should include subject
-        messages.should include message1
-        messages.should_not include old_message
-      end
-    end 
-
-    describe "#for_user_between" do
-      
-      let(:user1) { FactoryGirl.create(:user) }
-      let(:user2) { FactoryGirl.create(:user) }
-
       let(:message1) { FactoryGirl.create(:message, user: user1) }
-      let(:message2) { FactoryGirl.create(:message, user: user2) }
+      let(:message2) { FactoryGirl.create(:message) }
       let(:old_message) { FactoryGirl.create(:message, user: user, created_at: 25.hours.ago) }
 
       before(:each) do
         subject.save
         user1.start_job(cusn.abrev)
         FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-        subject.set_receivers
         message1.set_receivers
         message2.set_receivers
+        subject.set_receivers
         old_message.set_receivers
+        @messages = Message.for_user_before(user1, 0.seconds.ago)
       end
 
-      it "returns messages that were sent or recieved by the given user" do
-        messages = Message.for_user_between(user1, 1.hour.ago, Time.now)
-        messages.should include subject
-        messages.should include message1
-        messages.should_not include message2
+      it "returns messages that were sent by the given user" do
+        @messages.should include message1
       end
        
+      it "returns messages that were sent to the given user" do
+        @messages.should include subject
+      end
+
+      it "does not return messages that were not sent by the given user or sent to the given user or their workstations" do
+        @messages.should_not include message2
+      end
+
+      it "returns messages created between the given time and 24 hours earlier" do
+        @messages.should include subject
+        @messages.should include message1
+      end
+
+      it "does not return messages not created between the given time and 24 hours earlier" do
+        @messages.should_not include old_message
+      end
+    end 
+
+    describe "#for_user_between" do
+   
+      let(:user1) { FactoryGirl.create(:user) }
+      let(:message1) { FactoryGirl.create(:message, user: user1) }
+      let(:message2) { FactoryGirl.create(:message) }
+      let(:old_message) { FactoryGirl.create(:message, user: user, created_at: 4.hours.ago) }
+
+      before(:each) do
+        subject.save
+        user1.start_job(cusn.abrev)
+        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
+        message1.set_receivers
+        message2.set_receivers
+        subject.set_receivers
+        old_message.set_receivers
+        @messages = Message.for_user_between(user1, 3.hours.ago, Time.now)
+      end
+
+      it "returns messages that were sent by the given user" do
+        @messages.should include message1
+      end
+       
+      it "returns messages that were sent to the given user" do
+        @messages.should include subject
+      end
+
+      it "does not return messages that were not sent by the given user or sent to the given user or their workstations" do
+        @messages.should_not include message2
+      end
+
       it "returns messages created between the 2 given times" do
-        messages = Message.for_user_between(user1, 24.hours.ago, Time.now)
-        messages.should include subject
-        messages.should_not include old_message
+        @messages.should include subject
+        @messages.should include message1
+      end
+
+      it "does not return messages not created between the 2 given times" do
+        @messages.should_not include old_message
       end
     end 
   end
