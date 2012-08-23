@@ -5,9 +5,11 @@
 
   <div id="messages">
 
+    <!--
     <div id='upload_button'>
-      <%= link_to("Show File Uploader", "#", id: "attach_button") %>
+      <#%= link_to("Show File Uploader", "#", id: "attach_button") %>
     </div>
+    -->
 
     <div id="upload_section">
       <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>

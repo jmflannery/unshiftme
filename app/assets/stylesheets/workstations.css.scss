@@ -11,7 +11,7 @@
 }
 
 #recipient_workstation_selection {
-  width: 20%;
+  width: 19%;
   float: right;
   font-size: .86em;
 
@@ -34,6 +34,7 @@
   .recipient_workstation.first {
     @include rounded-corners-seperate(6px, 6px, 0, 0);
   }
+
   .recipient_workstation.last {
     @include rounded-corners-seperate(0, 0, 6px, 6px);
     border-bottom: 0px;

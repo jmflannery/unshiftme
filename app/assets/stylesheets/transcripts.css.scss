@@ -1,6 +1,7 @@
 @import "colors";
 @import "fonts";
 @import "style_mixins";
+@import "messages_style";
 
 #transcript_page {
   
@@ -21,6 +22,7 @@
   }
 
   #messages_section {
-    @include message_section_style;
-  } // end #messages_section
+    @include messages_style;
+  }
 }
+

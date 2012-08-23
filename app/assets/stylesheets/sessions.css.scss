@@ -4,6 +4,9 @@
 
 #signin {
   @include form-style;
-  
-  @include workstation_select_style;
-} // end #sign_in
+ 
+  #select_workstation {
+    font-size: .8em;
+  } 
+}
+
