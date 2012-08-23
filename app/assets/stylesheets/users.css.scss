@@ -2,42 +2,6 @@
 @import "fonts";
 @import "style_mixins";
 
-#recipient_workstation_selection {
-  width: 20%;
-  float: right;
-  color: $near-white;
-  font-size: .86em;
-
-  .recipient_workstation {
-    //float: left;
-    white-space: nowrap;
-    padding: 5px;
-    margin: 3px;
-    text-align: center;
-    cursor: pointer;
-    @include mac-button-style;
-    @include mac-button-text-style;
-  }
-
-  p {
-    margin: 0px;
-  }
-
-  .mine {
-    color: $blue;
-  }
-
-  .on {
-    color: $green;
-  }
-
-  .off {
-  }
-
-  .all {
-  }
-}
-
 #messages {
   width: 80%;
   float: left;

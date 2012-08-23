@@ -1,3 +1,68 @@
-// Place all the styles related to the workstations controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "colors";
+@import "fonts";
+@import "style_mixins";
+
+@mixin workstation-text-style {
+  font-family: Helvetica, Arial, sans-serrif;
+  font-weight: bold;
+  line-height: 1;
+  font-size: .9em;
+  color: $grey;
+}
+
+#recipient_workstation_selection {
+  width: 20%;
+  float: right;
+  font-size: .86em;
+
+  .recipient_workstation {
+    white-space: nowrap;
+    padding: 5px;
+    margin: 0px;
+    text-align: center;
+    cursor: pointer;
+    @include workstation-text-style;
+    background-color: #96968E;
+    border-bottom: 1px solid grey;
+
+    &:hover, &:focus {
+      background-color: $dark-text;
+      color: $near-white;
+    }
+  }
+
+  .recipient_workstation.first {
+    @include rounded-corners-seperate(6px, 6px, 0, 0);
+  }
+  .recipient_workstation.last {
+    @include rounded-corners-seperate(0, 0, 6px, 6px);
+    border-bottom: 0px;
+  }
+
+  p {
+    margin: 0px;
+  }
+
+  .mine {
+    color: #010326;
+    background-image: url('pin.png');
+    background-repeat: no-repeat;
+    background-position: 30px -5px;
+    background-size: 15%;
+  }
+
+  .on {
+    color: #265902;
+    background-image: url('lightning.png');
+    background-repeat: no-repeat;
+    background-position: 88% 40%;
+    background-size: 12%;
+  }
+
+  .off {
+  }
+
+  .all {
+  }
+}
+

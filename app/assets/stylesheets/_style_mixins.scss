@@ -5,6 +5,17 @@
   border-radius: $radius; 
 }
 
+@mixin rounded-corners-seperate($top-left, $top-right, $bottom-right, $bottom-left) {
+  -webkit-border-top-left-radius: $top-left;
+  -webkit-border-top-right-radius: $top-right;
+  -webkit-border-bottom-right-radius: $bottom-right;
+  -webkit-border-bottom-left-radius: $bottom-left;
+  -moz-border-radius-topleft: $top-left;
+  -moz-border-radius-topright: $top-right;
+  -moz-border-radius-bottomright: $bottom-right;
+  -moz-border-radius-bottomleft: $bottom-left;
+}
+
 @mixin box-shadow($h-shadow, $v-shadow, $blur, $spread, $red, $green, $blue, $alpha) {
   -webkit-box-shadow: $h-shadow $v-shadow $blur $spread rgba($red, $green, $blue, $alpha);
   -moz-box-shadow: $h-shadow $v-shadow $blur $spread rgba($red, $green, $blue, $alpha);
@@ -50,11 +61,13 @@
       ul.inner_message {
         .message_sender {
           text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
-          //font-weight: bold;
+          font-weight: bold;
+          font-size: .9em;
         } // end .message_sender
         .message_timestamp {
           text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
-          //font-weight: bold;
+          font-weight: bold;
+          font-size: .9em;
         } // end .message_timestamp
       }
     }
@@ -89,10 +102,12 @@
         .message_sender {
           text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
           font-weight: bold;
+          font-size: .9em;
         } // end .message_sender
         .message_timestamp {
           text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
           font-weight: bold;
+          font-size: .9em;
         } // end .message_timestamp
       }
     }

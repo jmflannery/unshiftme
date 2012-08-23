@@ -125,7 +125,11 @@ var build_workstation_buttons = function() {
       url: "/workstations.json",
       success: function(response) {
         for (var i = 0; i < response.length; i++) {
-          html = "<div id=" + response[i].name + " class=recipient_workstation >";
+          var class_name = "recipient_workstation";
+          if (i == 0) {
+            class_name += " first";
+          }
+          var html = "<div id=" + response[i].name + " class='" + class_name + "' >";
           html += "<p>" + response[i].long_name + "</p>";
           if (response[i].user_name && response[i].user_name.length > 0) {
             html += "<p><span id=user_at_" + response[i].name + ">(" + response[i].user_name + ")</span></p>";
@@ -136,7 +140,7 @@ var build_workstation_buttons = function() {
           var workstation = $(html).data("workstation_id", response[i].id).turnOff().click(toggle_recipient);
           workstation_section.append(workstation);
         }
-        html = "<div id='toggle_all_workstations' class='recipient_workstation all'><p>Message</br>all</p></div>";
+        html = "<div id='toggle_all_workstations' class='recipient_workstation last all'><p>Message</br>all</p></div>";
         var toggle_all_button = $(html).click(toggle_all_workstations);
         workstation_section.append(toggle_all_button);
       }
