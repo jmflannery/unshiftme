@@ -477,6 +477,8 @@ describe Message do
         @messages.should include subject
       end
 
+      it "returns messages that were sent to the given user's workstations while no user was at the workstation"
+
       it "does not return messages that were not sent by the given user or sent to the given user or their workstations" do
         @messages.should_not include message2
       end
@@ -489,6 +491,8 @@ describe Message do
       it "does not return messages not created between the given time and 24 hours earlier" do
         @messages.should_not include old_message
       end
+
+      it "returns the messages in ordered by created_at descending"
     end 
 
     describe "#for_user_between" do

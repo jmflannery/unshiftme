@@ -35,15 +35,20 @@ class Message < ActiveRecord::Base
   scope :sent_to_user_or_workstations, lambda { |user_id, workstation_ids|
     sent_to_user(user_id).or(sent_to_workstations(workstation_ids))
   }
+
+  def <=>(other)
+    created_at <=> other.created_at
+  end
   
   def self.for_user_before(user, time)
     if (user.workstation_ids.blank?)
-      Message.sent_by_user(user.id).before(time) |
-      Message.sent_to_user(user.id).before(time)
+      messages = Message.sent_by_user(user.id).before(time) |
+        Message.sent_to_user(user.id).before(time)
     else
-      Message.sent_by_user(user.id).before(time) |
-      Message.sent_to_user_or_workstations(user.id, user.workstation_ids).before(time)
+      messages = Message.sent_by_user(user.id).before(time) |
+        Message.sent_to_user_or_workstations(user.id, user.workstation_ids).before(time)
     end
+    messages.sort.reverse
   end
 
   def self.for_user_between(user, timeFrom, timeTo)
