@@ -14,6 +14,10 @@
   -moz-border-radius-topright: $top-right;
   -moz-border-radius-bottomright: $bottom-right;
   -moz-border-radius-bottomleft: $bottom-left;
+  border-top-left-radius: $top-left;
+  border-top-right-radius: $top-right;
+  border-bottom-left-radius: $bottom-left;
+  border-bottom-right-radius: $bottom-right;
 }
 
 @mixin box-shadow($h-shadow, $v-shadow, $blur, $spread, $red, $green, $blue, $alpha) {
