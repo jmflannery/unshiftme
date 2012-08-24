@@ -454,84 +454,112 @@ describe Message do
     describe "#for_user_before" do
    
       let(:user1) { FactoryGirl.create(:user) }
-      let(:message1) { FactoryGirl.create(:message, user: user1) }
-      let(:message2) { FactoryGirl.create(:message) }
+      let(:workstation_received_message) { FactoryGirl.create(:message, user: user, created_at: 23.hours.ago) }
+      let(:sent_message) { FactoryGirl.create(:message, user: user1) }
+      let(:user_received_message) { FactoryGirl.create(:message, user: user) }
+      let(:sent_message1) { FactoryGirl.create(:message, user: user1) }
+      let(:sent_nowhere_message) { FactoryGirl.create(:message) }
       let(:old_message) { FactoryGirl.create(:message, user: user, created_at: 25.hours.ago) }
 
       before(:each) do
         subject.save
-        user1.start_job(cusn.abrev)
         FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-        message1.set_receivers
-        message2.set_receivers
+        workstation_received_message.set_receivers
+        user1.start_job(cusn.abrev)
+        sent_message.set_receivers
         subject.set_receivers
+        user_received_message.set_receivers
+        sent_message1.set_receivers
+        sent_nowhere_message.set_receivers
         old_message.set_receivers
         @messages = Message.for_user_before(user1, 0.seconds.ago)
       end
 
       it "returns messages that were sent by the given user" do
-        @messages.should include message1
+        @messages.should include sent_message
+        @messages.should include sent_message1
       end
        
       it "returns messages that were sent to the given user" do
         @messages.should include subject
+        @messages.should include user_received_message
       end
 
-      it "returns messages that were sent to the given user's workstations while no user was at the workstation"
+      it "returns messages that were sent to the given user's workstations while no user was at the workstation" do
+        @messages.should include workstation_received_message
+      end
 
-      it "does not return messages that were not sent by the given user or sent to the given user or their workstations" do
-        @messages.should_not include message2
+      it "does not return messages that were not sent by or sent to the given user or their workstations" do
+        @messages.should_not include sent_nowhere_message
       end
 
       it "returns messages created between the given time and 24 hours earlier" do
+        @messages.should include workstation_received_message
         @messages.should include subject
-        @messages.should include message1
       end
 
       it "does not return messages not created between the given time and 24 hours earlier" do
         @messages.should_not include old_message
       end
 
-      it "returns the messages in ordered by created_at descending"
+      it "returns the messages in ordered by created_at descending" do
+        @messages.should == [sent_message1, user_received_message, sent_message, subject, workstation_received_message]
+      end
     end 
 
     describe "#for_user_between" do
    
       let(:user1) { FactoryGirl.create(:user) }
-      let(:message1) { FactoryGirl.create(:message, user: user1) }
-      let(:message2) { FactoryGirl.create(:message) }
-      let(:old_message) { FactoryGirl.create(:message, user: user, created_at: 4.hours.ago) }
+      let(:workstation_received_message) { FactoryGirl.create(:message, user: user, created_at: 2.hours.ago) }
+      let(:sent_message) { FactoryGirl.create(:message, user: user1) }
+      let(:user_received_message) { FactoryGirl.create(:message, user: user) }
+      let(:sent_message1) { FactoryGirl.create(:message, user: user1) }
+      let(:sent_nowhere_message) { FactoryGirl.create(:message) }
+      let(:old_message) { FactoryGirl.create(:message, user: user, created_at: 25.hours.ago) }
 
       before(:each) do
         subject.save
-        user1.start_job(cusn.abrev)
         FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-        message1.set_receivers
-        message2.set_receivers
+        workstation_received_message.set_receivers
+        user1.start_job(cusn.abrev)
+        sent_message.set_receivers
         subject.set_receivers
+        user_received_message.set_receivers
+        sent_message1.set_receivers
+        sent_nowhere_message.set_receivers
         old_message.set_receivers
-        @messages = Message.for_user_between(user1, 3.hours.ago, Time.now)
+        @messages = Message.for_user_between(user1, 4.hours.ago, Time.now)
       end
 
       it "returns messages that were sent by the given user" do
-        @messages.should include message1
+        @messages.should include sent_message
+        @messages.should include sent_message1
       end
        
       it "returns messages that were sent to the given user" do
         @messages.should include subject
+        @messages.should include user_received_message
       end
 
-      it "does not return messages that were not sent by the given user or sent to the given user or their workstations" do
-        @messages.should_not include message2
+      it "returns messages that were sent to the given user's workstations while no user was at the workstation" do
+        @messages.should include workstation_received_message
+      end
+
+      it "does not return messages that were not sent by or sent to the given user or their workstations" do
+        @messages.should_not include sent_nowhere_message
       end
 
       it "returns messages created between the 2 given times" do
+        @messages.should include workstation_received_message
         @messages.should include subject
-        @messages.should include message1
       end
 
-      it "does not return messages not created between the 2 given times" do
+      it "does not return messages created outside of the 2 given times" do
         @messages.should_not include old_message
+      end
+
+      it "returns the messages in ordered by created_at descending" do
+        @messages.should == [sent_message1, user_received_message, sent_message, subject, workstation_received_message]
       end
     end 
   end

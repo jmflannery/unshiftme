@@ -53,12 +53,13 @@ class Message < ActiveRecord::Base
 
   def self.for_user_between(user, timeFrom, timeTo)
     if (user.workstation_ids.blank?)
-      Message.sent_by_user(user.id).between(timeFrom, timeTo) | 
-      Message.sent_to_user(user.id).between(timeFrom, timeTo)
+      messages = Message.sent_by_user(user.id).between(timeFrom, timeTo) |
+        Message.sent_to_user(user.id).between(timeFrom, timeTo)
     else
-      Message.sent_by_user(user.id).between(timeFrom, timeTo) | 
-      Message.sent_to_user_or_workstations(user.id, user.workstation_ids).between(timeFrom, timeTo)
+      messages = Message.sent_by_user(user.id).between(timeFrom, timeTo) |
+        Message.sent_to_user_or_workstations(user.id, user.workstation_ids).between(timeFrom, timeTo)
     end
+    messages.sort.reverse
   end
 
   def set_receivers
