@@ -1,6 +1,4 @@
-<div id="signup">
-
-  <h2>Sign up for</br><span id=title>Amtrak Messenger</span></h2>
+<div id="register">
 
   <div class="center_spot"> 
     <%= form_for(@user) do |f| %>
@@ -30,10 +28,10 @@
       </div>
 
       <div class="actions">
-        <%= f.submit "Sign Up" %>
+        <%= f.submit "Register" %>
       </div>
 
-     <p>Already Signed Up? <%= link_to "Sign In", signin_path %></p>
+     <p>Already Registered? <%= link_to "Sign In", signin_path %></p>
 
     <% end %>
   </div>

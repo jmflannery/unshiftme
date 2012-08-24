@@ -6,7 +6,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    @title = "Sign Up"
+    @title = "Register"
     @td_workstations = Workstation.of_type("td")
     @ops_workstations = Workstation.of_type("ops")
   end
