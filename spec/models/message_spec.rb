@@ -198,6 +198,42 @@ describe Message do
         @messages.should_not include message1
       end
     end
+
+    describe "sent_to_user_or_workstations" do
+
+      let(:user1) { FactoryGirl.create(:user) }
+      let(:message0) { FactoryGirl.create(:message, user: user) }
+      let(:message1) { FactoryGirl.create(:message, user: user1) }
+      let(:message2) { FactoryGirl.create(:message, user: user1) }
+      before do
+        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
+        FactoryGirl.create(:recipient, user: user, workstation_id: cuss.id)
+        subject.set_receivers
+        message0.set_receivers
+        message1.set_receivers
+        cusn.set_user(user1)
+        cuss.set_user(user1)
+        message.set_receivers
+        @messages = Message.sent_to_user_or_workstations(user1.id, [cusn.id, cuss.id])
+      end
+
+      it "returns messages sent to the given user" do
+        @messages.should include message
+      end
+
+      it "returns messages sent to the given workstations when the workstations had no user" do
+        @messages.should include subject
+        @messages.should include message0
+      end
+      
+      it "does not return messages not sent to the given user or workstations" do
+        @messages.should_not include message1
+      end
+
+      it "does not return messages sent to the given workstations while a user other than the given user was controlling the workstations" do
+        Message.sent_to_user_or_workstations(user, [cusn.id, cuss.id]).should_not include message
+      end
+    end
   end
   
   describe "#broadcast" do
