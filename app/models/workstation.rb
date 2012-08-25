@@ -36,7 +36,7 @@ class Workstation < ActiveRecord::Base
 
   def description
     desc = name
-    desc += " (#{User.find_by_id(user_id).user_name}" if User.exists?(user_id)
+    desc += " (#{User.find_by_id(user_id).user_name})" if User.exists?(user_id)
     desc
   end
 
