@@ -14,24 +14,28 @@ class Message < ActiveRecord::Base
 
   default_scope order("created_at DESC")
 
-  scope :before, lambda { |time|
-    where("messages.created_at >= ? and messages.created_at <= ?", time - 24.hours, time)
-  }
   scope :between, lambda { |timeFrom, timeTo|
     where("messages.created_at >= ? and messages.created_at <= ?", timeFrom, timeTo)
   }
+
+  scope :before, lambda { |time| between(time - 24.hours, time) }
+
   scope :sent_by_user, lambda { |user_id|
     where("messages.user_id = ?", user_id)
   }
+
   scope :sent_to_user, lambda { |user_id|
     joins(:receivers).where("receivers.user_id = ?", user_id)
   }
+
   scope :sent_to_workstation, lambda { |workstation_id|
     joins(:receivers).where("receivers.workstation_id = ? and receivers.user_id is null", workstation_id)
   }
+
   scope :sent_to_workstations, lambda { |workstation_ids|
     joins(:receivers).where("receivers.workstation_id in (#{workstation_ids.join(",")}) and receivers.user_id is null")
   }
+
   scope :sent_to_user_or_workstations, lambda { |user_id, workstation_ids|
     sent_to_user(user_id).or(sent_to_workstations(workstation_ids))
   }
