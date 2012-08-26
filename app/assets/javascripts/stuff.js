@@ -124,6 +124,7 @@ var build_workstation_buttons = function() {
       type: "GET",
       url: "/workstations.json",
       success: function(response) {
+        console.log("in build_workstation_buttons ajax callback");
         for (var i = 0; i < response.length; i++) {
           var class_name = "recipient_workstation";
           if (i == 0) {
@@ -157,6 +158,7 @@ var build_user_workstation_info = function() {
       type: "GET",
       url: "/users/" + user_name + ".json",
       success: function(response) {
+        console.log("in build_user_workstation_info ajax callback");
         for (var i = 0; i < response.workstations.length; i++) {
           $("#" + response.workstations[i].name).addClass("mine").removeClass("off");
         }
