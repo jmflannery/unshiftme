@@ -124,7 +124,6 @@ var build_workstation_buttons = function() {
       type: "GET",
       url: "/workstations.json",
       success: function(response) {
-        console.log("in build_workstation_buttons ajax callback");
         for (var i = 0; i < response.length; i++) {
           var class_name = "recipient_workstation";
           if (i == 0) {
@@ -160,14 +159,10 @@ var build_user_workstation_info = function() {
       type: "GET",
       url: "/users/" + user_name + ".json",
       success: function(response) {
-        console.log("in build_user_workstation_info ajax callback");
-        console.log(response);
         for (var i = 0; i < response.workstations.length; i++) {
-          console.log("mine: #" + response.workstations[i].name);
           $("#" + response.workstations[i].name).addClass("mine").removeClass("off");
         }
         for (var i = 0; i < response.recipient_workstations.length; i++) {
-          console.log("recipient: #" + response.recipient_workstations[i].name);
           $("#" + response.recipient_workstations[i].name).turnOn().data("recipient_id", response.recipient_workstations[i].recipient_id);
         }
       }
