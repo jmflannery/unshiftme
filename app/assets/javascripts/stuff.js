@@ -159,10 +159,13 @@ var build_user_workstation_info = function() {
       url: "/users/" + user_name + ".json",
       success: function(response) {
         console.log("in build_user_workstation_info ajax callback");
+        console.log(response);
         for (var i = 0; i < response.workstations.length; i++) {
+          console.log("mine: #" + response.workstations[i].name);
           $("#" + response.workstations[i].name).addClass("mine").removeClass("off");
         }
         for (var i = 0; i < response.recipient_workstations.length; i++) {
+          console.log("recipient: #" + response.recipient_workstations[i].name);
           $("#" + response.recipient_workstations[i].name).turnOn().data("recipient_id", response.recipient_workstations[i].recipient_id);
         }
       }
