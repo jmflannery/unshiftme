@@ -144,6 +144,8 @@ var build_workstation_buttons = function() {
         html = "<div id='toggle_all_workstations' class='recipient_workstation last all'><p>Message</br>all</p></div>";
         var toggle_all_button = $(html).click(toggle_all_workstations);
         workstation_section.append(toggle_all_button);
+        
+        build_user_workstation_info();
       }
     });
   }
@@ -174,7 +176,6 @@ var build_user_workstation_info = function() {
 };
 
 $(build_workstation_buttons);
-$(build_user_workstation_info);
 
 ///////////////////////////////////
 // add recipient
