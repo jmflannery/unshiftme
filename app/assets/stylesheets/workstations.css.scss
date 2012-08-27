@@ -45,23 +45,24 @@
   }
 
   .mine {
-    color: #010326;
-    background-image: url('pin.png');
+    color: #265902;
     background-repeat: no-repeat;
     background-position: 18% 50%;
   }
 
   .on {
-    color: #265902;
+    color: black;
     background-image: url('lightning.png');
     background-repeat: no-repeat;
     background-position: 90% 45%;
   }
 
   .off {
+    color: black;
   }
 
   .all {
+    color: black;
   }
 }
 
