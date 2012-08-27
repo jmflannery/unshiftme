@@ -1,112 +1,78 @@
 @mixin messages_style {
-  margin: 0 auto;
-  //width: 99.302326%; // 854 / 860
-  width: 100%;
-  background-color: #000000;
   overflow: auto;
   @include rounded-corners(8px);
   border: 1px solid $near-white;
+  padding-right: 6px;
 
   ul#message_list {
     margin: 2px;
     list-style: none;
     padding: 0px;
 
-    li.owner {
-      background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#191919), to(#101010));
-      background-image: -moz-linear-gradient(#191919, #101010);
-      color: $near-white;
-
-      ul.inner_message {
-        .message_sender {
-          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
-          font-weight: bold;
-          font-size: .9em;
-        } // end .message_sender
-        .message_timestamp {
-          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
-          font-weight: bold;
-          font-size: .9em;
-        } // end .message_timestamp
-      }
-    }
-
-    li.recieved.unread {
-      background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F2F3F8), to(#EDEFF4));
-      background-image: -moz-linear-gradient(#F2F3F8, #EDEFF4);
-      color: $blackish;
-      cursor: pointer;
-
-      ul.inner_message {
-        
-        .message_sender {
-          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
-          font-weight: bold;
-          font-size: .9em;
-        } // end .message_sender
-        .message_timestamp {
-          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
-          font-weight: bold;
-          font-size: .9em;
-        } // end .message_timestamp
-      }
-    }
-
-    li.recieved.read {
-      background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#96968E), to(#5C5B57));
-      background-image: -moz-linear-gradient(#96968E, #5C5B57);
-      color: $blackish;
-
-      ul.inner_message {
-        .message_sender {
-          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
-          font-weight: bold;
-          font-size: .9em;
-        } // end .message_sender
-        .message_timestamp {
-          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
-          font-weight: bold;
-          font-size: .9em;
-        } // end .message_timestamp
-      }
-    }
-
     li.message {
+      display: table;
+      width: 100%;
       padding: 6px;
       margin: 4px;
       font-size: 0.9em;
       @include rounded-corners(8px);
     
-      ul.inner_message {
-        padding: 0px;
+      p {
+        margin: 0px;
+      }
 
-        li {
-          list-style: none;
-        }
-        
-        p {
-          margin: 0px;
-        }
+      .left-side {
+        float: left;
+        width: 70%;
 
-        .message_sender {
-          float: left;
+        .sender {
+          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+          font-weight: bold;
+          font-size: .9em;
         } // end .message_sender 
-        
-        .message_content {
-          //font-weight: bold;
-          clear: both;
+
+        .content {
           font-size: 1.3em;
+          margin: 3px 0px;
         } // end .message_content
-          
-        .message_timestamp {
-          float: right;
+      }
+            
+      .right-side {
+        float: right;
+        width: 30%;
+        text-align: right;
+                
+        .timestamp {
+          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+          font-weight: bold;
+          font-size: .9em;
         } // end .message_timestamp 
 
-        .read_by {
+        .readers {
           font-size: 0.8em;
+          margin: 4px;
         }
-      } // end ul.inner_message
+      }
     } // end li.message
+
+    li.message.owner {
+      background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#191919), to(#101010));
+      background-image: -moz-linear-gradient(#191919, #101010);
+      color: $near-white;
+    } // end .owner
+
+    li.message.recieved.unread {
+      background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F2F3F8), to(#EDEFF4));
+      background-image: -moz-linear-gradient(#F2F3F8, #EDEFF4);
+      color: $blackish;
+      cursor: pointer;
+    }
+
+    li.message.recieved.read {
+      background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#96968E), to(#5C5B57));
+      background-image: -moz-linear-gradient(#96968E, #5C5B57);
+      color: $blackish;
+    }
   } // end ul#message_list
 } // end @mixin messages_style
 

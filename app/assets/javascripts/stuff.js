@@ -391,29 +391,7 @@ $(function() {
     $("input#message_content").val("");
 
     // create the new message html 
-    var html ="<li class='message recieved unread'>" +
-            "<ul class='inner_message'>" +
-              "<li>" +
-                "<div class='message_sender'>" +
-                  "<p>" + data.sender + "</p>" +
-                "</div>" + 
-                "<div class='message_timestamp'>" +
-                  "<p>" + data.timestamp + "</p>" +
-                "</div>" +
-              "</li>" +
-              "<li>" +
-                "<div class='message_content'>";
-    
-    if (data.attachment_url) {
-      html += "<a href='" + data.attachment_url + "'>" + data.chat_message + "</a>";
-    } else {
-      html += "<p>" + data.chat_message + "</p>";
-    }
-     
-    html += "</div>" +
-           "</li>" +
-         "</ul>" +  
-       "</li>"; 
+    var html = build_new_message(data.sender, data.attachment_url, data.chat_message, data.timestamp); 
     
     // display the new message 
     display_new_message(html, data.message_id);
@@ -435,6 +413,34 @@ $(function() {
     //}
   });
 });
+
+var build_new_message = function(sender, attachment_url, content, timestamp) {
+  var html ="<li class='message recieved unread'>" +
+              "<div class='left-side'>" +
+                "<div class='sender'>" +
+                  "<p>" + sender + "</p>" +
+                "</div>" + 
+                "<div class='content'>";
+
+                if (attachment_url) {
+                  html += "<a href='" + attachment_url + "'>" + content + "</a>";
+                } else {
+                  html += "<p>" + content + "</p>";
+                }
+                html += "</div>" +
+
+              "</div>" +
+              "<div class='right-side'>" +
+                "<div class='timestamp'>" +
+                  "<p>" + timestamp + "</p>" +
+                "</div>" +
+                "<div class='readers'>" +
+                "</div>" +
+              "</div>" +
+            "</li>";
+                
+  return html;
+};
 
 var display_new_message = function(message_html, message_id) {
   message_list_item = $("li.message:first-child");
@@ -475,7 +481,7 @@ $(function() {
   // register callback
   PrivatePub.subscribe("/readers/" + user_name, function(data, channel) {
     console.log("message: " + data.message); 
-    selector = "li.message.owner." + data.message + " ul.inner_message li .read_by";
+    selector = "li.message.owner." + data.message + " .right-side .readers";
     console.log(selector);
     $(selector).html(data.readers);
   });
