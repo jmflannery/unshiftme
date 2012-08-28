@@ -46,8 +46,8 @@ Then /^I should see sent message (\d+) "(.*?)" from workstation "(.*?)" user "(.
   selector = "li.message.msg-#{id}.owner" 
   page.should have_selector(selector, count: 1)
   within(selector) do
-    page.should have_content(content)
-    page.should have_selector(".message_sender p", text: "#{user_name}@#{workstation_abrev}")
+    page.should have_selector(".content p", text: content)
+    page.should have_selector(".sender p", text: "#{user_name}@#{workstation_abrev}")
   end
 end
 
@@ -55,8 +55,8 @@ Then /^I should see recieved message (\d+) "(.*?)" from workstation "(.*?)" user
   selector = "li.message.msg-#{id}.recieved.read" 
   page.should have_selector(selector, count: 1)
   within(selector) do
-    page.should have_selector(".message_sender p", text: "#{user_name}@#{workstation_abrev}")
-    page.should have_content(content)
+    page.should have_selector(".sender p", text: "#{user_name}@#{workstation_abrev}")
+    page.should have_selector(".content p", text: content)
   end
 end
 
@@ -64,8 +64,8 @@ Then /^I should see unread recieved message (\d+) "(.*?)" from workstation "(.*?
   selector = "li.message.msg-#{id}.recieved.unread" 
   page.should have_selector(selector, count: 1)
   within(selector) do
-    page.should have_selector(".message_sender p", text: "#{user_name}@#{workstation_abrev}")
-    page.should have_content(content)
+    page.should have_selector(".sender p", text: "#{user_name}@#{workstation_abrev}")
+    page.should have_selector(".content p", text: content)
   end
 end
 
@@ -87,13 +87,17 @@ Then /^I should not see recieved message "(.*?)" from workstation "(.*?)" user "
 end
 
 Then /^I should see sent message "(.*?)" from workstation "(.*?)" user "(.*?)" one time$/ do |message_content, workstation_abrev, user_name|
-  page.should have_selector(".message_sender p", text: "#{user_name}@#{workstation_abrev}")
-  page.should have_selector("li.message.owner", text: @message)
+  within("li.message.owner") do
+    page.should have_selector(".sender p", text: "#{user_name}@#{workstation_abrev}")
+    page.should have_selector(".content p", text: @message)
+  end
 end
 
 Then /^I should see recieved message "(.*?)" from workstation "(.*?)" user "(.*?)" one time$/ do |message_content, workstation_abrev, user_name|
-  page.should have_selector(".message_sender p", text: "#{user_name}@#{workstation_abrev}", count: 1)
-  page.should have_selector("li.message.recieved", text: message_content, count: 1)
+  within("li.message.recieved.unread") do
+    page.should have_selector(".sender p", text: "#{user_name}@#{workstation_abrev}", count: 1)
+    page.should have_selector(".content p", text: message_content, count: 1)
+  end
 end
 
 Then /^I should see workstation "(.*?)" user "(.*?)" read this$/ do |workstation_abrev, user_name|
