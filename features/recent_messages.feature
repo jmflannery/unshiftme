@@ -30,6 +30,7 @@ Feature: Messages
     And I should not see workstation "AML" user "jeff" read message 3
 
   @messages2
+  @javascript
   Scenario: Recent messages: When the current user loads the messaging page, messages
     sent to the current user's workstations, while the workstation was vacant during the last 24 hours
     will be visible. Messages sent to the user's workstation while another user was working
@@ -53,4 +54,7 @@ Feature: Messages
     When I go to the messaging page
     Then I should not see unread recieved message 1 "Bye Sam"
     And I should see unread recieved message 2 "Anyone??" from workstation "CUSS" user "bob" one time
+    
+    Given I click on the recieved message
+    Then I should see that received message 2 was read
 

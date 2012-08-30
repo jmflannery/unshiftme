@@ -104,6 +104,10 @@ Then /^I should see workstation "(.*?)" user "(.*?)" read this$/ do |workstation
   page.should have_content("#{user_name}@#{workstation_abrev} read this.")
 end
 
+Then /^I should see that received message (\d+) was read$/ do |message_id|
+  page.should have_selector("li.message.msg-#{message_id}.recieved.read")
+end
+
 Then /^I should nothing in the "(.*?)" text field$/ do |textfield_id|
   find_field(textfield_id).value.should be_blank
 end
