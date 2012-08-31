@@ -3,7 +3,7 @@ require 'spec_helper'
 describe MessagesController do
   render_views
 
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { FactoryGirl.create(:user, user_name: "jack") }
   let(:attr) { { :content => "i like turtles" } }
 
   describe "access control" do
@@ -49,6 +49,29 @@ describe MessagesController do
       it "sets the message's sending workstations" do
         message.should_receive(:set_sender_workstations)
         xhr :post, :create,  message: attr
+      end
+    end
+  end
+
+  describe "GET index" do
+    
+    context "with an authenticated user and a supplied time" do
+
+      let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN") }
+      before(:each) do
+        @time = Time.now
+        test_sign_in(user)
+        cusn.set_user(user)
+      end
+      
+      it "returns HTTP success" do
+        xhr :get, :index, time: @time, format: :json
+        response.should be_success
+      end
+
+      it "gets the current authenticated user's messages for the current time" do
+        Message.should_receive(:for_user_before).with(user, @time)
+        xhr :get, :index, time: @time, format: :json
       end
     end
   end

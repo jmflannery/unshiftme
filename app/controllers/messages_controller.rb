@@ -12,6 +12,11 @@ class MessagesController < ApplicationController
     end
   end
   
+  def index
+    messages = Message.for_user_before(current_user, params["time"])
+    render json: messages.as_json
+  end
+
   def update
     if Message.exists?(params[:id])
       @message = Message.find(params[:id])
