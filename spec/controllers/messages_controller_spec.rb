@@ -64,13 +64,13 @@ describe MessagesController do
       before { test_sign_in(user) }
 
       it "returns HTTP success" do
-        xhr :get, :index, format: :json
+        get :index, format: :json
         response.should be_success
       end
 
       it "gets the current authenticated user's messages for the current time" do
         Message.should_receive(:for_user_before)#.with(user, Time.now)
-        xhr :get, :index, format: :json
+        get :index, format: :json
       end
     end
 
@@ -79,20 +79,20 @@ describe MessagesController do
       let(:time) { Time.now }
       
       it "returns HTTP success" do
-        xhr :get, :index, time: time, format: :json
+        get :index, time: time, format: :json
         response.should be_success
       end
 
       it "gets the current authenticated user's messages for the current time" do
         Message.should_receive(:for_user_before).with(user, time)
-        xhr :get, :index, time: time, format: :json
+        get :index, time: time, format: :json
       end
     end
 
     context "with an unauthenticated user" do
 
       it "redirects to the signin path" do
-        xhr :get, :index, format: :json
+        get :index, format: :json
         response.should redirect_to signin_path
       end
     end

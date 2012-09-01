@@ -15,7 +15,11 @@ class MessagesController < ApplicationController
   def index
     time = params.has_key?(:time) ? params[:time] : Time.now
     messages = Message.for_user_before(current_user, time)
-    render json: messages.as_json
+    respond_to do |format|
+      format.json {
+        render json: messages.as_json
+      }
+    end
   end
 
   def update
