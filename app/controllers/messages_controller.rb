@@ -13,7 +13,8 @@ class MessagesController < ApplicationController
   end
   
   def index
-    messages = Message.for_user_before(current_user, params["time"])
+    time = params.has_key?(:time) ? params[:time] : Time.now
+    messages = Message.for_user_before(current_user, time)
     render json: messages.as_json
   end
 
