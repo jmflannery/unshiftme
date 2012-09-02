@@ -375,6 +375,22 @@ $(function() {
 //});
 
 ///////////////////////////////////////////////
+// Load messages
+///////////////////////////////////////////////
+
+var load_messages = function() {
+  $.get("/messages.json", function(data) {
+    console.log(data);
+    $.each(data, function(index, value) {
+      var html = build_message(value.sender, value.attachment_id, value.content, value.created_at);
+      display_new_message(html, value.id);
+    });
+  });
+};
+
+$(load_messages);
+
+///////////////////////////////////////////////
 // message recieve handler 
 ///////////////////////////////////////////////
 
@@ -391,7 +407,7 @@ $(function() {
     $("input#message_content").val("");
 
     // create the new message html 
-    var html = build_new_message(data.sender, data.attachment_url, data.chat_message, data.timestamp); 
+    var html = build_message(data.sender, data.attachment_url, data.chat_message, data.timestamp); 
     
     // display the new message 
     display_new_message(html, data.message_id);
@@ -414,7 +430,7 @@ $(function() {
   });
 });
 
-var build_new_message = function(sender, attachment_url, content, timestamp) {
+var build_message = function(sender, attachment_url, content, timestamp) {
   var html ="<li class='message recieved unread'>" +
               "<div class='left-side'>" +
                 "<div class='sender'>" +
@@ -486,3 +502,4 @@ $(function() {
     $(selector).html(data.readers);
   });
 });
+

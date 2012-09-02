@@ -40,6 +40,17 @@ class Message < ActiveRecord::Base
     sent_to_user(user_id).or(sent_to_workstations(workstation_ids))
   }
 
+  def as_json
+    hash = {}
+    hash[:id] = self.id
+    hash[:sender] = self.sender_handle
+    hash[:content] = self.content
+    hash[:attachment_id] = self.attachment_id
+    hash[:created_at] = self.created_at
+    hash[:view_class] = self.view_class if self.view_class
+    hash.as_json
+  end
+
   def <=>(other)
     created_at <=> other.created_at
   end

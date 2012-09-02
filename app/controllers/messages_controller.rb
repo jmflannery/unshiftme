@@ -15,6 +15,7 @@ class MessagesController < ApplicationController
   def index
     time = params.has_key?(:time) ? params[:time] : Time.now
     messages = Message.for_user_before(current_user, time)
+    messages.each { |message| message.set_view_class(current_user) }
     respond_to do |format|
       format.json {
         render json: messages.as_json
