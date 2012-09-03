@@ -121,58 +121,50 @@ $(function() {
 var build_workstation_buttons = function() {
   var workstation_section = $('#recipient_workstation_selection');
   var html = "";
-  if (workstation_section.length > 0) {
-    $.ajax( {
-      type: "GET",
-      url: "/workstations.json",
-      success: function(response) {
-        for (var i = 0; i < response.length; i++) {
-          var class_name = "recipient_workstation";
-          if (i == 0) {
-            class_name += " first";
-          }
-          var html = "<div id=" + response[i].name + " class='" + class_name + "' >";
-          html += "<p>" + response[i].long_name + "</p>";
-          if (response[i].user_name && response[i].user_name.length > 0) {
-            html += "<p><span id=user_at_" + response[i].name + ">(" + response[i].user_name + ")</span></p>";
-          } else {
-            html += "<p><span id=user_at_" + response[i].name + ">(vacant)</span></p>"
-          }
-          html += "</div>";
-          var workstation = $(html).data("workstation_id", response[i].id).turnOff().click(toggle_recipient);
-          workstation_section.append(workstation);
-        }
-        html = "<div id='toggle_all_workstations' class='recipient_workstation last all'><p>Message</br>all</p></div>";
-        var toggle_all_button = $(html).click(toggle_all_workstations);
-        workstation_section.append(toggle_all_button);
-        
-        build_user_workstation_info();
+  $.get("/workstations.json", function(response) {
+    for (var i = 0; i < response.length; i++) {
+      var class_name = "recipient_workstation";
+      if (i == 0) {
+        class_name += " first";
       }
-    });
-  }
+      var html = "<div id=" + response[i].name + " class='" + class_name + "' >";
+      html += "<p>" + response[i].long_name + "</p>";
+      if (response[i].user_name && response[i].user_name.length > 0) {
+        html += "<p><span id=user_at_" + response[i].name + ">(" + response[i].user_name + ")</span></p>";
+      } else {
+        html += "<p><span id=user_at_" + response[i].name + ">(vacant)</span></p>"
+      }
+      html += "</div>";
+      var workstation = $(html).data("workstation_id", response[i].id).turnOff().click(toggle_recipient);
+      workstation_section.append(workstation);
+    }
+    html = "<div id='toggle_all_workstations' class='recipient_workstation last all'><p>Message</br>all</p></div>";
+    var toggle_all_button = $(html).click(toggle_all_workstations);
+    workstation_section.append(toggle_all_button);
+    
+    build_user_workstation_info();
+  });
 };
 
 // get the user data
 var build_user_workstation_info = function() {
   var workstation_section = $('#recipient_workstation_selection');
   var user_name = $("#main_menu").attr("class");
-  if (workstation_section.length > 0) {
-    $.ajax( {
-      type: "GET",
-      url: "/users/" + user_name + ".json",
-      success: function(response) {
-        for (var i = 0; i < response.workstations.length; i++) {
-          $("#" + response.workstations[i].name).addClass("mine").removeClass("off");
-        }
-        for (var i = 0; i < response.recipient_workstations.length; i++) {
-          $("#" + response.recipient_workstations[i].name).turnOn().data("recipient_id", response.recipient_workstations[i].recipient_id);
-        }
-      }
-    });
-  }
+  $.get("/users/" + user_name + ".json", function(response) {
+    for (var i = 0; i < response.workstations.length; i++) {
+      $("#" + response.workstations[i].name).addClass("mine").removeClass("off");
+    }
+    for (var i = 0; i < response.recipient_workstations.length; i++) {
+      $("#" + response.recipient_workstations[i].name).turnOn().data("recipient_id", response.recipient_workstations[i].recipient_id);
+    }
+  });
 };
 
-$(build_workstation_buttons);
+$(function() {
+  if (on_messaging_page()) {
+    build_workstation_buttons();
+  }
+});
 
 ///////////////////////////////////
 // toggle recipient
