@@ -70,7 +70,7 @@ class Message < ActiveRecord::Base
     hash = {}
     hash[:id] = id
     hash[:content] = content
-    hash[:created_at] = created_at
+    hash[:created_at] = created_at.strftime("%a %b %e %Y %T")
     hash[:sender] = sender_handle if sender_handle
     hash[:attachment_id] = attachment_id if attachment_id
     hash[:view_class] = view_class if view_class
