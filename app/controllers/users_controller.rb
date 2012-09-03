@@ -32,8 +32,6 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html {
         @title = @user.handle
-        @messages = Message.for_user_before(@user, Time.now)
-        @messages.each { |message| message.set_view_class(@user) }
         @message = Message.new
         @attachment = Attachment.new
       }

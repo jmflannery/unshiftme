@@ -40,21 +40,6 @@ class Message < ActiveRecord::Base
     sent_to_user(user_id).or(sent_to_workstations(workstation_ids))
   }
 
-  def as_json
-    hash = {}
-    hash[:id] = self.id
-    hash[:sender] = self.sender_handle
-    hash[:content] = self.content
-    hash[:attachment_id] = self.attachment_id
-    hash[:created_at] = self.created_at
-    hash[:view_class] = self.view_class if self.view_class
-    hash.as_json
-  end
-
-  def <=>(other)
-    created_at <=> other.created_at
-  end
-  
   def self.for_user_before(user, time)
     if (user.workstation_ids.blank?)
       messages = Message.sent_by_user(user.id).before(time) |
@@ -75,6 +60,22 @@ class Message < ActiveRecord::Base
         Message.sent_to_user_or_workstations(user.id, user.workstation_ids).between(timeFrom, timeTo)
     end
     messages.sort.reverse
+  end
+
+  def <=>(other)
+    created_at <=> other.created_at
+  end
+
+  def as_json
+    hash = {}
+    hash[:id] = id
+    hash[:content] = content
+    hash[:created_at] = created_at
+    hash[:sender] = sender_handle if sender_handle
+    hash[:attachment_id] = attachment_id if attachment_id
+    hash[:view_class] = view_class if view_class
+    hash[:readers] = readers if readers
+    hash.as_json
   end
 
   def set_receivers

@@ -1,4 +1,5 @@
 @messages
+@javascript
 Feature: Messages
   As a messenger user
   I want to see recent messages when I load the messaging page
@@ -30,7 +31,6 @@ Feature: Messages
     And I should not see workstation "AML" user "jeff" read message 3
 
   @messages2
-  @javascript
   Scenario: Recent messages: When the current user loads the messaging page, messages
     sent to the current user's workstations, while the workstation was vacant during the last 24 hours
     will be visible. Messages sent to the user's workstation while another user was working

@@ -69,7 +69,8 @@ describe MessagesController do
       end
 
       it "gets the current authenticated user's messages for the current time" do
-        Message.should_receive(:for_user_before)#.with(user, Time.now)
+        message = mock_model(Message).as_null_object
+        Message.should_receive(:for_user_before).and_return([message])#.with(user, Time.now)
         get :index, format: :json
       end
     end
@@ -83,8 +84,9 @@ describe MessagesController do
         response.should be_success
       end
 
-      it "gets the current authenticated user's messages for the current time" do
-        Message.should_receive(:for_user_before).with(user, time)
+      it "gets the current user's messages for the current time" do
+        message = mock_model(Message).as_null_object
+        Message.should_receive(:for_user_before).with(user, time).and_return([message])
         get :index, time: time, format: :json
       end
     end

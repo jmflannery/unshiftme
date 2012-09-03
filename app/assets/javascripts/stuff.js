@@ -12,6 +12,18 @@ findMessage = function(message_id) {
   return message;
 }
 
+/////////////////////////////////////////
+// on messaging page?
+////////////////////////////////////////
+
+var on_messaging_page = function() {
+  messaging_page = false;
+  if ($("#messages_section").length > 0) {
+    messaging_page = true;
+  }
+  return messaging_page;
+};
+
 ////////////////////////////////////////
 // Get the user's id
 ////////////////////////////////////////
@@ -62,22 +74,12 @@ var calculate_message_section_height = function() {
 };
 
 // resize on page load
-$(function() {
-  calculate_message_section_height();
-});
+$(calculate_message_section_height);
 
 // resize on each browser resize by the user
 $(function() {
   $(window).resize(calculate_message_section_height);
 });
-
-////////////////////////////////////////
-// hide_available_users()
-////////////////////////////////////////
-
-var hide_available_users = function() {
-  $("#recipient_selection_section").html("<a href='/users' data-remote='true' format='js' id='users_button'>Add Available Users</a>");
-};
 
 ////////////////////////////////////////
 // auto select jobs on signin page
@@ -173,7 +175,7 @@ var build_user_workstation_info = function() {
 $(build_workstation_buttons);
 
 ///////////////////////////////////
-// add recipient
+// toggle recipient
 ///////////////////////////////////
 
 var toggle_recipient = function() {
@@ -380,15 +382,23 @@ $(function() {
 
 var load_messages = function() {
   $.get("/messages.json", function(data) {
-    console.log(data);
     $.each(data, function(index, value) {
-      var html = build_message(value.sender, value.attachment_id, value.content, value.created_at);
-      display_new_message(html, value.id);
+      if (value.view_class.search("owner") > 0) {
+        readers = value.readers;
+      } else {
+        readers = "";
+      }
+      var html = build_message(value.sender, value.attachment_id, value.content, value.created_at, value.view_class, readers);
+      display_message(html, value.id);
     });
   });
 };
 
-$(load_messages);
+$(function() {
+  if (on_messaging_page()) {
+    load_messages();
+  }
+});
 
 ///////////////////////////////////////////////
 // message recieve handler 
@@ -407,13 +417,10 @@ $(function() {
     $("input#message_content").val("");
 
     // create the new message html 
-    var html = build_message(data.sender, data.attachment_url, data.chat_message, data.timestamp); 
+    var html = build_message(data.sender, data.attachment_url, data.chat_message, data.timestamp, "message recieved unread", ""); 
     
     // display the new message 
     display_new_message(html, data.message_id);
-
-    // add click handler to new message element
-    $("li.message.recieved.unread").click(read_message);
 
     // show the sending workstation(s) as recipient(s)
     for (var i = 0; i < data.recipient_ids.length; i++) {
@@ -430,8 +437,8 @@ $(function() {
   });
 });
 
-var build_message = function(sender, attachment_url, content, timestamp) {
-  var html ="<li class='message recieved unread'>" +
+var build_message = function(sender, attachment_url, content, timestamp, view_class, readers) {
+  var html = "<li class='" + view_class + "'>" +
               "<div class='left-side'>" +
                 "<div class='sender'>" +
                   "<p>" + sender + "</p>" +
@@ -451,6 +458,7 @@ var build_message = function(sender, attachment_url, content, timestamp) {
                   "<p>" + timestamp + "</p>" +
                 "</div>" +
                 "<div class='readers'>" +
+                  readers +
                 "</div>" +
               "</div>" +
             "</li>";
@@ -460,9 +468,19 @@ var build_message = function(sender, attachment_url, content, timestamp) {
 
 var display_new_message = function(message_html, message_id) {
   message_list_item = $("li.message:first-child");
-  var message = $(message_html).data("message_id", message_id);
+  var message = $(message_html).data("message_id", message_id).click(read_message);
   if (message_list_item[0]) {
     message_list_item.before(message);
+  } else {
+    $("ul#message_list").html(message);
+  }
+};
+
+var display_message = function(message_html, message_id) {
+  message_list_item = $("li.message:last-child");
+  var message = $(message_html).data("message_id", message_id).click(read_message);
+  if (message_list_item[0]) {
+    message_list_item.after(message);
   } else {
     $("ul#message_list").html(message);
   }
@@ -496,9 +514,7 @@ $(function() {
 
   // register callback
   PrivatePub.subscribe("/readers/" + user_name, function(data, channel) {
-    console.log("message: " + data.message); 
     selector = "li.message.owner." + data.message + " .right-side .readers";
-    console.log(selector);
     $(selector).html(data.readers);
   });
 });

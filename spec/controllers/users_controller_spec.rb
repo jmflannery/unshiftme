@@ -63,17 +63,6 @@ describe UsersController do
         get :show, :id => @user
         assigns(:attachment).should be_kind_of(Attachment) 
       end
-
-      it "should have an array of the given user's messages" do
-        message = FactoryGirl.create(:message, user: @user)
-        message.set_receivers
-        other_message = FactoryGirl.create(:message)
-        other_message.set_receivers
-        get :show, :id => @user
-        messages = assigns(:messages)
-        messages.should include message
-        messages.should_not include other_message
-      end
     end
 
     context "format json" do
