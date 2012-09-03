@@ -514,8 +514,8 @@ $(function() {
 
   // register callback
   PrivatePub.subscribe("/readers/" + user_name, function(data, channel) {
-    selector = "li.message.owner." + data.message + " .right-side .readers";
-    $(selector).html(data.readers);
+    message = findMessage(data.message);
+    $(".right-side .readers", message).html(data.readers);
   });
 });
 

@@ -114,7 +114,7 @@ class Message < ActiveRecord::Base
             from_workstations: user.workstation_names,
             recipient_ids: new_recip_ids,
             timestamp: created_at.strftime("%a %b %e %Y %T"),
-            message_id: id.to_s
+            message_id: id
           }
           PrivatePub.publish_to("/messages/#{recip_user.user_name}", data)
         end

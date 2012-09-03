@@ -2,9 +2,10 @@
 $("input#message_content").val("");
 
 // display the new message 
-display_new_message("<%= j(render(@message)) %>");
+display_new_message("<%= j(render(@message)) %>", <%= @message.id %>);
 
 // scroll to last message 
 //<#% unless @message.blank? %>
 //  $('#messages_section').scrollTo("max");
 //<#% end %>
+
