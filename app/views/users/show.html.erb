@@ -1,6 +1,11 @@
 <div id="content" class=<%= "#{@user.id}" %>>
 
-  <div id='recipient_workstation_selection'>
+  <div id='workstation_section'>
+    <div id="workstation_loading_icon">
+      <%= image_tag "loading_circle.gif" %>
+    </div>
+    <div id='recipient_workstation_selection'>
+    </div>
   </div>
 
   <div id="messages">
@@ -27,6 +32,9 @@
     </div>
 
     <div id="messages_section">
+      <div id="message_loading_icon">
+        <%= image_tag "loading_bar.gif" %>
+      </div>
       <ul id="message_list">
         <!--<#%= render(@messages) %> -->
       </ul>

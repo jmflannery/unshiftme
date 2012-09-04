@@ -119,6 +119,8 @@ $(function() {
 
 // get the workstation data
 var build_workstation_buttons = function() {
+  hide_workstation_selection();
+  show_workstation_loading_icon();
   var workstation_section = $('#recipient_workstation_selection');
   var html = "";
   $.get("/workstations.json", function(response) {
@@ -157,6 +159,8 @@ var build_user_workstation_info = function() {
     for (var i = 0; i < response.recipient_workstations.length; i++) {
       $("#" + response.recipient_workstations[i].name).turnOn().data("recipient_id", response.recipient_workstations[i].recipient_id);
     }
+    hide_workstation_loading_icon();
+    show_workstation_selection();
   });
 };
 
@@ -373,7 +377,9 @@ $(function() {
 ///////////////////////////////////////////////
 
 var load_messages = function() {
+  show_message_loading_icon();
   $.get("/messages.json", function(data) {
+    hide_message_loading_icon();
     $.each(data, function(index, value) {
       if (value.view_class.search("owner") > 0) {
         readers = value.readers;
@@ -391,6 +397,36 @@ $(function() {
     load_messages();
   }
 });
+
+///////////////////////////////////////////////
+// Loading icon
+///////////////////////////////////////////////
+
+// messages
+var show_message_loading_icon = function() {
+  $('#message_loading_icon').show();
+}
+
+var hide_message_loading_icon = function() {
+  $('#message_loading_icon').hide();
+}
+
+// workstations
+var show_workstation_loading_icon = function() {
+  $('#workstation_loading_icon').show();
+}
+
+var hide_workstation_loading_icon = function() {
+  $('#workstation_loading_icon').hide();
+}
+
+var show_workstation_selection = function() {
+  $('#recipient_workstation_selection').show();
+}
+
+var hide_workstation_selection = function() {
+  $('#recipient_workstation_selection').hide();
+}
 
 ///////////////////////////////////////////////
 // message recieve handler 

@@ -10,59 +10,63 @@
   color: $grey;
 }
 
-#recipient_workstation_selection {
+#workstation_section {
   width: 19%;
   float: right;
-  font-size: .86em;
 
-  .recipient_workstation {
-    white-space: nowrap;
-    padding: 5px;
-    margin: 0px;
-    text-align: center;
-    cursor: pointer;
-    @include workstation-text-style;
-    background-color: #96968E;
-    border-bottom: 1px solid grey;
+  #recipient_workstation_selection {
+    width: 100%;
+    font-size: .86em;
 
-    &:hover, &:focus {
-      background-color: $dark-text;
-      color: $near-white;
+    .recipient_workstation {
+      white-space: nowrap;
+      padding: 5px;
+      margin: 0px;
+      text-align: center;
+      cursor: pointer;
+      @include workstation-text-style;
+      background-color: #96968E;
+      border-bottom: 1px solid grey;
+
+      &:hover, &:focus {
+        background-color: $dark-text;
+        color: $near-white;
+      }
     }
-  }
 
-  .recipient_workstation.first {
-    @include rounded-corners-seperate(6px, 6px, 0, 0);
-  }
+    .recipient_workstation.first {
+      @include rounded-corners-seperate(6px, 6px, 0, 0);
+    }
 
-  .recipient_workstation.last {
-    @include rounded-corners-seperate(0, 0, 6px, 6px);
-    border-bottom: 0px;
-  }
+    .recipient_workstation.last {
+      @include rounded-corners-seperate(0, 0, 6px, 6px);
+      border-bottom: 0px;
+    }
 
-  p {
-    margin: 0px;
-  }
+    p {
+      margin: 0px;
+    }
 
-  .mine {
-    color: #265902;
-    background-repeat: no-repeat;
-    background-position: 18% 50%;
-  }
+    .mine {
+      color: #265902;
+      background-repeat: no-repeat;
+      background-position: 18% 50%;
+    }
 
-  .on {
-    color: black;
-    background-image: url('lightning.png');
-    background-repeat: no-repeat;
-    background-position: 90% 45%;
-  }
+    .on {
+      color: black;
+      background-image: url('lightning.png');
+      background-repeat: no-repeat;
+      background-position: 90% 45%;
+    }
 
-  .off {
-    color: black;
-  }
+    .off {
+      color: black;
+    }
 
-  .all {
-    color: black;
+    .all {
+      color: black;
+    }
   }
 }
 
