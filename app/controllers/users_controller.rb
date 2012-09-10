@@ -23,7 +23,6 @@ class UsersController < ApplicationController
       @title = "Sign Up"
       @td_workstations = Workstation.of_type("td")
       @ops_workstations = Workstation.of_type("ops")
-      @user = User.new
       render 'new'
     end
   end
