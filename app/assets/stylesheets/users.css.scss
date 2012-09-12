@@ -17,3 +17,10 @@
   margin: 0 auto;
   padding-top: 20px;
 }
+
+#select_normal_workstation {
+  //padding: 5px;
+  //color: $dark-text;
+  //background-color: $near-white;
+  @include rounded-corners(6px);
+}

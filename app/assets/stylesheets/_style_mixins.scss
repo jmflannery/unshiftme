@@ -108,14 +108,15 @@
 
       .field_with_errors {
         display: inline;
-        color: $red;
+        color: $error-bright-red;
+        font-weight: bold;
 
         input[type="text"] {
-          border: 2px solid $red;
+          border: 2px solid $error-bright-red;
         }
 
         input[type="password"] {
-          border: 2px solid $red;
+          border: 2px solid $error-bright-red;
         }
       }
     } // end .field 

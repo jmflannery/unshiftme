@@ -18,12 +18,17 @@ body {
 
   #page {
 
+    .smaller {
+      font-size: 0.8em;
+    }
+
     #header {
       color: $near-white;
       background-color: $blackish;
       margin: 0 0 12px 0;
       text-align: left;
       padding: 7px; 
+      @include box-shadow(2px, 2px, 2px, 0px, 0, 0, 0, 0.5);
 
       #main_menu {
         font-size: .9em;
@@ -88,5 +93,20 @@ body {
     #footer {
       width: 100%;
     } // end #footer
+
+    #error_explanation {
+      padding: 8px;
+      color: $error-red;
+      font-size: 0.8em;
+      border: solid $error-red 1px;
+      @include rounded-corners(3px);
+      background: $error-light-red url('cone.png') no-repeat 2% 20%;
+      //@include box-shadow(2px, 2px, 2px, 0px, 255, 255, 255, 0.7);
+
+      ul {
+        margin: 6px;
+        list-style: none;
+      }
+    } // end #error_explanation
   } // end #page
 } // end body
