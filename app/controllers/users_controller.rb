@@ -20,9 +20,9 @@ class UsersController < ApplicationController
       flash[:success] = "Registration was successful! Sign in now to access Messenger."
       redirect_to signin_path
     else
-      @title = "Sign Up"
       @td_workstations = Workstation.of_type("td")
       @ops_workstations = Workstation.of_type("ops")
+      @title = "Register"
       render 'new'
     end
   end
