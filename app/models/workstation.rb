@@ -40,6 +40,10 @@ class Workstation < ActiveRecord::Base
     desc
   end
 
+  def user_name
+    User.exists?(user_id) ? User.find(user_id).user_name : ""
+  end
+
   def view_class(user)
     view_class = "recipient_workstation"
     if user.workstation_ids.include?(id)

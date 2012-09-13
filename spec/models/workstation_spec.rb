@@ -71,16 +71,37 @@ describe Workstation do
     end
 
     describe "#description" do
-
-      before(:each) do
-        user.start_job(cusn.abrev)
-      end
     
-      it "returns a string of the workstation name and workstation user (if the workstation has a user)" do
-        cusn.description == "#{cusn.name} (#{user.user_name})"
-        cuss.description == "#{cuss.name}"
-      end 
+      context "when the workstation has a user" do
+        before { cusn.set_user(user) }
+        it "returns a string of the workstation name and workstation user" do
+          cusn.description.should == "#{cusn.name} (#{user.user_name})"
+        end 
+      end
+
+      context "when the workstation has no user" do
+        it "returns a string of the workstation name" do
+          cusn.description.should == "#{cusn.name}"
+        end
+      end
     end
+
+    describe "#user_name" do
+    
+      context "when the workstation has a user" do
+        before { cusn.set_user(user) }
+        it "returns a string of the workstation user name" do
+          cusn.user_name.should == "#{user.user_name}"
+        end 
+      end
+
+      context "when the workstation has no user" do
+        it "returns an empty string" do
+          cusn.user_name.should == ""
+        end
+      end
+    end
+
   end
 
   describe "#view_class" do
