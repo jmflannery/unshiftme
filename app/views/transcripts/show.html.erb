@@ -1,4 +1,4 @@
-<div id="transcripts">
+<%= content_tag "div", id: "transcript_show", data: @transcript.to_json do %>
   <%= link_to "Back", transcripts_path %>
   <%= link_to "Live Messages", user_path(@user) %>
   <p><%= @transcript.name %></p>
@@ -7,4 +7,5 @@
     <ul id="message_list">
     </ul>
   </div>
-</div>
+<% end %>
+
