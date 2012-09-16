@@ -4,9 +4,7 @@ describe Transcript do
 
   before(:each) do
     @user = FactoryGirl.create(:user)
-    @transcript = @user.transcripts.build(transcript_user_id: 22,
-                                          transcript_workstation_id: 2,
-                                          start_time: "2012-06-22 16:30",
+    @transcript = @user.transcripts.build(start_time: "2012-06-22 16:30",
                                           end_time: "2012-06-22 17:15")
   end
 
@@ -105,7 +103,7 @@ describe Transcript do
       end
     end
 
-    context "with a trancript user and no workstation" do
+    context "with a transcript user and no workstation" do
       let(:transcript_user) { FactoryGirl.create(:user, user_name: "jack") }
       before do 
         subject.update_attribute(:transcript_user_id, transcript_user.id)
@@ -128,5 +126,51 @@ describe Transcript do
         subject.name.should == "Transcript for CUSN from Jun 22 2012 16:30 to Jun 22 2012 17:15"
       end
     end
+
+    describe "#to_json" do
+    
+      let(:transcript_user) { FactoryGirl.create(:user, user_name: "jack") }
+      let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let(:expected) {{
+        start_time: subject.start_time.to_s,
+        end_time: subject.end_time.to_s,
+        user: transcript_user.id,
+        workstation: cusn.id
+      }}
+
+      context "with a transcript user and workstation" do
+        before do 
+          subject.update_attribute(:transcript_user_id, transcript_user.id)
+          subject.update_attribute(:transcript_workstation_id, cusn.id)
+        end
+
+        it "returns json including the user, workstation, start and end times" do
+          subject.to_json.should == expected.as_json
+        end
+      end
+
+      context "with a transcript user and no workstation" do
+        before do 
+          subject.update_attribute(:transcript_user_id, transcript_user.id)
+          expected.delete(:workstation)
+        end
+
+        it "returns json including the user, start and end times" do
+          subject.to_json.should == expected.as_json
+        end
+      end
+
+      context "with a transcript workstation and no user" do
+        before do 
+          subject.update_attribute(:transcript_workstation_id, cusn.id)
+          expected.delete(:user)
+        end
+
+        it "returns json including the workstation, start and end times" do
+          subject.to_json.should == expected.as_json
+        end
+      end
+    end
   end
 end
+

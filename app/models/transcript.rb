@@ -41,4 +41,13 @@ class Transcript < ActiveRecord::Base
     end_str = end_time.strftime("%b %d %Y %H:%M")
     "Transcript for #{user_workstation} from #{start_str} to #{end_str}"
   end
+
+  def to_json
+    json = {}
+    json[:start_time] = start_time.to_s
+    json[:end_time] = end_time.to_s
+    json[:user] = transcript_user_id if transcript_user_id
+    json[:workstation] = transcript_workstation_id if transcript_workstation_id
+    json.as_json
+  end
 end
