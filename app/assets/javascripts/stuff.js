@@ -2,7 +2,7 @@
 // Find a message list element by message id
 ///////////////////////////////////////////////
 
-findMessage = function(message_id) {
+var findMessage = function(message_id) {
   var message = 0;
   $("#message_list li.message").each(function(index) {
     if ($(this).data("message_id") == message_id) {
@@ -17,11 +17,23 @@ findMessage = function(message_id) {
 ////////////////////////////////////////
 
 var on_messaging_page = function() {
-  messaging_page = false;
-  if ($("#messages_section").length > 0) {
+  var messaging_page = false;
+  if ($("#messages").length > 0) {
     messaging_page = true;
   }
   return messaging_page;
+};
+
+/////////////////////////////////////////
+// on transcript show page?
+////////////////////////////////////////
+
+var on_transcript_page = function() {
+  var transcript_page = false;
+  if ($("#transcript_show").length > 0) {
+    transcript_page  = true;
+  }
+  return transcript_page; 
 };
 
 ////////////////////////////////////////
@@ -395,6 +407,37 @@ var load_messages = function() {
 $(function() {
   if (on_messaging_page()) {
     load_messages();
+  }
+});
+
+///////////////////////////////////////////////
+// Load Transcript Messages
+///////////////////////////////////////////////
+
+var load_transcript_messages = function() {
+  show_message_loading_icon();
+  var ts_page = $('#transcript_show');
+  var start_time = ts_page.data("startTime");
+  var end_time = ts_page.data("endTime");
+  var user_id = ts_page.data("user");
+  var workstation_id = ts_page.data("workstation");
+  $.get("/messages.json", function(data) {
+    hide_message_loading_icon();
+    $.each(data, function(index, value) {
+      if (value.view_class.search("owner") > 0) {
+        readers = value.readers;
+      } else {
+        readers = "";
+      }
+      var html = build_message(value.sender, value.attachment_id, value.content, value.created_at, value.view_class, readers);
+      display_message(html, value.id);
+    });
+  });
+};
+
+$(function() {
+  if (on_transcript_page()) {
+    load_transcript_messages();
   }
 });
 

@@ -25,8 +25,8 @@ class TranscriptsController < ApplicationController
   def show
     @user = current_user
     @transcript_user = User.find(@transcript.transcript_user_id)
-    @messages = Message.for_user_between(@transcript_user, @transcript.start_time, @transcript.end_time)
-    @messages.each { |message| message.set_view_class(@transcript_user) }
+    #@messages = Message.for_user_between(@transcript_user, @transcript.start_time, @transcript.end_time)
+    #@messages.each { |message| message.set_view_class(@transcript_user) }
   end
 
   def index
@@ -38,31 +38,31 @@ class TranscriptsController < ApplicationController
 
   private
 
-    def authenticate_admin 
-      redirect_to signin_path unless current_user.admin?
-    end
+  def authenticate_admin 
+    redirect_to signin_path unless current_user.admin?
+  end
 
-    def authorized_user
-      @transcript = current_user.transcripts.find_by_id(params[:id])
-      redirect_to signin_path if @transcript.nil?
-    end
+  def authorized_user
+    @transcript = current_user.transcripts.find_by_id(params[:id])
+    redirect_to signin_path if @transcript.nil?
+  end
 
-    def validate_transcript_attributes
-      @attrs = params[:transcript]
-      user = User.find_by_user_name(@attrs[:transcript_user_id])
-      workstation = Workstation.find_by_abrev(@attrs[:transcript_workstation_id])
-      if user
-        @attrs.merge!({transcript_user_id: user.id})
-      else
-        @attrs.delete(:transcript_user_id)
-      end
-      if workstation
-        @attrs.merge!({transcript_workstation_id: workstation.id})
-      else
-        @attrs.delete(:transcript_workstation_id)
-      end
-      unless @attrs[:transcript_user_id] or @attrs[:transcript_workstation_id]
-        redirect_to new_transcript_path 
-      end
+  def validate_transcript_attributes
+    @attrs = params[:transcript]
+    user = User.find_by_user_name(@attrs[:transcript_user_id])
+    workstation = Workstation.find_by_abrev(@attrs[:transcript_workstation_id])
+    if user
+      @attrs.merge!({transcript_user_id: user.id})
+    else
+      @attrs.delete(:transcript_user_id)
     end
+    if workstation
+      @attrs.merge!({transcript_workstation_id: workstation.id})
+    else
+      @attrs.delete(:transcript_workstation_id)
+    end
+    unless @attrs[:transcript_user_id] or @attrs[:transcript_workstation_id]
+      redirect_to new_transcript_path 
+    end
+  end
 end
