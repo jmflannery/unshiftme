@@ -60,6 +60,24 @@ describe MessagesController do
       cusn.set_user(user)
     end
 
+    context "with an authenticated user and no params" do
+
+      before { test_sign_in(user) }
+      let(:prm) {{ format: :json }}
+      
+      it "returns HTTP success" do
+        get :index, prm 
+        response.should be_success
+      end
+      
+      it "gets the current user's messages for the current time" do
+        message = mock_model(Message).as_null_object
+        #Message.should_receive(:for_user_before).with(user, time).and_return([message])
+        Message.should_receive(:for_user_before).and_return([message])
+        get :index, prm
+      end
+    end
+
     context "with an authenticated user and a supplied start time" do
 
       before { test_sign_in(user) }
@@ -71,7 +89,7 @@ describe MessagesController do
         response.should be_success
       end
       
-      it "gets the current user's messages for the current time" do
+      it "gets the current user's messages for the supplied time" do
         message = mock_model(Message).as_null_object
         Message.should_receive(:for_user_before).with(user, time).and_return([message])
         get :index, prm

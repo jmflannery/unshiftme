@@ -15,7 +15,9 @@ class MessagesController < ApplicationController
   def index
     start_time = params[:start_time] if params.has_key?(:start_time)
     end_time = params[:end_time] if params.has_key?(:end_time)
-    if start_time and !end_time
+    if !start_time and !end_time
+      messages = Message.for_user_before(current_user, Time.now)
+    elsif start_time and !end_time
       messages = Message.for_user_before(current_user, start_time)
     elsif start_time and end_time
       user_id = params[:user_id] if params.has_key?(:user_id)
