@@ -13,13 +13,24 @@ class MessagesController < ApplicationController
   end
   
   def index
-    time = params.has_key?(:time) ? params[:time] : Time.now
-    messages = Message.for_user_before(current_user, time)
-    messages.each { |message| message.set_view_class(current_user) }
-    respond_to do |format|
-      format.json {
-        render json: messages.as_json
-      }
+    start_time = params[:start_time] if params.has_key?(:start_time)
+    end_time = params[:end_time] if params.has_key?(:end_time)
+    if start_time and !end_time
+      messages = Message.for_user_before(current_user, start_time)
+    elsif start_time and end_time
+      user_id = params[:user_id] if params.has_key?(:user_id)
+      trans_user = User.find_by_id(user_id)
+      if trans_user
+        messages = Message.for_user_between(trans_user, start_time, end_time)
+      end
+    end
+    if messages
+      messages.each { |message| message.set_view_class(current_user) }
+      respond_to do |format|
+        format.json {
+          render json: messages.as_json
+        }
+      end
     end
   end
 
