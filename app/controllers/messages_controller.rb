@@ -13,8 +13,10 @@ class MessagesController < ApplicationController
   end
   
   def index
-    start_time = params[:start_time] if params.has_key?(:start_time)
-    end_time = params[:end_time] if params.has_key?(:end_time)
+    start_time = Time.parse(params[:start_time]) if params.has_key?(:start_time)
+    end_time = Time.parse(params[:end_time]) if params.has_key?(:end_time)
+    logger.debug "start time: #{start_time}"
+    logger.debug "end time: #{end_time}"
     if !start_time and !end_time
       messages = Message.for_user_before(current_user, Time.now)
     elsif start_time and !end_time

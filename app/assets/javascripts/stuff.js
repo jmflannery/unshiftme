@@ -417,11 +417,13 @@ $(function() {
 var load_transcript_messages = function() {
   show_message_loading_icon();
   var ts_page = $('#transcript_show');
-  var start_time = ts_page.data("startTime");
-  var end_time = ts_page.data("endTime");
-  var user_id = ts_page.data("user");
-  var workstation_id = ts_page.data("workstation");
-  $.get("/messages.json", function(data) {
+  var data = {};
+  data["start_time"] = ts_page.data("startTime");
+  data["end_time"] = ts_page.data("endTime");
+  data["user_id"] = ts_page.data("user");
+  data["workstation_id"] = ts_page.data("workstation");
+  console.log(data["start_time"]);
+  $.get("/messages.json", data, function(data) {
     hide_message_loading_icon();
     $.each(data, function(index, value) {
       if (value.view_class.search("owner") > 0) {
