@@ -55,73 +55,131 @@ describe MessagesController do
 
   describe "GET index" do
     
+    let(:st) { "2012-09-19 02:16:00 -0400" }
+    let(:et) { "2012-09-19 04:20:00 -0400" }
+    let(:start_time) { Time.parse(st) }
+    let(:end_time) { Time.parse(et) }
     let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN") }
-    before(:each) do
-      cusn.set_user(user)
-    end
-
-    context "with an authenticated user and no params" do
-
-      before { test_sign_in(user) }
-      let(:prm) {{ format: :json }}
-      
-      it "returns HTTP success" do
-        get :index, prm 
-        response.should be_success
-      end
-      
-      it "gets the current user's messages for the current time" do
-        message = mock_model(Message).as_null_object
-        #Message.should_receive(:for_user_before).with(user, time).and_return([message])
-        Message.should_receive(:for_user_before).and_return([message])
-        get :index, prm
-      end
-    end
-
-    context "with an authenticated user and a supplied start time" do
-
-      before { test_sign_in(user) }
-      let(:time) { Time.now }
-      let(:prm) {{ start_time: time, format: :json }}
-
-      it "returns HTTP success" do
-        get :index, prm 
-        response.should be_success
-      end
-      
-      it "gets the current user's messages for the supplied time" do
-        message = mock_model(Message).as_null_object
-        Message.should_receive(:for_user_before).with(user, time).and_return([message])
-        get :index, prm
-      end
-    end
-
-    context "with an authenticated user and a supplied start time, end time, user_id and workstation_id" do
-
-      before { test_sign_in(user) }
-      let(:start_time) { Time.now - 2.hours }
-      let(:end_time) { Time.now }
-      let(:transcript_user) { FactoryGirl.create(:user) }
-      let(:transcript_workstation) { FactoryGirl.create(:workstation) }
-      let(:prm) {{ start_time: start_time, end_time: end_time, workstation_id: transcript_workstation.id, user_id: transcript_user.id, format: :json }}
-
-      it "returns HTTP success" do
-        get :index, prm
-        response.should be_success
-      end
-      
-      it "gets the current user's messages for the current time between the two times" do
-        message = mock_model(Message).as_null_object
-        Message.should_receive(:for_user_between).with(transcript_user, start_time, end_time).and_return([message])
-        get :index, prm
-      end
-    end
+    before(:each) { cusn.set_user(user) }
 
     context "with an unauthenticated user" do
+      let(:prm) {{ format: :json }}
 
       it "redirects to the signin path" do
-        get :index, format: :json
+        get :index, prm 
         response.should redirect_to signin_path
+      end
+    end
+    
+    context "with an authenticated user" do
+      before { test_sign_in(user) }
+ 
+      context "with an admin user" do
+        before { user.update_attribute(:admin, true) }
+     
+        context "with no parameters" do
+          let(:prm) {{ format: :json }}
+
+          it "returns HTTP success" do
+            get :index, prm 
+            response.should be_success
+          end
+          
+          it "gets the current user's messages for the current time" do
+            message = mock_model(Message).as_null_object
+            # how do I mock for_user_before receiving Time.now ?
+            Message.should_receive(:for_user_before).and_return(message)
+            get :index, prm
+          end
+        end
+
+        context "with no user_id and no workstation_id" do
+
+          context "with no supplied time" do
+            let(:prm) {{ format: :json }}
+
+          end
+
+          context "with a supplied time" do
+            let(:prm) {{ start_time: st, format: :json }}
+
+            it "returns HTTP success" do
+              get :index, prm 
+              response.should be_success
+            end
+            
+            it "gets the current user's messages for the supplied time" do
+              message = mock_model(Message).as_null_object
+              Message.should_receive(:for_user_before).with(user, start_time).and_return([message])
+              get :index, prm
+            end
+          end
+
+          context "with a supplied start and end time" do
+            let(:prm) {{ start_time: st, end_time: et, format: :json }}
+          end
+        end
+
+        context "with a user_id and no workstation_id" do
+
+          context "with no supplied time" do
+            pending "considering implementing"
+          end
+          context "with a supplied time" do
+            pending "considering implementing"
+          end
+          context "with a supplied start and end time" do
+            pending "considering implementing"
+          end
+        end
+
+        context "with a workstation_id and no user_id" do
+          context "with no supplied time" do
+            pending "considering implementing"
+          end
+          context "with a supplied time" do
+            pending "considering implementing"
+          end
+          context "with a supplied start and end time" do
+            pending "considering implementing"
+          end
+        end
+
+        context "with a workstation_id and user_id" do
+          
+          let(:transcript_user) { FactoryGirl.create(:user) }
+          let(:transcript_workstation) { FactoryGirl.create(:workstation) }
+
+          context "with no supplied time" do
+            pending "considering implementing"
+          end
+
+          context "with a supplied time" do
+            pending "considering implementing"
+          end
+
+          context "with a supplied start and end time" do
+
+            let(:prm) {{ 
+              start_time: st,
+              end_time: et,
+              workstation_id: transcript_workstation.id,
+              user_id: transcript_user.id,
+              format: :json 
+            }}
+
+            it "returns HTTP success" do
+              get :index, prm
+              response.should be_success
+            end
+            
+            it "gets the current user's messages between the start and end times" do
+              message = mock_model(Message).as_null_object
+              Message.should_receive(:for_user_between).with(transcript_user, start_time, end_time).and_return([message])
+              get :index, prm
+            end
+          end
+        end
       end
     end
   end
@@ -148,3 +206,4 @@ describe MessagesController do
     end
   end
 end
+
