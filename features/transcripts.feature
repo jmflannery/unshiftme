@@ -1,23 +1,24 @@
 @transcripts
+@javascript
 Feature: Transcripts
   A Transcript is an exact copy of a previous Messenger session
 
   @transcripts1
   Scenario: Creating new transcripts
     Given the following user records
-      | user_name | admin |
-      | bill      | true  |
-      | jeff      | false |
-      | bob       | false | 
+      | id | user_name | admin |
+      | 1  | bill      | true  |
+      | 2  | jeff      | false |
+      | 3  | bob       | false | 
     And the following workstation records
       | name      | abrev | user_id |
-      | CUS South | CUSS  | 0       |
-      | AML / NOL | AML   | 0       |
+      | CUS South | CUSS  | 3       |
+      | AML / NOL | AML   | 2       |
     And the following messages
       | id | content    | user | from | to_user | to_workstation | read | created_at         |
-      | 1  | Hi Jeff!   | bob  | CUSS | jeff    | AML     | t    | "2012-06-22 17:13" |
-      | 2  | Hello, Bob | jeff | AML  | bob     | CUSS    | t    | "2012-06-22 17:14" |
-      | 3  | Whats up?  | bob  | CUSS | jeff    | AML     | t    | "2012-06-22 17:16" |
+      | 1  | Hi Jeff!   | bob  | CUSS | jeff    | AML            | t    | "2012-06-22 17:13" |
+      | 2  | Hello, Bob | jeff | AML  | bob     | CUSS           | t    | "2012-06-22 17:14" |
+      | 3  | Whats up?  | bob  | CUSS | jeff    | AML            | t    | "2012-06-22 17:16" |
     And I am logged in as "bill" with password "secret" at ""
     When I click link "Transcripts"
     Then I should see the Transcripts page
@@ -29,10 +30,11 @@ Feature: Transcripts
 
     When I select "AML" for "Transcript workstation"
     And I select "jeff" for "Transcript user"
-    And I select date "2012-06-22 16:30" for "transcript_start_time"
-    And I select date "2012-06-22 17:15" for "transcript_end_time"
+    And I select date "2012-06-22 13:30" for "transcript_start_time"
+    And I select date "2012-06-22 21:15" for "transcript_end_time"
     And I press "Create Transcript"
-    Then I should see "Transcript for AML jeff from Jun 22 2012 16:30 to Jun 22 2012 17:15"
+    And I wait 3 seconds
+    Then I should see "Transcript for AML jeff from Jun 22 2012 13:30 to Jun 22 2012 21:15"
     And I should see recieved message 1 "Hi Jeff!" from workstation "CUSS" user "bob" one time
     And I should see workstation "AML" user "jeff" read message 1
     And I should see sent message 2 "Hello, Bob" from workstation "AML" user "jeff" one time
