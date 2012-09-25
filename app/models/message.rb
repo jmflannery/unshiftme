@@ -151,13 +151,13 @@ class Message < ActiveRecord::Base
     end
   end
 
-  def set_view_class(current_user)
-    if was_sent_by?(current_user)
+  def set_view_class(user)
+    if was_sent_by?(user)
       self.view_class = "message msg-#{id} owner"
     end
     
-    if was_sent_to?(current_user)
-      if was_read_by?(current_user)
+    if was_sent_to?(user)
+      if was_read_by?(user)
         self.view_class = "message msg-#{id} recieved read"
       else
         self.view_class = "message msg-#{id} recieved unread"
@@ -195,7 +195,7 @@ class Message < ActiveRecord::Base
   def was_sent_to?(user)
     sent_to = false
     self.receivers.each do |receiver|
-      if receiver.user_id == user.id or (user.workstation_ids.include?(receiver.workstation_id) and receiver.user == nil)
+      if receiver.user_id == user.id or (user.workstation_ids.include?(receiver.workstation_id) and receiver.user.nil?)
         sent_to = true
         break
       end
