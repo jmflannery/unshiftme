@@ -425,12 +425,7 @@ var load_transcript_messages = function() {
   $.get("/messages.json", data, function(data) {
   //  hide_message_loading_icon();
     $.each(data, function(index, value) {
-      if (value.view_class.search("owner") > 0) {
-        readers = value.readers;
-      } else {
-        readers = "";
-      }
-      var html = build_message(value.sender, value.attachment_id, value.content, value.created_at, value.view_class, readers);
+      var html = build_message(value.sender, value.attachment_id, value.content, value.created_at, value.view_class, value.readers);
       display_message(html, value.id);
     });
   });
