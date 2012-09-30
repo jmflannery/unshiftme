@@ -23,7 +23,7 @@ Given /^the following messages$/ do |table|
         num = number.to_i
         message.created_at = num.send(period).ago
       else
-        message.created_at = Time.parse("#{hash["created_at"]}")
+        message.created_at = Time.zone.parse("#{hash["created_at"]}")
       end
     end
     message.save
