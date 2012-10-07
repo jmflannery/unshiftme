@@ -100,6 +100,20 @@ Then /^I should see recieved message "(.*?)" from workstation "(.*?)" user "(.*?
   end
 end
 
+Then /^I should see sent message link "(.*?)" from workstation "(.*?)" user "(.*?)" one time$/ do |message_content, workstation_abrev, user_name|
+  within("li.message.owner") do
+    page.should have_selector(".sender p", text: "#{user_name}@#{workstation_abrev}")
+    page.should have_selector(".content a", text: @message)
+  end
+end
+
+Then /^I should see recieved message link "(.*?)" from workstation "(.*?)" user "(.*?)" one time$/ do |message_content, workstation_abrev, user_name|
+  within("li.message.recieved.unread") do
+    page.should have_selector(".sender p", text: "#{user_name}@#{workstation_abrev}", count: 1)
+    page.should have_selector(".content a", text: message_content, count: 1)
+  end
+end
+
 Then /^I should see workstation "(.*?)" user "(.*?)" read this$/ do |workstation_abrev, user_name|
   page.should have_content("#{user_name}@#{workstation_abrev} read this.")
 end
