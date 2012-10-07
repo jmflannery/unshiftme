@@ -398,7 +398,7 @@ var load_messages = function() {
       } else {
         readers = "";
       }
-      var html = build_message(value.sender, value.attachment_id, value.content, value.created_at, value.view_class, readers);
+      var html = build_message(value.sender, value.attachment_url, value.content, value.created_at, value.view_class, readers);
       display_message(html, value.id);
     });
   });

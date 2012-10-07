@@ -72,7 +72,8 @@ class Message < ActiveRecord::Base
     hash[:content] = content
     hash[:created_at] = created_at.strftime("%a %b %e %Y %T")
     hash[:sender] = sender_handle if sender_handle
-    hash[:attachment_id] = attachment_id if attachment_id
+    attachment = Attachment.find(attachment_id) if Attachment.exists?(attachment_id)
+    hash[:attachment_url] = attachment.payload.url if attachment
     hash[:view_class] = view_class if view_class
     hash[:readers] = readers if readers
     hash.as_json
@@ -116,6 +117,9 @@ class Message < ActiveRecord::Base
             timestamp: created_at.strftime("%a %b %e %Y %T"),
             message_id: id
           }
+          attachment = Attachment.find(attachment_id) if Attachment.exists?(attachment_id)
+          data[:attachment_url] = attachment.payload.url if attachment
+ 
           PrivatePub.publish_to("/messages/#{recip_user.user_name}", data)
         end
       end

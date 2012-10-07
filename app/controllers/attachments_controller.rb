@@ -2,28 +2,18 @@ class AttachmentsController < ApplicationController
   before_filter :authenticate   
    
   def create
-    @attachment = current_user.attachments.build(params[:attachment])
+    @user = current_user
+    @attachment = @user.attachments.build(params[:attachment])
     if @attachment.save
       @attachment.set_recievers
         
-      @message = current_user.messages.create(content: @attachment.payload_file_name, attachment_id: @attachment.id)
-      @message.set_receivers 
-      @message.view_class = "message #{@message.id} owner"
-
-      current_user.recipients.each do |recipient|
-        if User.exists?(recipient.recipient_user_id)
-          recip_user = User.find(recipient.recipient_user_id)
-          recip_user.add_recipient(current_user.id) 
-        
-          data = { sender: current_user.name, 
-                   chat_message: @message.content,
-                   timestamp: @message.created_at.strftime("%H:%M:%S"),
-                   attachment_url: @attachment.payload.url 
-          }
-
-          PrivatePub.publish_to("/messages/#{recip_user.name}", data)
-        end
+      @message = @user.messages.create(content: @attachment.payload_file_name, attachment_id: @attachment.id)
+      if @message.save
+        @message.set_receivers 
+        @message.view_class = "message #{@message.id} owner"
+        @message.broadcast
       end
     end
   end  
 end
+

@@ -6,5 +6,5 @@ $('#upload_section').hide();
 $('#messages_section').css("height", "+=45");
 
 // display the new message 
-display_new_message("<%= j(render(@message)) %>");
+display_new_message("<%= j(render(@message)) %>", <%= @message.id %>);
 
