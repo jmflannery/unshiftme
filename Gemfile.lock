@@ -51,10 +51,12 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.1.0)
+    carrierwave (0.6.2)
+      activemodel (>= 3.2.0)
+      activesupport (>= 3.2.0)
     childprocess (0.3.3)
       ffi (~> 1.0.6)
     chronic (0.6.7)
-    cocaine (0.2.1)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -118,6 +120,9 @@ GEM
     http_parser.rb (0.5.3)
     i18n (0.6.0)
     journey (1.0.4)
+    jquery-fileupload-rails (0.3.4)
+      actionpack (>= 3.1)
+      railties (>= 3.1)
     jquery-rails (2.0.2)
       railties (>= 3.2.0, < 5.0)
       thor (~> 0.14)
@@ -148,12 +153,6 @@ GEM
     net-ssh-gateway (1.1.0)
       net-ssh (>= 1.99.1)
     nokogiri (1.5.5)
-    paperclip (3.1.2)
-      activemodel (>= 3.0.0)
-      activerecord (>= 3.0.0)
-      activesupport (>= 3.0.0)
-      cocaine (>= 0.0.2)
-      mime-types
     pg (0.14.0)
     polyglot (0.3.3)
     private_pub (1.0.1)
@@ -256,6 +255,7 @@ DEPENDENCIES
   bcrypt-ruby (~> 3.0.1)
   capistrano
   capybara!
+  carrierwave
   coffee-rails (~> 3.2.2)
   cucumber-rails
   database_cleaner
@@ -263,10 +263,10 @@ DEPENDENCIES
   faker
   foreman
   guard-rspec
+  jquery-fileupload-rails
   jquery-rails
   launchy
   libnotify
-  paperclip (~> 3.1.2)
   pg
   private_pub (~> 1.0.1)
   rails (= 3.2.6)

@@ -18,6 +18,7 @@ Feature: Attachments
     And I am in bill's browser
     And I am logged in as "bill" with password "secret" at "CUSN"
     When I go to the messaging page
+    And I wait 1 second
     And I click "CUSS"
     And I click on the upload attachment icon
     Then I should see the attachement upload section

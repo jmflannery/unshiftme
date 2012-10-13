@@ -16,9 +16,9 @@
 
     <div id="upload_section">
       <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
-        <%= f.file_field("payload") %>
+        <%= f.file_field :payload %>
         <%= f.submit "Upload" %>
-      <% end %>  
+      <% end %>
     </div>
 
     <div id="msg_input">

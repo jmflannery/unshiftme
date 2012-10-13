@@ -9,12 +9,13 @@ gem 'jquery-rails'
 gem 'pg'
 gem 'therubyracer'
 gem 'bcrypt-ruby', "~> 3.0.1"
+gem "carrierwave"
 gem 'remotipart', "~> 1.0.2"
-gem 'paperclip', "~> 3.1.2"
 gem 'private_pub', "~> 1.0.1"
 gem "annotate", "~> 2.4.0"
 gem "whenever"
 gem "rufus-scheduler"
+gem "jquery-fileupload-rails"
 
 # Gems used only for assets and not required
 # in production environments by default.

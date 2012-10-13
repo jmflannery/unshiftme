@@ -12,9 +12,9 @@ describe Attachment do
 
   subject { @attachment }
 
-  it { should respond_to(:payload_file_name) }
-  it { should respond_to(:payload_content_type) }
-  it { should respond_to(:payload_file_size) }
+  it { should respond_to(:payload) }
+  it { should respond_to(:payload_url) }
+  it { should respond_to(:payload_identifier) }
 
   it { should be_valid }
 

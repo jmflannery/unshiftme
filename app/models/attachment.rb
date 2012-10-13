@@ -1,19 +1,9 @@
 class Attachment < ActiveRecord::Base
   belongs_to :user
 
+  mount_uploader :payload, AttachmentUploader
+
   serialize :recievers
-
-  has_attached_file :payload
-
-  def uploaded_file=(upload_file)
-    self.name base_part_of(upload_file.original_filename)
-    self.content_type = upload_file.content_type.chomp
-    self.file = upload_file.read
-  end
-
-  def base_part_of(file_name)
-    File.basename(file_name).gsub(/[^\w._-]/, '')
-  end
 
   def set_recievers
     recievers_list = []
@@ -28,3 +18,4 @@ class Attachment < ActiveRecord::Base
     save
   end 
 end
+
