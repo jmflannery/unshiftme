@@ -2,31 +2,49 @@
 @import "style_mixins";
 @import "messages_style";
 
+#upload_button {
+  cursor: pointer;
+  float: left;
+}
+
+#upload_section {
+  float: left;
+  border: 1px solid white;
+  width: 18%;
+  height: 100px;
+  margin: 3px;
+}
+
 #messages {
   width: 80%;
   float: left;
-  
-  #msg_input {
-    input[type="text"] {
-      width: 98%;
-      padding: 6px;
-      font-size: 1.4em;
-      color: $dark-text;
-      border: none;
-      background-color: $near-white;
-      margin-bottom: 8px;
-      @include rounded-corners(6px);
-    
-      &:hover, &:focus {
-        border: none;
-        outline: none;
-        @include box-shadow(0px, 0px, 12px, 2px, 240, 223, 208, 0.5);      
-      }
-    } // end input[type="text"]
-  } // end #msg_input
-  
+
   #messages_section {
-    @include messages_style;
+
+    float: right;
+  
+    #msg_input {
+      input[type="text"] {
+        width: 98%;
+        padding: 6px;
+        font-size: 1.4em;
+        color: $dark-text;
+        border: none;
+        background-color: $near-white;
+        margin-bottom: 8px;
+        @include rounded-corners(6px);
+      
+        &:hover, &:focus {
+          border: none;
+          outline: none;
+          @include box-shadow(0px, 0px, 12px, 2px, 240, 223, 208, 0.5);      
+        }
+      } // end input[type="text"]
+    } // end #msg_input
+    
+    #message_list_section {
+      @include messages_style;
+    } // end #message_list_section
   } // end #messages_section
 } // end #messages
 

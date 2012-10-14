@@ -350,23 +350,23 @@ $(function() {
 // Upload Section
 ///////////////////////////////////
 
-$(function() {
-  $('a#attach_button').click(function() {
-    upload_section = $('#upload_section');
-    height = upload_section.outerHeight(true);
-    messages_section = $('#messages_section');
-    upload_section.toggle();
-    upload_button = $('a#attach_button');
+var toggle_upload_section = function() {
+  var upload_section = $("#upload_section");
+  if (upload_section.is(":visible")) {
+    upload_section.hide();
+    $("#upload_button").show();
+    $('#messages_section').css("width", "100%");
+  } else {
+    upload_section.show();
+    $("#upload_button").hide();
+    $('#messages_section').css("width", "80%");
+  }
+};
 
-    if (upload_section.is(":hidden")) {
-      messages_section.css("height", "+=" + height);
-      $('input[type="file"]').val("");
-      upload_button.text("Show File Uploader");
-    } else {
-      messages_section.css("height", "-=" + height);
-      upload_button.text("Hide File Uploader");
-    }
-  });
+$(function() {
+  $("#upload_section").hide();
+  $("form#new_attachment").hide().fileupload();
+  $('#attach_button').click(toggle_upload_section)
 });
 
 //////////////////////////////////////////////

@@ -2,8 +2,7 @@
 $('input[type="file"]').val("");
 
 // hide the file upload form fields
-$('#upload_section').hide();
-$('#messages_section').css("height", "+=45");
+toggle_upload_section();
 
 // display the new message 
 display_new_message("<%= j(render(@message)) %>", <%= @message.id %>);

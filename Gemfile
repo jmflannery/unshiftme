@@ -10,7 +10,6 @@ gem 'pg'
 gem 'therubyracer'
 gem 'bcrypt-ruby', "~> 3.0.1"
 gem "carrierwave"
-gem 'remotipart', "~> 1.0.2"
 gem 'private_pub', "~> 1.0.1"
 gem "annotate", "~> 2.4.0"
 gem "whenever"

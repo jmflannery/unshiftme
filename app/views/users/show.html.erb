@@ -10,32 +10,35 @@
 
   <div id="messages">
 
-    <div id='upload_button'>
-      <%= link_to("Show File Uploader", "#", id: "attach_button") %>
+    <div id="upload_button">
+      <%= image_tag("paperclip.png", id: "attach_button") %>
     </div>
-
+      
     <div id="upload_section">
       <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
         <%= f.file_field :payload %>
-        <%= f.submit "Upload" %>
-      <% end %>
-    </div>
-
-    <div id="msg_input">
-      <% if signed_in? %>
-        <%= form_for(@message, remote: true, format: :js) do |f| %>
-          <%= f.text_field :content, maxlength: 300 %>
-        <% end %>
       <% end %>
     </div>
 
     <div id="messages_section">
-      <div id="message_loading_icon">
-        <%= image_tag "loading_bar.gif" %>
+
+      <div id="msg_input">
+        <% if signed_in? %>
+          <%= form_for(@message, remote: true, format: :js) do |f| %>
+            <%= f.text_field :content, maxlength: 300 %>
+          <% end %>
+        <% end %>
       </div>
-      <ul id="message_list">
-      </ul>
-    </div>
+
+      <div id="message_list_section">
+        <div id="message_loading_icon">
+          <%= image_tag "loading_bar.gif" %>
+        </div>
+        <ul id="message_list">
+        </ul>
+      </div>
+
+    </div> <!-- end #messages_section -->
 
   </div> <!-- end #messages -->
 </div> <!-- end #content -->

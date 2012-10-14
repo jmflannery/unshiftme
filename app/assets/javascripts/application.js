@@ -1,6 +1,7 @@
 //= require jquery  
 //= require jquery_ujs  
-//= require jquery.remotipart
+//= require jquery-fileupload/basic
+//= require jquery-fileupload/vendor/tmpl
+//= require private_pub
 //= require_self  
 //= require_tree .
-//= require private_pub
