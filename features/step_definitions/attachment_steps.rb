@@ -1,5 +1,5 @@
 When /^I click on the upload attachment icon$/ do
-  click_link 'attach_button'
+  find('#attach_button').click
 end
 
 Then /^I should see the attachement upload section$/ do
