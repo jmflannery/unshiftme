@@ -1,14 +1,6 @@
 <div id="content" class=<%= "#{@user.id}" %>>
 
-  <div id='workstation_section'>
-    <div id="workstation_loading_icon">
-      <%= image_tag "loading_circle.gif" %>
-    </div>
-    <div id='recipient_workstation_selection'>
-    </div>
-  </div>
-
-  <div id="messages">
+  <div id="upload">
 
     <div id="upload_button">
       <%= image_tag("paperclip.png", id: "attach_button") %>
@@ -19,28 +11,35 @@
         <%= f.file_field :payload %>
       <% end %>
     </div>
+  </div>
 
-    <div id="messages_section">
+  <div id='workstation_section'>
+    <div id="workstation_loading_icon">
+      <%= image_tag "loading_circle.gif" %>
+    </div>
+    <div id='recipient_workstation_selection'>
+    </div>
+  </div>
 
-      <div id="msg_input">
-        <% if signed_in? %>
-          <%= form_for(@message, remote: true, format: :js) do |f| %>
-            <%= f.text_field :content, maxlength: 300 %>
-          <% end %>
+  <div id="messages_section">
+
+    <div id="msg_input">
+      <% if signed_in? %>
+        <%= form_for(@message, remote: true, format: :js) do |f| %>
+          <%= f.text_field :content, maxlength: 300 %>
         <% end %>
+      <% end %>
+    </div>
+
+    <div id="message_list_section">
+      <div id="message_loading_icon">
+        <%= image_tag "loading_bar.gif" %>
       </div>
+      <ul id="message_list">
+      </ul>
+    </div>
+  </div> <!-- end #messages_section -->
 
-      <div id="message_list_section">
-        <div id="message_loading_icon">
-          <%= image_tag "loading_bar.gif" %>
-        </div>
-        <ul id="message_list">
-        </ul>
-      </div>
-
-    </div> <!-- end #messages_section -->
-
-  </div> <!-- end #messages -->
 </div> <!-- end #content -->
 
 <%= subscribe_to "/messages/#{@user.user_name}" %> 

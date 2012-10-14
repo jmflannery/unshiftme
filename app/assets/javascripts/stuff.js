@@ -18,7 +18,7 @@ var findMessage = function(message_id) {
 
 var on_messaging_page = function() {
   var messaging_page = false;
-  if ($("#messages").length > 0) {
+  if ($("#messages_section").length > 0) {
     messaging_page = true;
   }
   return messaging_page;
@@ -75,13 +75,13 @@ var heartbeat = function() {
 ////////////////////////////////////////
 
 // calculate_message_section_height
-// resize the '#messages_section' to be 68% of the window
+// resize the '#message_list_section' to be 68% of the window
 var calculate_message_section_height = function() {
   height = $(window).outerHeight(true);
   outer_height = (height * 80) / 100;
-  inner_height = (outer_height * 75) / 100;
+  inner_height = (outer_height * 80) / 100;
   $('#content').height(outer_height);
-  $('#messages_section').height(inner_height);
+  $('#message_list_section').height(inner_height);
   //$('#messages_section').scrollTo("max");
 };
 
@@ -353,13 +353,15 @@ $(function() {
 var toggle_upload_section = function() {
   var upload_section = $("#upload_section");
   if (upload_section.is(":visible")) {
+    $('#upload').css("width", "2%");
     upload_section.hide();
     $("#upload_button").show();
-    $('#messages_section').css("width", "100%");
+    $('#messages_section').css("width", "77%");
   } else {
     upload_section.show();
     $("#upload_button").hide();
-    $('#messages_section').css("width", "80%");
+    $('#upload').css("width", "10%");
+    $('#messages_section').css("width", "67%");
   }
 };
 
