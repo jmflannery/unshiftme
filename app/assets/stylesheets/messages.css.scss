@@ -4,17 +4,16 @@
 
 #upload {
 
-  //width: 2%;
-
+  width: 0.6%;
   float: left;
 
   #upload_button {
+    margin-left: -16px;
+    margin-top: -16px;
     cursor: pointer;
-    //float: left;
   }
 
   #upload_section {
-    //float: left;
     border: 1px solid white;
     width: 100%;
     height: 100px;
@@ -23,13 +22,14 @@
 }
 
 #messages_section {
-  width: 77%;
+  width: 80%;
   float: right;
-  margin: 8px;
+  margin-right: 10px;
+  margin-top: -4px;
 
   #msg_input {
     input[type="text"] {
-      width: 98%;
+      width: 99%;
       padding: 6px;
       font-size: 1.4em;
       color: $dark-text;

@@ -359,7 +359,7 @@ var toggle_upload_section = function() {
     $('#messages_section').css("width", "77%");
   } else {
     upload_section.show();
-    $("#upload_button").hide();
+    $('#upload_button').hide();
     $('#upload').css("width", "10%");
     $('#messages_section').css("width", "67%");
   }
