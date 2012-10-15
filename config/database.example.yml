@@ -1,0 +1,7 @@
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: amtrak_messenger_production
+  pool: 5
+  username: jack
+  password: jack
