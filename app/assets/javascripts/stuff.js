@@ -350,25 +350,36 @@ $(function() {
 // Upload Section
 ///////////////////////////////////
 
+var expand_upload_section = function() {
+  $("#outer_upload_section").show();
+  $('#upload_button').hide();
+  $("#upload_close_button").show();
+  $('#upload').css("width", "17%");
+  $('#messages_section').css("width", "62%").css("margin-top", "0px");
+};
+
+var minimize_upload_section = function() {
+  $('#outer_upload_section').hide();
+  $('#upload_button').show();
+  $("#upload_close_button").hide();
+  $('#upload').css("width", "0.6%");
+  $('#messages_section').css("width", "80%").css("margin-top", "-9px");
+};
+
 var toggle_upload_section = function() {
-  var upload_section = $("#upload_section");
-  if (upload_section.is(":visible")) {
-    $('#upload').css("width", "2%");
-    upload_section.hide();
-    $("#upload_button").show();
-    $('#messages_section').css("width", "77%");
+  if ($("#outer_upload_section").is(":visible")) {
+    minimize_upload_section();
   } else {
-    upload_section.show();
-    $('#upload_button').hide();
-    $('#upload').css("width", "10%");
-    $('#messages_section').css("width", "67%");
+    expand_upload_section();
   }
 };
 
 $(function() {
-  $("#upload_section").hide();
+  $("#outer_upload_section").hide();
+  $("#upload_close_button").hide();
   $("form#new_attachment").hide().fileupload();
   $('#attach_button').click(toggle_upload_section)
+  $('#upload_xicon').click(toggle_upload_section)
 });
 
 //////////////////////////////////////////////

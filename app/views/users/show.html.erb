@@ -6,10 +6,18 @@
       <%= image_tag("paperclip.png", id: "attach_button") %>
     </div>
       
-    <div id="upload_section">
-      <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
-        <%= f.file_field :payload %>
-      <% end %>
+    <div id="outer_upload_section">
+
+      <div id="upload_close_button">
+        <%= image_tag("xicon.png", id: "upload_xicon") %>
+      </div>
+      
+      <div id="upload_section">
+        <p>Drag files</br>here</p>
+        <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
+          <%= f.file_field :payload %>
+        <% end %>
+      </div>
     </div>
   </div>
 

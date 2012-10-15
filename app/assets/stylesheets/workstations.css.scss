@@ -25,7 +25,7 @@
       text-align: center;
       cursor: pointer;
       @include workstation-text-style;
-      background-color: #96968E;
+      background-color: $grey-background;
       border-bottom: 1px solid grey;
 
       &:hover, &:focus {
