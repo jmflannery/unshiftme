@@ -351,19 +351,25 @@ $(function() {
 ///////////////////////////////////
 
 var expand_upload_section = function() {
-  $("#outer_upload_section").show();
-  $('#upload_button').hide();
-  $("#upload_close_button").show();
+  $('#messages_section').css("margin-top", "0px")
+  $('#upload_button').fadeOut();
+  $("#upload_close_button").fadeIn();
   $('#upload').css("width", "17%");
-  $('#messages_section').css("width", "62%").css("margin-top", "0px");
+  $('#messages_section').animate({
+    width: "62%"
+  }, 500, 'swing', function() {
+    $('#outer_upload_section').fadeIn('slow');
+  });
 };
 
 var minimize_upload_section = function() {
-  $('#outer_upload_section').hide();
-  $('#upload_button').show();
-  $("#upload_close_button").hide();
+  $('#messages_section').css("margin-top", "-9px")
+  $('#upload_button').fadeIn();
+  $("#upload_close_button").fadeOut();
   $('#upload').css("width", "0.6%");
-  $('#messages_section').css("width", "80%").css("margin-top", "-9px");
+  $('#outer_upload_section').fadeOut('fast', function() {
+    $('#messages_section').animate({width: "80%"}, 'fast', 'linear');
+  });
 };
 
 var toggle_upload_section = function() {
