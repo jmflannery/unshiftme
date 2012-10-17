@@ -7,12 +7,6 @@
   width: 0.6%;
   float: left;
 
-  #upload_button {
-    margin-left: -22px;
-    margin-top: -16px;
-    cursor: pointer;
-  }
-
   #outer_upload_section {
     border: 2px solid $grey-lettering;
     width: 100%;
@@ -47,14 +41,21 @@
   margin-top: -9px;
 
   #msg_input {
+
+    #upload_button {
+      float: left;
+      margin: 9px 4px 9px 0px;
+      cursor: pointer;
+    }
+
     input[type="text"] {
-      width: 99%;
+      width: 93.4%;
       padding: 6px;
       font-size: 1.4em;
       color: $dark-text;
       border: none;
       background-color: $near-white;
-      margin-bottom: 8px;
+      margin: 8px;
       @include rounded-corners(6px);
     
       &:hover, &:focus {

@@ -351,24 +351,24 @@ $(function() {
 ///////////////////////////////////
 
 var expand_upload_section = function() {
-  $('#messages_section').css("margin-top", "0px")
-  $('#upload_button').fadeOut();
-  $("#upload_close_button").fadeIn();
-  $('#upload').css("width", "17%");
+  $('#upload_button').hide();
   $('#messages_section').animate({
     width: "62%"
-  }, 500, 'swing', function() {
+  }, 'fast', 'swing', function() {
+    $('#upload').css("width", "17%");
+    $("#upload_close_button").fadeIn();
     $('#outer_upload_section').fadeIn('slow');
+    $("#msg_input input[type='text']").css("width", "97%");
   });
 };
 
 var minimize_upload_section = function() {
-  $('#messages_section').css("margin-top", "-9px")
-  $('#upload_button').fadeIn();
-  $("#upload_close_button").fadeOut();
-  $('#upload').css("width", "0.6%");
+  $("#msg_input input[type='text']").css("width", "93.4%");
+  $("#upload_close_button").hide();
   $('#outer_upload_section').fadeOut('fast', function() {
-    $('#messages_section').animate({width: "80%"}, 'fast', 'linear');
+    $('#upload').css("width", "0.6%");
+    $('#upload_button').delay(100).fadeIn('slow');
+    $('#messages_section').animate({width: "80%"}, 100, 'linear');
   });
 };
 
