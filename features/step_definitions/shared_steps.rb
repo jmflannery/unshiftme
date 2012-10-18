@@ -12,6 +12,14 @@ Given /^I am logged in as "([^\"]*)" with password "([^\"]*)" at "([^\"]*)"$/ do
   end
 end
 
+Given /^I am registered user "(.*?)" logged in with password "(.*?)"$/ do |user_name, password|
+  FactoryGirl.create(:user, user_name: user_name, password: password)
+  visit signin_path
+  fill_in "User name", :with => user_name
+  fill_in "Password", :with => password
+  click_button "Sign In"
+end
+
 Given /^the following (.+) records?$/ do |factory, table|
   records = []
   table.hashes.each do |hash|

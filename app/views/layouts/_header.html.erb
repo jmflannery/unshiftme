@@ -3,7 +3,7 @@
     <li id='page_title'><%= @title %></li>
     <% if signed_in? %>
       <li class='nav_button'><%= link_to "Messages", user_path(@user) %></li>
-      <li class='nav_button'><%= link_to "Profile", "#" %></li>
+      <li class='nav_button'><%= link_to "Profile", edit_user_path(@user) %></li>
       <% if @user.admin? %>
         <li class='nav_button'><%= link_to "Transcripts", transcripts_path %></li>
         <li class='nav_button'><%= link_to "Manage Users", "#" %></li>
