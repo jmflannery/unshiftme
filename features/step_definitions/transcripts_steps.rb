@@ -3,7 +3,7 @@ When /^I go to the transcript listing page$/ do
 end
 
 Then /^I should see the Transcripts page$/ do
-  page.should have_css("title", content: "Transcripts") 
+  page.should have_css("title", text: "Transcripts") 
   page.should have_content("Transcripts")
 end
 
@@ -12,7 +12,7 @@ Then /^I should see the Create Transcript page$/ do
 end
 
 Then /^I should see a New Transcripts button$/ do
-  page.should have_selector("a", content: "New Transcript")
+  page.should have_selector("a", text: "New Transcript")
 end
 
 Then /^I should see that I have (\d+) Transcripts$/ do |count|

@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.6'
+gem 'rails', '3.2.8'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -10,8 +10,8 @@ gem 'pg'
 gem 'therubyracer'
 gem 'bcrypt-ruby', "~> 3.0.1"
 gem "carrierwave"
-gem 'private_pub', "~> 1.0.1"
-gem "annotate", "~> 2.4.0"
+gem 'private_pub', "~> 1.0.3"
+gem "annotate", "~> 2.5.0"
 gem "whenever"
 gem "rufus-scheduler"
 gem "jquery-fileupload-rails"
