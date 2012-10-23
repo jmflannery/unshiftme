@@ -30,11 +30,7 @@ Given /^the following (.+) records?$/ do |factory, table|
 end
 
 When /^I press the "(.*?)" key$/ do |key|
-  find_field('message_content').native.send_key(key.to_sym)
-end
-
-When /^I press the "(.*?)" key from the "(.*?)" field$/ do |key, field|
-  find_field(field).native.send_key(key.to_sym)
+  page.execute_script("$('form#new_message').submit()")
 end
 
 When /^I fill in "(.*?)" with "(.*?)"$/ do |arg1, arg2|
