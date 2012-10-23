@@ -27,10 +27,6 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = false
   
-  #Capybara.default_wait_time = 2
-  #Capybara.javascript_driver = :webkit 
-  #Capybara.default_driver = :chrome
-
   def test_sign_in(user)
     controller.sign_in(user)
   end

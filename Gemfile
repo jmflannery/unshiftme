@@ -32,9 +32,9 @@ group :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'cucumber-rails'
-  gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
-  #gem 'capybara', "~> 1.1.2"
-  #gem 'capybara-webkit'
+  #gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
+  gem 'capybara'
+  gem 'poltergeist'
   gem 'factory_girl_rails', "~> 3.5.0"
   gem 'faker'
   gem 'rb-inotify'
