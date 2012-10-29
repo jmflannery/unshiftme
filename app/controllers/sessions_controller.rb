@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  include UsersHelper
+  include WorkstationsHelper
 
   def new
     respond_to do |format| 
@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
         @td_workstations = Workstation.of_type("td")
         @ops_workstations = Workstation.of_type("ops")
       }
-      format.json { 
+      format.json {
         user = User.find_by_user_name(params[:user])
         normal_workstations = ""
         if user and user.normal_workstations
@@ -23,7 +23,9 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by_user_name(params[:user_name])
     if user && user.authenticate(params[:password])
-      user.start_jobs(parse_params_for_workstations(params))
+      parse_params_for_workstations(params) do |workstation|
+        workstation.set_user(user)
+      end
       sign_in user
 
       data = { name: user.user_name, workstations: user.workstation_names_str }

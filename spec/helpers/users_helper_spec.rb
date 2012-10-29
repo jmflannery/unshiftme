@@ -16,3 +16,4 @@ describe "UsersHelper" do
     end
   end
 end
+

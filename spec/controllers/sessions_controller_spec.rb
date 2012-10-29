@@ -3,30 +3,47 @@ require 'spec_helper'
 describe SessionsController do
   render_views
 
+  #let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
+  #let(:cuss) { FactoryGirl.create(:workstation, name: "CUS South", abrev: "CUSS", job_type: "td") }
+  #let(:aml) { FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML", job_type: "td") }
+  #let(:ydctl) { FactoryGirl.create(:workstation, name: "Yard Control", abrev: "YDCTL", job_type: "ops") }
+  #let(:ydmstr) { FactoryGirl.create(:workstation, name: "Yard Master", abrev: "YDMSTR", job_type: "ops") }
+  #let(:glhs) { FactoryGirl.create(:workstation, name: "Glasshouse", abrev: "GLHS", job_type: "ops") }
+
   describe "GET 'new'" do
 
-    it "should be successful" do
-      get 'new'
-      response.should be_success
+    describe "format html" do
+
+      it "should be successful" do
+        get 'new', format: :html
+        response.should be_success
+      end
+
+      it "should have the right title" do
+        get 'new', format: :html
+        response.body.should have_selector("title", :content => "Sign in")
+      end
+
+      it "gets all td and ops workstations" do
+        td = mock_model(Workstation).as_null_object
+        ops = mock_model(Workstation).as_null_object
+        Workstation.should_receive(:of_type).with("td").and_return(td)
+        Workstation.should_receive(:of_type).with("ops").and_return(ops)
+        get 'new', format: :html
+      end
     end
 
-    it "should have the right title" do
-      get 'new'
-      response.body.should have_selector("title", :content => "Sign in")
+    describe "forman json" do
+
+      it "should be successful" do
+        get 'new', format: :json
+        response.should be_success
+      end
     end
   end
   
   describe "POST 'create'" do
 
-    before(:each) do
-      Workstation.create!(name: "CUS North", abrev: "CUSN", job_type: "td")
-      Workstation.create!(name: "CUS South", abrev: "CUSS", job_type: "td")
-      Workstation.create!(name: "AML / NOL", abrev: "AML", job_type: "td")
-      Workstation.create!(name: "Yard Control", abrev: "YDCTL", job_type: "ops")
-      Workstation.create!(name: "Yard Master", abrev: "YDMSTR", job_type: "ops")
-      Workstation.create!(name: "Glasshouse", abrev: "GLHSE", job_type: "ops")
-    end
-  
     describe "invalid signin" do
   
       before(:each) do

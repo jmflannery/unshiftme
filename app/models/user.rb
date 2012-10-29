@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   has_secure_password 
 
   attr_accessible :user_name, :password, :password_confirmation 
-  
+ 
   has_many :workstations
   has_many :messages
   has_many :recipients
@@ -169,3 +169,4 @@ class User < ActiveRecord::Base
     recipients.each { |recipient| recipient.destroy } 
   end
 end
+

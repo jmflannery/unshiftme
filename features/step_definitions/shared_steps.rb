@@ -12,12 +12,34 @@ Given /^I am logged in as "([^\"]*)" with password "([^\"]*)" at "([^\"]*)"$/ do
   end
 end
 
-Given /^I am registered user "(.*?)" logged in with password "(.*?)"$/ do |user_name, password|
-  FactoryGirl.create(:user, user_name: user_name, password: password)
-  visit signin_path
-  fill_in "User name", :with => user_name
-  fill_in "Password", :with => password
-  click_button "Sign In"
+#Given /^I am registered user "(.*?)" logged in with password "(.*?)"$/ do |user, password|
+#  if user.include?('@')
+#    user_name, workstation = parse_handle(user)
+#    FactoryGirl.create(:user, user_name: user_name, password: password)
+#    visit signin_path
+#    fill_in "User name", :with => user_name
+#    fill_in "Password", :with => password
+#    check workstation.abrev
+#    click_button "Sign In"
+#  else
+#    FactoryGirl.create(:user, user_name: user, password: password)
+#    visit signin_path
+#    fill_in "User name", :with => user
+#    fill_in "Password", :with => password
+#    click_button "Sign In"
+#  end
+#end
+
+def parse_handle(user_handle)
+  handle = user_handle.slplit('@')
+  if handle.size == 2
+    user_name = handle[0]
+    workstation_name = handle[1]
+    workstation = Workstation.where(name: workstation_name) if workstation_name
+    [user_name, workstation]
+  else
+    ["", ""]
+  end
 end
 
 Given /^the following (.+) records?$/ do |factory, table|
@@ -31,6 +53,10 @@ end
 
 When /^I press the "(.*?)" key$/ do |key|
   page.execute_script("$('form#new_message').submit()")
+end
+
+When /^I tab away$/ do
+  page.execute_script("$('body').focus()")
 end
 
 When /^I fill in "(.*?)" with "(.*?)"$/ do |arg1, arg2|

@@ -24,7 +24,8 @@ Feature: Attachments
     Then I should see the attachement upload section
 
     When I attach file "test_file.txt"
-    And I press "Upload"
+    And I wait 1 second
+    #And I press "Upload"
     Then I should see sent message link "test_file.txt" from workstation "CUSN" user "bill" one time
 
     Given I am in bob's browser

@@ -1,5 +1,6 @@
 When /^I click on the upload attachment icon$/ do
-  find('#attach_button').click
+  find('img#attach_button').click
+  page.execute_script("$('form#new_attach45ment11').submit()")
 end
 
 Then /^I should see the attachement upload section$/ do
