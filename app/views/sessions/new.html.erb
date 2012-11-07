@@ -15,10 +15,10 @@
 
       <div id="select_workstation">
         <div id="td_workstations">
-          <%= render @td_workstations %>
+          <%= render collection: @td_workstations, partial: 'workstations/workstation' if @td_workstations %>
         </div>
         <div id="ops_workstations">
-          <%= render @ops_workstations %>
+          <%= render collection: @ops_workstations, partial: 'workstations/workstation' if @ops_workstations %>
         </div>
       </div>
 
