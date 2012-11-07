@@ -12,33 +12,39 @@ Given /^I am logged in as "([^\"]*)" with password "([^\"]*)" at "([^\"]*)"$/ do
   end
 end
 
-#Given /^I am registered user "(.*?)" logged in with password "(.*?)"$/ do |user, password|
-#  if user.include?('@')
-#    user_name, workstation = parse_handle(user)
-#    FactoryGirl.create(:user, user_name: user_name, password: password)
-#    visit signin_path
-#    fill_in "User name", :with => user_name
-#    fill_in "Password", :with => password
-#    check workstation.abrev
-#    click_button "Sign In"
-#  else
-#    FactoryGirl.create(:user, user_name: user, password: password)
-#    visit signin_path
-#    fill_in "User name", :with => user
-#    fill_in "Password", :with => password
-#    click_button "Sign In"
-#  end
-#end
+Given /^I am registered user "(.*?)" logged in with password "(.*?)"$/ do |user, password|
+  user, workstation = parse_handle(user, password)
+  visit signin_path
+  fill_in "User name", :with => user.user_name
+  fill_in "Password", :with => password
+  check workstation.abrev if workstation
+  click_button "Sign In"
+end
 
-def parse_handle(user_handle)
-  handle = user_handle.slplit('@')
+Given /^I am registered user "(.*?)" logged in to "(.*?)" in with password "(.*?)"$/ do |user, workstation_abrev, password|
+  user, workstation = parse_handle(user, password)
+  visit signin_path
+  fill_in "User name", :with => user.user_name
+  fill_in "Password", :with => password
+  check workstation.abrev if workstation
+  click_button "Sign In"
+end
+
+def parse_handle(user_handle, password)
+  handle = user_handle.split('@')
   if handle.size == 2
     user_name = handle[0]
-    workstation_name = handle[1]
-    workstation = Workstation.where(name: workstation_name) if workstation_name
-    [user_name, workstation]
+    user = FactoryGirl.create(:user, user_name: user_name, password: password) if user_name
+    workstation_abrev = handle[1]
+    workstation = Workstation.where(abrev: workstation_abrev).first if workstation_abrev
+    workstation = FactoryGirl.create(:workstation, abrev: workstation_name) unless workstation
+    [user, workstation]
+  elsif handle.size == 1 
+    user_name = handle[0]
+    user = FactoryGirl.create(:user, user_name: user_name, password: password) if user_name
+    [user, nil]
   else
-    ["", ""]
+    [nil, nil]
   end
 end
 

@@ -23,11 +23,13 @@ Feature: User update
       | CUS North    | CUSN   | td       | 0       |
       | CUS South    | CUSS   | td       | 0       |
     And I am registered user "jack@CUSN" logged in to "CUSN" in with password "secret"
-    And I click link "Profile"
-    When I enter "jmflannery" for "User name"
-    When I enter "secret" for "user[password]"
-    When I enter "secret" for "user[password_confirmation]"
+    Then I should see "jack@CUSN"
+    When I click link "Profile"
+    Then I should see that workstation "CUSN" is checked
+    When I check workstation "CUS South"
+    And I enter "secret" for "user[password]"
+    And I enter "secret" for "user[password_confirmation]"
     And I press "Update"
     Then I should see "Profile updated!"
-    And I should see "jmflannery@"
+    And I should see "jack@CUSN"
 
