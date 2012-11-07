@@ -25,60 +25,19 @@ describe UsersController do
     end
 
     it "should have the right title" do
-      get 'new'
-      response.body.should have_selector("title", :content => "Sign Up")
+      get :new
+      response.body.should have_selector("title", :text => "Register")
+    end
+
+    it "gets the workstations" do
+      td_workstations = stub(Workstation).stub(description: "td")
+      ops_workstations = stub(Workstation).stub(description: "ops")
+      Workstation.should_receive(:of_type).with("td").and_return(td_workstations)
+      Workstation.should_receive(:of_type).with("ops").and_return(ops_workstations)
+      get :new
     end
   end
 
-  describe "GET 'show'" do
-
-    before(:each) do
-      @user = FactoryGirl.create(:user)
-      test_sign_in(@user)
-    end
-
-    context "format html" do
-
-      it "should be success" do
-        get :show, :id => @user
-        response.should be_success
-      end
-
-      it "should find the right user" do
-        get :show, :id => @user
-        assigns(:user).should == @user
-      end
-
-      it "should have the right title" do
-        get :show, :id => @user
-        response.body.should have_selector("title", content: @user.user_name)
-      end
-
-      it "should include the users name" do
-        get :show, :id => @user
-        response.should have_selector("p", content: @user.user_name)
-      end
-      
-      it "should create a new attachment (for a subsequent create)" do
-        get :show, :id => @user
-        assigns(:attachment).should be_kind_of(Attachment) 
-      end
-    end
-
-    context "format json" do
-      
-      it "should be success" do
-        get :show, id: @user, format: :json
-        response.should be_success
-      end
-
-      it "should return the correct user id" do
-        get :show, id: @user, format: :json
-        response.body.should == @user.as_json  
-      end
-    end
-  end
-  
   describe "POST 'create'" do
 
     describe "failure" do
@@ -146,6 +105,55 @@ describe UsersController do
     end
   end
 
+  describe "GET 'show'" do
+
+    before(:each) do
+      @user = FactoryGirl.create(:user)
+      test_sign_in(@user)
+    end
+
+    context "format html" do
+
+      it "should be success" do
+        get :show, :id => @user
+        response.should be_success
+      end
+
+      it "should find the right user" do
+        get :show, :id => @user
+        assigns(:user).should == @user
+      end
+
+      it "should have the right title" do
+        get :show, :id => @user
+        response.body.should have_selector("title", content: @user.user_name)
+      end
+
+      it "should include the users name" do
+        get :show, :id => @user
+        response.should have_selector("p", content: @user.user_name)
+      end
+      
+      it "should create a new attachment (for a subsequent create)" do
+        get :show, :id => @user
+        assigns(:attachment).should be_kind_of(Attachment) 
+      end
+    end
+
+    context "format json" do
+      
+      it "should be success" do
+        get :show, id: @user, format: :json
+        response.should be_success
+      end
+
+      it "should return the correct user id" do
+        get :show, id: @user, format: :json
+        response.body.should == @user.as_json  
+      end
+    end
+  end
+  
   describe "GET 'edit'" do
 
     before(:each) do
@@ -160,7 +168,15 @@ describe UsersController do
 
     it "should have the right title" do
       get :edit, :id => @user
-      response.body.should have_selector("title", :content => "Edit user")
+      response.body.should have_selector("title", :text => "Edit user")
+    end
+
+    it "gets the workstations" do
+      td_workstations = stub(Workstation).stub(description: "td")
+      ops_workstations = stub(Workstation).stub(description: "ops")
+      Workstation.should_receive(:of_type).with("td").and_return(td_workstations)
+      Workstation.should_receive(:of_type).with("ops").and_return(ops_workstations)
+      get :edit, :id => @user
     end
   end
 

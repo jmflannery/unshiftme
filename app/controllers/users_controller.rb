@@ -43,6 +43,8 @@ class UsersController < ApplicationController
 
   def edit
     @title = "Edit user"
+    @td_workstations = Workstation.of_type("td")
+    @ops_workstations = Workstation.of_type("ops")
   end
 
   def update

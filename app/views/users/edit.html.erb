@@ -20,6 +20,16 @@
       <%= f.password_field :password_confirmation, id: "conf" %>
     </div>
 
+    <div id="select_normal_workstation">
+      Workstation(s) <span class="smaller">(optional)</span>
+      <div id="td_workstations">
+        <%= render collection: @td_workstations, partial: 'workstations/workstation' if @td_workstations %>
+      </div>
+      <div id="ops_workstations">
+        <%= render collection: @ops_workstations, partial: 'workstations/workstation' if @ops_workstations %>
+      </div>
+    </div>
+
     <div class="actions">
       <%= f.submit "Update" %>
     </div>
