@@ -38,6 +38,7 @@ def parse_handle(user_handle, password)
     workstation_abrev = handle[1]
     workstation = Workstation.where(abrev: workstation_abrev).first if workstation_abrev
     workstation = FactoryGirl.create(:workstation, abrev: workstation_name) unless workstation
+    user.update_attribute(:normal_workstations, [workstation.abrev])
     [user, workstation]
   elsif handle.size == 1 
     user_name = handle[0]

@@ -26,6 +26,7 @@ Feature: User update
     Then I should see "jack@CUSN"
     When I click link "Profile"
     Then I should see that workstation "CUSN" is checked
+    And I should see that workstation "CUSS" is not checked
     When I check workstation "CUS South"
     And I enter "secret" for "user[password]"
     And I enter "secret" for "user[password_confirmation]"
