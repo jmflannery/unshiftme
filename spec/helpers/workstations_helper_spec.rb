@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe "UsersHelper" do
-  include UsersHelper
+describe "WorkstationssHelper" do
+  include WorkstationsHelper
 
   describe "#parse_params_for_workstations" do
 
