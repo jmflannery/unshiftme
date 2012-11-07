@@ -11,7 +11,6 @@ gem 'therubyracer'
 gem 'bcrypt-ruby', "~> 3.0.1"
 gem "carrierwave"
 gem 'private_pub', "~> 1.0.3"
-gem "annotate", "~> 2.5.0"
 gem "whenever"
 gem "rufus-scheduler"
 gem "jquery-fileupload-rails"
@@ -26,14 +25,15 @@ end
 
 group :development do
   gem 'foreman'
+  gem "annotate", "~> 2.5.0"
 end
 
 group :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
-  gem 'cucumber-rails'
-  #gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
   gem 'capybara'
+  gem 'cucumber-rails', require: false
+  #gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
   gem 'poltergeist'
   gem 'factory_girl_rails', "~> 3.5.0"
   gem 'faker'
