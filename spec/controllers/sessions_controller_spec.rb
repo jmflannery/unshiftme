@@ -14,29 +14,29 @@ describe SessionsController do
 
     describe "format html" do
 
-      it "should be successful" do
-        get 'new', format: :html
+      it "is successful" do
+        get :new, format: :html
         response.should be_success
       end
 
-      it "should have the right title" do
-        get 'new', format: :html
-        response.body.should have_selector("title", :content => "Sign in")
+      it "has the right title" do
+        get :new, format: :html
+        response.body.should have_selector("title", :text => "Sign in")
       end
 
       it "gets all td and ops workstations" do
-        td = mock_model(Workstation).as_null_object
-        ops = mock_model(Workstation).as_null_object
-        Workstation.should_receive(:of_type).with("td").and_return(td)
-        Workstation.should_receive(:of_type).with("ops").and_return(ops)
-        get 'new', format: :html
+        td_workstations = stub(Workstation).stub(description: "td")
+        ops_workstations = stub(Workstation).stub(description: "ops")
+        Workstation.should_receive(:of_type).with("td").and_return(td_workstations)
+        Workstation.should_receive(:of_type).with("ops").and_return(ops_workstations)
+        get :new, format: :html
       end
     end
 
     describe "forman json" do
 
-      it "should be successful" do
-        get 'new', format: :json
+      it "is successful" do
+        get :new, format: :json
         response.should be_success
       end
     end
@@ -50,12 +50,12 @@ describe SessionsController do
         @attr = { user_name: "XXX", password: "invalid" }
       end
   
-      it "should re-render the new page" do
+      it "re-renders the new page" do
         post :create, @attr
         response.should redirect_to new_session_path
       end
   
-      it "should have a flash.now message" do
+      it "has a flash.now message" do
         post :create, @attr
         flash.now[:error].should =~ /invalid/i
       end
@@ -68,13 +68,13 @@ describe SessionsController do
         @attr = { user_name: @user.user_name, password: @user.password }
       end
   
-      it "should sign the user in" do
+      it "signs the user in" do
         post :create, @attr
         controller.current_user.should == @user
         controller.should be_signed_in
       end
   
-      it "should redirect to the user show page" do
+      it "redirects to the user show page" do
         post :create, @attr
         response.should redirect_to(user_path(@user))
       end
@@ -83,7 +83,7 @@ describe SessionsController do
   
   describe "DELETE 'destroy'" do
   
-    it "should sign a user out" do
+    it "signs a user out" do
       test_sign_in(FactoryGirl.create(:user))
       delete :destroy
       controller.should_not be_signed_in
