@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
   include WorkstationsHelper
 
-  before_filter :authenticate, :only => [:show, :edit, :update]
-  before_filter :correct_user, :only => [:show, :edit, :update]
+  before_filter :authenticate, only: [:show, :edit, :update]
+  before_filter :correct_user, only: [:show, :edit, :update]
+  before_filter :merge_workstation_parameters, only: [:update]
 
   def new
     @user = User.new
@@ -70,6 +71,11 @@ class UsersController < ApplicationController
   def correct_user
     @user = User.find_by_user_name(params[:id])
     redirect_to root_path unless current_user?(@user)
+  end
+
+  def merge_workstation_parameters
+    new_params = merge_workstation_params(params)
+    params = new_params
   end
 end
 

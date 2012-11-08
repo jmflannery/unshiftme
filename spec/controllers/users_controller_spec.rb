@@ -204,30 +204,46 @@ describe UsersController do
 
       describe "success" do
 
+        let(:new_attr) {{
+          "user_name" => "fuzbar",
+          "password" => "foobar",
+          "password_confirmation" => "foobar",
+        }}
+        let(:params) {{ 
+          "id" => @user.user_name,
+          "user" => new_attr,
+          "CUSN" => "1",
+          "AML" => "1",
+          "controller" => "users",
+          "action" => "update" 
+        }}
+        let(:normal_workstations) { %w( CUSN AML) }
+
         before(:each) do
-          @new_attr = { 
-            user_name: "fzbar",
-            password: "foobar",
-            password_confirmation: "foobar",
-            normal_workstations: %w(CUSN CUSS)
-          }
+          FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN")
+          FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML")
+        end
+
+        it "merges the workstation params into the params[:users] hash" do
+          controller.should_receive(:merge_workstation_params).with(params)
+          put :update, params
         end
 
         it "should change the user's attributes" do
-          put :update, id: @user, user: @new_attr
+          put :update, params
           @user.reload
-          @user.user_name.should == @new_attr[:user_name]
-          @user.normal_workstations.should == @new_attr[:normal_workstations]
+          @user.user_name.should == new_attr["user_name"]
+          @user.normal_workstations.should == normal_workstations
         end
 
         it "should redirect to the user show page" do
-          put :update, id: @user, user: @new_attr
+          put :update, params
           @user.reload
           response.should redirect_to(user_path(@user))
         end
 
         it "should have a flash message" do
-          put :update, id: @user, user: @new_attr
+          put :update, params
           flash[:success].should =~ /updated/
         end
       end
