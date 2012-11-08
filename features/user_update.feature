@@ -32,5 +32,5 @@ Feature: User update
     And I enter "secret" for "user[password_confirmation]"
     And I press "Update"
     Then I should see "Profile updated!"
-    And I should see "jack@CUSN"
+    And I should see "jack@CUSS"
 
