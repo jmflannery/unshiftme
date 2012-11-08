@@ -40,6 +40,10 @@ When /^I check workstation "(.*?)"$/ do |workstation|
   check workstation
 end
 
+When /^I uncheck workstation "(.*?)"$/ do |workstation|
+  uncheck workstation
+end
+
 Given /^I am on the sign in page$/ do
   visit signin_path
 end
