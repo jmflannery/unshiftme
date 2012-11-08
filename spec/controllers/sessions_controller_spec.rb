@@ -33,7 +33,7 @@ describe SessionsController do
       end
     end
 
-    describe "forman json" do
+    describe "format json" do
 
       it "is successful" do
         get :new, format: :json
