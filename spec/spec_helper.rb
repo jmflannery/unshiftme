@@ -24,6 +24,9 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = false
+
+  # Filter examples to run those that have focus: true
+  config.filter_run focus: true
   
   def test_sign_in(user)
     controller.sign_in(user)
