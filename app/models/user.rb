@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
 
   has_secure_password 
 
-  attr_accessible :user_name, :password, :password_confirmation 
+  attr_accessible :user_name, :password, :password_confirmation, :normal_workstations
  
   has_many :workstations
   has_many :messages
