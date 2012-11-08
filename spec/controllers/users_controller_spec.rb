@@ -200,7 +200,6 @@ describe UsersController do
           put :update, id: @user, user: @fail_attr
           response.body.should have_selector("title", :content => "Edit user")
         end
-
       end
 
       describe "success" do
@@ -209,7 +208,8 @@ describe UsersController do
           @new_attr = { 
             user_name: "fzbar",
             password: "foobar",
-            password_confirmation: "foobar"
+            password_confirmation: "foobar",
+            normal_workstations: %w(CUSN CUSS)
           }
         end
 
@@ -217,6 +217,7 @@ describe UsersController do
           put :update, id: @user, user: @new_attr
           @user.reload
           @user.user_name.should == @new_attr[:user_name]
+          @user.normal_workstations.should == @new_attr[:normal_workstations]
         end
 
         it "should redirect to the user show page" do
