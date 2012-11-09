@@ -26,7 +26,12 @@ describe User do
   let(:glhs) { FactoryGirl.create(:workstation, name: "Glasshouse", abrev: "GLHS", job_type: "ops") }
 
   before(:each) do
-    @user = User.new(user_name: "smith", password: "foobar", password_confirmation: "foobar")
+    @user = User.new(
+      user_name: "smith",
+      password: "foobar",
+      password_confirmation: "foobar",
+      normal_workstations: %w(CUSN CUSS)
+    )
   end
 
   subject { @user }
@@ -34,6 +39,7 @@ describe User do
   it { should respond_to(:user_name) }
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
+  it { should respond_to(:normal_workstations) }
   it { should respond_to(:admin) }
   it { should respond_to(:authenticate) }
   it { should respond_to(:workstation_names) }
@@ -41,7 +47,10 @@ describe User do
   it { should be_valid }
 
   describe "with admin attribute set to true" do
-    before { subject.toggle!(:admin) }
+    before do 
+      subject.save
+      subject.toggle!(:admin)
+    end
 
     it { should be_admin }
   end
