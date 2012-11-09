@@ -30,10 +30,8 @@ describe UsersController do
     end
 
     it "gets the workstations" do
-      td_workstations = stub(Workstation).stub(description: "td")
-      ops_workstations = stub(Workstation).stub(description: "ops")
-      Workstation.should_receive(:of_type).with("td").and_return(td_workstations)
-      Workstation.should_receive(:of_type).with("ops").and_return(ops_workstations)
+      Workstation.should_receive(:of_type).with("td")
+      Workstation.should_receive(:of_type).with("ops")
       get :new
     end
   end
@@ -50,7 +48,7 @@ describe UsersController do
 
       it "should have the right title" do
         post :create, :user => @fail_attr
-        response.body.should have_selector("title", :content => "Sign Up")
+        response.body.should have_selector("title", :text => "Register")
       end
 
       it "should render the 'new' page" do
@@ -198,7 +196,7 @@ describe UsersController do
 
         it "should have the right title" do
           put :update, id: @user, user: @fail_attr
-          response.body.should have_selector("title", :content => "Edit user")
+          response.body.should have_selector("title", :text => "Edit user")
         end
       end
 
