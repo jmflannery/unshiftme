@@ -1,4 +1,4 @@
-<%= is_normal_workstation = @user.normal_workstations.include?(workstation.abrev) if @user %>
+<%= is_normal_workstation = @user.normal_workstations.include?(workstation.abrev) if @user and @user.normal_workstations %>
 <%= check_box_tag(workstation.abrev, "1", is_normal_workstation) %>
 <%= label_tag(workstation.abrev, workstation.description) %>
 

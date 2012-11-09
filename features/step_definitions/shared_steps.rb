@@ -66,8 +66,8 @@ When /^I tab away$/ do
   page.execute_script("$('body').focus()")
 end
 
-When /^I fill in "(.*?)" with "(.*?)"$/ do |arg1, arg2|
-  fill_in arg1, with: arg2
+When /^I fill in "(.*?)" with "(.*?)"$/ do |field, value|
+  fill_in field, with: value
 end
 
 When /^I press "(.*?)"$/ do |arg1|
