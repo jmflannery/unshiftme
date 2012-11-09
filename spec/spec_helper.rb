@@ -26,8 +26,10 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
 
   # Filter examples to run those that have focus: true
+  # or run all of the examples if none have focus
   config.filter_run focus: true
-  
+  config.run_all_when_everything_filtered = true 
+
   def test_sign_in(user)
     controller.sign_in(user)
   end
