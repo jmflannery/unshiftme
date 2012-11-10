@@ -1,7 +1,7 @@
 Then /^I should see user records for "(.*?)"$/ do |user_names|
-  users = user_name.split(",")
+  users = user_names.split(",")
   users.each do |user_name|
-    within("li.user_name") do
+    within("li.#{user_name}") do
       page.should have_selector("p", text: user_name)
     end
   end

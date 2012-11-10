@@ -167,6 +167,11 @@ describe UsersController do
       get :index
       assigns(:user).should == user
     end
+
+    it "find all of the users" do
+      User.should_receive(:all)
+      get :index
+    end
   end
   
   describe "GET 'edit'" do
