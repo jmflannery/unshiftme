@@ -21,6 +21,12 @@ class User < ActiveRecord::Base
 
   scope :online, lambda { where("status = true") }
 
+  before_validation :init_admin
+
+  def init_admin
+    update_attribute(:admin, User.count == 0)
+  end
+
   def to_param
     user_name
   end

@@ -46,13 +46,21 @@ describe User do
 
   it { should be_valid }
 
-  describe "with admin attribute set to true" do
+  describe "the first user to be created", focus: true do
+    before do subject.save end
+    it "is an admin by default" do
+      subject.should be_admin
+    end
+  end
+
+  describe "subsequently created users", focus: true do
     before do 
       subject.save
-      subject.toggle!(:admin)
+      @second_user = FactoryGirl.create(:user)
     end
-
-    it { should be_admin }
+    it "are non-admin by default" do
+      @second_user.should_not be_admin
+    end
   end
 
   describe "when user_name is not present" do
@@ -64,7 +72,6 @@ describe User do
     before do
       user_with_same_name = FactoryGirl.create(:user, user_name: subject.user_name) 
     end
-
     it { should_not be_valid }
   end
 
@@ -92,11 +99,11 @@ describe User do
     before { subject.save }
     let(:found_user) { User.find_by_user_name(subject.user_name) } 
 
-    describe "with valid password" do
+    context "with valid password" do
       it { should == found_user.authenticate(subject.password) }
     end
 
-    describe "with an invalid password" do
+    context "with an invalid password" do
       let(:user_with_invalid_password) { found_user.authenticate("invalid") }
       
       it { should_not == user_with_invalid_password } 
