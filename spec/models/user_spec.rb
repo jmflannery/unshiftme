@@ -46,14 +46,14 @@ describe User do
 
   it { should be_valid }
 
-  describe "the first user to be created", focus: true do
+  describe "the first user to be created" do
     before do subject.save end
     it "is an admin by default" do
       subject.should be_admin
     end
   end
 
-  describe "subsequently created users", focus: true do
+  describe "subsequently created users" do
     before do 
       subject.save
       @second_user = FactoryGirl.create(:user)
