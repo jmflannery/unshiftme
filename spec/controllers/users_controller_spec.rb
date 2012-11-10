@@ -156,6 +156,18 @@ describe UsersController do
       end
     end
   end
+
+  describe "GET index" do
+    
+    before(:each) do
+      test_sign_in(user)
+    end
+
+    it "assigns the current user to a variable" do
+      get :index
+      assigns(:user).should == user
+    end
+  end
   
   describe "GET 'edit'" do
 
@@ -277,6 +289,11 @@ describe UsersController do
 
       it "should deny access to 'update'" do
         put :update, id: user, user: {}
+        response.should redirect_to(signin_path)
+      end
+
+      it "should deny access to 'index'" do
+        get :index
         response.should redirect_to(signin_path)
       end
     end

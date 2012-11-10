@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   include WorkstationsHelper
 
-  before_filter :authenticate, only: [:show, :edit, :update]
+  before_filter :authenticate, only: [:show, :index, :edit, :update]
   before_filter :correct_user, only: [:show, :edit, :update]
   before_filter :merge_workstation_parameters, only: [:create, :update]
 
@@ -37,6 +37,10 @@ class UsersController < ApplicationController
         render json: user.as_json
       }
     end
+  end
+
+  def index
+    @user = current_user
   end
 
   def edit
