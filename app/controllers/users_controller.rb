@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   before_filter :authenticate, only: [:show, :edit, :update]
   before_filter :correct_user, only: [:show, :edit, :update]
-  before_filter :merge_workstation_parameters, only: [:update]
+  before_filter :merge_workstation_parameters, only: [:create, :update]
 
   def new
     @user = User.new
@@ -13,10 +13,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    normal_workstations = parse_params_for_workstations(params)
     @user = User.new(params[:user])
-    @user.normal_workstations = normal_workstations
-    @user.toggle(:admin) if User.count == 0
     if @user.save
       flash[:success] = "Registration was successful! Sign in now to access Messenger."
       redirect_to signin_path
