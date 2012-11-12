@@ -173,6 +173,11 @@ describe UsersController do
       User.should_receive(:all).and_return(users)
       get :index
     end
+
+    it "renders the index template" do
+      get :index
+      response.should render_template(:index)
+    end
   end
   
   describe "GET 'edit'" do
