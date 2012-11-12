@@ -168,8 +168,9 @@ describe UsersController do
       assigns(:user).should == user
     end
 
-    it "find all of the users" do
-      User.should_receive(:all)
+    it "finds all of the users" do
+      users = mock_model(User)
+      User.should_receive(:all).and_return(users)
       get :index
     end
   end
