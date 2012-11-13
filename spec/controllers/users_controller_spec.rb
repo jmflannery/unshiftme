@@ -284,7 +284,7 @@ describe UsersController do
     end
   end
 
-  describe "DELETE destoy", focus: true do
+  describe "DELETE destroy", focus: true do
     
     let!(:wrong_user) { FactoryGirl.create(:user) }
     let(:params) {{ id: wrong_user, format: :js }} 
@@ -293,6 +293,11 @@ describe UsersController do
     end
 
     context "before confirmation" do
+
+      it "sets confirmed to false" do
+        delete :destroy, params
+        assigns["confirmed"].should == false
+      end
       
       it "renders the users/destroy js template" do
         delete :destroy, params
@@ -304,6 +309,11 @@ describe UsersController do
 
       before(:each) { params.merge!(confirmed: true) }
 
+      it "sets confirmed to true" do
+        delete :destroy, params
+        assigns["confirmed"].should == true
+      end
+      
       it "finds and deletes the given user" do
         user = mock_model(User)
         User.should_receive(:find_by_user_name).and_return(user)
@@ -311,15 +321,9 @@ describe UsersController do
         delete :destroy, params
       end
 
-      it "renders the index tmemplate" do
+      it "renders the users/destroy js template" do
         delete :destroy, params
-        response.should render_template("index")
-      end
-
-      it "finds all of the users" do
-        users = mock_model(User)
-        User.should_receive(:all).and_return(users)
-        delete :destroy, params
+        response.should render_template("destroy")
       end
     end
   end

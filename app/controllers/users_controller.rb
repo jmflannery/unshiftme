@@ -71,10 +71,12 @@ class UsersController < ApplicationController
   def destroy
     @destroyed_user = User.find_by_user_name(params[:id])
 
-    #if confirmed?
+    if confirmed?
       @destroyed_user.destroy
-      @destroyed = true
-    #end
+      @confirmed = true
+    else
+      @confirmed = false
+    end
     respond_to do |format|
       format.js
     end
