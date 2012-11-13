@@ -85,7 +85,7 @@ class UsersController < ApplicationController
   private
 
   def confirmed?
-    params.has_key?("confirmed") and params["confirmed"] == true
+    params.has_key?("commit") and params["commit"] =~ /Yes delete user/
   end
 
   def correct_user

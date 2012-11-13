@@ -1,3 +1,8 @@
 <% if @confirmed %>
   $("<%= "li.#{@destroyed_user.user_name}" %>").remove()
+<% else %>
+  $("<%= "li.#{@destroyed_user.user_name}" %>").html("<%= escape_javascript(
+    render partial: "shared/confirmation",
+           locals: { user: @destroyed_user }) %>")
 <% end %>
+
