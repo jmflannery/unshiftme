@@ -8,7 +8,7 @@ end
 
 Then /^I should not see user records for "(.*?)"$/ do |user_names|
   user_names.split(",").each do |user_name|
-    page.should_not have_content(user_name)
+    page.should_not have_css("li.#{user_name}")
   end
 end
 
