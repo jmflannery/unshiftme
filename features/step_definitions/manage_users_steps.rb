@@ -32,7 +32,7 @@ When /^I click delete for User "(.*?)"$/ do |user_name|
   end
 end
 
-When /^I confirm that I want to delete "(.*?)"$/ do |arg1|
+When /^I confirm that I want to delete "(.*?)"$/ do |user_name|
   within("li.#{user_name}") do
     click_link "Yes"
   end
