@@ -68,7 +68,23 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    @destroyed_user = User.find_by_user_name(params[:id])
+
+    #if confirmed?
+      @destroyed_user.destroy
+      @destroyed = true
+    #end
+    respond_to do |format|
+      format.js
+    end
+  end
+
   private
+
+  def confirmed?
+    params.has_key?("confirmed") and params["confirmed"] == true
+  end
 
   def correct_user
     @user = User.find_by_user_name(params[:id])

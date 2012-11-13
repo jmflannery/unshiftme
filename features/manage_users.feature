@@ -21,4 +21,9 @@ Feature: Managing users
     And I should see user records for "bill,bob,jeff,mike,vernice"
     And I should see that user "bill" is an admin user
     And I should see that users "bob,jeff,mike,vernice" are not admin users
+
+    When I click delete for User "bob"
+    And I confirm that I want to delete "bob"
+    Then I should see "User bob has been deleted."
+    And I should not see user records for "bob"
     

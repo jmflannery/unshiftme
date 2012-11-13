@@ -1,7 +1,7 @@
 AmtrakMessenger::Application.routes.draw do
   root :to => "sessions#new"
 
-  resources :users, :only => [:new, :create, :show, :index, :edit, :update]
+  resources :users, :only => [:new, :create, :show, :index, :edit, :update, :destroy]
   resources :messages, :only => [:create, :index, :update]
   resources :recipients, :only => [:create, :index, :destroy]
   resources :attachments, :only => [:create]

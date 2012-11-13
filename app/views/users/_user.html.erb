@@ -1,5 +1,9 @@
 <li class=<%= user.user_name %>>
   <p><%= user.user_name %></p>
-  <%= label_tag user.user_name, "Admin" %>
-  <%= check_box_tag user.user_name, user.user_name, user.admin? %>
+  <%= form_for user do |f| %> 
+    <%= f.label :admin %>
+    <%= f.check_box :admin %>
+    <%= f.submit "Update" %>
+  <% end %>
+  <%= link_to 'Delete', user, :method => :delete, remote: true %>
 </li> 

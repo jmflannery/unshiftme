@@ -284,6 +284,46 @@ describe UsersController do
     end
   end
 
+  describe "DELETE destoy", focus: true do
+    
+    let!(:wrong_user) { FactoryGirl.create(:user) }
+    let(:params) {{ id: wrong_user, format: :js }} 
+    before(:each) do
+      test_sign_in(user)
+    end
+
+    context "before confirmation" do
+      
+      it "renders the users/destroy js template" do
+        delete :destroy, params
+        response.should render_template("destroy")
+      end
+    end
+
+    context "confirmation" do
+
+      before(:each) { params.merge!(confirmed: true) }
+
+      it "finds and deletes the given user" do
+        user = mock_model(User)
+        User.should_receive(:find_by_user_name).and_return(user)
+        user.should_receive(:destroy)
+        delete :destroy, params
+      end
+
+      it "renders the index tmemplate" do
+        delete :destroy, params
+        response.should render_template("index")
+      end
+
+      it "finds all of the users" do
+        users = mock_model(User)
+        User.should_receive(:all).and_return(users)
+        delete :destroy, params
+      end
+    end
+  end
+
   describe "authentication of show/edit/update pages" do
 
     describe "for non-signed-in users" do
