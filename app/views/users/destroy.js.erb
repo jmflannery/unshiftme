@@ -1,10 +1,9 @@
 <% if @confirmed %>
-  $("<%= "li.#{@destroyed_user.user_name}" %>").remove()
-  var message = "<%= @flash_message %>";
-  flash(message);
+  $("<%= "li.#{@destroyed_user.user_name}" %>").remove();
+  flash("<%= @flash_message %>");
 <% else %>
   $("<%= "li.#{@destroyed_user.user_name}" %>").html("<%= escape_javascript(
     render partial: "shared/confirmation",
-           locals: { user: @destroyed_user }) %>")
+           locals: { user: @destroyed_user }); %>");
 <% end %>
 
