@@ -34,7 +34,7 @@ end
 
 When /^I confirm that I want to delete "(.*?)"$/ do |user_name|
   within("li.#{user_name}") do
-    click_link "Yes"
+    click_button "Yes delete user #{user_name}"
   end
 end
 

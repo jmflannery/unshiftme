@@ -1,4 +1,5 @@
 @manage_users
+@javascript
 Feature: Managing users
   As as a GTM admin user
   I need to manage the application's user base
