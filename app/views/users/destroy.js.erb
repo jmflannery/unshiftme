@@ -1,5 +1,7 @@
 <% if @confirmed %>
   $("<%= "li.#{@destroyed_user.user_name}" %>").remove()
+  var message = "<%= @flash_message %>";
+  flash(message);
 <% else %>
   $("<%= "li.#{@destroyed_user.user_name}" %>").html("<%= escape_javascript(
     render partial: "shared/confirmation",

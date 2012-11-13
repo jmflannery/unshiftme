@@ -13,7 +13,9 @@
         <%= render 'layouts/header' %>
       </div>
 
-      <%= render partial: 'layouts/flash', locals: { flash: flash } %>
+      <div id='flash'>
+        <%= render partial: 'layouts/flash', locals: { flash: flash } %>
+      </div>
 
       <%= yield %>
 
