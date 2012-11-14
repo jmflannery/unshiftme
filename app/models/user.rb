@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true 
 
-  scope :online, lambda { where("status = true") }
+  IDLE_TIME = 15
 
   before_validation :init_admin
 
@@ -29,6 +29,11 @@ class User < ActiveRecord::Base
 
   def to_param
     user_name
+  end
+
+  def self.online
+    time_limit = Time.zone.now - IDLE_TIME.seconds
+    User.where("heartbeat >= ?", time_limit)
   end
 
   def self.all_user_names

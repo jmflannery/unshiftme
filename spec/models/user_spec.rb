@@ -180,23 +180,6 @@ describe User do
     end
   end
 
-  describe "scope" do
-    
-    describe "online" do
-      
-      before(:each) do
-        subject.save
-        @user1 = FactoryGirl.create(:user, status: true)
-      end
-      let(:online_users) { User.online }
-  
-      it "only returns online users" do
-        online_users.should include @user1
-        online_users.should_not include subject
-      end
-    end
-  end
-
   describe "method" do
     
     before(:each) do
@@ -473,6 +456,24 @@ describe User do
 
   describe "class method" do
 
+    describe "online" do
+      
+      let!(:online_user) { FactoryGirl.create(:user, user_name: "on", heartbeat: 14.seconds.ago) }
+      let!(:offline_user) { FactoryGirl.create(:user, user_name: "off1", heartbeat: 15.seconds.ago) }
+      let(:online_users) { User.online }
+
+      before(:each) do
+        subject.save
+        subject.do_heartbeat(10.seconds.ago)
+      end
+  
+      it "only returns online users" do
+        online_users.should include subject
+        online_users.should include online_user
+        online_users.should_not include offline_user
+      end
+    end
+
     describe "#sign_out_the_dead" do
       
       let(:user1) { FactoryGirl.create(:user, user_name: "Jimbo") }
@@ -484,11 +485,11 @@ describe User do
           subject.set_online
           @recipient = subject.add_recipient(cuss)
           subject.start_job(cusn.abrev)
-          subject.update_attribute(:heartbeat, 29.seconds.ago)
+          subject.update_attribute(:heartbeat, 14.seconds.ago)
           user1.set_online
           user1.add_recipient(cusn)
           user1.start_job(aml.abrev)
-          user1.update_attribute(:heartbeat, 35.seconds.ago)
+          user1.update_attribute(:heartbeat, 16.seconds.ago)
           User.sign_out_the_dead
           subject.reload
           user1.reload
