@@ -46,31 +46,6 @@ $(function() {
 });
 
 ////////////////////////////////////////
-// heartbeat
-////////////////////////////////////////
-
-//$(function() {
-//  if ($('#content').length > 0) {
-//    setTimeout(heartbeat, 20000);
-//  }
-//});
-
-var heartbeat = function() {
-  // store the current user's name
-  user_id = $("#content").attr("class");
-  
-    $.ajax( {
-      type: "PUT",
-      url: "/users/" + user_id + ".js",
-      success: function(response) {
-        response;
-      }
-    });
-    
-    setTimeout(heartbeat, 20000);
-};
-
-////////////////////////////////////////
 // Calculate Height
 ////////////////////////////////////////
 
