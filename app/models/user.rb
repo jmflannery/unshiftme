@@ -83,11 +83,7 @@ class User < ActiveRecord::Base
     recipient
   end
 
-  def do_heartbeat
-    touch :heartbeat
-  end
-
-  def set_heartbeat(time)
+  def do_heartbeat(time)
     update_attribute(:heartbeat, time)
   end
 

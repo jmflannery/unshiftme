@@ -62,8 +62,9 @@ class UsersController < ApplicationController
         end
       }
       format.js {
-        logger.debug "heartbeat --> <#{@user.user_name} ##{@user.id}>"
-        @user.do_heartbeat
+        time = Time.zone.now
+        logger.debug "heartbeat --> <#{@user.user_name} ##{@user.id} #{time}>"
+        @user.do_heartbeat(time)
       }
     end
   end
