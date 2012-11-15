@@ -284,10 +284,10 @@ describe UsersController do
     end
   end
 
-  describe "DELETE destroy", focus: true do
+  describe "DELETE destroy" do
     
-    let!(:wrong_user) { FactoryGirl.create(:user) }
-    let(:params) {{ id: wrong_user, format: :js }} 
+    let!(:remove_user) { FactoryGirl.create(:user) }
+    let(:params) {{ id: remove_user, format: :js }} 
     before(:each) do
       test_sign_in(user)
     end
@@ -296,7 +296,7 @@ describe UsersController do
 
       it "sets confirmed to false" do
         delete :destroy, params
-        assigns["confirmed"].should == false
+        controller.should_not be_confirmed
       end
       
       it "renders the users/destroy js template" do
@@ -307,11 +307,11 @@ describe UsersController do
 
     context "confirmation" do
 
-      before(:each) { params.merge!(confirmed: true) }
+      before(:each) { params.merge!(commit: "Yes delete user #{remove_user}") }
 
       it "sets confirmed to true" do
         delete :destroy, params
-        assigns["confirmed"].should == true
+        controller.should be_confirmed
       end
       
       it "finds and deletes the given user" do
