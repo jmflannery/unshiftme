@@ -36,7 +36,6 @@ RSpec.configure do |config|
 
   def integration_test_sign_in(user)   
     post signin_path, :name => user.user_name, :password => user.password
-    user.status = true
     user.save(:validate => false)
     user
   end

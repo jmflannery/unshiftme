@@ -5,6 +5,5 @@ FactoryGirl.define do
     password_confirmation "secret"
     normal_workstations []
     admin false
-    status false
   end
 end

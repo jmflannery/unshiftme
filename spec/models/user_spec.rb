@@ -9,7 +9,6 @@
 #  created_at      :datetime
 #  updated_at      :datetime
 #  password_digest :string(255)
-#  status          :boolean
 #  recipient_id    :integer
 #  heartbeat       :datetime
 #
@@ -381,14 +380,8 @@ describe User do
         subject.set_online
       end
 
-      it "sets the user's online status to true" do
-        subject.reload
-        subject.status.should be_true
-      end
-
       it "sets the user's heartbeat time to the current time" do
-        subject.reload
-        subject.heartbeat.should > @time
+        subject.reload.heartbeat.should > @time
       end
     end
 
@@ -399,10 +392,6 @@ describe User do
         subject.start_job(cusn.abrev)
         subject.add_recipient(cuss)
         subject.set_offline
-      end
-
-      it "sets the user's online status to false" do
-        subject.status.should be_false
       end
 
       it "signs the user out of all workstations" do
@@ -471,44 +460,6 @@ describe User do
         online_users.should include subject
         online_users.should include online_user
         online_users.should_not include offline_user
-      end
-    end
-
-    describe "#sign_out_the_dead" do
-      
-      let(:user1) { FactoryGirl.create(:user, user_name: "Jimbo") }
-
-      context "for users who have not had a heartbeat in over 30 seconds" do
-
-        before(:each) do
-          subject.save
-          subject.set_online
-          @recipient = subject.add_recipient(cuss)
-          subject.start_job(cusn.abrev)
-          subject.update_attribute(:heartbeat, 14.seconds.ago)
-          user1.set_online
-          user1.add_recipient(cusn)
-          user1.start_job(aml.abrev)
-          user1.update_attribute(:heartbeat, 16.seconds.ago)
-          User.sign_out_the_dead
-          subject.reload
-          user1.reload
-        end
-
-        it "sets online status to false" do
-          subject.status.should be_true
-          user1.status.should_not be_true
-        end
-
-        it "signs the user out of all workstations" do
-          user1.workstation_ids.should == []
-          subject.workstation_ids.should == [cusn.id]
-        end
-
-        it "destroys all of the user's recipients" do
-          user1.recipients.should == []
-          subject.recipients.should == [@recipient]
-        end
       end
     end
 

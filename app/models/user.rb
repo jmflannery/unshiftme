@@ -40,18 +40,6 @@ class User < ActiveRecord::Base
     User.all.map { |user| user.user_name } 
   end
 
-  def self.sign_out_the_dead
-    logger.debug "Executing: User#sign_out_the_dead"
-    online.each do |user|
-      delta = Time.now - user.heartbeat if user.heartbeat
-      if delta and delta > 30
-        user.set_offline
-        logger.debug "User: <#{user.user_name} ##{user.id}> has not had a heartbeat in #{delta} seconds since #{user.heartbeat} and has been set to 'offline'"
-      end
-    end
-    logger.debug "Done executing: User#sign_out_the_dead"
-  end
-
   def as_json
     json = {}
     json[:id] = id
@@ -93,12 +81,10 @@ class User < ActiveRecord::Base
   end
 
   def set_online
-    update_attribute(:status, true)
-    update_attribute(:heartbeat, Time.now)
+    do_heartbeat(Time.now)
   end
 
   def set_offline
-    update_attribute(:status, false)
     leave_workstation
     delete_all_recipients
   end
@@ -107,7 +93,7 @@ class User < ActiveRecord::Base
     stale_recipients = []
     self.recipients.each do |recipient|
       r_user = User.find_by_id(Workstation.find(recipient.workstation_id).user_id)
-      if r_user.status == false || (r_user.heartbeat < Time.now - 4) 
+      if r_user.heartbeat < Time.now - IDLE_TIME
         stale_recipients << recipient 
         r_user.set_offline
       end
