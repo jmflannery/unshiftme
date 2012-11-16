@@ -2,6 +2,7 @@ Then /^I should see user records for "(.*?)"$/ do |user_names|
   user_names.split(",").each do |user_name|
     within("li.#{user_name}") do
       page.should have_content(user_name)
+      page.should have_css("label", text: "Admin")
     end
   end
 end

@@ -96,6 +96,14 @@ When /^I select date "(.*?)" for "(.*?)"$/ do |time_str, field|
 end
 
 Then /^I should see "(.*?)"$/ do |text|
-  page.should have_content(text)
+  page.should have_content text
+end
+
+Then /^I should see a button with text "(.*?)"$/ do |text|
+  page.should have_button text
+end
+
+Then /^I should not see a button with text "(.*?)"$/ do |text|
+  page.should_not have_button text
 end
 
