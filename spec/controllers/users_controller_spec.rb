@@ -296,7 +296,7 @@ describe UsersController do
 
       it "sets confirmed to false" do
         delete :destroy, params
-        controller.should_not be_confirmed
+        controller.should_not be_deletion_confirmed
       end
       
       it "renders the users/destroy js template" do
@@ -311,7 +311,7 @@ describe UsersController do
 
       it "sets confirmed to true" do
         delete :destroy, params
-        controller.should be_confirmed
+        controller.should be_deletion_confirmed
       end
       
       it "finds and deletes the given user" do
