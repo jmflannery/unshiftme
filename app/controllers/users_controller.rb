@@ -75,10 +75,7 @@ class UsersController < ApplicationController
 
     if deletion_confirmed?
       @destroyed_user.destroy
-      #@confirmed = true
       @flash_message = "User #{@destroyed_user.user_name} has been deleted."
-    else
-      @confirmed = false
     end
     respond_to do |format|
       format.js

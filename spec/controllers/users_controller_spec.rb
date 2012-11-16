@@ -305,11 +305,26 @@ describe UsersController do
       end
     end
 
+    context "cancellation" do
+
+      before(:each) { params.merge!(commit: "Cancel") }
+
+      it "sets deletion_cancelled to true" do
+        delete :destroy, params
+        controller.should be_deletion_cancelled
+      end
+      
+      it "renders the users/destroy js template" do
+        delete :destroy, params
+        response.should render_template("destroy")
+      end
+    end
+
     context "confirmation" do
 
       before(:each) { params.merge!(commit: "Yes delete user #{remove_user}") }
 
-      it "sets confirmed to true" do
+      it "sets deletion_confirmed to true" do
         delete :destroy, params
         controller.should be_deletion_confirmed
       end

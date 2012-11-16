@@ -1,6 +1,8 @@
 <% if deletion_confirmed? %>
   $("<%= "li.#{@destroyed_user.user_name}" %>").remove();
   flash("<%= @flash_message %>");
+<% elsif deletion_cancelled? %>
+  $("<%= "li.#{@destroyed_user.user_name}" %>").replaceWith("<%= escape_javascript render @destroyed_user %>");
 <% else %>
   $("<%= "li.#{@destroyed_user.user_name}" %>").html("<%= escape_javascript(
     render partial: "shared/confirmation",
