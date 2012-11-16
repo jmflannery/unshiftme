@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  include UsersHelper
   include WorkstationsHelper
 
   before_filter :authenticate, only: [:show, :index, :edit, :update]
@@ -72,9 +73,9 @@ class UsersController < ApplicationController
   def destroy
     @destroyed_user = User.find_by_user_name(params[:id])
 
-    if confirmed?
+    if deletion_confirmed?
       @destroyed_user.destroy
-      @confirmed = true
+      #@confirmed = true
       @flash_message = "User #{@destroyed_user.user_name} has been deleted."
     else
       @confirmed = false
@@ -85,10 +86,6 @@ class UsersController < ApplicationController
   end
 
   private
-
-  def confirmed?
-    params.has_key?("commit") and params["commit"] =~ /Yes delete user/
-  end
 
   def correct_user
     @user = User.find_by_user_name(params[:id])

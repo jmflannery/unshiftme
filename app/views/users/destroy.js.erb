@@ -1,4 +1,4 @@
-<% if @confirmed %>
+<% if deletion_confirmed? %>
   $("<%= "li.#{@destroyed_user.user_name}" %>").remove();
   flash("<%= @flash_message %>");
 <% else %>
