@@ -14,12 +14,12 @@ var heartbeat = function() {
   
   $.ajax( {
     type: "PUT",
-    url: "/users/" + user_name + ".js",
+    url: "/users/" + user_name + "/heartbeat.js",
     success: function(response) {
       response;
     }
   });
   
-  setTimeout(heartbeat, 20000);
+  setTimeout(heartbeat, 10000);
 };
 
