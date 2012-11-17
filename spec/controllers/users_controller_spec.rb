@@ -351,7 +351,7 @@ describe UsersController do
     end
   end
 
-  describe "authentication of show/edit/update pages" do
+  describe "authentication of show/index/edit/update/destroy pages" do
 
     describe "for non-signed-in users" do
 
@@ -372,6 +372,11 @@ describe UsersController do
 
       it "should deny access to 'index'" do
         get :index
+        response.should redirect_to(signin_path)
+      end
+
+      it "should deny access to 'destroy'" do
+        get :destroy, id: user
         response.should redirect_to(signin_path)
       end
     end
