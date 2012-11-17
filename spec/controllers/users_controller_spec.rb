@@ -262,21 +262,6 @@ describe UsersController do
         end
       end
     end
-    
-    context "format js" do
-  
-      it "returns http success" do
-        xhr :put, :update, id: user, format: :js, remote: true
-        response.should be_success
-      end
-
-      it "updates the authenticated user's heartbeat timestamp" do
-        before_request = Time.now
-        xhr :put, :update, id: user, format: :js, remote: true
-        user.reload
-        user.heartbeat.should > before_request
-      end
-    end
   end
 
   describe "DELETE destroy" do
@@ -343,11 +328,17 @@ describe UsersController do
     before(:each) do
       test_sign_in(user)
     end
-    let(:params) {{ id: user.user_name, format: :js }}
+    let(:params) {{ id: user.user_name, format: :js, remote: true }}
 
     it "returns http success" do
       post :heartbeat, params
       response.should be_success
+    end
+
+    it "updates the authenticated user's heartbeat timestamp" do
+      before_request = Time.zone.now
+      post :heartbeat, params
+      user.reload.heartbeat.should > before_request
     end
   end
 

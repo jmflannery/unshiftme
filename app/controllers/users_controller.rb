@@ -51,21 +51,12 @@ class UsersController < ApplicationController
   end
 
   def update
-    respond_to do |format|
-      format.html {
-        if @user.update_attributes(params[:user])
-          flash[:success] = "Profile updated!"
-          redirect_to @user
-        else
-          @title = "Edit user"
-          render 'edit'
-        end
-      }
-      format.js {
-        time = Time.zone.now
-        logger.debug "heartbeat --> <#{@user.user_name} ##{@user.id} #{time}>"
-        @user.do_heartbeat(time)
-      }
+    if @user.update_attributes(params[:user])
+      flash[:success] = "Profile updated!"
+      redirect_to @user
+    else
+      @title = "Edit user"
+      render 'edit'
     end
   end
 
@@ -82,6 +73,9 @@ class UsersController < ApplicationController
   end
 
   def heartbeat
+    time = Time.zone.now
+    logger.debug "heartbeat --> <#{current_user.user_name} ##{current_user.id} #{time}>"
+    current_user.do_heartbeat(time)
   end
 
   private
