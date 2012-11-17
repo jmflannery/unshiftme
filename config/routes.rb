@@ -3,7 +3,7 @@ AmtrakMessenger::Application.routes.draw do
 
   resources :users do
     member do
-      post :heartbeat
+      put :heartbeat
     end
   end
   resources :messages, :only => [:create, :index, :update]

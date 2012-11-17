@@ -323,7 +323,7 @@ describe UsersController do
     end
   end
 
-  describe "POST heartbeat" do
+  describe "PUT heartbeat" do
     
     before(:each) do
       test_sign_in(user)
@@ -331,13 +331,13 @@ describe UsersController do
     let(:params) {{ id: user.user_name, format: :js, remote: true }}
 
     it "returns http success" do
-      post :heartbeat, params
+      put :heartbeat, params
       response.should be_success
     end
 
     it "updates the authenticated user's heartbeat timestamp" do
       before_request = Time.zone.now
-      post :heartbeat, params
+      put :heartbeat, params
       user.reload.heartbeat.should > before_request
     end
   end
