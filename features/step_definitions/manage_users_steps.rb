@@ -19,6 +19,14 @@ Then /^I should see that user "(.*?)" is an admin user$/ do |user_name|
   end
 end
 
+Then /^I should see that users "(.*?)" are admin users$/ do |user_names|
+  user_names.split(",").each do |user_name|
+    within("li.#{user_name}") do
+      find("input#user_admin").should be_checked
+    end
+  end
+end
+
 Then /^I should see that users "(.*?)" are not admin users$/ do |user_names|
   user_names.split(",").each do |user_name|
     within("li.#{user_name}") do
@@ -39,3 +47,14 @@ When /^I confirm that I want to delete "(.*?)"$/ do |user_name|
   end
 end
 
+When /^I check admin for user "(.*?)"$/ do |user_name|
+  within("li.#{user_name}") do
+    check "Admin"
+  end
+end
+
+When /^I press Update for user "(.*?)"$/ do |user_name|
+  within("li.#{user_name}") do
+    click_button "Update"
+  end
+end

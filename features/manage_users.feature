@@ -35,4 +35,10 @@ Feature: Managing users
     And I press "Yes delete user bob"
     Then I should see "User bob has been deleted."
     And I should not see user records for "bob"
-    
+    And I should see user records for "bill,jeff,mike,vernice"
+
+    When I check admin for user "jeff"
+    And I press Update for user "jeff"
+    Then I should see "User jeff updated successfully"
+    And I should see that users "bill,jeff" are admin users
+
