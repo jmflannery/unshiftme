@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   include UsersHelper
   include WorkstationsHelper
 
-  before_filter :authenticate, only: [:show, :index, :edit, :update]
+  before_filter :authenticate, only: [:show, :index, :edit, :update, :destroy]
   before_filter :correct_user, only: [:show, :edit, :update]
   before_filter :merge_workstation_parameters, only: [:create, :update]
 
@@ -41,7 +41,6 @@ class UsersController < ApplicationController
   end
 
   def index
-    @user = current_user
     @users = User.all
   end
 

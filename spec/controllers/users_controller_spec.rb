@@ -163,11 +163,6 @@ describe UsersController do
       test_sign_in(user)
     end
 
-    it "assigns the current user to a variable" do
-      get :index
-      assigns(:user).should == user
-    end
-
     it "finds all of the users" do
       users = mock_model(User)
       User.should_receive(:all).and_return(users)
