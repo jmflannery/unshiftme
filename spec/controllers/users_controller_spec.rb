@@ -338,6 +338,19 @@ describe UsersController do
     end
   end
 
+  describe "POST heartbeat" do
+    
+    before(:each) do
+      test_sign_in(user)
+    end
+    let(:params) {{ id: user.user_name, format: :js }}
+
+    it "returns http success" do
+      post :heartbeat, params
+      response.should be_success
+    end
+  end
+
   describe "authentication of show/edit/update pages" do
 
     describe "for non-signed-in users" do

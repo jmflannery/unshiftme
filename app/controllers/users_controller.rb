@@ -81,6 +81,9 @@ class UsersController < ApplicationController
     end
   end
 
+  def heartbeat
+  end
+
   private
 
   def correct_user
