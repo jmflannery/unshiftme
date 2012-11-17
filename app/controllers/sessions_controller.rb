@@ -46,14 +46,4 @@ class SessionsController < ApplicationController
     sign_out
     redirect_to root_path
   end
-   
-  def update
-    respond_to do |format|
-      format.js {
-      }
-    end
-  end
-
-  private
-
 end
