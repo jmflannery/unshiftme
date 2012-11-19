@@ -78,11 +78,20 @@ class UsersController < ApplicationController
     current_user.do_heartbeat(time)
   end
 
+  def promote
+  end
+
   private
 
   def correct_user
+    logger.debug("hoolla -> #{params.inspect}")
     @user = User.find_by_user_name(params[:id])
-    redirect_to root_path unless current_user?(@user)
+    if current_user.admin? and updating_user_admin_status?
+      puts "what the?"
+    else
+      puts "who da fuck?"
+      redirect_to root_path unless current_user?(@user)
+    end
   end
 
   def merge_workstation_parameters

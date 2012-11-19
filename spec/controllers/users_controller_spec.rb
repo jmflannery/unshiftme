@@ -206,7 +206,7 @@ describe UsersController do
       test_sign_in(user)
     end
 
-    context "format html" do
+    context "for a user updating it's own profile" do
 
       describe "failure" do
 
@@ -262,12 +262,31 @@ describe UsersController do
         end
       end
     end
+
+    context "updating another user's admin status", focus: true do
+
+      let(:other_user) { FactoryGirl.create(:user, user_name: "frank", admin: false) }
+
+      context "by an admin user" do
+
+        before { user.update_attribute(:admin, true) }
+        let(:params) {{ 
+          "id" => other_user.user_name,
+          "user" => { "admin" => "1" },
+        }}
+
+        it "updates the user's admin status" do
+          put :update, params
+          other_user.reload.should be_admin
+        end
+      end
+    end
   end
 
   describe "DELETE destroy" do
     
     let!(:remove_user) { FactoryGirl.create(:user) }
-    let(:params) {{ id: remove_user, format: :js }} 
+    let(:params) {{ id: remove_user, format: :js }}
     before(:each) do
       test_sign_in(user)
     end
@@ -339,6 +358,20 @@ describe UsersController do
       before_request = Time.zone.now
       put :heartbeat, params
       user.reload.heartbeat.should > before_request
+    end
+  end
+
+  describe "PUT promote", focus: true do
+    
+    let(:new_admin) { FactoryGirl.create(:user, user_name: "sam", admin: false) }
+    let(:params) {{ id: new_admin.user_name, format: :js, remote: true }}
+    before(:each) do
+      test_sign_in(user)
+    end
+
+    it "returns http success" do
+      put :promote, params
+      response.should be_success
     end
   end
 

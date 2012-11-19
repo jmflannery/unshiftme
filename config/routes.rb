@@ -5,6 +5,9 @@ AmtrakMessenger::Application.routes.draw do
     member do
       put :heartbeat
     end
+    member do
+      put :promote
+    end
   end
   resources :messages, :only => [:create, :index, :update]
   resources :recipients, :only => [:create, :index, :destroy]
