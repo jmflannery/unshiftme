@@ -373,6 +373,46 @@ describe UsersController do
       put :promote, params
       response.should be_success
     end
+
+    context "when promoting the user to admin" do
+
+      context "from a non admin user" do
+
+        it "does not update the user to admin" do
+          put :promote, params
+          new_admin.reload.should_not be_admin
+        end
+      end
+
+      context "from an admin user" do
+
+        it "does update the user to admin" do
+          put :promote, params
+          new_admin.reload.should be_admin
+        end
+      end
+    end
+
+    context "when demoting the user to non-admin" do
+
+      before { new_admin.update_attribute(:admin, true) }
+
+      context "from a non admin user" do
+
+        it "does not update the user to non-admin" do
+          put :promote, params
+          new_admin.reload.should be_admin
+        end
+      end
+
+      context "from an admin user" do
+
+        it "does update the user to non-admin" do
+          put :promote, params
+          new_admin.reload.should_not be_admin
+        end
+      end
+    end
   end
 
   describe "authentication of show/index/edit/update/destroy pages" do
