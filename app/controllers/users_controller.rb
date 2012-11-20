@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   include UsersHelper
   include WorkstationsHelper
 
-  before_filter :authenticate, only: [:show, :index, :edit, :update, :destroy]
+  before_filter :authenticate, only: [:show, :index, :edit, :update, :destroy, :heartbeat, :promote]
   before_filter :correct_user, only: [:show, :edit, :update]
   before_filter :merge_workstation_parameters, only: [:create, :update]
 
@@ -79,6 +79,14 @@ class UsersController < ApplicationController
   end
 
   def promote
+    @user = User.find_by_user_name(params[:id])
+    if @user and current_user.admin?
+      if promoting_user_admin_status?
+        @user.update_attribute(:admin, true)
+      elsif demoting_user_admin_status?
+        @user.update_attribute(:admin, false)
+      end
+    end
   end
 
   private
@@ -87,9 +95,7 @@ class UsersController < ApplicationController
     logger.debug("hoolla -> #{params.inspect}")
     @user = User.find_by_user_name(params[:id])
     if current_user.admin? and updating_user_admin_status?
-      puts "what the?"
     else
-      puts "who da fuck?"
       redirect_to root_path unless current_user?(@user)
     end
   end

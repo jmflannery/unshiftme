@@ -263,7 +263,7 @@ describe UsersController do
       end
     end
 
-    context "updating another user's admin status", focus: true do
+    context "updating another user's admin status" do
 
       let(:other_user) { FactoryGirl.create(:user, user_name: "frank", admin: false) }
 
@@ -361,10 +361,10 @@ describe UsersController do
     end
   end
 
-  describe "PUT promote", focus: true do
+  describe "PUT promote" do
     
     let(:new_admin) { FactoryGirl.create(:user, user_name: "sam", admin: false) }
-    let(:params) {{ id: new_admin.user_name, format: :js, remote: true }}
+    let(:params) {{ "id" => new_admin.user_name, "user" => {}, format: :js, remote: true }}
     before(:each) do
       test_sign_in(user)
     end
@@ -376,7 +376,11 @@ describe UsersController do
 
     context "when promoting the user to admin" do
 
+      before { params["user"].merge!("admin" => "1") }
+
       context "from a non admin user" do
+
+        before { user.update_attribute(:admin, false) }
 
         it "does not update the user to admin" do
           put :promote, params
@@ -385,6 +389,8 @@ describe UsersController do
       end
 
       context "from an admin user" do
+
+        before { user.update_attribute(:admin, true) }
 
         it "does update the user to admin" do
           put :promote, params
@@ -395,9 +401,14 @@ describe UsersController do
 
     context "when demoting the user to non-admin" do
 
-      before { new_admin.update_attribute(:admin, true) }
+      before {
+        new_admin.update_attribute(:admin, true)
+        params["user"].merge!("admin" => "0")
+      }
 
       context "from a non admin user" do
+        
+        before { user.update_attribute(:admin, false) }
 
         it "does not update the user to non-admin" do
           put :promote, params
@@ -406,6 +417,8 @@ describe UsersController do
       end
 
       context "from an admin user" do
+
+        before { user.update_attribute(:admin, true) }
 
         it "does update the user to non-admin" do
           put :promote, params
