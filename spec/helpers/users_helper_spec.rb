@@ -3,23 +3,44 @@ require 'spec_helper'
 describe "UsersHelper" do
   include UsersHelper
 
-  describe "#updating_user_admin_status?" do
+  describe "#promoting_user_admin_status?" do
 
-    context "if params hash contains user[:admin]" do
+    context "if params hash contains user[:admin] = 1" do
 
       let(:params) {{ "user" => { "admin" => "1" } }}
 
       it "returns true"  do
-        updating_user_admin_status?.should be_true
+        promoting_user_admin_status?.should be_true
       end
     end
 
-    context "if params hash does not contain user[:admin]" do
+    context "if params hash does not contain user[:admin] = 1" do
 
-      let(:params) {{ "user" => { "user_name" => "bill", "password" => "secret", "password_confirmation" => "secret" } }}
+      let(:params) {{ "user" => { "admin" => "0" } }}
 
       it "returns false"  do
-        updating_user_admin_status?.should be_false
+        promoting_user_admin_status?.should be_false
+      end
+    end
+  end
+
+  describe "#demoting_user_admin_status?" do
+
+    context "if params hash contains user[:admin] = 0" do
+
+      let(:params) {{ "user" => { "admin" => "0" } }}
+
+      it "returns true"  do
+        demoting_user_admin_status?.should be_true
+      end
+    end
+
+    context "if params hash does not contain user[:admin] = 0" do
+
+      let(:params) {{ "user" => { "admin" => "1" } }}
+
+      it "returns false"  do
+        demoting_user_admin_status?.should be_false
       end
     end
   end

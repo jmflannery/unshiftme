@@ -1,7 +1,11 @@
 module UsersHelper
   
-  def updating_user_admin_status?
-    params.has_key?("user") and params["user"].has_key?("admin")
+  def promoting_user_admin_status?
+    params["user"]["admin"] and params["user"]["admin"] == "1"
+  end
+
+  def demoting_user_admin_status?
+    params["user"]["admin"] and params["user"]["admin"] == "0"
   end
 
   def deletion_confirmed?
