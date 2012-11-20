@@ -206,79 +206,57 @@ describe UsersController do
       test_sign_in(user)
     end
 
-    context "for a user updating it's own profile" do
+    describe "failure" do
 
-      describe "failure" do
-
-        it "should render the 'edit' page" do
-          put :update, id: user, user: fail_attr
-          response.should render_template('edit')
-        end
-
-        it "should have the right title" do
-          put :update, id: user, user: fail_attr
-          response.body.should have_selector("title", :text => "Edit user")
-        end
+      it "should render the 'edit' page" do
+        put :update, id: user, user: fail_attr
+        response.should render_template('edit')
       end
 
-      describe "success" do
-
-        let(:params) {{ 
-          "id" => user.user_name,
-          "user" => success_attr,
-          "CUSN" => "1",
-          "AML" => "1",
-          "controller" => "users",
-          "action" => "update" 
-        }}
-        let(:normal_workstations) { %w( CUSN AML) }
-
-        before(:each) do
-          FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN")
-          FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML")
-        end
-
-        it "merges the workstation params into the params[:users] hash" do
-          controller.should_receive(:merge_workstation_params).with(params)
-          put :update, params
-        end
-
-        it "should change the user's attributes" do
-          put :update, params
-          user.reload
-          user.user_name.should == success_attr["user_name"]
-          user.normal_workstations.should == normal_workstations
-        end
-
-        it "should redirect to the user show page" do
-          put :update, params
-          user.reload
-          response.should redirect_to(user_path(user))
-        end
-
-        it "should have a flash message" do
-          put :update, params
-          flash[:success].should =~ /updated/
-        end
+      it "should have the right title" do
+        put :update, id: user, user: fail_attr
+        response.body.should have_selector("title", :text => "Edit user")
       end
     end
 
-    context "updating another user's admin status" do
+    describe "success" do
 
-      let(:other_user) { FactoryGirl.create(:user, user_name: "frank", admin: false) }
+      let(:params) {{ 
+        "id" => user.user_name,
+        "user" => success_attr,
+        "CUSN" => "1",
+        "AML" => "1",
+        "controller" => "users",
+        "action" => "update" 
+      }}
+      let(:normal_workstations) { %w( CUSN AML) }
 
-      context "by an admin user" do
+      before(:each) do
+        FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN")
+        FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML")
+      end
 
-        before { user.update_attribute(:admin, true) }
-        let(:params) {{ 
-          "id" => other_user.user_name,
-          "user" => { "admin" => "1" },
-        }}
+      it "merges the workstation params into the params[:users] hash" do
+        controller.should_receive(:merge_workstation_params).with(params)
+        put :update, params
+      end
 
-        it "updates the user's admin status" do
-          put :update, params
-          other_user.reload.should be_admin
-        end
+      it "should change the user's attributes" do
+        put :update, params
+        user.reload
+        user.user_name.should == success_attr["user_name"]
+        user.normal_workstations.should == normal_workstations
+      end
+
+      it "should redirect to the user show page" do
+        put :update, params
+        user.reload
+        response.should redirect_to(user_path(user))
+      end
+
+      it "should have a flash message" do
+        put :update, params
+        flash[:success].should =~ /updated/
       end
     end
   end

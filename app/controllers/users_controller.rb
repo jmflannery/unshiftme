@@ -92,12 +92,8 @@ class UsersController < ApplicationController
   private
 
   def correct_user
-    logger.debug("hoolla -> #{params.inspect}")
     @user = User.find_by_user_name(params[:id])
-    if current_user.admin? and updating_user_admin_status?
-    else
-      redirect_to root_path unless current_user?(@user)
-    end
+    redirect_to root_path unless current_user?(@user)
   end
 
   def merge_workstation_parameters
