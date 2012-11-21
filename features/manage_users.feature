@@ -39,6 +39,12 @@ Feature: Managing users
 
     When I check admin for user "jeff"
     And I press Update for user "jeff"
-    Then I should see "User jeff updated successfully"
+    Then I should see "User jeff updated to administrator"
     And I should see that users "bill,jeff" are admin users
+
+    When I uncheck admin for user "jeff"
+    And I press Update for user "jeff"
+    Then I should see "User jeff updated to non-administrator"
+    And I should see that user "bill" is an admin user
+    And I should see that users "jeff,mike,vernice" are not admin users
 

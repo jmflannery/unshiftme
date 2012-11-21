@@ -53,6 +53,12 @@ When /^I check admin for user "(.*?)"$/ do |user_name|
   end
 end
 
+When /^I uncheck admin for user "(.*?)"$/ do |user_name|
+  within("li.#{user_name}") do
+    uncheck "Admin"
+  end
+end
+
 When /^I press Update for user "(.*?)"$/ do |user_name|
   within("li.#{user_name}") do
     click_button "Update"
