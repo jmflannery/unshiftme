@@ -374,6 +374,11 @@ describe UsersController do
           put :promote, params
           new_admin.reload.should be_admin
         end
+
+        it "sets a flash instance variable" do
+          put :promote, params
+          assigns[:flash].should == "User #{new_admin.user_name} updated to administrator"
+        end
       end
     end
 
@@ -401,6 +406,11 @@ describe UsersController do
         it "does update the user to non-admin" do
           put :promote, params
           new_admin.reload.should_not be_admin
+        end
+
+        it "sets a flash instance variable" do
+          put :promote, params
+          assigns[:flash].should == "User #{new_admin.user_name} updated to non-administrator"
         end
       end
     end

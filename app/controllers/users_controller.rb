@@ -83,8 +83,10 @@ class UsersController < ApplicationController
     if @user and current_user.admin?
       if promoting_user_admin_status?
         @user.update_attribute(:admin, true)
+        @flash = "User #{@user.user_name} updated to administrator"
       elsif demoting_user_admin_status?
         @user.update_attribute(:admin, false)
+        @flash = "User #{@user.user_name} updated to non-administrator"
       end
     end
   end
