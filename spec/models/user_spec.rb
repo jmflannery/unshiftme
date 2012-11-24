@@ -94,6 +94,11 @@ describe User do
     it { should_not be_valid }
   end 
 
+  describe "with a password that's too long" do
+    before { subject.password = subject.password_confirmation = "a" * 41 }
+    it { should_not be_valid }
+  end 
+
   describe "return value of authenticate method" do
     before { subject.save }
     let(:found_user) { User.find_by_user_name(subject.user_name) } 
