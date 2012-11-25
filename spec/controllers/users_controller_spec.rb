@@ -416,6 +416,24 @@ describe UsersController do
     end
   end
 
+  describe "GET edit_password", focus: true do
+
+    before(:each) do
+      test_sign_in(user)
+    end
+    let(:params) {{ id: user, format: :js }}
+
+    it "should be successful" do
+      get :edit_password, params
+      response.should be_success
+    end
+
+    it "should render the edit_password template" do
+      get :edit_password, params
+      response.should render_template :edit_password
+    end
+  end
+
   describe "authentication of show/index/edit/update/destroy pages" do
 
     describe "for non-signed-in users" do

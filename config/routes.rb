@@ -3,9 +3,9 @@ AmtrakMessenger::Application.routes.draw do
 
   resources :users do
     member do
+      get :edit_password
+      put :update_password
       put :heartbeat
-    end
-    member do
       put :promote
     end
   end

@@ -72,6 +72,9 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit_password
+  end
+
   def heartbeat
     time = Time.zone.now
     logger.debug "heartbeat --> <#{current_user.user_name} ##{current_user.id} #{time}>"
