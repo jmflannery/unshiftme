@@ -8,8 +8,8 @@ Feature: Register
     Given I am not a registered user
     And I am on the register page
     When I fill in "User name" with ""
-    And I fill in "password" with ""
-    And I fill in "conformation" with ""
+    And I fill in "Password" with ""
+    And I fill in "Password confirmation" with ""
     And I press "Register"
     Then I should see the register page
   
@@ -23,8 +23,8 @@ Feature: Register
     And I am on the register page
     When I fill in "User name" with "fred"
     And I check workstation "CUS North"
-    And I fill in "password" with "secret"
-    And I fill in "conformation" with "secret"
+    And I fill in "Password" with "secret"
+    And I fill in "Password confirmation" with "secret"
     And I press "Register"
     Then I should see the sign in page
     And I should see that registration was successful
