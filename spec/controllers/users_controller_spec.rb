@@ -416,17 +416,12 @@ describe UsersController do
     end
   end
 
-  describe "GET edit_password", focus: true do
+  describe "GET edit_password" do
 
     before(:each) do
       test_sign_in(user)
     end
-    let(:params) {{ id: user, format: :js, user: {} }}
-
-    it "should be successful" do
-      get :edit_password, params
-      response.should be_success
-    end
+    let(:params) {{ id: user, format: :js }}
 
     it "should render the edit_password template" do
       get :edit_password, params
@@ -437,6 +432,19 @@ describe UsersController do
       get :edit_password, params
       assigns[:user].should == user
     end
+  end
+
+  describe "PUT update_password" do
+
+    before(:each) do
+      test_sign_in(user)
+    end
+    let(:params) {{ id: user, format: :js, user: {} }}
+
+    it "should render the update_password template" do
+      put :update_password, params
+      response.should render_template :update_password
+    end
 
     context "failure" do
      
@@ -444,7 +452,7 @@ describe UsersController do
       before { params[:user].merge!(user_hash) }
       
       it "assignes a flash message" do
-        get :edit_password, params
+        put :update_password, params
         assigns[:flash_message].should == "Password update failed."
       end
     end
@@ -455,7 +463,7 @@ describe UsersController do
       before { params[:user].merge!(user_hash) }
       
       it "assignes a flash message" do
-        get :edit_password, params
+        put :update_password, params
         assigns[:flash_message].should == "Password updated!"
       end
     end

@@ -2,8 +2,8 @@ class UsersController < ApplicationController
   include UsersHelper
   include WorkstationsHelper
 
-  before_filter :authenticate, only: [:show, :index, :edit, :update, :destroy, :edit_password, :heartbeat, :promote]
-  before_filter :correct_user, only: [:show, :edit, :update, :edit_password]
+  before_filter :authenticate, only: [:show, :index, :edit, :update, :destroy, :edit_password, :update_password, :heartbeat, :promote]
+  before_filter :correct_user, only: [:show, :edit, :update, :edit_password, :update_password]
   before_filter :merge_workstation_parameters, only: [:create, :update]
 
   def new
@@ -73,6 +73,9 @@ class UsersController < ApplicationController
   end
 
   def edit_password
+  end
+
+  def update_password
     if @user.authenticate(params[:user][:old_password])
       @flash_message = "Password updated!"
     else
