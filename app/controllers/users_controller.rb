@@ -2,8 +2,8 @@ class UsersController < ApplicationController
   include UsersHelper
   include WorkstationsHelper
 
-  before_filter :authenticate, only: [:show, :index, :edit, :update, :destroy, :heartbeat, :promote]
-  before_filter :correct_user, only: [:show, :edit, :update]
+  before_filter :authenticate, only: [:show, :index, :edit, :update, :destroy, :edit_password, :heartbeat, :promote]
+  before_filter :correct_user, only: [:show, :edit, :update, :edit_password]
   before_filter :merge_workstation_parameters, only: [:create, :update]
 
   def new

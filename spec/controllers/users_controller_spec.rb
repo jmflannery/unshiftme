@@ -416,7 +416,7 @@ describe UsersController do
     end
   end
 
-  describe "GET edit_password", focus: true do
+  describe "GET edit_password" do
 
     before(:each) do
       test_sign_in(user)
@@ -431,6 +431,11 @@ describe UsersController do
     it "should render the edit_password template" do
       get :edit_password, params
       response.should render_template :edit_password
+    end
+
+    it "assigns a user variable" do
+      get :edit_password, params
+      assigns[:user].should == user
     end
   end
 
