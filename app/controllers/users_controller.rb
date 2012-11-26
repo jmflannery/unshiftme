@@ -73,6 +73,11 @@ class UsersController < ApplicationController
   end
 
   def edit_password
+    if @user.authenticate(params[:user][:old_password])
+      @flash_message = "Password updated!"
+    else
+      @flash_message = "Password update failed."
+    end
   end
 
   def heartbeat
