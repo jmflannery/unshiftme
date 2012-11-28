@@ -77,6 +77,7 @@ class UsersController < ApplicationController
 
   def update_password
     if @user.authenticate(params[:user][:old_password])
+      remove_old_password_key_from_hash(params[:user])
       @flash_message = "Password updated!"
     else
       @flash_message = "Password update failed."

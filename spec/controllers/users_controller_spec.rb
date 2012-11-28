@@ -459,12 +459,17 @@ describe UsersController do
 
     context "success" do
      
-      let(:user_hash) {{ old_password: "secret", password: "barfoo", password_confirmation: "barfoo" }}
+      let(:user_hash) {{ "old_password" => "secret", "password" => "barfoo", "password_confirmation" => "barfoo" }}
       before { params[:user].merge!(user_hash) }
       
       it "assignes a flash message" do
         put :update_password, params
         assigns[:flash_message].should == "Password updated!"
+      end
+
+      it "removes old_password key from the params[:user] hash" do
+        controller.should_receive(:remove_old_password_key_from_hash).with(params[:user])
+        put :update_password, params
       end
     end
   end
