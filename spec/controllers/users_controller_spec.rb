@@ -471,6 +471,11 @@ describe UsersController do
         controller.should_receive(:remove_old_password_key_from_hash).with(params[:user])
         put :update_password, params
       end
+
+      it "updates the user" do
+        User.any_instance.should_receive(:update_attributes).with("password" => "barfoo", "password_confirmation" => "barfoo")
+        put :update_password, params
+      end
     end
   end
 
