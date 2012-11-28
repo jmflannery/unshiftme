@@ -72,4 +72,18 @@ describe "UsersHelper" do
       deletion_cancelled?.should be_true
     end
   end
+
+  describe "#remove_old_password_key_from_hash" do
+
+    let(:user) {{ old_password: "eddienyc", password: "krotchpotato", password_confirmation: "krotchpotato" }}
+    let(:user_wo_oldpassword) {{ password: "krotchpotato", password_confirmation: "krotchpotato" }}
+
+    it "removes the key :old_password from the supplied hash" do
+      remove_old_password_key_from_hash(user).should == user_wo_oldpassword
+    end
+
+    it "returns the supplied hash if :old_password is not found" do
+      remove_old_password_key_from_hash(user_wo_oldpassword).should == user_wo_oldpassword
+    end
+  end
 end
