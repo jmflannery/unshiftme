@@ -5,6 +5,7 @@ class UsersController < ApplicationController
   before_filter :authenticate, only: [:show, :index, :edit, :update, :destroy, :edit_password, :update_password, :heartbeat, :promote]
   before_filter :correct_user, only: [:show, :edit, :update, :edit_password, :update_password]
   before_filter :merge_workstation_parameters, only: [:create, :update]
+  before_filter :authenticate_old_password, only: [:update_password]
 
   def new
     @user = User.new
@@ -76,11 +77,12 @@ class UsersController < ApplicationController
   end
 
   def update_password
-    if @user.authenticate(params[:user][:old_password])
-      @user.update_attributes(remove_old_password_key_from_hash(params[:user]))
-      @flash_message = "Password updated!"
+    if @user.update_attributes(remove_old_password_key_from_hash(params[:user]))
+      flash[:success] = "Password updated!"
+      redirect_to edit_user_path(@user)
     else
-      @flash_message = "Password update failed."
+      flash[:error] = "Password update failed."
+      render :edit_password
     end
   end
 
@@ -113,6 +115,13 @@ class UsersController < ApplicationController
   def merge_workstation_parameters
     new_params = merge_workstation_params(params)
     params = new_params
+  end
+
+  def authenticate_old_password
+    unless @user.authenticate(params[:user][:old_password])
+      flash[:error] = "Password update failed."
+      render :edit_password
+    end
   end
 end
 

@@ -441,11 +441,6 @@ describe UsersController do
     end
     let(:params) {{ id: user, format: :js, user: {} }}
 
-    it "should render the update_password template" do
-      put :update_password, params
-      response.should render_template :update_password
-    end
-
     context "failure" do
      
       let(:user_hash) {{ old_password: "wrongpassword", password: "barfoo", password_confirmation: "barfoo" }}
@@ -453,18 +448,26 @@ describe UsersController do
       
       it "assignes a flash message" do
         put :update_password, params
-        assigns[:flash_message].should == "Password update failed."
+        flash[:error].should == "Password update failed."
+      end
+
+      it "should render the update_password template" do
+        put :update_password, params
+        response.should render_template 'edit_password'
       end
     end
 
     context "success" do
      
-      let(:user_hash) {{ "old_password" => "secret", "password" => "barfoo", "password_confirmation" => "barfoo" }}
-      before { params[:user].merge!(user_hash) }
+      let(:user_hash) {{ "password" => "barfoo", "password_confirmation" => "barfoo" }}
+      before do
+        params[:user].merge!(user_hash)
+        params[:user].merge!("old_password" => "secret")
+      end
       
       it "assignes a flash message" do
         put :update_password, params
-        assigns[:flash_message].should == "Password updated!"
+        flash[:success].should == "Password updated!"
       end
 
       it "removes old_password key from the params[:user] hash" do
@@ -473,8 +476,13 @@ describe UsersController do
       end
 
       it "updates the user" do
-        User.any_instance.should_receive(:update_attributes).with("password" => "barfoo", "password_confirmation" => "barfoo")
+        User.any_instance.should_receive(:update_attributes).with(user_hash)
         put :update_password, params
+      end
+
+      it "should redirect to the edit_user_path" do
+        put :update_password, params
+        response.should redirect_to edit_user_path(user)
       end
     end
   end
