@@ -12,5 +12,6 @@ Feature: Update password
     And I fill in "Old password" with "secret"
     And I fill in "Password" with "secret"
     And I fill in "Password confirmation" with "secret"
+    And I press "Update password"
     Then I should see "Password updated!"
 
