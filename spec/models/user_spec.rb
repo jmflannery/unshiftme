@@ -42,6 +42,7 @@ describe User do
   it { should respond_to(:admin) }
   it { should respond_to(:authenticate) }
   it { should respond_to(:workstation_names) }
+  it { should respond_to(:updating_password) }
 
   it { should be_valid }
 
@@ -69,35 +70,77 @@ describe User do
 
   describe "when user_name is already taken" do
     before do
-      user_with_same_name = FactoryGirl.create(:user, user_name: subject.user_name) 
+      FactoryGirl.create(:user, user_name: subject.user_name) 
     end
     it { should_not be_valid }
   end
 
-  describe "when password is not present" do
-    before { subject.password = subject.password_confirmation = " " }
-    it { should_not be_valid }
+  describe "password validation" do
+    
+    context "on new record" do
+
+      context "when password is not present" do
+        before { subject.password = subject.password_confirmation = " " }
+        it "user is invalid" do
+          subject.should_not be_valid
+        end
+      end
+
+      context "when password does not match confirmation" do
+        before { subject.password_confirmation = "mismatch" }
+        it "user is invalid" do
+          subject.should_not be_valid
+        end
+      end
+
+      context "when password confirmation is nil" do
+        before { subject.password_confirmation = nil }
+        it "user is invalid" do
+          subject.should_not be_valid
+        end
+      end
+
+      context "with a password that's too short" do
+        before { subject.password = subject.password_confirmation = "a" * 5 }
+        it "user is invalid" do
+          subject.should_not be_valid
+        end
+      end 
+
+      context "with a password that's too long" do
+        before { subject.password = subject.password_confirmation = "a" * 41 }
+        it "user is invalid" do
+          subject.should_not be_valid
+        end
+      end 
+    end
+
+    context "on an existing record" do
+      before { subject.save }
+
+      context "when updating the password" do
+        before { subject.updating_password = true }
+
+        context "when password is not present" do
+          before { subject.password = subject.password_confirmation = " " }
+          it "user is invalid" do
+            should_not be_valid
+          end
+        end
+      end
+
+      context "when not updating the password" do
+        before { subject.updating_password = false }
+
+        context "when password is not present" do
+          before { subject.password = subject.password_confirmation = " " }
+          it "no validation on password will occur and user is valid" do
+            subject.should be_valid
+          end
+        end
+      end
+    end
   end
-
-  describe "when password does not match confirmation" do
-    before { subject.password_confirmation = "mismatch" }
-    it { should_not be_valid }
-  end
-
-  describe "when password confirmation is nil" do
-    before { subject.password_confirmation = nil }
-    it { should_not be_valid }
-  end
-
-  describe "with a password that's too short" do
-    before { subject.password = subject.password_confirmation = "a" * 5 }
-    it { should_not be_valid }
-  end 
-
-  describe "with a password that's too long" do
-    before { subject.password = subject.password_confirmation = "a" * 41 }
-    it { should_not be_valid }
-  end 
 
   describe "return value of authenticate method" do
     before { subject.save }

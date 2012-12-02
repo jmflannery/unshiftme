@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_secure_password 
 
   attr_accessible :user_name, :password, :password_confirmation, :normal_workstations, :admin
+  attr_accessor :updating_password
  
   has_many :workstations
   has_many :messages
@@ -16,21 +17,23 @@ class User < ActiveRecord::Base
   #VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   #validates :email, presence: true, uniqueness: true, format: { with: VALID_EMAIL_REGEX }
   validates :user_name, presence: true, uniqueness: true
-  validates :password, presence: true,
-                       length: { within: 6..40 }
-
-  validates :password_confirmation, presence: true 
+  validates :password, presence: true, length: { within: 6..40 }, if: :should_validate_password?
+  validates :password_confirmation, presence: true, if: :should_validate_password?
 
   IDLE_TIME = 15
 
-  before_validation :init_admin
+  after_create :init_admin
 
   def init_admin
-    update_attribute(:admin, User.count == 0)
+    update_attribute(:admin, User.count == 1)
   end
 
   def to_param
     user_name
+  end
+
+  def should_validate_password?
+    new_record? || updating_password
   end
 
   def self.online
