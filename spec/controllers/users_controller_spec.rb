@@ -466,7 +466,7 @@ describe UsersController do
       end
 
       it "sets the user to updating password" do
-        User.any_instance.should_receive(:updating_password=).with(true)
+        User.any_instance.should_receive(:updating_password!)
         put :update_password, params
       end
       

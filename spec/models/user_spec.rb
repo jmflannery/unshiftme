@@ -42,7 +42,6 @@ describe User do
   it { should respond_to(:admin) }
   it { should respond_to(:authenticate) }
   it { should respond_to(:workstation_names) }
-  it { should respond_to(:updating_password) }
 
   it { should be_valid }
 
@@ -119,7 +118,7 @@ describe User do
       before { subject.save }
 
       context "when updating the password" do
-        before { subject.updating_password = true }
+        before { subject.updating_password! }
 
         context "when password is not present" do
           before { subject.password = subject.password_confirmation = " " }
@@ -130,7 +129,6 @@ describe User do
       end
 
       context "when not updating the password" do
-        before { subject.updating_password = false }
 
         context "when password is not present" do
           before { subject.password = subject.password_confirmation = " " }
@@ -231,6 +229,31 @@ describe User do
     
     before(:each) do
       subject.save
+    end
+
+    describe "updating_password?" do
+
+      context "when the user is updating password" do
+        before { subject.updating_password! }
+        it "returns true" do
+          subject.should be_updating_password
+        end
+      end
+
+      context "when the user is not updating password" do
+        it "returns false" do
+          subject.should_not be_updating_password
+        end
+      end
+    end
+
+    describe "updating_password!" do
+      
+      it "sets updating_password to true" do
+        subject.should_not be_updating_password
+        subject.updating_password!
+        subject.should be_updating_password
+      end
     end
     
     describe "handle" do

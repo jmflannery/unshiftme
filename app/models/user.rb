@@ -4,7 +4,6 @@ class User < ActiveRecord::Base
   has_secure_password 
 
   attr_accessible :user_name, :password, :password_confirmation, :normal_workstations, :admin
-  attr_accessor :updating_password
  
   has_many :workstations
   has_many :messages
@@ -33,7 +32,15 @@ class User < ActiveRecord::Base
   end
 
   def should_validate_password?
-    new_record? || updating_password
+    new_record? || updating_password?
+  end
+
+  def updating_password!
+    @updating_password = true
+  end
+
+  def updating_password?
+    @updating_password
   end
 
   def self.online
