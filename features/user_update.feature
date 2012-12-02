@@ -10,8 +10,6 @@ Feature: User update
     Then I should see "jack@"
     When I click link "Profile"
     And I fill in "User name" with "jmflannery"
-    And I fill in "Password" with "secret"
-    And I fill in "Password confirmation" with "secret"
     And I press "Update"
     Then I should see "Profile updated!"
     And I should see "jmflannery@"
@@ -29,8 +27,6 @@ Feature: User update
     And I should see that workstation "CUSS" is not checked
     When I check workstation "CUS South"
     And I uncheck workstation "CUS North"
-    And I fill in "Password" with "secret"
-    And I fill in "Password confirmation" with "secret"
     And I press "Update"
     Then I should see "Profile updated!"
     When I click link "Profile"
