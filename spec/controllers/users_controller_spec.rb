@@ -464,6 +464,11 @@ describe UsersController do
         params[:user].merge!(user_hash)
         params[:user].merge!("old_password" => "secret")
       end
+
+      it "sets the user to updating password" do
+        User.any_instance.should_receive(:updating_password=).with(true)
+        put :update_password, params
+      end
       
       it "assignes a flash message" do
         put :update_password, params

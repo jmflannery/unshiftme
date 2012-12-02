@@ -77,6 +77,7 @@ class UsersController < ApplicationController
   end
 
   def update_password
+    @user.updating_password = true
     if @user.update_attributes(remove_old_password_key_from_hash(params[:user]))
       flash[:success] = "Password updated!"
       redirect_to edit_user_path(@user)
