@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
   has_many :recipients
   has_many :transcripts
   has_many :attachments
+  has_many :reads
+  has_many :read_messages, :through => :reads, :source => :message
   
   serialize :normal_workstations
   

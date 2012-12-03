@@ -186,6 +186,24 @@ describe User do
     end
   end
 
+  describe "read_messages association" do
+
+    let(:message) { FactoryGirl.build(:message) }
+    let(:read) { Read.create(message: message) }
+    before {
+      subject.reads << read
+      subject.save
+    }
+
+    it { should have_many :read_messages }
+
+    it "should have a list of messages read" do
+      subject.read_messages.should include message
+      read.user_id.should == subject.id
+    end
+
+  end
+
   describe "workstation associations" do
 
     before(:each) do
