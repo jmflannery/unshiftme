@@ -8,6 +8,8 @@ class Message < ActiveRecord::Base
   belongs_to :user
   has_many :receivers
   has_many :sender_workstations
+  has_many :reads
+  has_many :readers, :through => :reads, :source => :user
   
   validates :content, :presence => true, :length => { :maximum => 300 }
   validates :user_id, :presence => true
@@ -178,7 +180,7 @@ class Message < ActiveRecord::Base
     save
   end
 
-  def readers
+  def readers_
     readers = ""
     if self.read_by
       users = self.read_by.keys

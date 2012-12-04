@@ -63,6 +63,23 @@ describe Message do
     it { should have_many(:sender_workstations) }
   end
 
+  describe "readers association" do
+
+    let(:user) { FactoryGirl.create(:user) }
+    let(:read) { Read.create(user: user) }
+    before {
+      subject.reads << read
+      subject.save
+    }
+
+    it { should have_many :readers }
+
+    it "should have a list of users who are readers of the message" do
+      subject.readers.should include user
+      read.message_id.should == subject.id
+    end
+  end
+
   describe "named scope" do
 
     let!(:message) { FactoryGirl.create(:message, user: user) }
