@@ -188,7 +188,7 @@ describe User do
 
   describe "read_messages association" do
 
-    let(:message) { FactoryGirl.build(:message) }
+    let(:message) { FactoryGirl.create(:message) }
     let(:read) { Read.create(message: message) }
     before {
       subject.reads << read
@@ -201,7 +201,6 @@ describe User do
       subject.read_messages.should include message
       read.user_id.should == subject.id
     end
-
   end
 
   describe "workstation associations" do
