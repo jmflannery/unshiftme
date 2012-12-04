@@ -425,19 +425,18 @@ describe Message do
     let(:recipient_user) { FactoryGirl.create(:user) }
 
     before(:each) do
-      recipient_user.start_job(cusn.abrev)
+      cusn.set_user(recipient_user)
     end
     
-    it "adds the given workstation(s) and user to the message's read by list" do
+    it "creates a new message_read for the supplied user and the message" do
       subject.mark_read_by(recipient_user)
-      subject.read_by.should include({ recipient_user.user_name => recipient_user.workstation_names_str })
+      subject.readers.should include recipient_user
     end
 
-    it "does not add duplicates to message's read by list" do
+    it "does not let a user read a message twice" do
       subject.mark_read_by(recipient_user)
       subject.mark_read_by(recipient_user)
-      subject.read_by.delete(recipient_user.user_name)
-      subject.read_by.should_not have_key(recipient_user.user_name)
+      subject.readers.size.should == 1
     end
   end
 

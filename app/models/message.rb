@@ -172,12 +172,10 @@ class Message < ActiveRecord::Base
   end
 
   def mark_read_by(user)
-    if self.read_by
-      self.read_by.merge!(user.user_name => user.workstation_names_str) unless self.read_by.has_key?(user.user_name)
-    else
-      self.read_by = { user.user_name => user.workstation_names_str }
+    unless readers.include?(user)
+      reads << ::Read.new(user: user)
+      save
     end
-    save
   end
 
   def readers_
