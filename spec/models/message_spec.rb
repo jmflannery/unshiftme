@@ -66,9 +66,9 @@ describe Message do
   describe "readers association" do
 
     let(:user) { FactoryGirl.create(:user) }
-    let(:read) { Read.create(user: user) }
+    let(:receipt) { Receipt.create(user: user) }
     before {
-      subject.reads << read
+      subject.receipts << receipt
       subject.save
     }
 
@@ -76,7 +76,7 @@ describe Message do
 
     it "should have a list of users who are readers of the message" do
       subject.readers.should include user
-      read.message_id.should == subject.id
+      receipt.message_id.should == subject.id
     end
   end
 

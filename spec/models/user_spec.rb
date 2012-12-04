@@ -189,9 +189,9 @@ describe User do
   describe "read_messages association" do
 
     let(:message) { FactoryGirl.create(:message) }
-    let(:read) { Read.create(message: message) }
+    let(:receipt) { Receipt.create(message: message) }
     before {
-      subject.reads << read
+      subject.receipts << receipt
       subject.save
     }
 
@@ -199,7 +199,7 @@ describe User do
 
     it "should have a list of messages read" do
       subject.read_messages.should include message
-      read.user_id.should == subject.id
+      receipt.user_id.should == subject.id
     end
   end
 

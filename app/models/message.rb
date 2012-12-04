@@ -8,8 +8,8 @@ class Message < ActiveRecord::Base
   belongs_to :user
   has_many :receivers
   has_many :sender_workstations
-  has_many :reads
-  has_many :readers, :through => :reads, :source => :user
+  has_many :receipts
+  has_many :readers, :through => :receipts, :source => :user
   
   validates :content, :presence => true, :length => { :maximum => 300 }
   validates :user_id, :presence => true
