@@ -178,7 +178,7 @@ class Message < ActiveRecord::Base
     end
   end
 
-  def readers_
+  def formatted_readers
     readers = ""
     if self.read_by
       users = self.read_by.keys

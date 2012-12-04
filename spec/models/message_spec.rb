@@ -506,12 +506,12 @@ describe Message do
     end
   end
 
-  describe "#readers" do
+  describe "#formatted_readers" do
     
     context "with no message readers" do
 
       it "returns an empty string" do
-        subject.readers.should == ""
+        subject.formatted_readers.should == ""
       end
     end
 
@@ -531,7 +531,7 @@ describe Message do
       end
 
       it "returns a formated string list of the user's handles who read the message" do
-        subject.readers.should == "#{recipient_user.user_name}@#{recipient_user.workstation_names_str}, " +
+        subject.formatted_readers.should == "#{recipient_user.user_name}@#{recipient_user.workstation_names_str}, " +
           "#{recipient_user1.user_name}@#{recipient_user1.workstation_names_str} and " +
           "#{recipient_user2.user_name}@#{recipient_user2.workstation_names_str} read this."
       end

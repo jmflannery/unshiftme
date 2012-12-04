@@ -14,7 +14,7 @@
   </div>
   <div class="right-side">
     <div class="timestamp"><p><%= message.created_at.strftime("%a %b %e %Y %T") %></p></div>
-    <div class="readers"><p><%= message.readers unless message.was_sent_to?(@user) %></p></div>
+    <div class="readers"><p><%= message.formatted_readers unless message.was_sent_to?(@user) %></p></div>
   </div>
 </li>
 
