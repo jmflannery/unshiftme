@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Read do
+describe Receipt do
 
-  before { @read = Read.new }
-  subject { @read }
+  before { @receipt = Receipt.new }
+  subject { @receipt }
 
   it { should respond_to(:user_id) }
   it { should respond_to(:message_id) }
