@@ -173,16 +173,24 @@ describe User do
     end
   end
 
-  describe "recipient associations" do
+  describe "message_routes/recipients association" do
 
-    before { subject.save }
-    let!(:recipient1) { FactoryGirl.create(:recipient, user: subject) }
-    let!(:recipient2) { FactoryGirl.create(:recipient, user: subject) }
+    before {
+      subject.message_routes.create(workstation: cusn)
+      subject.save
+    }
 
-    it { should respond_to(:recipients) }
+    it "should have many message_routes" do
+      subject.should have_many :message_routes
+    end
 
-    it "has the right recipients" do
-      subject.recipients.should == [recipient1, recipient2]
+    it "should have many recipients" do
+      subject.should have_many :recipients
+    end
+
+    it "should have a list of recipients" do
+      subject.recipients.should include cusn
+      message_route.user_id.should == subject.id
     end
   end
 
