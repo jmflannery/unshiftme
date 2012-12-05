@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121205004037) do
+ActiveRecord::Schema.define(:version => 20121205225707) do
 
   create_table "attachments", :force => true do |t|
     t.integer  "user_id"
@@ -20,6 +20,13 @@ ActiveRecord::Schema.define(:version => 20121205004037) do
     t.string   "recievers"
     t.string   "delivered"
     t.string   "payload"
+  end
+
+  create_table "message_routes", :force => true do |t|
+    t.integer  "user_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.integer  "workstation_id"
   end
 
   create_table "messages", :force => true do |t|
@@ -45,13 +52,6 @@ ActiveRecord::Schema.define(:version => 20121205004037) do
     t.integer  "user_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
-  end
-
-  create_table "recipients", :force => true do |t|
-    t.integer  "user_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
-    t.integer  "workstation_id"
   end
 
   create_table "sender_workstations", :force => true do |t|
