@@ -21,6 +21,27 @@ describe Workstation do
 
   it { should belong_to(:user) }
 
+  describe "message_routes/senders association" do
+
+    before {
+      message_route = subject.message_routes.create(user: user)
+      subject.save
+    }
+
+    it "should have many message_routes" do
+      subject.should have_many :message_routes
+    end
+
+    it "should have many senders" do
+      subject.should have_many :senders
+    end
+
+    it "should have a list of senders" do
+      subject.senders.should include user
+      message_route.workstation_id.should == subject.id
+    end
+  end
+
   describe "scope" do
     
     describe "of_type" do
