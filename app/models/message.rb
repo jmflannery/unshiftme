@@ -181,33 +181,17 @@ class Message < ActiveRecord::Base
   def formatted_readers
     readers_str = ""
     receipts.each_with_index do |receipt, index|
+      workstations = receipt.workstation_ids.map { |ws_id| Workstation.find(ws_id).abrev }.join(",")
       if index == (receipts.size - 1) and (receipts.size > 1)
         readers_str += " and " 
       elsif index > 0
         readers_str += ", "
       end
       user = receipt.user
-      readers_str += "#{user.user_name}@"
+      readers_str += "#{user.user_name}@#{workstations}"
     end
+    readers_str += " read this." unless readers_str.blank?
     readers_str
-  end
-
-  def formatted_readers_old
-    readers = ""
-    if self.read_by
-      users = self.read_by.keys
-      workstations = self.read_by.values
-      users.each_index do |index|
-        if index == (users.size - 1) and users.size > 1
-          readers += " and " 
-        elsif index > 0
-          readers += ", "
-        end
-        readers += "#{users[index]}@#{workstations[index]}"
-      end
-      readers += " read this."
-    end
-    readers
   end
 
   def was_sent_to?(user)
