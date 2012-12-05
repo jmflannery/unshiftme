@@ -43,7 +43,7 @@ class MessagesController < ApplicationController
       @message.mark_read_by(current_user)
 
       data = {
-        readers: @message.readers,
+        readers: @message.formatted_readers,
         message: @message.id
       }  
       message_owner = User.find(@message.user_id)
