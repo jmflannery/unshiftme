@@ -506,7 +506,7 @@ describe Message do
     end
   end
 
-  describe "#formatted_readers" do
+  describe "#formatted_readers", focus: true do
     
     context "with no message readers" do
 
@@ -522,9 +522,9 @@ describe Message do
       let(:recipient_user2) { FactoryGirl.create(:user) }
 
       before(:each) do
-        recipient_user.start_job(cusn.abrev)
-        recipient_user1.start_job(cuss.abrev)
-        recipient_user2.start_job(aml.abrev)
+        cusn.set_user(recipient_user)
+        cuss.set_user(recipient_user1)
+        aml.set_user(recipient_user2)
         subject.mark_read_by(recipient_user)
         subject.mark_read_by(recipient_user1)
         subject.mark_read_by(recipient_user2)

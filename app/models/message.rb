@@ -179,6 +179,20 @@ class Message < ActiveRecord::Base
   end
 
   def formatted_readers
+    readers_str = ""
+    receipts.each_with_index do |receipt, index|
+      if index == (receipts.size - 1) and (receipts.size > 1)
+        readers_str += " and " 
+      elsif index > 0
+        readers_str += ", "
+      end
+      user = receipt.user
+      readers_str += "#{user.user_name}@"
+    end
+    readers_str
+  end
+
+  def formatted_readers_old
     readers = ""
     if self.read_by
       users = self.read_by.keys
