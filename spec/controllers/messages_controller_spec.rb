@@ -201,8 +201,7 @@ describe MessagesController do
 
     it "marks the message read by the current user" do
       put :update, id: message.id, format: :jd, remote: true
-      message.reload
-      message.read_by.should == { user.user_name => user.workstation_names_str }
+      message.reload.readers.should include user
     end
   end
 end

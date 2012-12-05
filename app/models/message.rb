@@ -206,13 +206,7 @@ class Message < ActiveRecord::Base
   end
 
   def was_read_by?(user)
-    read = false
-    if self.read_by
-      if read_by.has_key?(user.user_name)
-        read = true
-      end
-    end
-    read
+    readers.include?(user)
   end
 end
 
