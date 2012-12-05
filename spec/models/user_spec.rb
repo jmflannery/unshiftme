@@ -186,7 +186,7 @@ describe User do
     end
   end
 
-  describe "read_messages association" do
+  describe "receipts/read_messages association" do
 
     let(:message) { FactoryGirl.create(:message) }
     let(:receipt) { Receipt.create(message: message) }
@@ -195,6 +195,7 @@ describe User do
       subject.save
     }
 
+    it { should have_many :receipts }
     it { should have_many :read_messages }
 
     it "should have a list of messages read" do
