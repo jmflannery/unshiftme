@@ -176,7 +176,7 @@ describe User do
   describe "message_routes/recipients association" do
 
     before {
-      subject.message_routes.create(workstation: cusn)
+      message_route = subject.message_routes.create(workstation: cusn)
       subject.save
     }
 
