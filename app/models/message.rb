@@ -77,7 +77,7 @@ class Message < ActiveRecord::Base
     attachment = Attachment.find(attachment_id) if Attachment.exists?(attachment_id)
     hash[:attachment_url] = attachment.payload.url if attachment
     hash[:view_class] = view_class if view_class
-    hash[:readers] = readers if readers
+    hash[:readers] = formatted_readers if formatted_readers
     hash.as_json
   end
 

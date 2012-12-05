@@ -15,7 +15,7 @@ Given /^the following messages$/ do |table|
     receiver.user = User.find_by_user_name(to_user) unless to_user.blank?
     receiver.save
     if hash.has_key?("read") and hash["read"] == "t"
-      message.read_by = {to_user => to_workstation}
+      message.mark_read_by(receiver.user)
     end
     if hash.has_key?("created_at")
       if hash["created_at"].include?("ago")
