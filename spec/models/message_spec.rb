@@ -428,12 +428,22 @@ describe Message do
       cusn.set_user(recipient_user)
     end
     
-    it "creates a new message_read for the supplied user and the message" do
+    it "assosiates the supplied user as a reader of the message" do
       subject.mark_read_by(recipient_user)
       subject.readers.should include recipient_user
     end
 
-    it "does not let a user read a message twice" do
+    it "creates a receipt associated with the supplied user" do
+      subject.mark_read_by(recipient_user)
+      subject.receipts[0].user.should == recipient_user
+    end
+
+    it "adds the user's current workstations to the receipt" do
+      subject.mark_read_by(recipient_user)
+      subject.receipts[0].workstation_ids.should == recipient_user.workstation_ids
+    end
+
+    it "does not does not assciate a user as reader twice" do
       subject.mark_read_by(recipient_user)
       subject.mark_read_by(recipient_user)
       subject.readers.size.should == 1
@@ -506,7 +516,7 @@ describe Message do
     end
   end
 
-  describe "#formatted_readers", focus: true do
+  describe "#formatted_readers" do
     
     context "with no message readers" do
 

@@ -173,7 +173,7 @@ class Message < ActiveRecord::Base
 
   def mark_read_by(user)
     unless readers.include?(user)
-      receipts << Receipt.new(user: user)
+      receipts << Receipt.new(user: user, workstation_ids: user.workstation_ids)
       save
     end
   end
