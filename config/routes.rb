@@ -10,7 +10,7 @@ AmtrakMessenger::Application.routes.draw do
     end
   end
   resources :messages, :only => [:create, :index, :update]
-  resources :recipients, :only => [:create, :index, :destroy]
+  resources :message_routes, :only => [:create, :index, :destroy]
   resources :attachments, :only => [:create]
   resources :transcripts, :only => [:new, :create, :show, :index]
   resources :workstations, only: [:index]

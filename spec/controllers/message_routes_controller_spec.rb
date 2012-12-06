@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe RecipientsController do  
+describe MessageRoutesController do  
   render_views
   
   let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
@@ -26,7 +26,7 @@ describe RecipientsController do
       it "does not create a recipient" do
         lambda do
           post :create, workstation_id: 0, format: :js
-        end.should_not change(Recipient, :count)
+        end.should_not change(MessageRoute, :count)
       end
     end
 
@@ -41,7 +41,7 @@ describe RecipientsController do
       it "creates a recipient" do
         lambda do
           post :create, workstation_id: cusn.id, format: :js
-        end.should change(Recipient, :count).by(1)
+        end.should change(MessageRoute, :count).by(1)
       end
 
       context "when the recipient user is controlling multiple workstations" do
@@ -54,7 +54,7 @@ describe RecipientsController do
         it "creates a recipient for each workstation controlled by the recipient_user" do
           lambda do
             post :create, workstation_id: cusn.id, format: :js
-          end.should change(Recipient, :count).by(3)
+          end.should change(MessageRoute, :count).by(3)
         end
       end
     end
@@ -86,7 +86,7 @@ describe RecipientsController do
     let(:user) { FactoryGirl.create(:user) }
    
     context "for a non-signed in user" do
-      let(:recipient) { FactoryGirl.create(:recipient, user: user) }
+      let(:message_route) { FactoryGirl.create(:message_route, user: user) }
 
       it "denies access" do
         delete :destroy, id: recipient.id, format: :js
@@ -96,7 +96,7 @@ describe RecipientsController do
 
     context "for an unauthorized user" do
         
-      let(:recipient) { FactoryGirl.create(:recipient, user: user) }
+      let(:message_route) { FactoryGirl.create(:message_route, user: user) }
       before(:each) do
         test_sign_in(FactoryGirl.create(:user))
       end
@@ -115,7 +115,7 @@ describe RecipientsController do
     context "for an authorized user" do
       before(:each) do
         test_sign_in(user)
-        @recipient = FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
+        @recipient = FactoryGirl.create(:message_route, user: user, workstation_id: cusn.id)
       end
 
       it "returns http success" do
@@ -126,7 +126,7 @@ describe RecipientsController do
       it "destroys a recipient" do
         lambda do
           delete :destroy, id: @recipient.id, format: :js
-        end.should change(Recipient, :count).by(-1)
+        end.should change(MessageRoute, :count).by(-1)
       end
 
       context "when the recipient user is controlling multiple workstations" do
@@ -136,15 +136,15 @@ describe RecipientsController do
         before(:each) do
           test_sign_in(user)
           recip_user.start_jobs([cusn.abrev, cuss.abrev, aml.abrev])
-          @cusn_recip = FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-          FactoryGirl.create(:recipient, user: user, workstation_id: cuss.id)
-          FactoryGirl.create(:recipient, user: user, workstation_id: aml.id)
+          @cusn_recip = FactoryGirl.create(:message_route, user: user, workstation_id: cusn.id)
+          FactoryGirl.create(:message_route, user: user, workstation_id: cuss.id)
+          FactoryGirl.create(:message_route, user: user, workstation_id: aml.id)
         end
 
         it "creates a recipient for each workstation controlled by the recipient_user" do
           lambda do
             delete :destroy, id: @cusn_recip.id, format: :js
-          end.should change(Recipient, :count).by(-3)
+          end.should change(MessageRoute, :count).by(-3)
         end
       end
     end

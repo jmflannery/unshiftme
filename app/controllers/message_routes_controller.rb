@@ -1,4 +1,4 @@
-class RecipientsController < ApplicationController
+class MessageRoutesController < ApplicationController
   before_filter :authenticate
 
   def create
