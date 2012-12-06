@@ -173,7 +173,7 @@ describe User do
     end
   end
 
-  describe "message_routes/recipients association" do
+  describe "message_routes/recipients association", focus: true do
 
     before {
       message_route = subject.message_routes.create(workstation: cusn)
@@ -505,7 +505,7 @@ describe User do
     describe "messaging?" do
       
       before do 
-        @recipient = FactoryGirl.create(:recipient, user: subject, workstation_id: cusn.id)
+        @recipient = FactoryGirl.create(:message_route, user: subject, workstation_id: cusn.id)
       end
       
       it "returns true if the given workstation is a recipient of the user" do
@@ -517,7 +517,7 @@ describe User do
     describe "recipient_id" do
 
       before do
-        @recipient = FactoryGirl.create(:recipient, user: subject, workstation_id: cusn.id)
+        @recipient = FactoryGirl.create(:message_route, user: subject, workstation_id: cusn.id)
       end
       
       it "returns the recipient_id associated with the given workstation_id" do
@@ -528,8 +528,8 @@ describe User do
     describe "delete_all_recipients" do
       
       before do
-        FactoryGirl.create(:recipient, user: subject, workstation_id: cusn.id)
-        FactoryGirl.create(:recipient, user: subject, workstation_id: aml.id)
+        FactoryGirl.create(:message_route, user: subject, workstation_id: cusn.id)
+        FactoryGirl.create(:message_route, user: subject, workstation_id: aml.id)
       end
       it "deletes all of the user's recipients" do
         subject.recipients.size.should == 2
