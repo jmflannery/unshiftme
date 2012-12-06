@@ -8,8 +8,6 @@ class Workstation < ActiveRecord::Base
   scope :of_type, lambda { |type| where("job_type = ?", type) }
   scope :of_user, lambda { |user_id| where("user_id = ?", user_id) }
   
-  default_scope order("id")
-
   def set_user(user)
     self.user = user
     save

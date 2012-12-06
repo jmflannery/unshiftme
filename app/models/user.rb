@@ -60,8 +60,8 @@ class User < ActiveRecord::Base
     json[:id] = id
     json[:user_name] = user_name
     json[:workstations] = workstation_names.map { |name| {name: name} }
-    json[:recipient_workstations] = recipients.map do |recipient|
-      { name: Workstation.find(recipient.workstation_id).abrev, recipient_id: recipient.id }
+    json[:recipient_workstations] = message_routes.map do |route|
+      { name: Workstation.find(route.workstation_id).abrev, recipient_id: route.id }
     end
     json.to_json
   end
@@ -71,24 +71,25 @@ class User < ActiveRecord::Base
   end
 
   def recipient_workstation_ids
-    recipients.map { |recipient| recipient.workstation_id }
+    recipients.map { |recipient| recipient.id }
   end  
 
   def add_recipients(workstations)
-    recipients = []
+    new_routes = []
     workstations.each do |workstation|
-      recipient = add_recipient(workstation)
-      recipients << recipient if recipient
+      message_route = add_recipient(workstation)
+      new_routes << message_route if message_route
     end
-    recipients
+    new_routes
   end
 
   def add_recipient(workstation)
-    recipient = nil
-    unless recipient_workstation_ids.include?(workstation.id) or workstation_ids.include?(workstation.id)
-      recipient = recipients.create(workstation_id: workstation.id)
+    message_route = nil
+    unless recipients.include?(workstation) or workstations.include?(workstation)
+      message_route = message_routes.create(workstation: workstation)
+      save
     end
-    recipient
+    message_route
   end
 
   def do_heartbeat(time)
@@ -153,24 +154,24 @@ class User < ActiveRecord::Base
     save
   end
 
-  def messaging?(workstation_id)
+  def messaging?(workstation)
     recipients.each do |recipient|
-      if recipient.workstation_id == workstation_id
+      if recipient.id == workstation.id
         return true
       end
     end
     false
   end
 
-  def recipient_id(workstation_id)
-    recipient_id = nil  
-    recipients.each do |recipient|
-      if recipient.workstation_id == workstation_id
-        recipient_id = recipient.id 
+  def message_route_id(workstation)
+    route_id = 0
+    message_routes.each do |message_route|
+      if message_route.workstation_id == workstation.id
+        route_id = message_route.id 
         break
       end
     end
-    recipient_id
+    route_id
   end
 
   def delete_all_recipients

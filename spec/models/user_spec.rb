@@ -392,20 +392,18 @@ describe User do
         subject.add_recipients(workstations)
         subject.recipients.size.should == workstations.size
         workstations.each do |workstation|
-          subject.recipients.map { |recipient| workstation.id }.should include workstation.id
+          subject.recipients.should include workstation
         end
       end
 
       it "doesn't add any duplicate recipients" do
         subject.add_recipients(workstations)
-        size1 = subject.recipients.size
         subject.add_recipients(workstations)
-        size2 = subject.recipients.size
-        size2.should == size1
+        subject.recipients.size.should == 2
       end
 
       context "when the user is currently controlling a workstation" do
-        before { subject.start_job("AML") }
+        before { aml.set_user(subject) }
         it "doesn't add the workstation as a recipient" do
           subject.add_recipients([aml])
           subject.should_not be_messaging aml.id
@@ -413,37 +411,35 @@ describe User do
       end
 
       it "returns an array of the recipients added" do
-        recipients = subject.add_recipients(workstations)
-        recipients.should == subject.recipients
+        message_routes = subject.add_recipients(workstations)
+        message_routes.should == subject.message_routes
       end
     end
 
     describe "add_recipient" do
 
-      it "adds the workstation id's to the user's recipients" do
-        subject.add_recipient(ydmstr)
-        subject.recipients[0].workstation_id.should == ydmstr.id
+      it "adds the workstation to the user's recipients" do
+        subject.add_recipient(aml)
+        subject.recipients.should include aml
       end
 
       it "doesn't not add any duplicate recipients" do
-        subject.add_recipient(ydmstr)
-        size1 = subject.recipients.size
-        subject.add_recipient(ydmstr)
-        size2 = subject.recipients.size
-        size2.should == size1
+        subject.add_recipient(aml)
+        subject.add_recipient(aml)
+        subject.recipients.size.should == 1
       end
       
       context "when the user is currently controlling a workstation" do
-        before { subject.start_job("AML") }
-        it "doesn't add the workstation as a recipient" do
+        before { aml.set_user(subject) }
+        it "that workstation will not be added as a recipient" do
           subject.add_recipient(aml)
           subject.should_not be_messaging aml.id
         end
       end
 
-      it "returns the newly created recipient" do
-        recipient = subject.add_recipient(ydmstr)
-        recipient.should == subject.recipients[0]
+      it "returns the newly created message_route" do
+        message_route = subject.add_recipient(ydmstr)
+        message_route.should == subject.message_routes[0]
       end
     end
     
@@ -503,23 +499,23 @@ describe User do
     describe "messaging?" do
       
       before do 
-        @recipient = FactoryGirl.create(:message_route, user: subject, workstation_id: cusn.id)
+        FactoryGirl.create(:message_route, user: subject, workstation: cusn)
       end
       
       it "returns true if the given workstation is a recipient of the user" do
-        subject.messaging?(cusn.id).should be_true
-        subject.messaging?(cuss.id).should be_false
+        subject.messaging?(cusn).should be_true
+        subject.messaging?(cuss).should be_false
       end
     end
 
-    describe "recipient_id" do
+    describe "message_route_id" do
 
       before do
-        @recipient = FactoryGirl.create(:message_route, user: subject, workstation_id: cusn.id)
+        @message_route = FactoryGirl.create(:message_route, user: subject, workstation: cusn)
       end
       
-      it "returns the recipient_id associated with the given workstation_id" do
-        subject.recipient_id(cusn.id).should eq(@recipient.id)
+      it "returns the message_route_id associated with the given workstation_id" do
+        subject.message_route_id(cusn).should == @message_route.id
       end
     end
 
