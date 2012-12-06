@@ -7,9 +7,10 @@ class User < ActiveRecord::Base
  
   has_many :workstations
   has_many :messages
-  has_many :recipients
   has_many :transcripts
   has_many :attachments
+  has_many :message_routes
+  has_many :recipients, :through => :message_routes, :source => :workstation
   has_many :receipts
   has_many :read_messages, :through => :receipts, :source => :message
   

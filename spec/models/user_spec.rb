@@ -173,12 +173,10 @@ describe User do
     end
   end
 
-  describe "message_routes/recipients association", focus: true do
+  describe "message_routes/recipients association" do
 
-    before {
-      message_route = subject.message_routes.create(workstation: cusn)
-      subject.save
-    }
+    before { subject.save }
+    let!(:message_route) { subject.message_routes.create(workstation: cusn) }
 
     it "should have many message_routes" do
       subject.should have_many :message_routes

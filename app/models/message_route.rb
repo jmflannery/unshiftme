@@ -12,11 +12,5 @@
 class MessageRoute < ActiveRecord::Base
   belongs_to :user
   belongs_to :workstation
-
-  attr_accessible :workstation_id
-  
-  #validates :recipient_user_id, :uniqueness => { :scope => :user_id }
-
-  #scope :for_user, lambda { |user_id| where("user_id = ?", user_id) }
 end
 
