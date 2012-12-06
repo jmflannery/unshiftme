@@ -23,10 +23,8 @@ describe Workstation do
 
   describe "message_routes/senders association" do
 
-    before {
-      message_route = subject.message_routes.create(user: user)
-      subject.save
-    }
+    before { subject.save }
+    let!(:message_route) { subject.message_routes.create(user: user) }
 
     it "should have many message_routes" do
       subject.should have_many :message_routes
