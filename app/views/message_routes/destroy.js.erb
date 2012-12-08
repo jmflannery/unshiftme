@@ -1,5 +1,5 @@
-<% if @recipients %>
-  <% @recipients.each do |recipient| %>
-    var el = $('<%= "##{Workstation.find(recipient.workstation_id).abrev}.recipient_workstation.on" %>').turnOff().removeData('recipient_id'); 
+<% if @message_routes %>
+  <% @message_routes.each do |message_route| %>
+    var el = $('<%= "##{message_route.workstation.abrev}.recipient_workstation.on" %>').turnOff().removeData('recipient_id');
   <% end %>
 <% end %>

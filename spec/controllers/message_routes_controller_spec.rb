@@ -123,13 +123,13 @@ describe MessageRoutesController do
         response.should be_success
       end
 
-      it "destroys a recipient" do
+      it "destroys a message_route" do
         lambda do
           delete :destroy, id: @recipient.id, format: :js
         end.should change(MessageRoute, :count).by(-1)
       end
 
-      context "when the recipient user is controlling multiple workstations" do
+      context "when the message_routes's workstation's user is controlling multiple workstations" do
 
         let(:user) { FactoryGirl.create(:user) }
         let(:recip_user) { FactoryGirl.create(:user) }
@@ -141,7 +141,7 @@ describe MessageRoutesController do
           FactoryGirl.create(:message_route, user: user, workstation_id: aml.id)
         end
 
-        it "creates a recipient for each workstation controlled by the recipient_user" do
+        it "destroys all message routes between the current user and the recipient user" do
           lambda do
             delete :destroy, id: @cusn_recip.id, format: :js
           end.should change(MessageRoute, :count).by(-3)

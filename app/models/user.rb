@@ -102,7 +102,7 @@ class User < ActiveRecord::Base
 
   def set_offline
     leave_workstation
-    delete_all_recipients
+    delete_all_message_routes
   end
 
   def remove_stale_recipients
@@ -174,8 +174,8 @@ class User < ActiveRecord::Base
     route_id
   end
 
-  def delete_all_recipients
-    recipients.each { |recipient| recipient.destroy } 
+  def delete_all_message_routes
+    message_routes.each { |message_route| message_route.destroy } 
   end
 end
 

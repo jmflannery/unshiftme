@@ -171,7 +171,7 @@ var toggle_recipient = function() {
       // POST - recipients#create
       $.ajax( {
         type: "POST", 
-        url: "/recipients",
+        url: "/message_routes",
         data: { "workstation_id": workstation_id },
         success: function(response) {
           response;
@@ -186,7 +186,7 @@ var toggle_recipient = function() {
       // DELETE - recipients#destroy
       $.ajax( {
         type: "POST", 
-        url: "/recipients/" + recipient_id,
+        url: "/message_routes/" + recipient_id,
         data: { _method: 'delete' },
         success: function(response) {
           response;
@@ -210,7 +210,7 @@ var toggle_all_workstations = function() {
     // POST - recipients#create all
     $.ajax( {
       type: "POST", 
-      url: "/recipients",
+      url: "/message_routes",
       data: { "workstation_id": "all" },
       success: function(response) {
         response;
@@ -222,7 +222,7 @@ var toggle_all_workstations = function() {
     // DELETE - workstations#destroy all
     $.ajax( {
       type: "POST", 
-      url: "/recipients/all",
+      url: "/message_routes/all",
       data: { _method: 'delete' },
       success: function(response) {
         response;

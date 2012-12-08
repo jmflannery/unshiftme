@@ -18,22 +18,20 @@ class MessageRoutesController < ApplicationController
 
   def destroy
     if params[:id] == "all"
-      @recipients = current_user.recipients
-      current_user.delete_all_recipients
+      @message_routes = current_user.message_routes
+      current_user.delete_all_message_routes
     else
-      recipient = current_user.recipients.find_by_id(params[:id])
+      message_route = current_user.message_routes.find_by_id(params[:id])
       
-      if recipient
-        @recipients = []
+      if message_route
+        @message_routes = []
         
-        workstation1 = Workstation.find_by_id(recipient.workstation_id)
-        recip_user = User.find_by_id(workstation1.user_id) if workstation1
-        if recip_user
-          @recipients = recip_user.workstation_ids.map { |workstation_id| current_user.recipients.find_by_workstation_id(workstation_id) }
-          @recipients.each { |recip| recip.destroy }
+        if message_route.workstation.user
+          @message_routes = message_route.workstation.user.workstation_ids.map { |workstation_id| current_user.message_routes.find_by_workstation_id(workstation_id) }
+          @message_routes.each { |message_route| message_route.destroy }
         else
-          recipient.destroy
-          @recipients << recipient
+          message_route.destroy
+          @message_routes << message_route
         end
       else
         redirect_to root_path
@@ -42,3 +40,4 @@ class MessageRoutesController < ApplicationController
     end
   end
 end
+
