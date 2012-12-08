@@ -44,8 +44,8 @@ describe Attachment do
 
       before do
         receiver.start_job(cusn.abrev)
-        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-        FactoryGirl.create(:recipient, user: user, workstation_id: aml.id)
+        FactoryGirl.create(:message_route, user: user, workstation: cusn)
+        FactoryGirl.create(:message_route, user: user, workstation: aml)
         attachment1.set_recievers
       end
 
