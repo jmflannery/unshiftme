@@ -7,7 +7,7 @@ module SessionsHelper
   end
 
   def sign_out
-    current_user.delete_all_recipients
+    current_user.delete_all_message_routes
     current_user.set_offline
     session[:user_id] = nil
     current_user = nil 

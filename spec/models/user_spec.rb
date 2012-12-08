@@ -519,15 +519,15 @@ describe User do
       end
     end
 
-    describe "delete_all_recipients" do
+    describe "delete_all_message_routes" do
       
       before do
-        FactoryGirl.create(:message_route, user: subject, workstation_id: cusn.id)
-        FactoryGirl.create(:message_route, user: subject, workstation_id: aml.id)
+        FactoryGirl.create(:message_route, user: subject, workstation: cusn)
+        FactoryGirl.create(:message_route, user: subject, workstation: aml)
       end
       it "deletes all of the user's recipients" do
         subject.recipients.size.should == 2
-        subject.delete_all_recipients
+        subject.delete_all_message_routes
         subject.reload
         subject.recipients.should be_empty
       end
