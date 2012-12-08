@@ -145,7 +145,7 @@ describe Message do
       let(:user1) { FactoryGirl.create(:user) }
       before do
         cusn.set_user(user1)
-        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
+        FactoryGirl.create(:message_route, user: user, workstation: cusn)
         subject.set_receivers
         message.user = user1
         message.set_receivers
@@ -165,7 +165,7 @@ describe Message do
       let(:user1) { FactoryGirl.create(:user) }
       let(:message1) { FactoryGirl.create(:message, user: user1) }
       before do
-        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
+        FactoryGirl.create(:message_route, user: user, workstation: cusn)
         subject.set_receivers
         cusn.set_user(user1)
         message.set_receivers
@@ -191,8 +191,8 @@ describe Message do
       let(:message0) { FactoryGirl.create(:message, user: user) }
       let(:message1) { FactoryGirl.create(:message, user: user1) }
       before do
-        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-        FactoryGirl.create(:recipient, user: user, workstation_id: cuss.id)
+        FactoryGirl.create(:message_route, user: user, workstation: cusn)
+        FactoryGirl.create(:message_route, user: user, workstation: cuss)
         subject.set_receivers
         message0.set_receivers
         message1.set_receivers
@@ -223,8 +223,8 @@ describe Message do
       let(:message1) { FactoryGirl.create(:message, user: user1) }
       let(:message2) { FactoryGirl.create(:message, user: user1) }
       before do
-        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-        FactoryGirl.create(:recipient, user: user, workstation_id: cuss.id)
+        FactoryGirl.create(:message_route, user: user, workstation: cusn)
+        FactoryGirl.create(:message_route, user: user, workstation: cuss)
         subject.set_receivers
         message0.set_receivers
         message1.set_receivers
@@ -260,9 +260,9 @@ describe Message do
 
     before(:each) do
       user1.start_job(cusn.abrev)
-      FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
+      FactoryGirl.create(:message_route, user: user, workstation: cusn)
       user2.start_job(cuss.abrev)
-      FactoryGirl.create(:recipient, user: user, workstation_id: cuss.id)
+      FactoryGirl.create(:message_route, user: user, workstation: cuss)
       subject.save
     end
 
@@ -273,14 +273,14 @@ describe Message do
     end
 
     it "adds the sender's workstation to the recipient list of each of the sender's recipients" do
-      user.start_job(glhs.abrev)
+      glhs.set_user(user)
       subject.broadcast
-      user1.recipients[0].workstation_id.should == glhs.id
-      user2.recipients[0].workstation_id.should == glhs.id
+      user1.recipients[0].id.should == glhs.id
+      user2.recipients[0].id.should == glhs.id
     end
 
     it "does not broadcast a message more than once to a user working multiple jobs" do
-      user1.start_job(cuss.abrev)
+      cuss.set_user(user1)
       PrivatePub.should_receive(:publish_to).exactly(1).times
       subject.broadcast
     end
@@ -291,8 +291,8 @@ describe Message do
     let(:user1) { FactoryGirl.create(:user, user_name: "fred") }
 
     before do
-      FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
-      FactoryGirl.create(:recipient, user: user, workstation_id: aml.id)
+      FactoryGirl.create(:message_route, user: user, workstation: cusn)
+      FactoryGirl.create(:message_route, user: user, workstation: aml)
       user1.start_job(cusn.abrev)
       subject.set_receivers
     end
@@ -483,7 +483,7 @@ describe Message do
     context "when the message was sent to the given user and workstation" do
       before(:each) do
         recipient_user.start_job(cusn.abrev)
-        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
+        FactoryGirl.create(:message_route, user: user, workstation: cusn)
         subject.set_receivers
       end
       it "returns true" do
@@ -493,7 +493,7 @@ describe Message do
     
     context "when the message was sent to the given user's workstations but no specified user" do
       before(:each) do
-        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
+        FactoryGirl.create(:message_route, user: user, workstation: cusn)
         subject.set_receivers
         recipient_user.start_job(cusn.abrev)
       end
@@ -505,7 +505,7 @@ describe Message do
     context "when the message was sent to the given user's workstations but to a different user" do
       before(:each) do
         user2.start_job(cusn.abrev)
-        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
+        FactoryGirl.create(:message_route, user: user, workstation: cusn)
         subject.set_receivers
         user2.leave_workstation
         recipient_user.start_job(cusn.abrev)
@@ -562,7 +562,7 @@ describe Message do
 
       before(:each) do
         subject.save
-        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
+        FactoryGirl.create(:message_route, user: user, workstation: cusn)
         workstation_received_message.set_receivers
         user1.start_job(cusn.abrev)
         sent_message.set_receivers
@@ -618,7 +618,7 @@ describe Message do
 
       before(:each) do
         subject.save
-        FactoryGirl.create(:recipient, user: user, workstation_id: cusn.id)
+        FactoryGirl.create(:message_route, user: user, workstation: cusn)
         workstation_received_message.set_receivers
         user1.start_job(cusn.abrev)
         sent_message.set_receivers

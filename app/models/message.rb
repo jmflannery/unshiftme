@@ -82,10 +82,7 @@ class Message < ActiveRecord::Base
   end
 
   def set_receivers
-    user.recipients.each do |recipient|
-      workstation = Workstation.find_by_id(recipient.workstation_id)
-      set_received_by(workstation)
-    end
+    user.recipients.each { |recipient| set_received_by(recipient) }
   end
 
   def set_received_by(workstation)
@@ -97,17 +94,14 @@ class Message < ActiveRecord::Base
   end
 
   def broadcast
-    user = User.find(user_id)
     sent_to = []
     user.recipients.each do |recipient|
-      workstation = Workstation.find(recipient.workstation_id)
-      if User.exists?(workstation.user_id)
-        recip_user = User.find(workstation.user_id) 
-        unless sent_to.include?(recip_user.id)
-          sent_to << recip_user.id
+      if recipient.user
+        unless sent_to.include?(recipient.user.id)
+          sent_to << recipient.user.id
 
           new_recip_ids = user.workstation_ids.map do |workstation_id|
-            recip = recip_user.add_recipient(Workstation.find(workstation_id))
+            recip = recipient.user.add_recipient(Workstation.find(workstation_id))
             recip ? recip.id : 0
           end
 
@@ -122,7 +116,7 @@ class Message < ActiveRecord::Base
           attachment = Attachment.find(attachment_id) if Attachment.exists?(attachment_id)
           data[:attachment_url] = attachment.payload.url if attachment
  
-          PrivatePub.publish_to("/messages/#{recip_user.user_name}", data)
+          PrivatePub.publish_to("/messages/#{recipient.user.user_name}", data)
         end
       end
     end
