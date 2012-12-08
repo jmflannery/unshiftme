@@ -75,7 +75,7 @@ describe MessageRoutesController do
         user.recipients.should_not be_empty
         user.recipients.size.should == Workstation.all.size
         Workstation.all.each do |workstation|
-          user.should be_messaging workstation.id 
+          user.should be_messaging workstation 
         end
       end
     end
@@ -89,7 +89,7 @@ describe MessageRoutesController do
       let(:message_route) { FactoryGirl.create(:message_route, user: user) }
 
       it "denies access" do
-        delete :destroy, id: recipient.id, format: :js
+        delete :destroy, id: message_route.id, format: :js
         response.should redirect_to(signin_path)  
       end
     end
@@ -102,30 +102,30 @@ describe MessageRoutesController do
       end
       
       it "denies access" do
-        delete :destroy, id: recipient.id, format: :js
+        delete :destroy, id: message_route.id, format: :js
         response.should redirect_to(root_path)  
       end
       
       it "displays a flash error message" do
-        delete :destroy, id: recipient.id, format: :js
+        delete :destroy, id: message_route.id, format: :js
         flash[:error].should == "Internal Server Error. Please log in again."
       end
     end
 
     context "for an authorized user" do
+      let!(:message_route) { FactoryGirl.create(:message_route, user: user, workstation: cusn) }
       before(:each) do
         test_sign_in(user)
-        @recipient = FactoryGirl.create(:message_route, user: user, workstation_id: cusn.id)
       end
 
       it "returns http success" do
-        delete :destroy, id: @recipient.id, format: :js
+        delete :destroy, id: message_route.id, format: :js
         response.should be_success
       end
 
       it "destroys a message_route" do
         lambda do
-          delete :destroy, id: @recipient.id, format: :js
+          delete :destroy, id: message_route.id, format: :js
         end.should change(MessageRoute, :count).by(-1)
       end
 
@@ -133,17 +133,19 @@ describe MessageRoutesController do
 
         let(:user) { FactoryGirl.create(:user) }
         let(:recip_user) { FactoryGirl.create(:user) }
+        let!(:cusn_route) { FactoryGirl.create(:message_route, user: user, workstation: cusn) }
         before(:each) do
           test_sign_in(user)
-          recip_user.start_jobs([cusn.abrev, cuss.abrev, aml.abrev])
-          @cusn_recip = FactoryGirl.create(:message_route, user: user, workstation_id: cusn.id)
-          FactoryGirl.create(:message_route, user: user, workstation_id: cuss.id)
-          FactoryGirl.create(:message_route, user: user, workstation_id: aml.id)
+          cusn.set_user(recip_user)
+          cuss.set_user(recip_user)
+          aml.set_user(recip_user)
+          FactoryGirl.create(:message_route, user: user, workstation: cuss)
+          FactoryGirl.create(:message_route, user: user, workstation: aml)
         end
 
         it "destroys all message routes between the current user and the recipient user" do
           lambda do
-            delete :destroy, id: @cusn_recip.id, format: :js
+            delete :destroy, id: cusn_route.id, format: :js
           end.should change(MessageRoute, :count).by(-3)
         end
       end
@@ -151,7 +153,7 @@ describe MessageRoutesController do
 
     context "for an authorized user with workstation_id 'all'" do
       before(:each) do 
-        @user = test_sign_in(FactoryGirl.create(:user))
+        test_sign_in(user)
         FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td")
         FactoryGirl.create(:workstation, name: "CUS South", abrev: "CUSS", job_type: "td")
         FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML", job_type: "td")
@@ -161,12 +163,11 @@ describe MessageRoutesController do
       end
 
       it "destroys all of the current user's recipients" do
-        @user.add_recipients(Workstation.all)
-        @user.recipients.should_not be_empty
-        @user.recipients.size.should == Workstation.all.size
+        user.add_recipients(Workstation.all)
+        user.recipients.should_not be_empty
+        user.recipients.size.should == Workstation.all.size
         delete :destroy, id: "all", format: :js
-        @user.reload
-        @user.recipients.should be_empty
+        user.reload.recipients.should be_empty
       end
     end
   end
