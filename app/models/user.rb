@@ -11,8 +11,8 @@ class User < ActiveRecord::Base
   has_many :attachments
   has_many :message_routes
   has_many :recipients, :through => :message_routes, :source => :workstation
-  has_many :receipts
-  has_many :read_messages, :through => :receipts, :source => :message
+  has_many :acknowledgements
+  has_many :read_messages, :through => :acknowledgements, :source => :message
   
   serialize :normal_workstations
   

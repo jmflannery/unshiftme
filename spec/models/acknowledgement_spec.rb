@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Receipt do
+describe Acknowledgement do
 
-  before { @receipt = Receipt.new }
-  subject { @receipt }
+  before { @ackowledgement = Acknowledgement.new }
+  subject { @acknowledgement }
 
   it { should respond_to(:user_id) }
   it { should respond_to(:message_id) }

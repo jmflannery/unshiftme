@@ -8,8 +8,8 @@ class Message < ActiveRecord::Base
   belongs_to :user
   has_many :receivers
   has_many :sender_workstations
-  has_many :receipts
-  has_many :readers, :through => :receipts, :source => :user
+  has_many :acknowledgements
+  has_many :readers, :through => :acknowledgements, :source => :user
   
   validates :content, :presence => true, :length => { :maximum => 300 }
   validates :user_id, :presence => true
@@ -167,21 +167,21 @@ class Message < ActiveRecord::Base
 
   def mark_read_by(user)
     unless readers.include?(user)
-      receipts << Receipt.new(user: user, workstation_ids: user.workstation_ids)
+      acknowledgement << Acknowledgement.new(user: user, workstation_ids: user.workstation_ids)
       save
     end
   end
 
   def formatted_readers
     readers_str = ""
-    receipts.each_with_index do |receipt, index|
-      workstations = receipt.workstation_ids.map { |ws_id| Workstation.find(ws_id).abrev }.join(",")
-      if index == (receipts.size - 1) and (receipts.size > 1)
+    acknowledgements.each_with_index do |acknowledgement, index|
+      workstations = acknowledgement.workstation_ids.map { |ws_id| Workstation.find(ws_id).abrev }.join(",")
+      if index == (acknowledgements.size - 1) and (acknowledgements.size > 1)
         readers_str += " and " 
       elsif index > 0
         readers_str += ", "
       end
-      user = receipt.user
+      user = acknowledgement.user
       readers_str += "#{user.user_name}@#{workstations}"
     end
     readers_str += " read this." unless readers_str.blank?

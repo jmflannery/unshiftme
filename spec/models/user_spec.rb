@@ -192,21 +192,21 @@ describe User do
     end
   end
 
-  describe "receipts/read_messages association" do
+  describe "acknowledgements/read_messages association" do
 
     let(:message) { FactoryGirl.create(:message) }
-    let(:receipt) { Receipt.create(message: message) }
+    let(:acknowledgement) { Acknowledgement.create(message: message) }
     before {
-      subject.receipts << receipt
+      subject.acknowledgements << acknowledgement
       subject.save
     }
 
-    it { should have_many :receipts }
+    it { should have_many :acknowledgements }
     it { should have_many :read_messages }
 
     it "should have a list of messages read" do
       subject.read_messages.should include message
-      receipt.user_id.should == subject.id
+      acknowledgement.user_id.should == subject.id
     end
   end
 

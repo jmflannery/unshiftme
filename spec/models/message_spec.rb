@@ -66,9 +66,9 @@ describe Message do
   describe "readers association" do
 
     let(:user) { FactoryGirl.create(:user) }
-    let(:receipt) { Receipt.create(user: user) }
+    let(:acknowledgement) { Acknowledgement.create(user: user) }
     before {
-      subject.receipts << receipt
+      subject.acknowledgements << acknowledgement
       subject.save
     }
 
@@ -76,7 +76,7 @@ describe Message do
 
     it "should have a list of users who are readers of the message" do
       subject.readers.should include user
-      receipt.message_id.should == subject.id
+      acknowledgement.message_id.should == subject.id
     end
   end
 
@@ -433,14 +433,14 @@ describe Message do
       subject.readers.should include recipient_user
     end
 
-    it "creates a receipt associated with the supplied user" do
+    it "creates a acknowledgement associated with the supplied user" do
       subject.mark_read_by(recipient_user)
-      subject.receipts[0].user.should == recipient_user
+      subject.acknowledgements[0].user.should == recipient_user
     end
 
-    it "adds the user's current workstations to the receipt" do
+    it "adds the user's current workstations to the acknowledgement" do
       subject.mark_read_by(recipient_user)
-      subject.receipts[0].workstation_ids.should == recipient_user.workstation_ids
+      subject.acknowledgements[0].workstation_ids.should == recipient_user.workstation_ids
     end
 
     it "does not does not assciate a user as reader twice" do

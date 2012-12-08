@@ -1,4 +1,4 @@
-class Receipt < ActiveRecord::Base
+class Acknowledgement < ActiveRecord::Base
   belongs_to :user
   belongs_to :message
 
