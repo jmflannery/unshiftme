@@ -298,10 +298,10 @@ describe Message do
     end
 
     it "sets message.recievers to an array hashes, with workstation_id and user_id" do
-      subject.receivers[0].workstation.should == cusn
-      subject.receivers[0].user.should == user1
-      subject.receivers[1].workstation.should == aml
-      subject.receivers[1].user.should == nil
+      subject.receivers[0].workstation.should == aml
+      subject.receivers[0].user.should == nil
+      subject.receivers[1].workstation.should == cusn
+      subject.receivers[1].user.should == user1
     end
   end
 
