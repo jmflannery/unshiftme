@@ -147,7 +147,7 @@ class Message < ActiveRecord::Base
       self.view_class = "message msg-#{id} owner"
     end
     
-    if was_sent_to?(user)
+    if sent_to?(user)
       if was_read_by?(user)
         self.view_class = "message msg-#{id} recieved read"
       else
