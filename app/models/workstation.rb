@@ -4,6 +4,8 @@ class Workstation < ActiveRecord::Base
   belongs_to :user
   has_many :message_routes
   has_many :senders, :through => :message_routes, :source => :user
+  has_many :incoming_receipts
+  has_many :incoming_messages, :through => :incoming_receipts, :source => :message
 
   scope :of_type, lambda { |type| where("job_type = ?", type) }
   scope :of_user, lambda { |user_id| where("user_id = ?", user_id) }
