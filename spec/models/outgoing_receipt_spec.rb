@@ -12,5 +12,11 @@ describe OutgoingReceipt do
   it { should belong_to(:user) }
 
   #it { should_not allow_mass_assignment_of(:workstation_id) }
+  
+  it "has workstations serialized field containing an a array of the user's workstations" do
+    subject.save
+    subject.update_attribute(:workstations, ['CUSN', 'CUSS'])
+    subject.reload.workstations.should == ['CUSN', 'CUSS']
+  end
 end
 
