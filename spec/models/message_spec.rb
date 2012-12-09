@@ -78,16 +78,19 @@ describe Message do
     end
   end
 
-  describe "readers association" do
+  describe "acknowledgements/readers association" do
 
+    before { subject.save }
     let(:user) { FactoryGirl.create(:user) }
-    let(:acknowledgement) { Acknowledgement.create(user: user) }
-    before {
-      subject.acknowledgements << acknowledgement
-      subject.save
-    }
+    let!(:acknowledgement) { subject.acknowledgements.create(user: user) }
 
-    it { should have_many :readers }
+    it "should have many acknowledgements" do
+      should have_many :acknowledgements
+    end
+
+    it "should have many readers" do
+      should have_many :readers
+    end
 
     it "should have a list of users who are readers of the message" do
       subject.readers.should include user
