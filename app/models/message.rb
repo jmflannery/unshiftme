@@ -6,7 +6,8 @@ class Message < ActiveRecord::Base
   serialize :read_by
   
   belongs_to :user
-  has_many :receivers
+  has_many :incoming_receipts
+  has_many :receivers, :through => :incoming_receipts, :source => :workstation
   has_many :sender_workstations
   has_many :acknowledgements
   has_many :readers, :through => :acknowledgements, :source => :user
@@ -86,11 +87,9 @@ class Message < ActiveRecord::Base
   end
 
   def set_received_by(workstation)
-    receiver = self.receivers.new
-    receiver.workstation = workstation
-    recip_user = User.find_by_id(workstation.user_id)
-    receiver.user = recip_user if recip_user
-    receiver.save
+    incoming_receipt = incoming_receipts.create(workstation: workstation)
+    incoming_receipt.user = workstation.user
+    incoming_receipt.save
   end
 
   def broadcast
