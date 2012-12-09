@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Acknowledgement do
 
-  before { @ackowledgement = Acknowledgement.new }
+  before { @acknowledgement = Acknowledgement.new }
   subject { @acknowledgement }
 
   it { should respond_to(:user_id) }
