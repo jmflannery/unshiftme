@@ -114,7 +114,7 @@ describe Message do
   end
 
   describe "named scope" do
-        pending
+    pending
 
     let!(:message) { FactoryGirl.create(:message, user: user) }
     before(:each) do
@@ -389,19 +389,30 @@ describe Message do
     end 
   end
 
-  describe "#set_sender_workstations" do
-    pending
+  describe "#generate_outgoing_receipt" do
 
-    before do
-      cusn.set_user(user)
-      aml.set_user(user)
-      #subject.set_sender_workstations
+    it "generate's the message's outgoing_receipt" do
+      subject.generate_outgoing_receipt
+      subject.outgoing_receipt.user.should == user
     end
 
-    it "sets the sender_workstations of the message" do
-      pending
-      subject.sender_workstations[0].workstation.should == cusn
-      subject.sender_workstations[1].workstation.should == aml
+    context "when the sender is controlling one or more workstations" do
+      before do
+        cusn.set_user(user)
+        aml.set_user(user)
+      end
+
+      it "adds the workstation(s) to the receipt" do
+        subject.generate_outgoing_receipt
+        subject.outgoing_receipt.workstations.should == ["CUSN", "AML"]
+      end
+    end
+
+    context "when the sender is not controlling any workstations" do
+      it "sets the receipt's workstations to an empty array" do
+        subject.generate_outgoing_receipt
+        subject.outgoing_receipt.workstations.should == []
+      end
     end
   end
 

@@ -121,12 +121,8 @@ class Message < ActiveRecord::Base
     end
   end
 
-  def set_sender_workstations
-    user.workstations.each do |workstation|
-      sender_workstation = self.sender_workstations.new
-      sender_workstation.workstation = workstation    
-      sender_workstation.save
-    end
+  def generate_outgoing_receipt
+    OutgoingReceipt.create(message: self, user: user, workstations: user.workstation_names)
   end
 
   def sender_handle
