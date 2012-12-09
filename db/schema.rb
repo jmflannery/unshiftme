@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121209052159) do
+ActiveRecord::Schema.define(:version => 20121209154309) do
 
   create_table "acknowledgements", :force => true do |t|
     t.integer  "user_id"
@@ -56,9 +56,10 @@ ActiveRecord::Schema.define(:version => 20121209052159) do
 
   create_table "outgoing_receipts", :force => true do |t|
     t.integer  "message_id"
-    t.integer  "workstation_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.integer  "user_id"
+    t.string   "workstations"
   end
 
   create_table "sessions", :force => true do |t|
