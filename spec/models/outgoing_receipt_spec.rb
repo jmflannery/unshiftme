@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe SenderWorkstation do
+describe OutgoingReceipt do
 
-  before { @sender_workstation = SenderWorkstation.new }
-  subject { @sender_workstation }
+  before { @outgoing_receipt = OutgoingReceipt.new }
+  subject { @outgoing_receipt }
 
   it { should respond_to(:message_id) }
   it { should respond_to(:workstation_id) }
@@ -13,3 +13,4 @@ describe SenderWorkstation do
 
   it { should_not allow_mass_assignment_of(:workstation_id) }
 end
+

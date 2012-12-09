@@ -1,6 +1,7 @@
-class SenderWorkstation < ActiveRecord::Base
+class OutgoingReceipt < ActiveRecord::Base
   attr_accessible :message_id
 
   belongs_to :message
   belongs_to :workstation
 end
+
