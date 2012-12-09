@@ -212,6 +212,26 @@ describe User do
     end
   end
 
+  describe "outgoing_receipts/sent_messages association" do
+
+    before { subject.save }
+    let(:message) { FactoryGirl.create(:message) }
+    let!(:outgoing_receipt) { subject.outgoing_receipts.create(message: message) }
+
+    it "should have many outgoing_receipts" do
+      subject.should have_many :outgoing_receipts
+    end
+
+    it "should have many outgoing_messages" do
+      subject.should have_many :outgoing_messages
+    end
+
+    it "should have a list of outging_messages" do
+      subject.outgoing_messages.should include message
+      outgoing_receipt.message_id.should == subject.id
+    end
+  end
+
   describe "acknowledgements/read_messages association" do
 
     let(:message) { FactoryGirl.create(:message) }
