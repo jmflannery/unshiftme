@@ -444,23 +444,21 @@ describe Message do
     end
   end
 
-  describe "#was_sent_by?" do
+  describe "#sent_by?" do
 
     let(:user1) { FactoryGirl.create(:user) }
     
     before do
-      user.start_job(cusn.abrev)
-      #subject.set_sender_workstations
+      cusn.set_user(user)
+      subject.generate_outgoing_receipt
     end
 
     it "returns false if the message was not sent by the given user" do
-      pending
-      subject.was_sent_by?(user1).should be_false
+      subject.sent_by?(user1).should be_false
     end
 
     it "returns true if the message was sent by the given user" do
-      pending
-      subject.was_sent_by?(user).should be_true
+      subject.sent_by?(user).should be_true
     end
   end
 

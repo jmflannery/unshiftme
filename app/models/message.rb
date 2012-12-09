@@ -138,12 +138,8 @@ class Message < ActiveRecord::Base
     sent_by
   end
 
-  def was_sent_by?(user)
-    if self.user_id == user.id
-      true
-    else
-      false
-    end
+  def sent_by?(user)
+    user_id == user.id
   end
 
   def set_view_class(user)
