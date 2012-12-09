@@ -1,4 +1,4 @@
-class Receiver < ActiveRecord::Base
+class IncomingReceipt < ActiveRecord::Base
   attr_accessible :message_id
 
   belongs_to :message

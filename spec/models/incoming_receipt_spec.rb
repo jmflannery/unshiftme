@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Receiver do
+describe IncomingReceipt do
 
-  before { @receiver = Receiver.new }
-  subject { @receiver }
+  before { @incoming_message = IncomingReceipt.new }
+  subject { @incoming_message }
 
   it { should respond_to(:message_id) }
   it { should respond_to(:workstation_id) }
