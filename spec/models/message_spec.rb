@@ -422,25 +422,25 @@ describe Message do
       cusn.set_user(user)
       cuss.set_user(user)
       aml.set_user(user)
-      #subject.set_sender_workstations
+      subject.generate_outgoing_receipt
     end
  
     it "should return a formatted list of the message senders workstation's" do
-      pending
       subject.sender_handle.should == "joe@CUSN,CUSS,AML"
     end
   end
 
-  describe "#sent_by" do
+  describe "#sent_by_workstations_list" do
 
     before do
-      user.start_jobs([cusn.abrev, cuss.abrev, aml.abrev])
-      #subject.set_sender_workstations
+      cusn.set_user(user)
+      cuss.set_user(user)
+      aml.set_user(user)
+      subject.generate_outgoing_receipt
     end
  
     it "should return a formatted list of the message senders workstation's" do
-      pending
-      subject.sent_by.should == "CUSN,CUSS,AML"
+      subject.sent_by_workstations_list.should == "CUSN,CUSS,AML"
     end
   end
 

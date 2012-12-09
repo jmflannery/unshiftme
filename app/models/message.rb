@@ -126,14 +126,14 @@ class Message < ActiveRecord::Base
   end
 
   def sender_handle
-    "#{user.user_name}@#{sent_by}"
+    "#{user.user_name}@#{sent_by_workstations_list}"
   end 
   
-  def sent_by
+  def sent_by_workstations_list
     sent_by = ""
-    self.sender_workstations.each_index do |index|
+    outgoing_receipt.workstations.each_with_index do |workstation_abrev, index|
       sent_by += "," unless index == 0
-      sent_by += sender_workstations[index].workstation.abrev
+      sent_by += workstation_abrev
     end
     sent_by
   end
