@@ -78,6 +78,21 @@ describe Message do
     end
   end
 
+  describe "outgoing_receipt/sender association" do
+
+    before { subject.save }
+    let(:user) { FactoryGirl.create(:user) }
+    let!(:outgoing_receipt) { OutgoingReceipt.create(message: subject, user: user) }
+
+    it "has one outgoing_receipt" do
+      should have_one :outgoing_receipt
+    end
+    
+    it "has one outgoing receipt" do
+      subject.outgoing_receipt.should == outgoing_receipt
+    end
+  end
+
   describe "acknowledgements/readers association" do
 
     before { subject.save }

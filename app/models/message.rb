@@ -8,7 +8,7 @@ class Message < ActiveRecord::Base
   belongs_to :user
   has_many :incoming_receipts
   has_many :receivers, :through => :incoming_receipts, :source => :workstation
-  has_many :sender_workstations
+  has_one :outgoing_receipt
   has_many :acknowledgements
   has_many :readers, :through => :acknowledgements, :source => :user
   
