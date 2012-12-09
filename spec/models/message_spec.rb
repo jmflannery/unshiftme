@@ -550,7 +550,7 @@ describe Message do
     end
   end
 
-  describe "#was_sent_to?" do
+  describe "#sent_to?" do
 
     let(:user1) { FactoryGirl.create(:user) }
     let(:user2) { FactoryGirl.create(:user) }
@@ -559,7 +559,7 @@ describe Message do
 
     context "when the message was not sent to the given user, or the given user's workstations" do
       it "returns false" do
-        subject.was_sent_to?(user1).should be_false
+        subject.sent_to?(user1).should be_false
       end
     end
 
@@ -571,7 +571,7 @@ describe Message do
       end
 
       it "returns true" do
-        subject.was_sent_to?(recipient_user).should be_true
+        subject.sent_to?(recipient_user).should be_true
       end
     end
     
@@ -579,10 +579,10 @@ describe Message do
       before(:each) do
         FactoryGirl.create(:message_route, user: user, workstation: cusn)
         subject.set_receivers
-        recipient_user.start_job(cusn.abrev)
       end
+
       it "returns true" do
-        subject.was_sent_to?(recipient_user).should be_true
+        subject.sent_to?(recipient_user).should be_true
       end
     end
     
@@ -594,8 +594,9 @@ describe Message do
         user2.leave_workstation
         cusn.set_user(recipient_user)
       end
+
       it "returns false" do
-        subject.was_sent_to?(recipient_user).should be_false
+        subject.sent_to?(recipient_user).should be_false
       end
     end
   end

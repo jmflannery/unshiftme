@@ -143,7 +143,7 @@ class Message < ActiveRecord::Base
   end
 
   def set_view_class(user)
-    if was_sent_by?(user)
+    if sent_by?(user)
       self.view_class = "message msg-#{id} owner"
     end
     
@@ -179,10 +179,10 @@ class Message < ActiveRecord::Base
     readers_str
   end
 
-  def was_sent_to?(user)
+  def sent_to?(user)
     sent_to = false
-    self.receivers.each do |receiver|
-      if receiver.user_id == user.id or (user.workstation_ids.include?(receiver.workstation_id) and receiver.user.nil?)
+    incoming_receipts.each do |receipt|
+      if receipt.user_id == user.id or (user.workstations.include?(receipt.workstation) and receipt.user.nil?)
         sent_to = true
         break
       end
