@@ -357,10 +357,10 @@ describe Message do
     end
 
     it "sets message.recievers to an array hashes, with workstation_id and user_id" do
-      subject.incoming_receipts[0].workstation.should == aml
-      subject.incoming_receipts[0].user.should == nil
-      subject.incoming_receipts[1].workstation.should == cusn
-      subject.incoming_receipts[1].user.should == user1
+      subject.incoming_receipts[0].workstation.should == cusn
+      subject.incoming_receipts[0].user.should == user1
+      subject.incoming_receipts[1].workstation.should == aml
+      subject.incoming_receipts[1].user.should == nil
     end
   end
 
@@ -579,6 +579,7 @@ describe Message do
       before(:each) do
         FactoryGirl.create(:message_route, user: user, workstation: cusn)
         subject.set_receivers
+        cusn.set_user(recipient_user)
       end
 
       it "returns true" do
