@@ -10,7 +10,7 @@ class AttachmentsController < ApplicationController
       @message = @user.messages.create(content: @attachment.payload_identifier, attachment_id: @attachment.id)
       if @message.save
         @message.set_receivers 
-        @message.set_sender_workstations
+        @message.generate_outgoing_receipt
         @message.view_class = "message #{@message.id} owner"
         @message.broadcast
       end
