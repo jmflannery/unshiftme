@@ -75,7 +75,7 @@ class User < ActiveRecord::Base
   end
 
   def display_messages
-    messages | incoming_messages
+    messages | incoming_messages | unreceived_workstation_messages
   end
 
   def unreceived_workstation_messages

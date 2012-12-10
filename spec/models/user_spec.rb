@@ -352,17 +352,26 @@ describe User do
 
     describe "#display_messages", focus: true do
 
+      let(:sender) { FactoryGirl.create(:user) }
+
       it "returns messages that were sent by the given user" do
         msg = subject.messages.create(content: "this is a message")
         subject.display_messages.should include msg 
       end
 
       it "returns messages that were sent to the given user" do
-        sender = FactoryGirl.create(:user)
+        sender.add_recipient(cusn)
+        msg = sender.messages.create(content: "this is a message")
         cusn.set_user(subject)
+        msg.set_receivers
+        subject.display_messages.should include msg
+      end
+
+      it "returns messages that were sent to the given user's workstation(s), while those workstation(s) had no user" do
         sender.add_recipient(cusn)
         msg = sender.messages.create(content: "this is a message")
         msg.set_receivers
+        cusn.set_user(subject)
         subject.display_messages.should include msg
       end
     end
