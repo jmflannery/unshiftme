@@ -36,6 +36,10 @@ class Workstation < ActiveRecord::Base
     Workstation.all.map { |workstation| workstation.abrev }
   end
 
+  def unreceived_messages
+    incoming_messages.where("incoming_receipts.user_id is null")
+  end
+
   def description
     desc = name
     desc += " (#{User.find_by_id(user_id).user_name})" if User.exists?(user_id)

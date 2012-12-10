@@ -109,6 +109,36 @@ describe Workstation do
       end
     end
 
+    describe "#unreceived_messages" do
+
+      let(:sender) { FactoryGirl.create(:user) }
+
+      context "when the workstation does not have a user" do
+
+        it "returns messages sent to the workstation" do
+          sender.add_recipient(subject)
+          msg = sender.messages.create(content: "this is a message")
+          msg.set_receivers
+          subject.unreceived_messages.should include msg
+        end
+      end
+
+      context "when the workstation does have a user" do
+
+        before do
+          other_user = FactoryGirl.create(:user)
+          subject.set_user(other_user)
+        end
+
+        it "does not return messages sent to the workstation" do
+          sender.add_recipient(subject)
+          msg = sender.messages.create(content: "this is a message")
+          msg.set_receivers
+          subject.unreceived_messages.should_not include msg
+        end
+      end
+    end
+
     describe "#description" do
     
       context "when the workstation has a user" do
