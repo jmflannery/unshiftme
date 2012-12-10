@@ -350,7 +350,7 @@ describe User do
       end
     end
 
-    describe "#display_messages", focus: true do
+    describe "#display_messages" do
 
       let(:sender) { FactoryGirl.create(:user) }
 
