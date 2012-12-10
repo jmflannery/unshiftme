@@ -78,6 +78,12 @@ class User < ActiveRecord::Base
     messages | incoming_messages
   end
 
+  def unreceived_workstation_messages
+    workstations.inject([]) do |result, workstation|
+      result | workstation.unreceived_messages
+    end
+  end
+
   def recipient_workstation_ids
     recipients.map { |recipient| recipient.id }
   end  

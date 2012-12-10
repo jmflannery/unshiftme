@@ -366,6 +366,43 @@ describe User do
         subject.display_messages.should include msg
       end
     end
+
+    describe "#unreceived_workstation_messages" do
+
+      let(:sender) { FactoryGirl.create(:user) }
+
+      context "when the user's workstations have no user" do
+
+        it "returns messages sent to the user's workstations while those workstations had no user" do
+          sender.add_recipient(cusn)
+          msg = sender.messages.create(content: "this is a message")
+          msg.set_receivers
+          cusn.set_user(subject)
+          subject.unreceived_workstation_messages.should include msg
+        end
+      end
+
+      context "when the user's workstations have a user" do
+
+        it "does not return messages sent to the user's workstations" do
+          sender.add_recipient(cusn)
+          msg = sender.messages.create(content: "this is a message")
+          cusn.set_user(subject)
+          msg.set_receivers
+          subject.unreceived_workstation_messages.should_not include msg
+        end
+      end
+      
+      context "when the user has no workstations" do
+
+        it "returns an empty array" do
+          sender.add_recipient(cusn)
+          msg = sender.messages.create(content: "this is a message")
+          msg.set_receivers
+          subject.unreceived_workstation_messages.should == []
+        end
+      end
+    end
     
     describe "start_jobs" do
     
