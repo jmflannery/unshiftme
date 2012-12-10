@@ -74,6 +74,10 @@ class User < ActiveRecord::Base
     "#{user_name}@#{workstation_names_str}"
   end
 
+  def display_messages
+    messages | incoming_messages
+  end
+
   def recipient_workstation_ids
     recipients.map { |recipient| recipient.id }
   end  

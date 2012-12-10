@@ -349,6 +349,23 @@ describe User do
         @user.as_json.should == @expected
       end
     end
+
+    describe "#display_messages", focus: true do
+
+      it "returns messages that were sent by the given user" do
+        msg = subject.messages.create(content: "this is a message")
+        subject.display_messages.should include msg 
+      end
+
+      it "returns messages that were sent to the given user" do
+        sender = FactoryGirl.create(:user)
+        cusn.set_user(subject)
+        sender.add_recipient(cusn)
+        msg = sender.messages.create(content: "this is a message")
+        msg.set_receivers
+        subject.display_messages.should include msg
+      end
+    end
     
     describe "start_jobs" do
     
