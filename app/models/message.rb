@@ -28,15 +28,15 @@ class Message < ActiveRecord::Base
   }
 
   scope :sent_to_user, lambda { |user_id|
-    joins(:receivers).where("receivers.user_id = ?", user_id)
+    joins(:incoming_receipts).where("incoming_receipts.user_id = ?", user_id)
   }
 
   scope :sent_to_workstation, lambda { |workstation_id|
-    joins(:receivers).where("receivers.workstation_id = ? and receivers.user_id is null", workstation_id)
+    joins(:incoming_receipts).where("incoming_receipts.workstation_id = ? and incoming_receipts.user_id is null", workstation_id)
   }
 
   scope :sent_to_workstations, lambda { |workstation_ids|
-    joins(:receivers).where("receivers.workstation_id in (#{workstation_ids.join(",")}) and receivers.user_id is null")
+    joins(:incoming_receipts).where("incoming_receipts.workstation_id in (#{workstation_ids.join(",")}) and incoming_receipts.user_id is null")
   }
 
   scope :sent_to_user_or_workstations, lambda { |user_id, workstation_ids|

@@ -114,7 +114,6 @@ describe Message do
   end
 
   describe "named scope" do
-    pending
 
     let!(:message) { FactoryGirl.create(:message, user: user) }
     before(:each) do
@@ -122,7 +121,7 @@ describe Message do
       subject.save
     end
 
-    describe "between" do
+    describe "before" do
 
       before do
         message.created_at = 25.hours.ago
@@ -131,18 +130,15 @@ describe Message do
       end
 
       it "returns messages created between the given time and 24 hours earlier" do
-        pending
         @messages.should include subject
       end
 
       it "does not return messages created outside of the given time and 24 hours earlier" do
-        pending
         @messages.should_not include message
       end
     end
 
     describe "between" do
-        pending
 
       before do
         message.created_at = 25.hours.ago
@@ -151,39 +147,29 @@ describe Message do
       end
     
       it "returns messages created between the given from and to times" do
-        pending
         @messages.should include subject
       end
       
       it "does not return messages created outside of the given from and to times" do
-        pending
         @messages.should_not include message
       end
     end
 
     describe "sent_by_user" do
-        pending
       
       let(:message1) { FactoryGirl.create(:message) }
-      before do
-        subject.save
-        #subject.set_sender_workstations
-        #message1.set_sender_workstations
-      end
+      before { subject.save }
 
       it "returns messages sent by the given user" do
-        pending
         Message.sent_by_user(user.id).should include subject
       end
 
       it "does not return messages not sent by the given user" do
-        pending
         Message.sent_by_user(user.id).should_not include message1
       end
     end
 
     describe "sent_to_user" do
-        pending
        
       let(:user1) { FactoryGirl.create(:user) }
       before do
@@ -195,18 +181,15 @@ describe Message do
       end
 
       it "returns messages sent to the given user" do
-        pending
         Message.sent_to_user(user1.id).should include subject
       end
 
       it "does not return messages not sent to the given user" do
-        pending
         Message.sent_to_user(user1.id).should_not include message
       end
     end
 
     describe "sent_to_workstation" do
-        pending
 
       let(:user1) { FactoryGirl.create(:user) }
       let(:message1) { FactoryGirl.create(:message, user: user1) }
@@ -219,58 +202,53 @@ describe Message do
       end
 
       it "returns messages sent to the given workstation when the workstation had no user" do
-        pending
         Message.sent_to_workstation(cusn.id).should include subject
       end
 
       it "does not return messages sent to the given workstation while a user was controlling that workstation" do
-        pending
         Message.sent_to_workstation(cusn.id).should_not include message
       end
 
       it "does not return messages not sent to the given workstation" do
-        pending
         Message.sent_to_workstation(cusn.id).should_not include message1
       end
     end
 
     describe "sent_to_workstations" do
-        pending
 
       let(:user1) { FactoryGirl.create(:user) }
       let(:message0) { FactoryGirl.create(:message, user: user) }
       let(:message1) { FactoryGirl.create(:message, user: user1) }
+      let(:message2) { FactoryGirl.create(:message) }
       before do
         FactoryGirl.create(:message_route, user: user, workstation: cusn)
         FactoryGirl.create(:message_route, user: user, workstation: cuss)
+        FactoryGirl.create(:message_route, user: user1, workstation: cusn)
+        FactoryGirl.create(:message_route, user: user1, workstation: cuss)
         subject.set_receivers
         message0.set_receivers
-        message1.set_receivers
         cusn.set_user(user1)
         cuss.set_user(user1)
-        message.set_receivers
+        message1.set_receivers
+        message2.set_receivers
         @messages = Message.sent_to_workstations([cusn.id, cuss.id])
       end
 
       it "returns messages sent to the given workstations when the workstations had no user" do
-        pending
         @messages.should include subject
         @messages.should include message0
       end
 
       it "does not return messages sent to the given workstations while a user was controlling those workstations" do
-        pending
-        @messages.should_not include message
+        @messages.should_not include message1
       end
 
       it "does not return messages not sent to the given workstations" do
-        pending
-        @messages.should_not include message1
+        @messages.should_not include message2
       end
     end
 
     describe "sent_to_user_or_workstations" do
-        pending
 
       let(:user1) { FactoryGirl.create(:user) }
       let(:message0) { FactoryGirl.create(:message, user: user) }
@@ -289,23 +267,19 @@ describe Message do
       end
 
       it "returns messages sent to the given user" do
-        pending
         @messages.should include message
       end
 
       it "returns messages sent to the given workstations when the workstations had no user" do
-        pending
         @messages.should include subject
         @messages.should include message0
       end
       
       it "does not return messages not sent to the given user or workstations" do
-        pending
         @messages.should_not include message1
       end
 
       it "does not return messages sent to the given workstations while a user other than the given user was controlling the workstations" do
-        pending
         Message.sent_to_user_or_workstations(user, [cusn.id, cuss.id]).should_not include message
       end
     end
