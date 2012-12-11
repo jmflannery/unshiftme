@@ -21,11 +21,11 @@ class MessagesController < ApplicationController
     start_time = Time.parse(st) unless st.blank?
     end_time = Time.parse(et) unless et.blank?
     if !start_time and !end_time
-      messages = Message.for_user_before(user, Time.now)
+      messages = user.display_messages
     elsif start_time and !end_time
-      messages = Message.for_user_before(user, start_time)
+      messages = user.display_messages(start_time: start_time)
     elsif start_time and end_time
-      messages = Message.for_user_between(user, start_time, end_time)
+      messages = user.display_messages(start_time: start_time, end_time: end_time)
     end
     if messages
       messages.each { |message| message.set_view_class(user) }
