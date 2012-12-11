@@ -459,6 +459,45 @@ describe User do
         cusn.set_user(subject)
         subject.unreceived_workstation_messages.should_not include msg
       end
+      
+      context "if the start_time option parameter is supplied" do
+
+        it "does not return messages sent before the supplied start_time" do
+          sender.add_recipient(cusn)
+          msg = sender.messages.create(content: "this is a message")
+          msg.update_attribute(:created_at, 13.hours.ago)
+          msg.set_receivers
+          cusn.set_user(subject)
+          subject.unreceived_workstation_messages(start_time: 12.hours.ago).should_not include msg
+        end
+      end
+
+      context "if the end_time option parameter is supplied" do
+
+        it "does not return messages sent after the supplied end_time" do
+          sender.add_recipient(cusn)
+          msg = sender.messages.create(content: "this is a message")
+          msg.update_attribute(:created_at, 13.hours.ago)
+          msg.set_receivers
+          cusn.set_user(subject)
+          subject.unreceived_workstation_messages(end_time: 14.hours.ago).should_not include msg
+        end
+      end
+
+      context "if the start_time and end_time option parameters are supplied" do
+
+        it "does not return messages sent after the supplied end_time" do
+          sender.add_recipient(cusn)
+          msg = sender.messages.create(content: "this is a message")
+          msg.update_attribute(:created_at, 33.hours.ago)
+          msg2 = sender.messages.create(content: "this is a message")
+          msg2.update_attribute(:created_at, 1.hours.ago)
+          msg.set_receivers
+          cusn.set_user(subject)
+          subject.unreceived_workstation_messages(start_time: 32.hours.ago, end_time: 2.hours.ago).should_not include msg
+          subject.unreceived_workstation_messages(start_time: 32.hours.ago, end_time: 2.hours.ago).should_not include msg2
+        end
+      end
     end
     
     describe "start_jobs" do
