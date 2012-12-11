@@ -385,12 +385,42 @@ describe User do
       end
 
       context "if start_time option parameter is supplied" do
+
+        it "does not return messages sent before the supplied start_time" do
+          sender.add_recipient(cusn)
+          msg = sender.messages.create(content: "this is a message")
+          msg.update_attribute(:created_at, 3.hours.ago)
+          msg.set_receivers
+          cusn.set_user(subject)
+          subject.display_messages(start_time: 2.hours.ago).should_not include msg
+        end
       end
 
       context "if the end_time option parameter is supplied" do
+
+        it "does not return messages sent after the supplied end_time" do
+          sender.add_recipient(cusn)
+          msg = sender.messages.create(content: "this is a message")
+          msg.update_attribute(:created_at, 1.hours.ago)
+          msg.set_receivers
+          cusn.set_user(subject)
+          subject.display_messages(end_time: 2.hours.ago).should_not include msg
+        end
       end
 
-      context "if the start_time and end_time option parameter is supplied" do
+      context "if the start_time and end_time option parameters are supplied" do
+
+        it "does not return messages sent before the start_time or after the end_time" do
+          sender.add_recipient(cusn)
+          msg = sender.messages.create(content: "this is a message")
+          msg.update_attribute(:created_at, 3.hours.ago)
+          msg2 = sender.messages.create(content: "this is also a message")
+          msg.update_attribute(:created_at, 1.hour.ago)
+          msg.set_receivers
+          cusn.set_user(subject)
+          subject.display_messages(start_time: 32.hours.ago, end_time: 2.hours.ago).should_not include msg
+          subject.display_messages(start_time: 32.hours.ago, end_time: 2.hours.ago).should_not include msg2
+        end
       end
     end
 
