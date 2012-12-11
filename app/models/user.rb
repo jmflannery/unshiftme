@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   validates :password_confirmation, presence: true, if: :should_validate_password?
 
   IDLE_TIME = 15
+  MESSAGE_HISTORY_LENGTH = 24.hours.ago 
 
   after_create :init_admin
 
@@ -74,13 +75,21 @@ class User < ActiveRecord::Base
     "#{user_name}@#{workstation_names_str}"
   end
 
-  def display_messages
-    messages | incoming_messages | unreceived_workstation_messages
+  def display_messages(options = {})
+    start_time = options.fetch(:start_time, MESSAGE_HISTORY_LENGTH)
+    end_time = options.fetch(:end_time, Time.now)
+    where_clause = "messages.created_at >= ? and messages.created_at <= ?"
+    messages.where(where_clause, start_time, end_time) |
+      incoming_messages.where(where_clause, start_time, end_time) |
+      unreceived_workstation_messages(start_time: start_time, end_time: end_time)
   end
 
-  def unreceived_workstation_messages
+  def unreceived_workstation_messages(options = {})
+    start_time = options.fetch(:start_time, MESSAGE_HISTORY_LENGTH)
+    end_time = options.fetch(:end_time, Time.now)
+    where_clause = "messages.created_at >= ? and messages.created_at <= ?"
     workstations.inject([]) do |result, workstation|
-      result | workstation.unreceived_messages
+      result | workstation.unreceived_messages.where(where_clause, start_time, end_time)
     end
   end
 

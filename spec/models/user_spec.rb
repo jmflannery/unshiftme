@@ -374,42 +374,60 @@ describe User do
         cusn.set_user(subject)
         subject.display_messages.should include msg
       end
+
+      it "does not return messages older than 24 hours" do
+        sender.add_recipient(cusn)
+        msg = sender.messages.create(content: "this is a message")
+        msg.update_attribute(:created_at, 25.hours.ago)
+        msg.set_receivers
+        cusn.set_user(subject)
+        subject.display_messages.should_not include msg
+      end
+
+      context "if start_time option parameter is supplied" do
+      end
+
+      context "if the end_time option parameter is supplied" do
+      end
+
+      context "if the start_time and end_time option parameter is supplied" do
+      end
     end
 
     describe "#unreceived_workstation_messages" do
 
       let(:sender) { FactoryGirl.create(:user) }
 
-      context "when the user's workstations have no user" do
-
-        it "returns messages sent to the user's workstations while those workstations had no user" do
-          sender.add_recipient(cusn)
-          msg = sender.messages.create(content: "this is a message")
-          msg.set_receivers
-          cusn.set_user(subject)
-          subject.unreceived_workstation_messages.should include msg
-        end
+      it "returns messages sent to the user's workstations while those workstations had no user" do
+        sender.add_recipient(cusn)
+        msg = sender.messages.create(content: "this is a message")
+        msg.set_receivers
+        cusn.set_user(subject)
+        subject.unreceived_workstation_messages.should include msg
       end
 
-      context "when the user's workstations have a user" do
-
-        it "does not return messages sent to the user's workstations" do
-          sender.add_recipient(cusn)
-          msg = sender.messages.create(content: "this is a message")
-          cusn.set_user(subject)
-          msg.set_receivers
-          subject.unreceived_workstation_messages.should_not include msg
-        end
+      it "does not return messages sent to the user's workstations while those workstations had a user" do
+        sender.add_recipient(cusn)
+        msg = sender.messages.create(content: "this is a message")
+        cusn.set_user(subject)
+        msg.set_receivers
+        subject.unreceived_workstation_messages.should_not include msg
       end
-      
-      context "when the user has no workstations" do
+    
+      it "returns an empty array if the user has no workstations" do
+        sender.add_recipient(cusn)
+        msg = sender.messages.create(content: "this is a message")
+        msg.set_receivers
+        subject.unreceived_workstation_messages.should == []
+      end
 
-        it "returns an empty array" do
-          sender.add_recipient(cusn)
-          msg = sender.messages.create(content: "this is a message")
-          msg.set_receivers
-          subject.unreceived_workstation_messages.should == []
-        end
+      it "does not return messages older than 24 hours" do
+        sender.add_recipient(cusn)
+        msg = sender.messages.create(content: "this is a message")
+        msg.update_attribute(:created_at, 25.hours.ago)
+        msg.set_receivers
+        cusn.set_user(subject)
+        subject.unreceived_workstation_messages.should_not include msg
       end
     end
     
