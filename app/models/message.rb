@@ -131,9 +131,11 @@ class Message < ActiveRecord::Base
   
   def sent_by_workstations_list
     sent_by = ""
-    outgoing_receipt.workstations.each_with_index do |workstation_abrev, index|
-      sent_by += "," unless index == 0
-      sent_by += workstation_abrev
+    if outgoing_receipt
+      outgoing_receipt.workstations.each_with_index do |workstation_abrev, index|
+        sent_by += "," unless index == 0
+        sent_by += workstation_abrev
+      end
     end
     sent_by
   end
