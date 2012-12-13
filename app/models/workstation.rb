@@ -9,6 +9,8 @@ class Workstation < ActiveRecord::Base
 
   scope :of_type, lambda { |type| where("job_type = ?", type) }
   scope :of_user, lambda { |user_id| where("user_id = ?", user_id) }
+
+  scope :ordered, order: "id ASC"
   
   def set_user(user)
     self.user = user
@@ -17,7 +19,7 @@ class Workstation < ActiveRecord::Base
 
   def self.as_json
     array = []
-    all.each do |workstation|
+    ordered.each do |workstation|
       hash = {}
       hash[:id] = workstation.id
       hash[:long_name] = workstation.name
