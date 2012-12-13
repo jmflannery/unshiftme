@@ -1,21 +1,22 @@
 <div id="content" class=<%= "#{@user.id}" %>>
-
+<!--
   <div id="upload">
 
     <div id="outer_upload_section">
 
       <div id="upload_close_button">
-        <%= image_tag("xicon.png", id: "upload_xicon") %>
+        <#%= image_tag("xicon.png", id: "upload_xicon") %>
       </div>
       
       <div id="upload_section">
         <p>Drag files</br>here</p>
-        <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
-          <%= f.file_field :payload %>
-        <% end %>
+        <#%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
+          <#%= f.file_field :payload %>
+        <#% end %>
       </div>
     </div>
   </div>
+  -->
 
   <div id='workstation_section'>
     <div id="workstation_loading_icon">

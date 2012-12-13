@@ -1,33 +1,33 @@
 <div id="edit_user">
-  <h1>Edit user</h1>
-  <%= @user.user_name %>
 
-  <%= form_for(@user) do |f| %>
-    <%= render 'shared/error_messages', :object => f.object %>
+  <div class="center_spot"> 
+    <%= form_for(@user) do |f| %>
+      <%= render 'shared/error_messages', :object => f.object %>
 
-    <div class="field">
-      <%= f.label :user_name %> </br>
-      <%= f.text_field :user_name %>
-    </div>
-
-    <div id="select_normal_workstation">
-      Normal Workstation(s)
-      <div id="td_workstations">
-        <%= render collection: @td_workstations, 
-                   partial: 'workstations/workstation',
-                   locals: { user: current_user } if @td_workstations %>
+      <div class="field">
+        <%= f.label :user_name %> </br>
+        <%= f.text_field :user_name %>
       </div>
-      <div id="ops_workstations">
-        <%= render collection: @ops_workstations, 
-                   partial: 'workstations/workstation',
-                   locals: { user: current_user } if @ops_workstations %>
-      </div>
-    </div>
 
-    <div class="actions">
-      <%= f.submit "Update" %>
-    </div>
-  <% end %>
+      <div id="select_normal_workstation">
+        Normal Workstation(s)
+        <div id="td_workstations">
+          <%= render collection: @td_workstations, 
+                     partial: 'workstations/workstation',
+                     locals: { user: current_user } if @td_workstations %>
+        </div>
+        <div id="ops_workstations">
+          <%= render collection: @ops_workstations, 
+                     partial: 'workstations/workstation',
+                     locals: { user: current_user } if @ops_workstations %>
+        </div>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Update" %>
+      </div>
+    <% end %>
+  </div>
   <%= link_to "Change password", edit_password_user_path(@user) %>
 </div>
 

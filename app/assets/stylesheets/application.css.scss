@@ -84,11 +84,23 @@ body {
       @include rounded-corners(7px);
       @include box-shadow(2px, 2px, 2px, 0px, 0, 0, 0, 0.7);
       margin: 0 auto;
-      width: 95%;
+      width: 98%;
       height: 400px;
       padding: .9%;
       background-color: black;
     } // end #content
+
+    #edit_user {
+      color: $dark-text;
+    }
+
+    #user_index {
+      color: $dark-text;
+    }
+
+    #flash {
+      color: $dark-text;
+    }
 
     #footer {
       width: 100%;
