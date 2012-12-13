@@ -51,19 +51,19 @@
     margin: 0 auto;
     width: 90%;
     max-width: 500px;
-    color: $blue;
-    background: $blackish;
+    color: $blackish;
+    background: $grey;
     padding: 15px;
     text-align: left;
     @include rounded-corners(7px);
     @include box-shadow(2px, 2px, 2px, 0px, 0, 0, 0, 0.7);
 
     p {
-      color: $dark-text;
+      color: $blackish;
     }
 
     a {
-      color: $blue;
+      color: $dark-blue;
       text-decoration: none;
     }
 

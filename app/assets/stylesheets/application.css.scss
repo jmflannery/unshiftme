@@ -13,7 +13,7 @@ img {
 
 body {
   margin: 0px;
-  background-color: $grey;
+  background-color: $blackish;
   font-family: sans-serif;
 
   #page {
@@ -24,11 +24,11 @@ body {
 
     #header {
       color: $near-white;
-      background-color: $blackish;
+      background-color: $grey;
       margin: 0 0 12px 0;
       text-align: left;
       padding: 7px; 
-      @include box-shadow(2px, 2px, 2px, 0px, 0, 0, 0, 0.5);
+      @include box-shadow(2px, 2px, 2px, 0px, 46, 42, 37, 0.8);
 
       #main_menu {
         font-size: .9em;
