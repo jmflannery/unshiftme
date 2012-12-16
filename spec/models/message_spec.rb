@@ -363,12 +363,10 @@ message route to and includes the workstation's user if it has one" do
     end
 
     it "returns false if the message was not sent by the given user" do
-      pending
       subject.was_read_by?(user1).should be_false
     end
 
     it "returns true if the message was sent by the given user" do
-      pending
       subject.was_read_by?(recipient_user).should be_true
     end
   end
