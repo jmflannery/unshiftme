@@ -206,7 +206,7 @@ describe Workstation do
         user1.start_job([cuss.abrev])
         user.add_recipient(cuss)
         array = []
-        Workstation.all.each do |workstation|
+        Workstation.ordered.each do |workstation|
           hash = {}
           hash[:id] = workstation.id
           hash[:long_name] = workstation.name
