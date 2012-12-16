@@ -1,6 +1,7 @@
 require "bundler/capistrano"
 
-server "192.168.2.22", :web, :app, :db, primary: true
+#server "192.168.2.22", :web, :app, :db, primary: true
+server "50.56.191.206", :web, :app, :db, primary: true
 
 set :application, "amtrak_messenger"
 set :user, "deployer"
