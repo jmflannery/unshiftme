@@ -16,55 +16,7 @@ class Message < ActiveRecord::Base
   validates :user_id, :presence => true
 
   default_scope order("created_at DESC")
-
-  scope :between, lambda { |timeFrom, timeTo|
-    where("messages.created_at >= ? and messages.created_at <= ?", timeFrom, timeTo)
-  }
-
-  scope :before, lambda { |time| between(time - 24.hours, time) }
-
-  scope :sent_by_user, lambda { |user_id|
-    where("messages.user_id = ?", user_id)
-  }
-
-  scope :sent_to_user, lambda { |user_id|
-    joins(:incoming_receipts).where("incoming_receipts.user_id = ?", user_id)
-  }
-
-  scope :sent_to_workstation, lambda { |workstation_id|
-    joins(:incoming_receipts).where("incoming_receipts.workstation_id = ? and incoming_receipts.user_id is null", workstation_id)
-  }
-
-  scope :sent_to_workstations, lambda { |workstation_ids|
-    joins(:incoming_receipts).where("incoming_receipts.workstation_id in (#{workstation_ids.join(",")}) and incoming_receipts.user_id is null")
-  }
-
-  scope :sent_to_user_or_workstations, lambda { |user_id, workstation_ids|
-    sent_to_user(user_id).or(sent_to_workstations(workstation_ids))
-  }
-
-  def self.for_user_before(user, time)
-    if (user.workstation_ids.blank?)
-      messages = Message.sent_by_user(user.id).before(time) |
-        Message.sent_to_user(user.id).before(time)
-    else
-      messages = Message.sent_by_user(user.id).before(time) |
-        Message.sent_to_user_or_workstations(user.id, user.workstation_ids).before(time)
-    end
-    messages.sort.reverse
-  end
-
-  def self.for_user_between(user, timeFrom, timeTo)
-    if (user.workstation_ids.blank?)
-      messages = Message.sent_by_user(user.id).between(timeFrom, timeTo) |
-        Message.sent_to_user(user.id).between(timeFrom, timeTo)
-    else
-      messages = Message.sent_by_user(user.id).between(timeFrom, timeTo) |
-        Message.sent_to_user_or_workstations(user.id, user.workstation_ids).between(timeFrom, timeTo)
-    end
-    messages.sort.reverse
-  end
-
+  
   def <=>(other)
     created_at <=> other.created_at
   end
@@ -82,11 +34,11 @@ class Message < ActiveRecord::Base
     hash.as_json
   end
 
-  def set_receivers
-    user.recipients.each { |recipient| set_received_by(recipient) }
+  def generate_incoming_receipts
+    user.recipients.each { |recipient| generate_incoming_receipt(recipient) }
   end
 
-  def set_received_by(workstation)
+  def generate_incoming_receipt(workstation)
     incoming_receipt = incoming_receipts.create(workstation: workstation)
     incoming_receipt.user = workstation.user
     incoming_receipt.save
