@@ -42,12 +42,12 @@ describe MessagesController do
       end
 
       it "sets the message's receivers" do
-        message.should_receive(:set_receivers)
+        message.should_receive(:generate_incoming_receipts)
         xhr :post, :create,  message: attr
       end
 
       it "sets the message's sending workstations" do
-        message.should_receive(:set_sender_workstations)
+        message.should_receive(:generate_outgoing_receipt)
         xhr :post, :create,  message: attr
       end
     end
