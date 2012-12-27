@@ -118,7 +118,7 @@ describe Workstation do
         it "returns messages sent to the workstation" do
           sender.add_recipient(subject)
           msg = sender.messages.create(content: "this is a message")
-          msg.set_receivers
+          msg.generate_incoming_receipts
           subject.unreceived_messages.should include msg
         end
       end
@@ -133,7 +133,7 @@ describe Workstation do
         it "does not return messages sent to the workstation" do
           sender.add_recipient(subject)
           msg = sender.messages.create(content: "this is a message")
-          msg.set_receivers
+          msg.generate_incoming_receipts
           subject.unreceived_messages.should_not include msg
         end
       end
