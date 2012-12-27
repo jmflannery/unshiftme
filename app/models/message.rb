@@ -74,7 +74,7 @@ class Message < ActiveRecord::Base
   end
 
   def generate_outgoing_receipt
-    OutgoingReceipt.create(message: self, user: user, workstations: user.workstation_names)
+    create_outgoing_receipt(user: user, workstations: user.workstation_names)
   end
 
   def sender_handle
