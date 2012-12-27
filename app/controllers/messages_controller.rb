@@ -7,7 +7,7 @@ class MessagesController < ApplicationController
     if @message.save
       @message.view_class = "message #{@message.id} owner"
       @message.broadcast
-      @message.set_receivers
+      @message.generate_incoming_receipts
       @message.generate_outgoing_receipt
     end
   end
