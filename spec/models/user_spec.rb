@@ -363,14 +363,14 @@ describe User do
         sender.add_recipient(cusn)
         msg = sender.messages.create(content: "this is a message")
         cusn.set_user(subject)
-        msg.set_receivers
+        msg.generate_incoming_receipts
         subject.display_messages.should include msg
       end
 
       it "returns messages that were sent to the given user's workstation(s), while those workstation(s) had no user" do
         sender.add_recipient(cusn)
         msg = sender.messages.create(content: "this is a message")
-        msg.set_receivers
+        msg.generate_incoming_receipts
         cusn.set_user(subject)
         subject.display_messages.should include msg
       end
@@ -379,7 +379,7 @@ describe User do
         sender.add_recipient(cusn)
         msg = sender.messages.create(content: "this is a message")
         msg.update_attribute(:created_at, 25.hours.ago)
-        msg.set_receivers
+        msg.generate_incoming_receipts
         cusn.set_user(subject)
         subject.display_messages.should_not include msg
       end
@@ -390,7 +390,7 @@ describe User do
           sender.add_recipient(cusn)
           msg = sender.messages.create(content: "this is a message")
           msg.update_attribute(:created_at, 3.hours.ago)
-          msg.set_receivers
+          msg.generate_incoming_receipts
           cusn.set_user(subject)
           subject.display_messages(start_time: 2.hours.ago).should_not include msg
         end
@@ -402,7 +402,7 @@ describe User do
           sender.add_recipient(cusn)
           msg = sender.messages.create(content: "this is a message")
           msg.update_attribute(:created_at, 1.hours.ago)
-          msg.set_receivers
+          msg.generate_incoming_receipts
           cusn.set_user(subject)
           subject.display_messages(end_time: 2.hours.ago).should_not include msg
         end
@@ -416,7 +416,7 @@ describe User do
           msg.update_attribute(:created_at, 3.hours.ago)
           msg2 = sender.messages.create(content: "this is also a message")
           msg.update_attribute(:created_at, 1.hour.ago)
-          msg.set_receivers
+          msg.generate_incoming_receipts
           cusn.set_user(subject)
           subject.display_messages(start_time: 32.hours.ago, end_time: 2.hours.ago).should_not include msg
           subject.display_messages(start_time: 32.hours.ago, end_time: 2.hours.ago).should_not include msg2
@@ -431,7 +431,7 @@ describe User do
       it "returns messages sent to the user's workstations while those workstations had no user" do
         sender.add_recipient(cusn)
         msg = sender.messages.create(content: "this is a message")
-        msg.set_receivers
+        msg.generate_incoming_receipts
         cusn.set_user(subject)
         subject.unreceived_workstation_messages.should include msg
       end
@@ -440,14 +440,14 @@ describe User do
         sender.add_recipient(cusn)
         msg = sender.messages.create(content: "this is a message")
         cusn.set_user(subject)
-        msg.set_receivers
+        msg.generate_incoming_receipts
         subject.unreceived_workstation_messages.should_not include msg
       end
     
       it "returns an empty array if the user has no workstations" do
         sender.add_recipient(cusn)
         msg = sender.messages.create(content: "this is a message")
-        msg.set_receivers
+        msg.generate_incoming_receipts
         subject.unreceived_workstation_messages.should == []
       end
 
@@ -455,7 +455,7 @@ describe User do
         sender.add_recipient(cusn)
         msg = sender.messages.create(content: "this is a message")
         msg.update_attribute(:created_at, 25.hours.ago)
-        msg.set_receivers
+        msg.generate_incoming_receipts
         cusn.set_user(subject)
         subject.unreceived_workstation_messages.should_not include msg
       end
@@ -466,7 +466,7 @@ describe User do
           sender.add_recipient(cusn)
           msg = sender.messages.create(content: "this is a message")
           msg.update_attribute(:created_at, 13.hours.ago)
-          msg.set_receivers
+          msg.generate_incoming_receipts
           cusn.set_user(subject)
           subject.unreceived_workstation_messages(start_time: 12.hours.ago).should_not include msg
         end
@@ -478,7 +478,7 @@ describe User do
           sender.add_recipient(cusn)
           msg = sender.messages.create(content: "this is a message")
           msg.update_attribute(:created_at, 13.hours.ago)
-          msg.set_receivers
+          msg.generate_incoming_receipts
           cusn.set_user(subject)
           subject.unreceived_workstation_messages(end_time: 14.hours.ago).should_not include msg
         end
@@ -492,7 +492,7 @@ describe User do
           msg.update_attribute(:created_at, 33.hours.ago)
           msg2 = sender.messages.create(content: "this is a message")
           msg2.update_attribute(:created_at, 1.hours.ago)
-          msg.set_receivers
+          msg.generate_incoming_receipts
           cusn.set_user(subject)
           subject.unreceived_workstation_messages(start_time: 32.hours.ago, end_time: 2.hours.ago).should_not include msg
           subject.unreceived_workstation_messages(start_time: 32.hours.ago, end_time: 2.hours.ago).should_not include msg2
