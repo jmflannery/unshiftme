@@ -37,24 +37,24 @@ Feature: Messages
     the workstation during the last 24 hours will not be visible. Visible received messages can then
     be acknowledged by clicking the message
     Given the following user records
-      | user_name | id |
-      | sam       | 3  |
-      | jeff      | 1  |
-      | bob       | 2  |
+      | user_name | id  |
+      | sam       | 33  |
+      | jeff      | 11  |
+      | bob       | 22  |
     And the following workstation records
-      | name      | abrev | user_id |
-      | CUS South | CUSS  | 2       |
-      | AML / NOL | AML   | 1       |
+      | name      | abrev | user_id  |
+      | CUS South | CUSS  | 22       |
+      | AML / NOL | AML   | 11       |
     And the following messages
-      | id | content    | user | from | to_user | to_workstation | read | created_at  |
-      | 1  | Bye Sam    | bob  | CUSS | sam     | AML            | t    | 3.hours.ago |
-      | 2  | Anyone??   | bob  | CUSS |         | AML            | f    | 2.hours.ago |
+      | id  | content    | user | to_workstation | to_user | created_at     |
+      | 24  | Bye Sam    | bob  | AML            | sam     | 10.minutes.ago |
+      | 25  | Anyone??   | bob  | AML            |         | 2.minutes.ago  |
 
     And I am logged in as "jeff" with password "secret" at "AML"
     When I go to the messaging page
-    Then I should not see unread recieved message 1 "Bye Sam"
-    And I should see unread recieved message 2 "Anyone??" from workstation "CUSS" user "bob" one time
+    Then I should not see message 24 "Bye Sam"
+    And I should see unread received message 25 "Anyone??" from "bob@CUSS" one time
     
-    Given I click on the recieved message
-    Then I should see that received message 2 was read
+    Given I click on message 25
+    Then I should see that received message 25 was read
 
