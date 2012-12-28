@@ -18,10 +18,10 @@ Feature: Messages
       | CUS South | CUSS  | 2       |
       | AML / NOL | AML   | 1       |
     And the following messages
-      | id | content    | user | from | to_user | to_workstation | read | created_at        |
-      | 1  | Hi Jeff!   | bob  | CUSS | jeff    | AML            | t    | 1440.minutes.ago  |
-      | 2  | Hello, Bob | jeff | AML  | bob     | CUSS           | t    | 1439.minutes.ago  |
-      | 3  | Whats up?  | bob  | CUSS | jeff    | AML            | t    | 1438.minutes.ago  |
+      | id | content    | user | to_workstation | read | created_at        |
+      | 1  | Hi Jeff!   | bob  | AML            | t    | 1441.minutes.ago  |
+      | 2  | Hello, Bob | jeff | CUSS           | t    | 1430.minutes.ago  |
+      | 3  | Whats up?  | bob  | AML            | t    | 1439.minutes.ago  |
     And I am logged in as "jeff" with password "secret" at "AML"
     When I go to the messaging page
     Then I should not see recieved message 1 "Hi Jeff!"

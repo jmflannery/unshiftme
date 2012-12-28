@@ -2,20 +2,15 @@ Given /^the following messages$/ do |table|
   @messages = []
   table.hashes.each do |hash|
     user = @test_records[:user].select { |user| user.user_name == hash["user"] }.first
-    message = user.messages.new
-    message.content = hash["content"] if hash.has_key?("content")
-    message.id = hash["id"] if hash.has_key?("id")
-    sender = message.sender_workstations.new
-    sender.workstation = Workstation.find_by_abrev(hash["from"]) if hash.has_key?("from")
-    sender.save
-    to_user = hash.has_key?("to_user") ? hash["to_user"] : ""
-    to_workstation = hash.has_key?("to_workstation") ? hash["to_workstation"] : ""
-    receiver = message.receivers.new
-    receiver.workstation = Workstation.find_by_abrev(to_workstation) unless to_workstation.blank?
-    receiver.user = User.find_by_user_name(to_user) unless to_user.blank?
-    receiver.save
+    message = user.messages.create(content: hash.fetch("content", "some content"))
+    message.generate_outgoing_receipt
+    #to_user = hash.fetch("to_user", "")
+    to_workstation_abrev = hash.fetch("to_workstation", "")
+    to_workstation = Workstation.find_by_abrev(to_workstation_abrev)
+    to_user = to_workstation.user
+    message.generate_incoming_receipt(to_workstation)
     if hash.has_key?("read") and hash["read"] == "t"
-      message.mark_read_by(receiver.user)
+      message.mark_read_by(to_user) if to_user
     end
     if hash.has_key?("created_at")
       if hash["created_at"].include?("ago")
@@ -26,6 +21,8 @@ Given /^the following messages$/ do |table|
         message.created_at = Time.zone.parse("#{hash["created_at"]}")
       end
     end
+    message_id = hash.fetch("id", "0").to_i
+    message.id = message_id if message_id > 0
     message.save
     @messages << message
   end
