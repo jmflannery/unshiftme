@@ -38,8 +38,8 @@ class Message < ActiveRecord::Base
     user.recipients.each { |recipient| generate_incoming_receipt(recipient) }
   end
 
-  def generate_incoming_receipt(workstation)
-    incoming_receipts.create(workstation: workstation, user: workstation.user)
+  def generate_incoming_receipt(workstation, user = nil)
+    incoming_receipts.create(workstation: workstation, user: user || workstation.user)
   end
 
   def broadcast
