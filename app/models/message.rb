@@ -39,9 +39,7 @@ class Message < ActiveRecord::Base
   end
 
   def generate_incoming_receipt(workstation)
-    incoming_receipt = incoming_receipts.create(workstation: workstation)
-    incoming_receipt.user = workstation.user
-    incoming_receipt.save
+    incoming_receipts.create(workstation: workstation, user: workstation.user)
   end
 
   def broadcast
