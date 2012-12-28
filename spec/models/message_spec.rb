@@ -193,11 +193,11 @@ message route to and includes the workstation's user if it has one" do
       }
 
       it "creates an incoming receipt for the given message with the workstation and it's controlling user" do
-        subject.generate_incoming_receipts
+        subject.generate_incoming_receipt(cusn)
         subject.incoming_receipts[0].workstation.should == cusn
         subject.incoming_receipts[0].user.should == user1
       end
-    end 
+    end
   end
 
   describe "#generate_outgoing_receipt" do
