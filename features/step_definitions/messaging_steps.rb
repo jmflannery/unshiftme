@@ -14,6 +14,7 @@ Given /^the following messages$/ do |table|
       to_user = User.find_by_user_name(hash["to_user"])
       message.generate_incoming_receipt(to_workstation, to_user)
     else
+      to_user = to_workstation.user
       message.generate_incoming_receipt(to_workstation)
     end
     if hash.has_key?("read") and hash["read"] == "t"
@@ -35,7 +36,7 @@ end
 When /^I go to the messaging page$/ do
 end
 
-Then /^I should not see recieved message (\d+) "(.*?)"$/ do |id, content|
+Then /^I should not see received message (\d+) "(.*?)"$/ do |id, content|
   page.should_not have_selector("li.message.msg-#{id}.recieved.read")
 end
 
@@ -47,12 +48,12 @@ Then /^I should not see message (\d+) "(.*?)"$/ do |id, content|
   page.should_not have_content("li.message.msg-#{id}")
 end
 
-Then /^I should see sent message (\d+) "(.*?)" from workstation "(.*?)" user "(.*?)" one time$/ do |id, content, workstation_abrev, user_name|
+Then /^I should see sent message (\d+) "(.*?)" from "(.*?)" one time$/ do |id, content, sender|
   selector = "li.message.msg-#{id}.owner" 
   page.should have_selector(selector, count: 1)
   within(selector) do
     page.should have_selector(".content p", text: content)
-    page.should have_selector(".sender p", text: "#{user_name}@#{workstation_abrev}")
+    page.should have_selector(".sender p", text: sender)
   end
 end
 
@@ -65,15 +66,24 @@ Then /^I should see unread received message (\d+) "(.*?)" from "(.*?)" one time$
   end
 end
 
-Then /^I should see workstation "(.*?)" user "(.*?)" read message (\d+)$/ do |workstation_abrev, user_name, id|
-  within("li.message.msg-#{id}") do
-    page.should have_content("#{user_name}@#{workstation_abrev} read this.")
+Then /^I should see read received message (\d+) "(.*?)" from "(.*?)" one time$/ do |id, content, sender|
+  selector = "li.message.msg-#{id}.recieved.read" 
+  page.should have_selector(selector, count: 1)
+  within(selector) do
+    page.should have_selector(".sender p", text: sender)
+    page.should have_selector(".content p", text: content)
   end
 end
 
-Then /^I should not see workstation "(.*?)" user "(.*?)" read message (\d+)$/ do |workstation_abrev, user_name, id|
+Then /^I should see "(.*?)" read message (\d+)$/ do |sender, id|
   within("li.message.msg-#{id}") do
-    page.should_not have_content("#{user_name}@#{workstation_abrev} read this.")
+    page.should have_content("#{sender} read this.")
+  end
+end
+
+Then /^I should not see "(.*?)" read message (\d+)$/ do |sender, id|
+  within("li.message.msg-#{id}") do
+    page.should_not have_content("#{sender} read this.")
   end
 end
 

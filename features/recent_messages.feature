@@ -7,7 +7,7 @@ Feature: Messages
 
   @messages1
   Scenario: Recent messages: When a user loads the messaging page,
-    messages sent and recieved to the current user durring the last 24
+    messages sent and received to the current user durring the last 24
     hours should be visible
     Given the following user records
       | user_name | id |
@@ -24,11 +24,11 @@ Feature: Messages
       | 3  | Whats up?  | bob  | AML            | t    | 1439.minutes.ago  |
     And I am logged in as "jeff" with password "secret" at "AML"
     When I go to the messaging page
-    Then I should not see recieved message 1 "Hi Jeff!"
-    And I should see sent message 2 "Hello, Bob" from workstation "AML" user "jeff" one time
-    And I should see workstation "CUSS" user "bob" read message 2
-    And I should see recieved message 3 "Whats up?" from workstation "CUSS" user "bob" one time
-    And I should not see workstation "AML" user "jeff" read message 3
+    Then I should not see received message 1 "Hi Jeff!"
+    And I should see sent message 2 "Hello, Bob" from "jeff@AML" one time
+    And I should see "bob@CUSS" read message 2
+    And I should see read received message 3 "Whats up?" from "bob@CUSS" one time
+    And I should not see "jeff@AML" read message 3
 
   @messages2
   Scenario: Recent messages: When the current user loads the messaging page, messages
