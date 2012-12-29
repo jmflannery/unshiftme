@@ -13,27 +13,17 @@ class MessagesController < ApplicationController
   end
   
   def index
-    user = User.find_by_id(params[:user_id]) if params.has_key?(:user_id)
-    user = current_user if user.nil?
-    workstation = Workstation.find_by_id(params[:workstation_id]) if params.has_key?(:workstation_id)
-    st = params[:start_time] if params.has_key?(:start_time)
-    et = params[:end_time] if params.has_key?(:end_time)
-    start_time = Time.parse(st) unless st.blank?
-    end_time = Time.parse(et) unless et.blank?
-    if !start_time and !end_time
-      messages = user.display_messages
-    elsif start_time and !end_time
-      messages = user.display_messages(start_time: start_time)
-    elsif start_time and end_time
-      messages = user.display_messages(start_time: start_time, end_time: end_time)
-    end
-    if messages
-      messages.each { |message| message.set_view_class(user) }
-      respond_to do |format|
-        format.json {
-          render json: messages.as_json
-        }
-      end
+    options = {}
+    start_time = params.fetch(:start_time){""} 
+    end_time = params.fetch(:end_time){""}
+    options[:start_time] = Time.parse(start_time) unless start_time.blank?
+    options[:end_time] = Time.parse(end_time) unless end_time.blank?
+    messages = current_user.display_messages(options)
+    messages.each { |message| message.set_view_class(current_user) }
+    respond_to do |format|
+      format.json {
+        render json: messages.as_json
+      }
     end
   end
 
