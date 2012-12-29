@@ -15,10 +15,10 @@ Feature: Transcripts
       | CUS South | CUSS  | 3       |
       | AML / NOL | AML   | 2       |
     And the following messages
-      | id | content    | user | from | to_user | to_workstation | read | created_at         |
-      | 1  | Hi Jeff!   | bob  | CUSS | jeff    | AML            | t    | "2012-06-22 18:13" |
-      | 2  | Hello, Bob | jeff | AML  | bob     | CUSS           | t    | "2012-06-22 18:14" |
-      | 3  | Whats up?  | bob  | CUSS | jeff    | AML            | t    | "2012-06-22 18:16" |
+      | id | content    | user | from | to_workstation | read | created_at         |
+      | 1  | Hi Jeff!   | bob  | CUSS | AML            | t    | "2012-06-22 18:13" |
+      | 2  | Hello, Bob | jeff | AML  | CUSS           | t    | "2012-06-22 18:14" |
+      | 3  | Whats up?  | bob  | CUSS | AML            | t    | "2012-06-22 18:16" |
     And I am logged in as "bill" with password "secret" at ""
     When I click link "Transcripts"
     Then I should see the Transcripts page
@@ -34,12 +34,12 @@ Feature: Transcripts
     And I select date "2012-06-22 18:15" for "transcript_end_time"
     And I press "Create Transcript"
     Then I should see "Transcript for AML jeff from Jun 22 2012 18:00 to Jun 22 2012 18:15"
-    And I should see recieved message 1 "Hi Jeff!" from workstation "CUSS" user "bob" one time
-    And I should see workstation "AML" user "jeff" read message 1
-    And I should see sent message 2 "Hello, Bob" from workstation "AML" user "jeff" one time
-    And I should see workstation "CUSS" user "bob" read message 2
-    And I should not see recieved message 3 "Whats up?" from workstation "CUSS" user "bob"
- 
+    And I should see read received message 1 "Hi Jeff!" from "bob@CUSS" one time
+    And I should see "jeff@AML" read message 1
+    And I should see sent message 2 "Hello, Bob" from "jeff@AML" one time
+    And I should see "bob@CUSS" read message 2
+    And I should not see received message 3 "Whats up?" from "bob@CUSS"
+
   @transcripts2
   Scenario: Viewing existing transcripts
     Given the following user records
@@ -67,9 +67,8 @@ Feature: Transcripts
     
     When I click link "Transcript for jeff from Jun 22 2012 18:12 to Jun 22 2012 18:15"
     Then I should see "Transcript for jeff from Jun 22 2012 18:12 to Jun 22 2012 18:15"
-    And I should see recieved message 1 "Hi Jeff!" from workstation "CUSS" user "bob" one time
-    And I should see workstation "AML" user "jeff" read message 1
-    And I should see sent message 2 "Hello, Bob" from workstation "AML" user "jeff" one time
-    And I should see workstation "CUSS" user "bob" read message 2
-    And I should not see recieved message 3 "Whats up?" from workstation "CUSS" user "bob"
-
+    And I should see read received message 1 "Hi Jeff!" from "bob@CUSS" one time
+    And I should see "jeff@AML" read message 1
+    And I should see sent message 2 "Hello, Bob" from "jeff@AML" one time
+    And I should see "bob@CUSS" read message 2
+    And I should not see received message 3 "Whats up?" "bob@CUSS"
