@@ -48,7 +48,7 @@ Feature: Messaging
     Then I should see recieved message "Hi Bill!" from workstation "CUSS" user "bob" one time
     And I should see that I am messaging "CUSS"
 
-    Given I click on the recieved message
+    Given I click on the received message
 
     Given I am in Bob's browser
     When I wait 1 second

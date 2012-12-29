@@ -136,6 +136,10 @@ Given /^I click on message (\d+)$/ do |message_id|
   find("li.message.msg-#{message_id}.recieved.unread").click
 end
 
+Given /^I click on the received message$/ do
+  find("li.message.recieved.unread").click
+end
+
 When /^I click on each button$/ do
   @test_records[:workstation].each do |workstation|
     find("##{workstation.abrev}").click
