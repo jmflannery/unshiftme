@@ -354,6 +354,10 @@ describe User do
 
       let(:sender) { FactoryGirl.create(:user) }
 
+      it "returns a blank array if the user has no messages" do
+        subject.display_messages.should == []
+      end
+
       it "returns messages that were sent by the given user" do
         msg = subject.messages.create(content: "this is a message")
         subject.display_messages.should include msg 
