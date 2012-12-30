@@ -7,7 +7,7 @@ var build_message = function(sender, attachment_url, content, timestamp, view_cl
                 "<div class='content'>";
 
                 if (attachment_url) {
-                  html += "<a href='" + attachment_url + "'>" + content + "</a>";
+                  html += "<a href='" + attachment_url + "' target='_blank'>" + content + "</a>";
                 } else {
                   html += "<p>" + content + "</p>";
                 }

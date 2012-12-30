@@ -6,7 +6,7 @@
   <div class="left-side">
     <div class="sender"><p><%= message.sender_handle %></p></div>
     <% if message.attachment %>
-      <div class="content"><a href=<%= message.attachment.payload.url %>><%= message.content.strip %></a></div>
+      <div class="content"><a href='<%= message.attachment.payload.url %>' target='_blank'><%= message.content.strip %></a></div>
     <% else %>
       <div class="content"><p><%= message.content.strip %></p></div>
     <% end %>  
