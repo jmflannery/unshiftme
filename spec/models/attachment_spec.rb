@@ -63,28 +63,4 @@ describe Attachment do
       incoming_receipt.attachment_id.should == subject.id
     end
   end
-
-  describe "method" do
-
-    describe "set_recievers" do 
-
-      let(:cusn) { Workstation.create!(name: "CUS North", abrev: "CUSN", job_type: "td") }
-      let(:aml) { Workstation.create!(name: "AML / NOL", abrev: "AML", job_type: "td") }
-      
-      let(:receiver) { FactoryGirl.create(:user) }
-
-      let(:attachment1) { FactoryGirl.create(:attachment, user: user) }
-
-      before do
-        receiver.start_job(cusn.abrev)
-        FactoryGirl.create(:message_route, user: user, workstation: cusn)
-        FactoryGirl.create(:message_route, user: user, workstation: aml)
-        attachment1.set_recievers
-      end
-
-      it "sets attachment.recievers to an array of hashes, with workstation_id and user_id" do
-        attachment1.recievers.should == [{ workstation_id: cusn.id, user_id: receiver.id }, { workstation_id: aml.id }]
-      end
-    end
-  end
 end
