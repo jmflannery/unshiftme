@@ -43,7 +43,7 @@ describe Message do
     it { should_not be_valid }
   end
 
-  describe "user associations" do
+  describe "user association" do
 
     it "has a user attribute" do
       subject.should respond_to(:user)
@@ -55,10 +55,13 @@ describe Message do
     end
   end
   
-  describe "receiver associations" do
-    it { should have_many(:receivers) }
+  describe "attachment association" do
+ 
+    it "has one attachment" do
+      should have_one :attachment
+    end
   end
-  
+
   describe "incoming_receipts/receivers association" do
 
     before { subject.save }

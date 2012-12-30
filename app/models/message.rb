@@ -6,6 +6,7 @@ class Message < ActiveRecord::Base
   serialize :read_by
   
   belongs_to :user
+  has_one :attachment
   has_many :incoming_receipts
   has_many :receivers, :through => :incoming_receipts, :source => :workstation
   has_one :outgoing_receipt
