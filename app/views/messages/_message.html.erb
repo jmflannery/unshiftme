@@ -5,9 +5,8 @@
 <% end %>
   <div class="left-side">
     <div class="sender"><p><%= message.sender_handle %></p></div>
-    <% if message.attachment_id and Attachment.exists?(message.attachment_id) %>
-      <% attachment = Attachment.find(message.attachment_id) %>
-      <div class="content"><a href=<%= attachment.payload.url %>><%= message.content.strip %></a></div>
+    <% if message.attachment %>
+      <div class="content"><a href=<%= message.attachment.payload.url %>><%= message.content.strip %></a></div>
     <% else %>
       <div class="content"><p><%= message.content.strip %></p></div>
     <% end %>  
