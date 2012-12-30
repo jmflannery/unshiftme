@@ -12,7 +12,7 @@ Given /^the following messages$/ do |table|
     to_workstation = Workstation.find_by_abrev(to_workstation_abrev)
     if hash.has_key?("to_user")
       to_user = User.find_by_user_name(hash["to_user"])
-      message.generate_incoming_receipt(to_workstation, to_user)
+      message.generate_incoming_receipt(to_workstation, user: to_user)
     else
       to_user = to_workstation.user
       message.generate_incoming_receipt(to_workstation)
