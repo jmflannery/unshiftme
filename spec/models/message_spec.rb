@@ -211,7 +211,7 @@ message route to and includes the workstation's user if it has one" do
         }
 
         it "creates an incoming receipt for the message with the supplied workstation and user" do
-          subject.generate_incoming_receipt(aml, user2)
+          subject.generate_incoming_receipt(aml, user: user2)
           subject.incoming_receipts[0].workstation.should == aml
           subject.incoming_receipts[0].user.should == user2
         end
@@ -225,7 +225,7 @@ message route to and includes the workstation's user if it has one" do
         }
 
         it "creates an incoming receipt for the message with the supplied workstation and user" do
-          subject.generate_incoming_receipt(cusn, user2)
+          subject.generate_incoming_receipt(cusn, user: user2)
           subject.incoming_receipts[0].workstation.should == cusn
           subject.incoming_receipts[0].user.should == user2
         end
