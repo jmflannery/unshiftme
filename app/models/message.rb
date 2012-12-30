@@ -56,16 +56,17 @@ class Message < ActiveRecord::Base
             recip ? recip.id : 0
           end
 
+          attachment_url = attachment.payload.url if attachment
+
           data = { 
             chat_message: content,
             sender: user.handle,
             from_workstations: user.workstation_names,
             recipient_ids: new_recip_ids,
             timestamp: created_at.strftime("%a %b %e %Y %T"),
-            message_id: id
+            message_id: id,
+            attachment_url: attachment_url
           }
-          attachment = Attachment.find(attachment_id) if Attachment.exists?(attachment_id)
-          data[:attachment_url] = attachment.payload.url if attachment
  
           PrivatePub.publish_to("/messages/#{recipient.user.user_name}", data)
         end
