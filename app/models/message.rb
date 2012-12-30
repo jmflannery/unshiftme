@@ -81,6 +81,11 @@ class Message < ActiveRecord::Base
   def sender_handle
     "#{user.user_name}@#{sent_by_workstations_list}"
   end 
+
+  def attach(attachment)
+    self.attachment = attachment
+    save
+  end
   
   def sent_by_workstations_list
     sent_by = ""

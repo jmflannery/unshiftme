@@ -241,7 +241,7 @@ message route to and includes the supplied attachment and workstation's user if 
       before { cusn.set_user(user1) }
       let(:attachment) { FactoryGirl.create(:attachment) }
 
-      it "creates an incoming receipt for the message with the supplied attachment, workstation, it's controlling user" do
+      it "creates an incoming receipt for the message with the supplied attachment, workstation, and controlling user" do
         subject.generate_incoming_receipt(cusn, attachment: attachment)
         subject.incoming_receipts[0].workstation.should == cusn
         subject.incoming_receipts[0].user.should == user1
@@ -288,6 +288,16 @@ message route to and includes the supplied attachment and workstation's user if 
  
     it "should return a formatted list of the message senders workstation's" do
       subject.sender_handle.should == "joe@CUSN,CUSS,AML"
+    end
+  end
+
+  describe "attach" do
+
+    let(:attachment) { FactoryGirl.create(:attachment) }
+
+    it "associates the supplied attachment with the message" do
+      subject.attach(attachment)
+      subject.attachment.should == attachment
     end
   end
 
