@@ -155,15 +155,31 @@ describe Message do
       FactoryGirl.create(:message_route, user: user, workstation: aml)
       cusn.set_user(user1)
       subject.save
-      subject.generate_incoming_receipts
     end
 
     it "generates an incoming receipt for each workstation that the user has a \
 message route to and includes the workstation's user if it has one" do
+      subject.generate_incoming_receipts
       subject.incoming_receipts[0].workstation.should == aml
       subject.incoming_receipts[0].user.should == nil
       subject.incoming_receipts[1].workstation.should == cusn
       subject.incoming_receipts[1].user.should == user1
+    end
+
+    context "with an optional attachment" do
+
+      let(:attachment) { FactoryGirl.create(:attachment) }
+
+      it "generates an incoming receipt for each workstation that the user has a \
+message route to and includes the supplied attachment and workstation's user if it has one" do
+        subject.generate_incoming_receipts(attachment: attachment)
+        subject.incoming_receipts[0].workstation.should == aml
+        subject.incoming_receipts[0].user.should == nil
+        subject.incoming_receipts[0].attachment.should == attachment
+        subject.incoming_receipts[1].workstation.should == cusn
+        subject.incoming_receipts[1].user.should == user1
+        subject.incoming_receipts[1].attachment.should == attachment
+      end
     end
   end
 
@@ -172,43 +188,31 @@ message route to and includes the workstation's user if it has one" do
     let(:user1) { FactoryGirl.create(:user, user_name: "herman") }
     before { subject.save }
 
-    context "without a supplied user argument" do
+    context "when the supplied workstation has no controlling user" do
 
-      context "when the supplied workstation has no controlling user" do
+      it "creates an incoming receipt for the message with the supplied workstation and no user" do
+        subject.generate_incoming_receipt(aml)
+        subject.incoming_receipts[0].workstation.should == aml
+        subject.incoming_receipts[0].user.should == nil
+      end
+    end 
 
-        before { FactoryGirl.create(:message_route, user: user, workstation: aml) }
+    context "when the supplied workstation has a controlling user" do
 
-        it "creates an incoming receipt for the message with the supplied workstation and no user" do
-          subject.generate_incoming_receipt(aml)
-          subject.incoming_receipts[0].workstation.should == aml
-          subject.incoming_receipts[0].user.should == nil
-        end
-      end 
+      before { cusn.set_user(user1) }
 
-      context "when the supplied workstation has a controlling user" do
-
-        before {
-          FactoryGirl.create(:message_route, user: user, workstation: cusn)
-          cusn.set_user(user1)
-        }
-
-        it "creates an incoming receipt for the message with the supplied workstation and it's controlling user" do
-          subject.generate_incoming_receipt(cusn)
-          subject.incoming_receipts[0].workstation.should == cusn
-          subject.incoming_receipts[0].user.should == user1
-        end
+      it "creates an incoming receipt for the message with the supplied workstation and it's controlling user" do
+        subject.generate_incoming_receipt(cusn)
+        subject.incoming_receipts[0].workstation.should == cusn
+        subject.incoming_receipts[0].user.should == user1
       end
     end
 
-    context "with a supplied user argument" do
+    context "with an optional user argument" do
 
       let(:user2) { FactoryGirl.create(:user) }
 
       context "when the supplied workstation has no controlling user" do
-
-        before {
-          FactoryGirl.create(:message_route, user: user, workstation: aml)
-        }
 
         it "creates an incoming receipt for the message with the supplied workstation and user" do
           subject.generate_incoming_receipt(aml, user: user2)
@@ -219,16 +223,26 @@ message route to and includes the workstation's user if it has one" do
 
       context "when the recipient workstation has a controlling user" do
 
-        before {
-          FactoryGirl.create(:message_route, user: user, workstation: cusn)
-          cusn.set_user(user1)
-        }
+        before { cusn.set_user(user1) }
 
         it "creates an incoming receipt for the message with the supplied workstation and user" do
           subject.generate_incoming_receipt(cusn, user: user2)
           subject.incoming_receipts[0].workstation.should == cusn
           subject.incoming_receipts[0].user.should == user2
         end
+      end
+    end
+
+    context "with an attachment option" do
+
+      before { cusn.set_user(user1) }
+      let(:attachment) { FactoryGirl.create(:attachment) }
+
+      it "creates an incoming receipt for the message with the supplied attachment, workstation, it's controlling user" do
+        subject.generate_incoming_receipt(cusn, attachment: attachment)
+        subject.incoming_receipts[0].workstation.should == cusn
+        subject.incoming_receipts[0].user.should == user1
+        subject.incoming_receipts[0].attachment.should == attachment
       end
     end
   end
