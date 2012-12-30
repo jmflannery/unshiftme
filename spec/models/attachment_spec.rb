@@ -20,7 +20,7 @@ describe Attachment do
 
   it { should be_valid }
 
-  describe "user associations" do
+  describe "user association" do
 
     before(:each) { @attachment.save }
 
@@ -29,6 +29,15 @@ describe Attachment do
     it "should have the right user associated user" do
       @attachment.user_id.should == user.id
       @attachment.user.should == user
+    end
+  end
+
+  describe "message association" do
+
+    before(:each) { @attachment.save }
+
+    it "belongs to message" do
+      should belong_to :message
     end
   end
 
