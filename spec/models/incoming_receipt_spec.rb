@@ -12,5 +12,6 @@ describe IncomingReceipt do
   it { should belong_to(:message) }
   it { should belong_to(:workstation) }
   it { should belong_to(:user) }
+  it { should belong_to(:attachment) }
 end
 
