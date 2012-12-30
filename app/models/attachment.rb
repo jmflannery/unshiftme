@@ -5,7 +5,5 @@ class Attachment < ActiveRecord::Base
   has_many :receivers, :through => :incoming_receipts, :source => :workstation
 
   mount_uploader :payload, AttachmentUploader
-
-  serialize :recievers
 end
 
