@@ -55,7 +55,7 @@ describe AttachmentsController do
    
       it "should link the newly created message and attachment" do
         xhr :post, :create, :attachment => {:payload => @upload_file}, format: :js
-        assigns(:message).attachment_id.should == assigns(:attachment).id
+        assigns(:attachment).message.should == assigns(:message)
       end
     end
   end
