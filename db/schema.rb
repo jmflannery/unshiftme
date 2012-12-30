@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121230004209) do
+ActiveRecord::Schema.define(:version => 20121230054516) do
 
   create_table "acknowledgements", :force => true do |t|
     t.integer  "user_id"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20121230004209) do
     t.string   "recievers"
     t.string   "delivered"
     t.string   "payload"
+    t.integer  "message_id"
   end
 
   create_table "incoming_receipts", :force => true do |t|
