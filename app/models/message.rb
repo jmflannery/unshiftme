@@ -28,7 +28,6 @@ class Message < ActiveRecord::Base
     hash[:content] = content
     hash[:created_at] = created_at.strftime("%a %b %e %Y %T")
     hash[:sender] = sender_handle if sender_handle
-    attachment = Attachment.find(attachment_id) if Attachment.exists?(attachment_id)
     hash[:attachment_url] = attachment.payload.url if attachment
     hash[:view_class] = view_class if view_class
     hash[:readers] = formatted_readers if formatted_readers
