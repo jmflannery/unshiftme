@@ -45,8 +45,8 @@ describe Message do
 
   describe "user association" do
 
-    it "has a user attribute" do
-      subject.should respond_to(:user)
+    it "belongs to User" do
+      subject.should belong_to(:user)
     end
 
     it "has the right associated user" do
@@ -58,7 +58,7 @@ describe Message do
   describe "attachment association" do
  
     it "has one attachment" do
-      should have_one :attachment
+      subject.should have_one :attachment
     end
   end
 
@@ -68,11 +68,11 @@ describe Message do
     let!(:incoming_receipt) { subject.incoming_receipts.create(workstation: cusn) }
 
     it "should have many incoming_receipts" do
-      should have_many :incoming_receipts
+      subject.should have_many :incoming_receipts
     end
 
     it "should have many receivers" do
-      should have_many :receivers
+      subject.should have_many :receivers
     end
 
     it "should have a list of workstations who received the message" do
@@ -84,14 +84,14 @@ describe Message do
   describe "outgoing_receipt/sender association" do
 
     before { subject.save }
-    let(:user) { FactoryGirl.create(:user) }
-    let!(:outgoing_receipt) { OutgoingReceipt.create(message: subject, user: user) }
+    let(:user2) { FactoryGirl.create(:user) }
+    let!(:outgoing_receipt) { subject.create_outgoing_receipt(user: user2) }
 
     it "has one outgoing_receipt" do
-      should have_one :outgoing_receipt
+      subject.should have_one :outgoing_receipt
     end
     
-    it "has one outgoing receipt" do
+    it "has the correct outgoing receipt" do
       subject.outgoing_receipt.should == outgoing_receipt
     end
   end
@@ -99,19 +99,19 @@ describe Message do
   describe "acknowledgements/readers association" do
 
     before { subject.save }
-    let(:user) { FactoryGirl.create(:user) }
-    let!(:acknowledgement) { subject.acknowledgements.create(user: user) }
+    let(:user2) { FactoryGirl.create(:user) }
+    let!(:acknowledgement) { subject.acknowledgements.create(user: user2) }
 
     it "should have many acknowledgements" do
-      should have_many :acknowledgements
+      subject.should have_many :acknowledgements
     end
 
     it "should have many readers" do
-      should have_many :readers
+      subject.should have_many :readers
     end
 
     it "should have a list of users who are readers of the message" do
-      subject.readers.should include user
+      subject.readers.should include user2
       acknowledgement.message_id.should == subject.id
     end
   end
