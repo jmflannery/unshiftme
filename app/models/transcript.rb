@@ -3,6 +3,8 @@ class Transcript < ActiveRecord::Base
   attr_accessible :transcript_workstation_id, :transcript_user_id, :start_time, :end_time
 
   belongs_to :user
+  belongs_to :transcript_user, class_name: User
+  belongs_to :transcript_workstation, class_name: Workstation
    
   #validates :transcript_user_id, presence: true
   validates :start_time, presence: true

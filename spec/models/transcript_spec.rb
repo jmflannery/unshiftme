@@ -19,6 +19,8 @@ describe Transcript do
   it { should be_valid }
 
   it { should belong_to(:user) }
+  it { should belong_to(:transcript_user) }
+  it { should belong_to(:transcript_workstation) }
 
   describe "when start_time is not present" do
     before { @transcript.start_time = nil }
