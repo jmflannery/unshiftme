@@ -115,75 +115,20 @@ describe TranscriptsController do
 
   describe "POST 'create'" do
 
-    let!(:transcript_user) { FactoryGirl.create(:user) }
-    let!(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
-    let(:transcript_attrs) {{ transcript_user_id: transcript_user.user_name,
-                              transcript_workstation_id: cusn.abrev,
-                              start_time: "2012-04-29 17:52:39",
-                              end_time: "2012-04-29 18:30:22"
+    let(:transcript_user) { FactoryGirl.create(:user) }
+    let(:transcript_attrs) {{ start_time: "2012-04-29 17:52:39",
+                              end_time: "2012-04-29 18:30:22",
+                              transcript_user_id: transcript_user.user_name
     }}
 
-    before(:each) do
-      test_sign_in(@admin_user)
-    end
-
-    context "with no transcript user or workstation id" do
-      before { transcript_attrs.merge!({transcript_user_id: "", transcript_workstation_id: ""}) }
-     
-      it "redirects to the new transcript page" do
-        post :create, transcript: transcript_attrs
-        response.should redirect_to new_transcript_path
-      end
-
-      it "does not create a transcript" do
-        lambda do
-          post :create, transcript: transcript_attrs
-        end.should_not change(Transcript, :count)
-      end
-    end
-
-    context "with a transcript user and no transcript workstation" do
-      before { transcript_attrs.merge!({transcript_workstation_id: ""}) }
-     
-      it "redirects to the transcript show page" do
-        post :create, transcript: transcript_attrs
-        response.should redirect_to transcript_path(assigns(:transcript))
-      end
-
-      it "creates a transcript" do
-        lambda do
-          post :create, transcript: transcript_attrs
-        end.should change(Transcript, :count).by(1)
-      end
-    end
-    
-    context "with a transcript workstation and no transcript user" do
-      before { transcript_attrs.merge!({transcript_user_id: ""}) }
-     
-      it "redirects to the transcript show page" do
-        post :create, transcript: transcript_attrs
-        response.should redirect_to transcript_path(assigns(:transcript))
-      end
-
-      it "creates a transcript" do
-        lambda do
-          post :create, transcript: transcript_attrs
-        end.should change(Transcript, :count).by(1)
-      end
-    end
-    
-    context "with a transcript workstation and a transcript user" do
-      
-      it "redirects to the transcript show page" do
-        post :create, transcript: transcript_attrs
-        response.should redirect_to transcript_path(assigns(:transcript))
-      end
-
-      it "creates a transcript" do
-        lambda do
-          post :create, transcript: transcript_attrs
-        end.should change(Transcript, :count).by(1)
-      end
+    it "creates a transcript" do
+      transcript = stub('transcript', save: true)
+      transcripts = stub('transcripts collection')
+      user = stub('current_user', transcripts: transcripts, admin?: true)
+      controller.stub!(:current_user).and_return(user)
+      transcripts.should_receive(:build).and_return(transcript)
+      post :create, transcript: transcript_attrs
+      assigns(:transcript).should == transcript
     end
   end
 
