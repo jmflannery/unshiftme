@@ -78,9 +78,6 @@ describe TranscriptsController do
 
   describe "GET 'new'" do
 
-    let!(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
-    let!(:cuss) { FactoryGirl.create(:workstation, name: "CUS South", abrev: "CUSS", job_type: "td") }
-
     before(:each) do
       test_sign_in(@admin_user)
     end
@@ -90,9 +87,9 @@ describe TranscriptsController do
       response.should be_success
     end
 
-    it "gets the current user" do
+    it "creates a new Transcript" do
+      Transcript.should_receive(:new).and_return(mock_model(Transcript))
       get :new
-      assigns(:user).should == @admin_user
     end
 
     it "has the right title" do
@@ -100,10 +97,19 @@ describe TranscriptsController do
       response.body.should have_selector("title", content: "New Transcript")
     end
 
-    it "gets all workstations" do
+    it "gets all workstations abrevs in an Array with a leading empty string" do
+      workstations = stub('workstations').as_null_object
+      Workstation.should_receive(:all_short_names).and_return(workstations)
+      workstations.should_receive(:unshift).with("")
       get :new
-      assigns(:workstations).should include cusn.abrev
-      assigns(:workstations).should include cusn.abrev
+    end
+
+    it "gets all User names in an Array with a leading empty string" do
+      get :new
+      users = stub('users').as_null_object
+      User.should_receive(:all_user_names).and_return(users)
+      users.should_receive(:unshift).with("")
+      get :new
     end
   end
 
@@ -186,11 +192,11 @@ describe TranscriptsController do
     before(:each) do
       test_sign_in(@admin_user)
       @transcript_user = FactoryGirl.create(:user)
-      @transcript = FactoryGirl.create(:transcript, user: @admin_user, transcript_user_id: @transcript_user.id)
+      @transcript = FactoryGirl.create(:transcript, user: @admin_user, transcript_user: @transcript_user)
     end
 
     it "returns http success" do
-      get 'show', id: @transcript
+      get :show, id: @transcript
       response.should be_success
     end
   end
