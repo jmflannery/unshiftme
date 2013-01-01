@@ -34,8 +34,8 @@ class Transcript < ActiveRecord::Base
   end
 
   def name
-    workstation_abrev = Workstation.exists?(transcript_workstation_id) ? Workstation.find(transcript_workstation_id).abrev : ""
-    user_name = User.exists?(transcript_user_id) ? User.find(transcript_user_id).user_name : ""
+    workstation_abrev = transcript_workstation ? transcript_workstation.abrev : ""
+    user_name = transcript_user ? transcript_user.user_name : ""
     user_workstation = workstation_abrev
     user_workstation += " " unless user_name.blank? or workstation_abrev.blank?
     user_workstation += user_name
