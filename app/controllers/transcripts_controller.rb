@@ -22,7 +22,7 @@ class TranscriptsController < ApplicationController
 
   def show
     @user = current_user
-    @messages = @transcript.transcript_user.display_messages(start_time: @transcript.start_time, end_time: @transcript.end_time)
+    @messages = @transcript.display_messages(start_time: @transcript.start_time, end_time: @transcript.end_time)
     #@messages = Message.for_user_between(@transcript_user, @transcript.start_time, @transcript.end_time)
     #@messages.each { |message| message.set_view_class(@transcript_user) }
   end
@@ -64,3 +64,4 @@ class TranscriptsController < ApplicationController
     end
   end
 end
+

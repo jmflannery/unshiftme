@@ -132,16 +132,15 @@ describe TranscriptsController do
     end
   end
 
-  describe "GET 'show'" do
-
-    before(:each) do
-      test_sign_in(@admin_user)
-      @transcript_user = FactoryGirl.create(:user)
-      @transcript = FactoryGirl.create(:transcript, user: @admin_user, transcript_user: @transcript_user)
-    end
+  describe "GET 'show'", focus: true do
 
     it "returns http success" do
-      get :show, id: @transcript
+      user = stub('current_user', admin?: true)
+      transcript = stub('transcript', start_time: 'st', end_time: 'et', to_json: 'json', name: 'name')
+      user.stub_chain(:transcripts, :find_by_id).and_return(transcript)
+      controller.stub!(:current_user).and_return(user)
+      transcript.should_receive(:display_messages)
+      get :show, id: transcript
       response.should be_success
     end
   end
