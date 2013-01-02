@@ -122,6 +122,16 @@ describe Transcript do
       end
     end
 
+    describe "#display_messages" do
+
+      it "gets the display_messages of the transcript_user" do
+        options = double('options')
+        subject.transcript_user = FactoryGirl.create(:user)
+        subject.transcript_user.should_receive(:display_messages).with(options)
+        subject.display_messages(options)
+      end
+    end
+
     describe "#to_json" do
     
       let(:transcript_user) { FactoryGirl.create(:user, user_name: "jack") }

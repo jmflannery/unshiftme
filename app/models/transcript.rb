@@ -44,6 +44,10 @@ class Transcript < ActiveRecord::Base
     "Transcript for #{user_workstation} from #{start_str} to #{end_str}"
   end
 
+  def display_messages(options = {})
+    transcript_user.display_messages(options)
+  end
+
   def to_json
     json = {}
     json[:start_time] = start_time.to_s
