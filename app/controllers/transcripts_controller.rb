@@ -5,16 +5,14 @@ class TranscriptsController < ApplicationController
   before_filter :validate_transcript_attributes, only: [:create]
 
   def new
-    @user = current_user
     @title = "New Transcript"
     @transcript = Transcript.new
-    @users = User.all_user_names
-    @workstations = Workstation.all_short_names
+    @users = User.all_user_names.unshift("")
+    @workstations = Workstation.all_short_names.unshift("")
   end
 
   def create
-    @user = current_user
-    @transcript = @user.transcripts.build(@attrs)
+    @transcript = current_user.transcripts.build(@attrs)
     if @transcript.save
       redirect_to transcript_path(@transcript)
     else
@@ -24,7 +22,7 @@ class TranscriptsController < ApplicationController
 
   def show
     @user = current_user
-    @transcript_user = User.find(@transcript.transcript_user_id)
+    @messages = @transcript.transcript_user.display_messages(start_time: @transcript.start_time, end_time: @transcript.end_time)
     #@messages = Message.for_user_between(@transcript_user, @transcript.start_time, @transcript.end_time)
     #@messages.each { |message| message.set_view_class(@transcript_user) }
   end
