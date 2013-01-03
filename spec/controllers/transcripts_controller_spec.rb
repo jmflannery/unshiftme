@@ -132,14 +132,14 @@ describe TranscriptsController do
     end
   end
 
-  describe "GET 'show'", focus: true do
+  describe "GET 'show'" do
 
     it "returns http success" do
       user = stub('current_user', admin?: true)
       transcript = stub('transcript', start_time: 'st', end_time: 'et', to_json: 'json', name: 'name')
       user.stub_chain(:transcripts, :find_by_id).and_return(transcript)
       controller.stub!(:current_user).and_return(user)
-      transcript.should_receive(:display_messages)
+      transcript.should_receive(:display_messages).with(no_args)
       get :show, id: transcript
       response.should be_success
     end
