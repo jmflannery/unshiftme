@@ -115,19 +115,16 @@ describe TranscriptsController do
 
   describe "POST 'create'" do
 
-    let(:transcript_user) { FactoryGirl.create(:user) }
-    let(:transcript_attrs) {{ start_time: "2012-04-29 17:52:39",
-                              end_time: "2012-04-29 18:30:22",
-                              transcript_user_id: transcript_user.user_name
-    }}
+    let(:user) { stub('current_user', transcripts: stub('transcripts collection'), admin?: true) }
+    before(:each) do
+      controller.stub!(:current_user).and_return(user)
+    end
 
     it "creates a transcript" do
       transcript = stub('transcript', save: true)
-      transcripts = stub('transcripts collection')
-      user = stub('current_user', transcripts: transcripts, admin?: true)
-      controller.stub!(:current_user).and_return(user)
-      transcripts.should_receive(:build).and_return(transcript)
-      post :create, transcript: transcript_attrs
+      User.stub(:find_by_user_name).and_return(stub('transcript_user', id: 1))
+      user.transcripts.should_receive(:build).and_return(transcript)
+      post :create, transcript: {}
       assigns(:transcript).should == transcript
     end
   end
