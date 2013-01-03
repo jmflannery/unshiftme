@@ -125,10 +125,12 @@ describe Transcript do
     describe "#display_messages" do
 
       it "gets the display_messages of the transcript_user" do
-        options = double('options')
+        subject.start_time = double(:start_time).as_null_object
+        subject.end_time = double(:end_time).as_null_object
         subject.transcript_user = FactoryGirl.create(:user)
-        subject.transcript_user.should_receive(:display_messages).with(options)
-        subject.display_messages(options)
+        subject.transcript_user.should_receive(:display_messages).
+          with(start_time: subject.start_time, end_time: subject.end_time)
+        subject.display_messages
       end
     end
 
