@@ -115,17 +115,39 @@ describe TranscriptsController do
 
   describe "POST 'create'" do
 
-    let(:user) { stub('current_user', transcripts: stub('transcripts collection'), admin?: true) }
+    let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true) }
+    let(:transcript) { stub('transcript', save: nil) }
+
     before(:each) do
-      controller.stub!(:current_user).and_return(user)
+      controller.stub!(:current_user).and_return(current_user)
+      User.stub(:find_by_user_name).and_return(stub('transcript_user', id: 1))
     end
 
-    it "creates a transcript" do
-      transcript = stub('transcript', save: true)
-      User.stub(:find_by_user_name).and_return(stub('transcript_user', id: 1))
-      user.transcripts.should_receive(:build).and_return(transcript)
+    it "builds a transcript" do
+      current_user.transcripts.should_receive(:build).and_return(transcript)
       post :create, transcript: {}
-      assigns(:transcript).should == transcript
+    end
+
+    context "save failure" do
+
+      before { transcript.stub(save: false) }
+
+      it "redirects to the new transcript path" do
+        current_user.transcripts.stub(:build).and_return(transcript)
+        post :create, transcript: {}
+        response.should redirect_to new_transcript_path
+      end
+    end
+
+    context "save success" do
+
+      before { transcript.stub(save: true) }
+
+      it "redirects to the transcript_path(transcript) path" do
+        current_user.transcripts.stub(:build).and_return(transcript)
+        post :create, transcript: {}
+        response.should redirect_to transcript_path(transcript)
+      end
     end
   end
 
