@@ -78,8 +78,10 @@ describe TranscriptsController do
 
   describe "GET 'new'" do
 
+    let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true) }
+
     before(:each) do
-      test_sign_in(@admin_user)
+      controller.stub!(:current_user).and_return(current_user)
     end
 
     it "returns http success" do
@@ -192,3 +194,4 @@ describe TranscriptsController do
     end
   end
 end
+
