@@ -3,59 +3,6 @@ require 'spec_helper'
 describe TranscriptsController do
   render_views
 
-  before(:each) do
-    @admin_user = FactoryGirl.create(:user, admin: true)
-    @transcript = FactoryGirl.create(:transcript, user: @admin_user)
-  end
-
-  describe "access control" do
-
-    describe "for non-signed in users" do
-
-      it "deny's access to 'show'" do
-        get :show, id: @transcript.id, user: @admin_user.id
-        response.should redirect_to(signin_path)
-      end
-
-      it "deny's access to 'index'" do
-        get :index, id: @transcript.id, user: @admin_user.id
-        response.should redirect_to(signin_path)
-      end
-    end
-
-    describe "for non-admin in users" do
-
-      before(:each) do
-        @non_admin = test_sign_in(FactoryGirl.create(:user))
-        @transcript = FactoryGirl.create(:transcript, user: @non_admin)
-      end
-
-      it "deny's access to 'show'" do
-        get :show, id: @transcript.id, user: @non_admin.id
-        response.should redirect_to(user_path(@non_admin))
-      end
-
-      it "deny's access to 'index'" do
-        get :index, id: @transcript.id, user: @non_admin.id
-        response.should redirect_to(user_path(@non_admin))
-      end
-    end
-
-    describe "for unauthorized users" do
-
-      before(:each) do
-        test_sign_in(@admin_user)
-        @other_user = FactoryGirl.create(:user, admin: true)
-        @transcript = FactoryGirl.create(:transcript, user: @other_user)
-      end
-
-      it "deny's access to 'show'" do
-        get :show, id: @transcript.id, user: @admin_user.id
-        response.should redirect_to(signin_path)
-      end
-    end
-  end
-
   describe "GET 'new'" do
 
     context "for unauthenticated users" do
@@ -108,7 +55,6 @@ describe TranscriptsController do
       end
 
       it "gets all User names in an Array with a leading empty string" do
-        get :new
         users = stub('users').as_null_object
         User.should_receive(:all_user_names).and_return(users)
         users.should_receive(:unshift).with("")
@@ -182,42 +128,113 @@ describe TranscriptsController do
 
   describe "GET 'show'" do
 
-    it "returns http success" do
-      user = stub('current_user', admin?: true)
-      transcript = stub('transcript', start_time: 'st', end_time: 'et', to_json: 'json', name: 'name')
-      user.stub_chain(:transcripts, :find_by_id).and_return(transcript)
-      controller.stub!(:current_user).and_return(user)
-      transcript.should_receive(:display_messages).with(no_args)
-      get :show, id: transcript
-      response.should be_success
+    context "for unauthenticated users" do
+
+      let(:current_user) { nil }
+      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+
+      it "redirects to the sign_in path'" do
+        get :show, id: 1
+        response.should redirect_to(signin_path)
+      end
+    end
+
+    context "for non-admin users" do
+
+      let(:current_user) { stub('current_user', admin?: false) }
+      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+
+      it "redirects to the sign_in path'" do
+        get :show, id: 1
+        response.should redirect_to(user_path(current_user))
+      end
+    end
+
+    context "for unauthorized users" do
+
+      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true) }
+
+      before do
+        current_user.transcripts.stub!(:find_by_id).and_return(nil)
+        controller.stub!(:current_user).and_return(current_user)
+      end
+
+      it "redirects to the signin_path'" do
+        get :show, id: 1
+        response.should redirect_to(signin_path)
+      end
+    end
+
+    context "for authenticated admin users" do
+
+      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true) }
+      let(:transcript) { stub('transcript', to_json: 'json', name: 'name') }
+
+      before do
+        current_user.transcripts.stub!(:find_by_id).and_return(transcript)
+        controller.stub!(:current_user).and_return(current_user)
+      end
+
+      it "gets the messages for the transcript" do
+        transcript.should_receive(:display_messages).with(no_args)
+        get :show, id: 1
+      end
     end
   end
 
   describe "GET 'index'" do
 
-    before(:each) do
-      test_sign_in(@admin_user)
-      #@transcript = FactoryGirl.create(:transcript, user: @admin_user)
+    context "for unauthenticated users" do
+
+      let(:current_user) { nil }
+      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+
+      it "redirects to the sign_in path'" do
+        get :index
+        response.should redirect_to(signin_path)
+      end
     end
 
-    it "returns http success" do
-      get :index
-      response.should be_success
+    context "for non-admin users" do
+
+      let(:current_user) { stub('current_user', admin?: false) }
+      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+
+      it "redirects to the sign_in path'" do
+        get :index
+        response.should redirect_to(user_path(current_user))
+      end
     end
 
-    it "has the right title" do
-      get :index
-      response.body.should have_selector("title", content: "Transcripts")
-    end
+    context "for authenticated admin users" do
 
-    it "gets current user's transcripts" do
-      get :index
-      assigns(:transcripts).should include @transcript
-    end
+      let(:current_user) { stub('current_user', admin?: true) }
+      let(:transcripts) { mock_model(Transcript, size: 1, name: 'name') }
 
-    it "gets a count of the current user's transcripts" do
-      get :index
-      assigns(:transcript_count).should == 1
+      before { controller.stub!(:current_user).and_return(current_user) }
+
+      it "returns http success" do
+        current_user.stub(:transcripts).and_return(transcripts)
+        get :index
+        response.should be_success
+      end
+
+      it "has the right title" do
+        current_user.stub(:transcripts).and_return(transcripts)
+        get :index
+        response.body.should have_selector("title", content: "Transcripts")
+      end
+
+      it "gets current user's transcripts" do
+        current_user.should_receive(:transcripts).and_return(transcripts)
+        get :index
+      end
+
+      it "gets a count of the current user's transcripts" do
+        current_user.stub(:transcripts).and_return(transcripts)
+        transcripts.should_receive(:size)
+        get :index
+      end
     end
   end
 end

@@ -29,13 +29,13 @@ class TranscriptsController < ApplicationController
   def index
     @title = "Transcripts"
     @user = current_user
-    @transcripts = @user.transcripts
+    @transcripts = current_user.transcripts
     @transcript_count = @transcripts ? @transcripts.size : 0
   end
 
   private
 
-  def authenticate_admin 
+  def authenticate_admin
     redirect_to user_path(current_user) unless current_user.admin?
   end
 
