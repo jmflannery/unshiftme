@@ -12,11 +12,6 @@ describe TranscriptsController do
 
     describe "for non-signed in users" do
 
-      it "deny's access to 'new'" do
-        get :new, user: @admin_user.id, format: :js
-        response.should redirect_to(signin_path)
-      end
-
       it "deny's access to 'create'" do
         post :create, user: @admin_user.id, format: :js
         response.should redirect_to(signin_path)
@@ -40,24 +35,19 @@ describe TranscriptsController do
         @transcript = FactoryGirl.create(:transcript, user: @non_admin)
       end
 
-      it "deny's access to 'new'" do
-        get :new, user: @non_admin.id
-        response.should redirect_to(signin_path)
-      end
-
       it "deny's access to 'create'" do
         post :create, user: @non_admin.id
-        response.should redirect_to(signin_path)
+        response.should redirect_to(user_path(@non_admin))
       end
 
       it "deny's access to 'show'" do
         get :show, id: @transcript.id, user: @non_admin.id
-        response.should redirect_to(signin_path)
+        response.should redirect_to(user_path(@non_admin))
       end
 
       it "deny's access to 'index'" do
         get :index, id: @transcript.id, user: @non_admin.id
-        response.should redirect_to(signin_path)
+        response.should redirect_to(user_path(@non_admin))
       end
     end
 
@@ -78,40 +68,62 @@ describe TranscriptsController do
 
   describe "GET 'new'" do
 
-    let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true) }
+    context "for unauthenticated users" do
 
-    before(:each) do
-      controller.stub!(:current_user).and_return(current_user)
+      let(:current_user) { nil }
+      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+
+      it "redirects to the sign_in path'" do
+        get :new
+        response.should redirect_to(signin_path)
+      end
     end
 
-    it "returns http success" do
-      get :new
-      response.should be_success
+    context "for non-admin users" do
+
+      let(:current_user) { stub('current_user', admin?: false) }
+      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+
+      it "redirects to the sign_in path'" do
+        get :new
+        response.should redirect_to(user_path(current_user))
+      end
     end
 
-    it "creates a new Transcript" do
-      Transcript.should_receive(:new).and_return(mock_model(Transcript))
-      get :new
-    end
+    context "for authenticated admin users" do
 
-    it "has the right title" do
-      get :new
-      response.body.should have_selector("title", content: "New Transcript")
-    end
+      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true) }
+      before(:each) { controller.stub!(:current_user).and_return(current_user) }
 
-    it "gets all workstations abrevs in an Array with a leading empty string" do
-      workstations = stub('workstations').as_null_object
-      Workstation.should_receive(:all_short_names).and_return(workstations)
-      workstations.should_receive(:unshift).with("")
-      get :new
-    end
+      it "returns http success" do
+        get :new
+        response.should be_success
+      end
 
-    it "gets all User names in an Array with a leading empty string" do
-      get :new
-      users = stub('users').as_null_object
-      User.should_receive(:all_user_names).and_return(users)
-      users.should_receive(:unshift).with("")
-      get :new
+      it "creates a new Transcript" do
+        Transcript.should_receive(:new).and_return(mock_model(Transcript))
+        get :new
+      end
+
+      it "has the right title" do
+        get :new
+        response.body.should have_selector("title", content: "New Transcript")
+      end
+
+      it "gets all workstations abrevs in an Array with a leading empty string" do
+        workstations = stub('workstations').as_null_object
+        Workstation.should_receive(:all_short_names).and_return(workstations)
+        workstations.should_receive(:unshift).with("")
+        get :new
+      end
+
+      it "gets all User names in an Array with a leading empty string" do
+        get :new
+        users = stub('users').as_null_object
+        User.should_receive(:all_user_names).and_return(users)
+        users.should_receive(:unshift).with("")
+        get :new
+      end
     end
   end
 

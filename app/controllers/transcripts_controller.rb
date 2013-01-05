@@ -36,7 +36,7 @@ class TranscriptsController < ApplicationController
   private
 
   def authenticate_admin 
-    redirect_to signin_path unless current_user.admin?
+    redirect_to user_path(current_user) unless current_user.admin?
   end
 
   def authorized_user
