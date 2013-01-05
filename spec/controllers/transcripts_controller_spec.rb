@@ -12,11 +12,6 @@ describe TranscriptsController do
 
     describe "for non-signed in users" do
 
-      it "deny's access to 'create'" do
-        post :create, user: @admin_user.id, format: :js
-        response.should redirect_to(signin_path)
-      end
-
       it "deny's access to 'show'" do
         get :show, id: @transcript.id, user: @admin_user.id
         response.should redirect_to(signin_path)
@@ -33,11 +28,6 @@ describe TranscriptsController do
       before(:each) do
         @non_admin = test_sign_in(FactoryGirl.create(:user))
         @transcript = FactoryGirl.create(:transcript, user: @non_admin)
-      end
-
-      it "deny's access to 'create'" do
-        post :create, user: @non_admin.id
-        response.should redirect_to(user_path(@non_admin))
       end
 
       it "deny's access to 'show'" do
@@ -129,38 +119,63 @@ describe TranscriptsController do
 
   describe "POST 'create'" do
 
-    let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true) }
-    let(:transcript) { stub('transcript', save: nil) }
+    context "for unauthenticated users" do
 
-    before(:each) do
-      controller.stub!(:current_user).and_return(current_user)
-      User.stub(:find_by_user_name).and_return(stub('transcript_user', id: 1))
-    end
+      let(:current_user) { nil }
+      before(:each) { controller.stub!(:current_user).and_return(current_user) }
 
-    it "builds a transcript" do
-      current_user.transcripts.should_receive(:build).and_return(transcript)
-      post :create, transcript: {}
-    end
-
-    context "save failure" do
-
-      before { transcript.stub(save: false) }
-
-      it "redirects to the new transcript path" do
-        current_user.transcripts.stub(:build).and_return(transcript)
+      it "redirects to the sign_in path'" do
         post :create, transcript: {}
-        response.should redirect_to new_transcript_path
+        response.should redirect_to(signin_path)
       end
     end
 
-    context "save success" do
+    context "for non-admin users" do
 
-      before { transcript.stub(save: true) }
+      let(:current_user) { stub('current_user', admin?: false) }
+      before(:each) { controller.stub!(:current_user).and_return(current_user) }
 
-      it "redirects to the transcript_path(transcript) path" do
-        current_user.transcripts.stub(:build).and_return(transcript)
+      it "redirects to the sign_in path'" do
         post :create, transcript: {}
-        response.should redirect_to transcript_path(transcript)
+        response.should redirect_to(user_path(current_user))
+      end
+    end
+
+    context "for authenticated admin users" do
+
+      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true) }
+      let(:transcript) { stub('transcript', save: nil) }
+
+      before(:each) do
+        controller.stub!(:current_user).and_return(current_user)
+        User.stub(:find_by_user_name).and_return(stub('transcript_user', id: 1))
+      end
+
+      it "builds a transcript" do
+        current_user.transcripts.should_receive(:build).and_return(transcript)
+        post :create, transcript: {}
+      end
+
+      context "save failure" do
+
+        before { transcript.stub(save: false) }
+
+        it "redirects to the new transcript path" do
+          current_user.transcripts.stub(:build).and_return(transcript)
+          post :create, transcript: {}
+          response.should redirect_to new_transcript_path
+        end
+      end
+
+      context "save success" do
+
+        before { transcript.stub(save: true) }
+
+        it "redirects to the transcript_path(transcript) path" do
+          current_user.transcripts.stub(:build).and_return(transcript)
+          post :create, transcript: {}
+          response.should redirect_to transcript_path(transcript)
+        end
       end
     end
   end
