@@ -134,7 +134,7 @@ describe Transcript do
       end
     end
 
-    describe "#to_json" do
+    describe "#as_json" do
     
       let(:transcript_user) { FactoryGirl.create(:user, user_name: "jack") }
       let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
@@ -152,7 +152,7 @@ describe Transcript do
         end
 
         it "returns json including the user, workstation, start and end times" do
-          subject.to_json.should == expected.as_json
+          subject.as_json.should == expected.as_json
         end
       end
 
@@ -163,7 +163,7 @@ describe Transcript do
         end
 
         it "returns json including the user, start and end times" do
-          subject.to_json.should == expected.as_json
+          subject.as_json.should == expected.as_json
         end
       end
 
@@ -174,7 +174,7 @@ describe Transcript do
         end
 
         it "returns json including the workstation, start and end times" do
-          subject.to_json.should == expected.as_json
+          subject.as_json.should == expected.as_json
         end
       end
     end

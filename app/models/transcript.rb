@@ -48,7 +48,7 @@ class Transcript < ActiveRecord::Base
     transcript_user.display_messages(start_time: start_time, end_time: end_time)
   end
 
-  def to_json
+  def as_json
     json = {}
     json[:start_time] = start_time.to_s
     json[:end_time] = end_time.to_s
@@ -57,3 +57,4 @@ class Transcript < ActiveRecord::Base
     json.as_json
   end
 end
+
