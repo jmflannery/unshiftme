@@ -23,6 +23,7 @@ class TranscriptsController < ApplicationController
   def show
     @user = current_user
     respond_to do |format|
+      format.html
       format.json {
         render json: @transcript.as_json
       }
