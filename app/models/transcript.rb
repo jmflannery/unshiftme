@@ -48,13 +48,14 @@ class Transcript < ActiveRecord::Base
     transcript_user.display_messages(start_time: start_time, end_time: end_time)
   end
 
-  def as_json
+  def as_json(options = {})
+    include_messages = options.fetch(:include_messages, true)
     json = {}
     json[:start_time] = start_time.to_s
     json[:end_time] = end_time.to_s
     json[:user] = transcript_user_id if transcript_user_id
     json[:workstation] = transcript_workstation_id if transcript_workstation_id
-    json[:messages] = display_messages
+    json[:messages] = display_messages if include_messages
     json.as_json
   end
 end

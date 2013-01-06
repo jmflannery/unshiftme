@@ -152,36 +152,48 @@ describe Transcript do
       subject.update_attribute(:transcript_workstation, cusn)
     end
 
-    context "when transcript_user and transcript_workstation are present" do
+    context "with no supplied options" do
 
-      it "returns json including the user, workstation, start and end times, and messages" do
-        subject.as_json.should == expected.as_json
+      context "when transcript_user and transcript_workstation are present" do
+
+        it "returns json including the user, workstation, start and end times, and messages" do
+          subject.as_json.should == expected.as_json
+        end
+      end
+
+      context "when only transcript_user is present" do
+
+        before do
+          subject.update_attribute(:transcript_workstation, nil)
+          expected.delete(:workstation)
+        end
+
+        it "returns json including the user, start and end times, and messages" do
+          subject.as_json.should == expected.as_json
+        end
+      end
+
+      context "when only transcript_workstation is present" do
+
+        before do
+          pending
+          subject.update_attribute(:transcript_user, nil)
+          expected.delete(:user)
+        end
+
+        it "returns json including the workstation, start and end times" do
+          pending
+          subject.as_json.should == expected.as_json
+        end
       end
     end
 
-    context "when only transcript_user is present" do
+    context "with include_messages: false option" do
 
-      before do
-        subject.update_attribute(:transcript_workstation, nil)
-        expected.delete(:workstation)
-      end
+      before { expected.delete(:messages) }
 
-      it "returns json including the user, start and end times, and messages" do
-        subject.as_json.should == expected.as_json
-      end
-    end
-
-    context "when only transcript_workstation is present" do
-
-      before do
-        pending
-        subject.update_attribute(:transcript_user, nil)
-        expected.delete(:user)
-      end
-
-      it "returns json including the workstation, start and end times" do
-        pending
-        subject.as_json.should == expected.as_json
+      it "returns json including the user, workstation, start and end times" do
+        subject.as_json(include_messages: false).should == expected.as_json
       end
     end
   end
