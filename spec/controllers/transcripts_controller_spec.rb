@@ -168,16 +168,20 @@ describe TranscriptsController do
     context "for authenticated admin users" do
 
       let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true) }
-      let(:transcript) { stub('transcript', to_json: 'json', name: 'name') }
+      let(:transcript) { stub('transcript', as_json: 'json', name: 'name') }
 
       before do
         current_user.transcripts.stub!(:find_by_id).and_return(transcript)
         controller.stub!(:current_user).and_return(current_user)
       end
 
-      it "gets the messages for the transcript" do
-        transcript.should_receive(:display_messages).with(no_args)
-        get :show, id: 1
+      it "renders the transcript as json" do
+        json = stub('json')
+        transcript.should_receive(:as_json).with(no_args).and_return(json)
+        controller.should_receive(:render).with(json: json)
+        # not sure why render is called twice
+        controller.should_receive(:render).with(no_args)
+        get :show, id: 1, format: :json
       end
     end
   end

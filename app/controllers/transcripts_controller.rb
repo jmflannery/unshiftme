@@ -22,8 +22,11 @@ class TranscriptsController < ApplicationController
 
   def show
     @user = current_user
-    @messages = @transcript.display_messages
-    #@messages.each { |message| message.set_view_class(@transcript_user) }
+    respond_to do |format|
+      format.json {
+        render json: @transcript.as_json
+      }
+    end
   end
 
   def index
