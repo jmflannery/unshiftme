@@ -1,4 +1,4 @@
-<%= content_tag "div", id: "transcript_show", data: @transcript.as_json(include_messages: false) do %>
+<%= content_tag "div", id: "transcript_show", data: { id: @transcript.id } do %>
   <%= link_to "Back", transcripts_path %>
   <%= link_to "Live Messages", user_path(@user) %>
   <p><%= @transcript.name %></p>
