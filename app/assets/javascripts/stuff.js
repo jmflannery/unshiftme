@@ -18,7 +18,7 @@ var findMessage = function(message_id) {
 
 var on_messaging_page = function() {
   var messaging_page = false;
-  if ($("#messages_section").length > 0) {
+  if ($("#user_show").length > 0) {
     messaging_page = true;
   }
   return messaging_page;
