@@ -19,7 +19,6 @@ class MessagesController < ApplicationController
     options[:start_time] = Time.parse(start_time) unless start_time.blank?
     options[:end_time] = Time.parse(end_time) unless end_time.blank?
     messages = current_user.display_messages(options)
-    messages.each { |message| message.set_view_class(current_user) }
     respond_to do |format|
       format.json {
         render json: messages.as_json
