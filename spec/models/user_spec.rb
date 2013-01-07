@@ -388,6 +388,15 @@ describe User do
         subject.display_messages.should_not include msg
       end
 
+      it "sets the view class of each message" do
+        sender.add_recipient(cusn)
+        msg = sender.messages.create(content: "this is a message")
+        msg.generate_incoming_receipts
+        subject.display_messages.each do |message|
+          message.view_class.should =~ /message/
+        end
+      end
+
       context "if start_time option parameter is supplied" do
 
         it "does not return messages sent before the supplied start_time" do
