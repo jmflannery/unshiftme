@@ -7,6 +7,9 @@
 @import "fonts";
 @import "style_mixins";
 @import "messages_style";
+@import "compass/reset";
+@import "compass/css3/font-face";
+@import "compass/css3/images";
 @import "compass/css3/box-shadow";
 
 img {
@@ -26,11 +29,12 @@ body {
 
     #header {
       color: $near-white;
-      background-color: $grey;
+      @include background(linear-gradient(top, shade($dark-text, 90), $dark-text));
       margin: 0 0 12px 0;
       text-align: left;
       padding: 7px; 
-      @include box-shadow($grey-lettering 3px 0px 12px);
+      border-bottom: shade($dark-text, 30) solid 1px;
+      @include box-shadow(tint($dark-text, 40) 0px 1px 2px);
 
       #main_menu {
         font-size: .9em;
@@ -58,7 +62,6 @@ body {
             font-weight: bold;
             text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.3);
             padding-right: 20px;
-            margin-left: -20px;
           }
 
           li.nav_button {
