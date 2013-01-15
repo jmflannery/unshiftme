@@ -7,6 +7,7 @@
 @import "fonts";
 @import "style_mixins";
 @import "messages_style";
+@import "compass/css3/box-shadow";
 
 img {
   max-width: 100%; 
@@ -29,7 +30,7 @@ body {
       margin: 0 0 12px 0;
       text-align: left;
       padding: 7px; 
-      @include box-shadow(2px, 2px, 2px, 0px, 46, 42, 37, 0.8);
+      @include box-shadow($grey-lettering 3px 0px 12px);
 
       #main_menu {
         font-size: .9em;
