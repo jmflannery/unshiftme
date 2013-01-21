@@ -6,6 +6,7 @@
 @import "colors";
 @import "fonts";
 @import "style_mixins";
+@import "header";
 @import "messages_style";
 @import "compass/reset";
 @import "compass/css3/font-face";
@@ -28,61 +29,7 @@ body {
     }
 
     #header {
-      color: $near-white;
-      @include background(linear-gradient(top, shade($dark-text, 90), $dark-text));
-      margin: 0 0 12px 0;
-      text-align: left;
-      padding: 7px; 
-      border-bottom: shade($dark-text, 30) solid 1px;
-      @include box-shadow(tint($dark-text, 40) 0px 1px 2px);
-
-      #main_menu {
-        font-size: .9em;
-
-        ul {
-          margin: 0;
-
-          li {
-            display: inline;
-            list-style: none;
-            white-space: nowrap;
-
-            a {
-              color: $near-white;
-              text-decoration: none;
-              padding: 2px 4px;
-
-              &:hover, &:focus {
-                @include rounded-corners(4px);
-              }
-            }
-          }
-
-          li#page_title {
-            font-weight: bold;
-            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.3);
-            padding-right: 20px;
-          }
-
-          li.nav_button {
-            a {
-              &:hover, &:focus {
-                color: $blue;
-                background: rgba(0, 76, 152, 0.5); 
-              }
-            }
-          }
-
-          li#sign_out_button {
-            a {
-              &:hover, &:focus {
-                color: $red;
-                background: rgba(240, 8, 7, 0.5); 
-              }
-            }
-          }
-        }
-      } // end #main_menu
+      @include header_style;
     } // end #header
 
     #content {
