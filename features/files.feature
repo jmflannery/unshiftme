@@ -1,5 +1,6 @@
 @files
 @javascript
+@ignore
 Feature: Files
   As a GTM user
   I need to see my files in a seperate view from the messages

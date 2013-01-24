@@ -1,5 +1,6 @@
 @attachments
 @javascript
+@ignore
 Feature: Attachments
   As a GTM user
   I need to sent and receive files with other employees
