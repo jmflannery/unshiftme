@@ -6,8 +6,8 @@
 @import "colors";
 @import "fonts";
 @import "style_mixins";
+@import "messaging_page";
 @import "header";
-@import "messages_style";
 @import "compass/reset";
 @import "compass/css3/font-face";
 @import "compass/css3/images";
@@ -32,6 +32,19 @@ body {
       @include header_style;
     } // end #header
 
+    #messaging_page {
+      @include messaging_page;
+    }
+
+    #profile_page {
+    }
+
+    #transcripts_page {
+    }
+
+    #manage_users_page {
+    }
+
     #content {
       @include rounded-corners(7px);
       @include box-shadow(2px, 2px, 2px, 0px, 0, 0, 0, 0.7);
@@ -42,11 +55,15 @@ body {
       background-color: black;
     } // end #content
 
-    #edit_user {
+    #edit_profile_page {
       color: $dark-text;
     }
 
-    #user_index {
+    #change_password_page {
+      color: $dark-text;
+    }
+
+    #manage_users_page {
       color: $dark-text;
     }
 

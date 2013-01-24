@@ -3,7 +3,7 @@
 @import "style_mixins";
 @import "messages_style";
 
-#transcript_show {
+#transcript_page {
   
   ul {
 
@@ -26,6 +26,6 @@
   }
 }
 
-#new_transcript {
+#new_transcript_page {
   @include form-style;
 }

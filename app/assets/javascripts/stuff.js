@@ -18,7 +18,7 @@ var findMessage = function(message_id) {
 
 var on_messaging_page = function() {
   var messaging_page = false;
-  if ($("#user_show").length > 0) {
+  if ($("#messaging_page").length > 0) {
     messaging_page = true;
   }
   return messaging_page;
@@ -30,7 +30,7 @@ var on_messaging_page = function() {
 
 var on_transcript_page = function() {
   var transcript_page = false;
-  if ($("#transcript_show").length > 0) {
+  if ($("#transcript_page").length > 0) {
     transcript_page  = true;
   }
   return transcript_page; 
@@ -74,7 +74,7 @@ $(function() {
 
 $(function() {
   // if on the sign on page 
-  if ($("#signin").length > 0) {
+  if ($("#signin_page").length > 0) {
     // user name field loses focus
     $("input#user_name").focusout(function(event) {
       name = event.target.value;
@@ -420,6 +420,7 @@ $(function() {
   PrivatePub.subscribe("/messages/" + user_name, function(data, channel) {
     // play tone
     $('#tone')[0].innerHTML = "<embed src=/assets/soft_chime_beep.mp3 hidden=true autostart=true loop=false>";
+    //beep();
 
     // clear message text field
     $("input#message_content").val("");

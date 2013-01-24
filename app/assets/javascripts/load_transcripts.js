@@ -4,7 +4,7 @@
 
 function load_transcript_messages() {
   show_message_loading_icon();
-  var ts_page = $('#transcript_show');
+  var ts_page = $('#transcript_page');
   $.get("/transcripts/" + ts_page.data("id") + ".json", function(data) {
     hide_message_loading_icon();
     $.each(data.messages, function(index, value) {
