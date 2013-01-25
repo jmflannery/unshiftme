@@ -30,7 +30,7 @@ body {
 
     #header {
       @include header_style;
-    } // end #header
+    }
 
     #messaging_page {
       @include messaging_page;
@@ -44,16 +44,6 @@ body {
 
     #manage_users_page {
     }
-
-    #content {
-      @include rounded-corners(7px);
-      @include box-shadow(2px, 2px, 2px, 0px, 0, 0, 0, 0.7);
-      margin: 0 auto;
-      width: 98%;
-      height: 400px;
-      padding: .9%;
-      background-color: black;
-    } // end #content
 
     #edit_profile_page {
       color: $dark-text;
@@ -73,7 +63,7 @@ body {
 
     #footer {
       width: 100%;
-    } // end #footer
+    }
 
     #error_explanation {
       padding: 8px;
