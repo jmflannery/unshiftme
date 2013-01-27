@@ -1,4 +1,9 @@
 @mixin register_page_style {
+
   @include form-style;
+
+  #select_normal_workstation {
+    @include rounded-corners(6px);
+  }
 }
 
