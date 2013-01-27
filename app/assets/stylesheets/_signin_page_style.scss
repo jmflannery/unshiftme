@@ -1,8 +1,5 @@
-@import "colors";
-@import "fonts";
-@import "style_mixins";
+@mixin signin_page_style {
 
-#signin_page {
   @include form-style;
  
   #select_workstation {
