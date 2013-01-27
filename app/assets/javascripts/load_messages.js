@@ -2,7 +2,7 @@
 // Load messages
 ///////////////////////////////////////////////
 
-function load_messages() {
+var load_messages = function() {
   show_message_loading_icon();
 
   $.get("/messages.json", function(data) {
