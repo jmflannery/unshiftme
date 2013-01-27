@@ -1,0 +1,6 @@
+@mixin transcript_page_style {
+
+  #messages_section {
+    @include messages_style;
+  }
+}

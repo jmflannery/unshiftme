@@ -1,9 +1,4 @@
-@import "colors";
-@import "fonts";
-@import "style_mixins";
-@import "messages_style";
-
-#transcript_page {
+@mixin transcripts_page_style {
   
   ul {
 
@@ -26,6 +21,3 @@
   }
 }
 
-#new_transcript_page {
-  @include form-style;
-}
