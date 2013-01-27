@@ -1,10 +1,18 @@
 @mixin messages_style {
+
+  #message_loading_icon {
+    width: 220px;
+    margin: 0 auto;
+    padding: 10px;
+  }
+
   overflow: auto;
   @include rounded-corners(8px);
   border: 1px solid $near-white;
   padding-right: 6px;
 
   ul#message_list {
+
     margin: 2px;
     list-style: none;
     padding: 0px;
