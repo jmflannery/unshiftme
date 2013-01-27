@@ -10,21 +10,20 @@
   color: $grey;
 }
 
-#workstation_section {
+@mixin workstation_section_style {
+
   width: 19%;
   float: right;
 
   #recipient_workstation_selection {
-    width: 100%;
     font-size: .86em;
 
     .recipient_workstation {
-      white-space: nowrap;
+
+      @include workstation-text-style;
       padding: 5px;
-      margin: 0px;
       text-align: center;
       cursor: pointer;
-      @include workstation-text-style;
       background-color: $grey-background;
       border-bottom: 1px solid grey;
 
@@ -33,12 +32,12 @@
         color: $near-white;
       }
     }
-
-    .recipient_workstation.first {
+    
+    .first {
       @include rounded-corners-seperate(6px, 6px, 0, 0);
     }
 
-    .recipient_workstation.last {
+    .last {
       @include rounded-corners-seperate(0, 0, 6px, 6px);
       border-bottom: 0px;
     }
