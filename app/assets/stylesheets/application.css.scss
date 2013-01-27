@@ -6,6 +6,7 @@
 @import "colors";
 @import "fonts";
 @import "style_mixins";
+@import "signin_page_style";
 @import "messaging_page";
 @import "header";
 @import "compass/reset";
@@ -30,6 +31,10 @@ body {
 
     #header {
       @include header_style;
+    }
+
+    #signin_page {
+      @include signin_page_style;
     }
 
     #messaging_page {
