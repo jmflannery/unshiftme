@@ -7,6 +7,7 @@
 @import "fonts";
 @import "header";
 @import "style_mixins";
+@import "register_page_style";
 @import "signin_page_style";
 @import "messaging_page";
 @import "transcripts_page_style";
@@ -34,6 +35,10 @@ body {
 
     #header {
       @include header_style;
+    }
+
+    #register_page {
+      @include register_page_style;
     }
 
     #signin_page {

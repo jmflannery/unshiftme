@@ -2,10 +2,6 @@
 @import "fonts";
 @import "style_mixins";
 
-#register {
-  @include form-style;
-}
-
 #message_loading_icon {
   width: 220px;
   margin: 0 auto;
