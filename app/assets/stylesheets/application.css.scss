@@ -5,10 +5,13 @@
 
 @import "colors";
 @import "fonts";
+@import "header";
 @import "style_mixins";
 @import "signin_page_style";
 @import "messaging_page";
-@import "header";
+@import "transcripts_page_style";
+@import "transcript_page_style";
+@import "new_transcript_page_style";
 @import "compass/reset";
 @import "compass/css3/font-face";
 @import "compass/css3/images";
@@ -45,9 +48,15 @@ body {
     }
 
     #transcripts_page {
+      @include transcripts_page_style;
     }
 
-    #manage_users_page {
+    #transcript_page {
+      @include transcript_page_style;
+    }
+
+    #new_transcript_page {
+      @include new_transcript_page_style;
     }
 
     #edit_profile_page {
