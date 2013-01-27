@@ -1,4 +1,5 @@
 @import "messages_style";
+@import "workstation_section_style";
 
 @mixin messaging_page {
 
@@ -70,5 +71,9 @@
       @include messages_style;
     }
   } // end #messages_section
+
+  #workstation_section {
+    @include workstation_section_style;
+  }
 }
 
