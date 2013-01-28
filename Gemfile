@@ -27,6 +27,9 @@ end
 group :development do
   gem 'foreman'
   gem "annotate", "~> 2.5.0"
+  gem 'better_errors'
+  gem 'binding_of_caller'
+  gem 'meta_request'
 end
 
 group :test do
