@@ -1,10 +1,16 @@
 <li class=<%= user.user_name %>>
-  <p><%= user.user_name %></p>
+  <div id='name'>
+    <p><%= user.user_name %></p>
+  </div>
+  <div id='promote'>
   <%= form_for user, url: promote_user_path(user, format: :js), remote: true do |f| %>
     <%= f.label :admin %>
     <%= f.check_box :admin %>
     <%= f.submit "Update" %>
   <% end %>
-  <%= link_to 'Delete', user, :method => :delete, remote: true %>
+  </div>
+  <div id='delete'>
+  <%= link_to 'Delete User', user, :method => :delete, remote: true %>
+  </div>
 </li> 
 

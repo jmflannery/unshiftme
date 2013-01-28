@@ -8,6 +8,7 @@
 @import "transcripts_page_style";
 @import "transcript_page_style";
 @import "new_transcript_page_style";
+@import "manage_users_page_style";
 @import "compass/reset";
 @import "compass/css3/font-face";
 @import "compass/css3/images";
@@ -68,7 +69,7 @@ body {
     }
 
     #manage_users_page {
-      color: $dark-text;
+      @include manage_users_page_style;
     }
 
     #flash {

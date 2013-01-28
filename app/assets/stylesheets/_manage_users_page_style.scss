@@ -1,0 +1,72 @@
+@mixin manage_users_page_style {
+
+  color: $near-white;
+
+  section#user_list {
+
+    width: 60%;
+    margin: 0 auto;
+
+    ul#user_list {
+
+      li {
+        padding: 5px;
+        @include background(linear-gradient(top, #F2F3F8, #EDEFF4));
+        margin: 8px;
+        height: 30px;
+        width: 100%;
+        @include rounded-corners(8px);
+
+        #name {
+          width: 15%;
+          float: left;
+          padding: 5px;
+
+          p {
+            color: $dark-text;
+            font-weight: bold;
+            font-size: 1.3em;
+            @include rounded-corners(4px);
+          }
+        }
+
+        #promote {
+          width: 30%;
+          float: left;
+
+          form {
+            width: 100%;
+            text-align: center;
+            @include background(linear-gradient(top, #191919, #101010));
+            color: $near-white;
+            padding: 2px;
+            @include rounded-corners(4px);
+          }
+        }
+
+        #delete {
+          float: right;
+          text-align: center;
+          padding-right: 16px;
+          padding-top: 8px;
+
+          a {
+            color: $red;
+            background-color: $near-white;
+            border: $red solid 2px;
+            font-weight: bold;
+            padding: 1px;
+            @include rounded-corners(4px);
+            text-decoration: none;
+
+            &:hover {
+              color: $near-white;
+              background-color: $red;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
