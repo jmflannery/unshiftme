@@ -7,13 +7,14 @@
   font-weight: bold;
   line-height: 1;
   font-size: .9em;
-  color: $grey;
+  color: $near-white;
 }
 
 @mixin workstation_section_style {
 
   width: 19%;
   float: right;
+  margin: 5px;
 
   #workstation_loading_icon {
     width: 40px;
@@ -30,12 +31,12 @@
       padding: 5px;
       text-align: center;
       cursor: pointer;
-      background-color: $grey-background;
-      border-bottom: 1px solid grey;
+      background-color: $cdark-grey;
+      @include box-shadow(rgba(255, 255, 255, 0.1) 0 0px 1px 1px);
 
       &:hover, &:focus {
-        background-color: $dark-text;
         color: $near-white;
+        @include inset-box-shadow;
       }
     }
     
@@ -45,32 +46,25 @@
 
     .last {
       @include rounded-corners-seperate(0, 0, 6px, 6px);
-      border-bottom: 0px;
-    }
-
-    p {
-      margin: 0px;
     }
 
     .mine {
-      color: #265902;
+      color: $red;
       background-repeat: no-repeat;
       background-position: 18% 50%;
     }
 
     .on {
-      color: black;
+      @include inset-box-shadow;
       background-image: url('lightning.png');
       background-repeat: no-repeat;
       background-position: 90% 45%;
     }
 
     .off {
-      color: black;
     }
 
     .all {
-      color: black;
     }
   }
 }
