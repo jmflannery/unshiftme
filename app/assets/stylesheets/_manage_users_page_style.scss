@@ -4,18 +4,19 @@
 
   section#user_list {
 
-    width: 60%;
+    width: 40%;
     margin: 0 auto;
 
     ul#user_list {
 
       li {
         padding: 5px;
-        @include background(linear-gradient(top, #F2F3F8, #EDEFF4));
+        @include background(linear-gradient(top, $real-lite-grey, $near-white));
         margin: 8px;
         height: 30px;
         width: 100%;
         @include rounded-corners(8px);
+        @include box-shadow($light-grey 2px 2px 10px inset);
 
         #name {
           width: 15%;
@@ -35,9 +36,9 @@
           float: left;
 
           form {
-            width: 100%;
+            width: 150px;
             text-align: center;
-            @include background(linear-gradient(top, #191919, #101010));
+            @include background(linear-gradient(top, $medium-grey, $light-grey));
             color: $near-white;
             padding: 2px;
             @include rounded-corners(4px);
