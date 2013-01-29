@@ -7,27 +7,22 @@
   }
 
   overflow: auto;
-  @include rounded-corners(8px);
-  border: 1px solid $near-white;
-  padding-right: 6px;
+  padding: 7px;
+  margin: 5px;
+  @include rounded-corners(4px);
+  background-color: $cdark-grey;
+  @include inset-box-shadow;
 
   ul#message_list {
-
-    margin: 2px;
-    padding: 0px;
 
     li.message {
       display: table;
       width: 100%;
       padding: 6px;
-      margin: 4px;
+      margin-bottom: 4px;
       font-size: 0.9em;
       @include rounded-corners(8px);
     
-      p {
-        margin: 0px;
-      }
-
       .left-side {
         float: left;
         width: 70%;
