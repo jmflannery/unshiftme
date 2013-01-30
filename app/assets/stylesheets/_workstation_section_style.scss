@@ -2,14 +2,6 @@
 @import "fonts";
 @import "style_mixins";
 
-@mixin workstation-text-style {
-  font-family: Helvetica, Arial, sans-serrif;
-  font-weight: bold;
-  line-height: 1;
-  font-size: .9em;
-  color: $near-white;
-}
-
 @mixin workstation_section_style {
 
   width: 19%;
@@ -27,7 +19,7 @@
 
     .recipient_workstation {
 
-      @include workstation-text-style;
+      @include text-style;
       padding: 5px;
       text-align: center;
       cursor: pointer;
