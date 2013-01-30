@@ -2,11 +2,11 @@
   <ul>
     <li id='page_title'><%= @title %></li>
     <% if signed_in? %>
-      <li class='nav_button'><%= link_to "Messages", user_path(current_user) %></li>
-      <li class='nav_button'><%= link_to "Profile", edit_user_path(current_user) %></li>
+      <li><%= link_to "Messages", user_path(current_user) %></li>
+      <li><%= link_to "Profile", edit_user_path(current_user) %></li>
       <% if current_user.admin? %>
-        <li class='nav_button'><%= link_to "Transcripts", transcripts_path %></li>
-        <li class='nav_button'><%= link_to "Manage Users", users_path %></li>
+        <li><%= link_to "Transcripts", transcripts_path %></li>
+        <li><%= link_to "Manage Users", users_path %></li>
       <% end %> 
       <li id='sign_out_button'><%= link_to "Sign out", signout_path %></li>
     <% end %>

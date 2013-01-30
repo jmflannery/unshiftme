@@ -1,30 +1,23 @@
 @mixin header_style {
-  color: $near-white;
-  @include background(linear-gradient(top, $near-black, $dark-grey));
-  margin: 0 0 12px 0;
-  text-align: left;
+  background-color: $cdark-grey;
+  @include inset-box-shadow;
   padding: 7px; 
-  //border-bottom: shade($dark-text, 30) solid 1px;
-  //@include box-shadow(tint($dark-text, 40) 0px 1px 2px);
 
   #main_menu {
     font-size: .9em;
 
     ul {
-      margin: 0;
-
       li {
         display: inline;
-        list-style: none;
-        white-space: nowrap;
 
         a {
-          color: $near-white;
           text-decoration: none;
-          padding: 2px 4px;
+          padding: 3px 6px 3px 6px;
+          @include text-style;
 
           &:hover, &:focus {
-            @include rounded-corners(4px);
+            @include inset-box-shadow;
+            @include rounded-corners(10px);
           }
         }
       }
@@ -37,23 +30,16 @@
         color: $red;
       }
 
-      li.nav_button {
-        a {
-          &:hover, &:focus {
-            color: $blue;
-            background: rgba(0, 76, 152, 0.5); 
-          }
-        }
-      }
-
       li#sign_out_button {
+
         a {
           &:hover, &:focus {
             color: $red;
-            background: rgba(240, 8, 7, 0.5); 
+            background: rgba(240, 8, 7, 0.4); 
           }
         }
       }
     }
-  } // end #main_menu
+  }
 }
+
