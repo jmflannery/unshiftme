@@ -3,7 +3,7 @@
 ////////////////////////////////////////
 
 $(function() {
-  if ($('#content').length > 0) {
+  if (signed_in()) {
     setTimeout(heartbeat, 10000);
   }
 });

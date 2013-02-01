@@ -52,3 +52,16 @@ var on_manage_users_page = function() {
   return on_page; 
 };
 
+var signed_in = function() {
+  var signed_in = false;
+  if (on_messaging_page() ||
+      on_profile_page() ||
+      on_transcript_page() ||
+      on_transcripts_page() ||
+      on_new_transcript_page() ||
+      on_manage_users_page()) {
+    signed_in = true;
+  }
+  return signed_in;
+};
+
