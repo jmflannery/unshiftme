@@ -7,6 +7,14 @@
     font-size: .9em;
 
     ul {
+
+      li.current {
+        a {
+          @include inset-box-shadow;
+          @include rounded-corners(10px);
+        }
+      }
+
       li {
         display: inline;
 
@@ -35,7 +43,7 @@
         a {
           &:hover, &:focus {
             color: $red;
-            background: rgba(240, 8, 7, 0.4); 
+            //background: rgba(240, 8, 7, 0.4); 
           }
         }
       }

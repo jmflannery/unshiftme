@@ -1,0 +1,54 @@
+// on messaging page?
+var on_messaging_page = function() {
+  var on_page = false;
+  if ($("#messaging_page").length > 0) {
+    on_page = true;
+  }
+  return on_page;
+};
+
+// on edit profile page?
+var on_profile_page = function() {
+  var on_page = false;
+  if ($("#edit_profile_page").length > 0) {
+    on_page = true;
+  }
+  return on_page;
+};
+
+// on transcripts page?
+var on_transcripts_page = function() {
+  var on_page = false;
+  if ($("#transcripts_page").length > 0) {
+    on_page = true;
+  }
+  return on_page;
+};
+
+// on transcript page?
+var on_transcript_page = function() {
+  var on_page = false;
+  if ($("#transcript_page").length > 0) {
+    on_page = true;
+  }
+  return on_page; 
+};
+
+// on new transcript page?
+var on_new_transcript_page = function() {
+  var on_page = false;
+  if ($("#new_transcript_page").length > 0) {
+    on_page = true;
+  }
+  return on_page; 
+};
+
+// on new manage users page?
+var on_manage_users_page = function() {
+  var on_page = false;
+  if ($("#manage_users_page").length > 0) {
+    on_page = true;
+  }
+  return on_page; 
+};
+
