@@ -297,63 +297,6 @@ $(function() {
 //  }
 //});
 
-///////////////////////////////////
-// Upload Section
-///////////////////////////////////
-
-var expand_upload_section = function() {
-  $('#upload_button').hide();
-  $('#messages_section').animate({
-    width: "62%"
-  }, 'fast', 'swing', function() {
-    $('#upload').css("width", "17%");
-    $("#upload_close_button").fadeIn();
-    $('#outer_upload_section').fadeIn('slow');
-    $("#msg_input input[type='text']").css("width", "97%");
-  });
-};
-
-var minimize_upload_section = function() {
-  $("#msg_input input[type='text']").css("width", "93.4%");
-  $("#upload_close_button").hide();
-  $('#outer_upload_section').fadeOut('fast', function() {
-    $('#upload').css("width", "0.6%");
-    $('#upload_button').delay(100).fadeIn('slow');
-    $('#messages_section').animate({width: "80%"}, 100, 'linear');
-  });
-};
-
-var toggle_upload_section = function() {
-  if ($("#outer_upload_section").is(":visible")) {
-    minimize_upload_section();
-  } else {
-    expand_upload_section();
-  }
-};
-
-$(function() {
-  $("#outer_upload_section").hide();
-  $("#upload_close_button").hide();
-  $("form#new_attachment").hide().fileupload();
-  $('#attach_button').click(toggle_upload_section)
-  $('#upload_xicon').click(toggle_upload_section)
-});
-
-//////////////////////////////////////////////
-// message upload 
-//////////////////////////////////////////////
-
-//$(function() {
-//  if ($("#messages_section").length > 0) {
-//    var uploader = new qq.FileUploader({
-//        // pass the dom node (ex. $(selector)[0] for jQuery users)
-//        element: document.getElementById('file-uploader'),
-//        // path to server-side upload script
-//        action: '/attachments.js'
-//    });
-//  }
-//});
-
 ///////////////////////////////////////////////
 // Loading icon
 ///////////////////////////////////////////////
