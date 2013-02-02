@@ -10,7 +10,7 @@
 
       li.current {
         a {
-          @include inset-box-shadow;
+          @include outset-inset-box-shadow;
           @include rounded-corners(10px);
         }
       }
@@ -24,7 +24,7 @@
           @include text-style;
 
           &:hover, &:focus {
-            @include inset-box-shadow;
+            @include outset-inset-box-shadow;
             @include rounded-corners(10px);
           }
         }
