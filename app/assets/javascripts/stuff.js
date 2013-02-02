@@ -338,8 +338,8 @@ $(function() {
   // register callback
   PrivatePub.subscribe("/messages/" + user_name, function(data, channel) {
     // play tone
-    //$('#tone')[0].innerHTML = "<embed src=/assets/soft_chime_beep.mp3 hidden=true autostart=true loop=false>";
-    beep();
+    $('#tone')[0].innerHTML = "<embed src=/assets/soft_chime_beep.mp3 hidden=true autostart=true loop=false>";
+    //beep();
 
     // clear message text field
     $("input#message_content").val("");
