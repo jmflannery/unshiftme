@@ -24,11 +24,11 @@
     </div>
   </div>
 
-  <div id="upload_button">
-    <%= image_tag("paperclip.png", id: "attach_button") %>
-  </div>
-
   <div id="messages_section">
+    <div id="upload_button">
+      <%= image_tag("paperclip.png", id: "attach_button") %>
+    </div>
+
     <div id="msg_input">
       <% if signed_in? %>
         <%= form_for(@message, remote: true, format: :js) do |f| %>

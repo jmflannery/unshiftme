@@ -6,13 +6,6 @@
     padding: 10px;
   }
 
-  overflow: auto;
-  padding: 7px;
-  margin: 5px;
-  @include rounded-corners(4px);
-  background-color: $cdark-grey;
-  @include inset-box-shadow;
-
   ul#message_list {
 
     li.message {
