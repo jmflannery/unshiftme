@@ -53,11 +53,12 @@
         width: 93.4%;
         padding: 6px;
         font-size: 1.4em;
-        color: $dark-text;
+        color: $near-white;
         border: none;
-        background-color: $near-white;
+        background-color: $cgrey;
         margin: 8px;
         @include rounded-corners(6px);
+        @include inset-box-shadow;
       
         &:hover, &:focus {
           border: none;
