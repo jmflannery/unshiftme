@@ -46,19 +46,6 @@
     @include inset-box-shadow;
     @include border-radius(6px);
 
-    #register_link {
-
-      float: right;
-      margin: -5px;
-      font-size: 0.9em;
-      color: $grey-lettering;
-
-      a {
-        color: $blue;
-        text-decoration: none;
-      }
-    }
-
     .field {
       margin: 8px 0px;
 
