@@ -1,16 +1,15 @@
 <div id="transcripts_page">
-  
-  <%= link_to "Back", user_path(@user) %>
-
-  <ul>
-    <li><%= link_to "New Transcript", new_transcript_path(user: @user) %></li>
-  </ul>
-
-  <div id="transcripts">
-    <p><%= "#{@transcript_count} transcripts." %></p>
-    <ul>
-      <%= render @transcripts %>
-    </ul>
+  <div class='center_spot'>
+    <div id='controls'>
+      <%= link_to "Back", user_path(@user), class: 'link_button' %>
+      <%= link_to "New Transcript", new_transcript_path(user: @user), class: 'link_button' %>
+    </div>
+    <div id="transcripts">
+      <p><%= "#{@transcript_count} transcripts." %></p>
+      <ul>
+        <%= render @transcripts %>
+      </ul>
+    </div>
   </div>
 </div>
 

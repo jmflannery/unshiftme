@@ -1,17 +1,38 @@
 @mixin transcripts_page_style {
   
-  ul {
-
-    display: inline;
+  @include form-style;
   
-    li {
+  #controls {
+    width: 90%;
+    max-width: 500px;
+    margin: 10px auto;
+    text-align: center;
+  }
+
+  #transcripts {
+
+    ul {
+
+      display: inline;
     
-      a {
-        font-size: .8em;
-        text-decoration: none;
-        @include mac-button-style;
-        @include mac-button-text-style; 
-        padding: 2px 4px;
+      li {
+
+        padding: 3px;
+        margin: 3px;
+      
+        a {
+          color: $near-white;
+          font-size: .8em;
+          text-decoration: none;
+          padding: 4px;
+          font-weight: normal;
+
+          &:hover {
+            color: $blue;
+            @include inset-box-shadow;
+            @include border-radius(8px);
+          }
+        }
       }
     }
   }
