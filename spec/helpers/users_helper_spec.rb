@@ -73,17 +73,17 @@ describe "UsersHelper" do
     end
   end
 
-  describe "#remove_old_password_key_from_hash" do
+  describe "#remove_current_password_key_from_hash" do
 
-    let(:user) {{ old_password: "eddienyc", password: "krotchpotato", password_confirmation: "krotchpotato" }}
-    let(:user_wo_oldpassword) {{ password: "krotchpotato", password_confirmation: "krotchpotato" }}
+    let(:params) {{ current_password: "eddienyc", password: "krotchpotato", password_confirmation: "krotchpotato" }}
+    let(:params_wo_currentpassword) {{ password: "krotchpotato", password_confirmation: "krotchpotato" }}
 
-    it "removes the key :old_password from the supplied hash" do
-      remove_old_password_key_from_hash(user).should == user_wo_oldpassword
+    it "removes the key :current_password from the supplied hash" do
+      remove_current_password_key_from_hash(params).should == params_wo_currentpassword
     end
 
-    it "returns the supplied hash if :old_password is not found" do
-      remove_old_password_key_from_hash(user_wo_oldpassword).should == user_wo_oldpassword
+    it "returns the supplied hash if :current_password is not found" do
+      remove_current_password_key_from_hash(params_wo_currentpassword).should == params_wo_currentpassword
     end
   end
 end
