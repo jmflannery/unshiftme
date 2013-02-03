@@ -14,28 +14,6 @@
   color: $near-white;
 }
 
-@mixin rounded-corners($radius) {
-  -webkit-border-radius: $radius;
-  -moz-border-radius: $radius;
-  -o-border-radius: $radius;
-  border-radius: $radius; 
-}
-
-@mixin rounded-corners-seperate($top-left, $top-right, $bottom-right, $bottom-left) {
-  -webkit-border-top-left-radius: $top-left;
-  -webkit-border-top-right-radius: $top-right;
-  -webkit-border-bottom-right-radius: $bottom-right;
-  -webkit-border-bottom-left-radius: $bottom-left;
-  -moz-border-radius-topleft: $top-left;
-  -moz-border-radius-topright: $top-right;
-  -moz-border-radius-bottomright: $bottom-right;
-  -moz-border-radius-bottomleft: $bottom-left;
-  border-top-left-radius: $top-left;
-  border-top-right-radius: $top-right;
-  border-bottom-left-radius: $bottom-left;
-  border-bottom-right-radius: $bottom-right;
-}
-
 @mixin mac-button-style {
   border: none;
   background-color: #fff;

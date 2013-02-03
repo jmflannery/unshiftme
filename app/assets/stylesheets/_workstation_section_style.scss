@@ -29,11 +29,11 @@
     }
     
     .first {
-      @include rounded-corners-seperate(6px, 6px, 0, 0);
+      @include border-top-radius(6px);
     }
 
     .last {
-      @include rounded-corners-seperate(0, 0, 6px, 6px);
+      @include border-bottom-radius(6px);
     }
 
     .mine {
