@@ -3,7 +3,7 @@
 }
 
 @mixin inset-box-shadow {
-  @include box-shadow(black 0px 1px 8px 1px inset);
+  @include box-shadow(black 0px 1px 6px 1px inset);
 }
 
 @mixin text-style {

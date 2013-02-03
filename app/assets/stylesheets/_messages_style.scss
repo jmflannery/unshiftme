@@ -12,36 +12,36 @@
       display: table;
       width: 100%;
       padding: 6px;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
       font-size: 0.9em;
-      @include rounded-corners(8px);
+      @include border-radius(6px);
     
       .left-side {
         float: left;
-        width: 70%;
+        width: 80%;
 
         .sender {
-          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+          @include text-shadow(0px 1px 1px rgba(255, 255, 255, 0.6));
           font-weight: bold;
           font-size: .9em;
-        } // end .message_sender 
+        }
 
         .content {
           font-size: 1.3em;
           margin: 3px 0px;
-        } // end .message_content
+        }
       }
             
       .right-side {
         float: right;
-        width: 30%;
+        width: 20%;
         text-align: right;
-                
+ 
         .timestamp {
-          text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+          @include text-shadow(0px 1px 1px rgba(255, 255, 255, 0.6));
           font-weight: bold;
           font-size: .9em;
-        } // end .message_timestamp 
+        }
 
         .readers {
           font-size: 0.8em;
@@ -51,21 +51,18 @@
     } // end li.message
 
     li.message.owner {
-      background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#191919), to(#101010));
-      background-image: -moz-linear-gradient(#191919, #101010);
+      @include background(linear-gradient(tint($blackish, 6), $blackish));
       color: $near-white;
-    } // end .owner
+    }
 
     li.message.recieved.unread {
-      background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#F2F3F8), to(#EDEFF4));
-      background-image: -moz-linear-gradient(#F2F3F8, #EDEFF4);
+      @include background(linear-gradient($near-white, shade($near-white, 20)));
       color: $blackish;
       cursor: pointer;
     }
 
     li.message.recieved.read {
-      background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#96968E), to(#5C5B57));
-      background-image: -moz-linear-gradient(#96968E, #5C5B57);
+      @include background(linear-gradient($msg-grey, shade($msg-grey, 50)));
       color: $blackish;
     }
   } // end ul#message_list
