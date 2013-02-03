@@ -87,7 +87,7 @@ body {
       color: $error-red;
       font-size: 0.8em;
       border: solid $error-red 1px;
-      @include rounded-corners(3px);
+      @include border-radius(3px);
       background: $error-light-red url('cone.png') no-repeat 2% 20%;
       //@include box-shadow(2px, 2px, 2px, 0px, 255, 255, 255, 0.7);
 

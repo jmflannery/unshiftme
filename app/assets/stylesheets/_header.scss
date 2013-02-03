@@ -11,7 +11,7 @@
       li.current {
         a {
           @include outset-inset-box-shadow;
-          @include rounded-corners(10px);
+          @include border-radius(10px);
         }
       }
 
@@ -25,7 +25,7 @@
 
           &:hover, &:focus {
             @include outset-inset-box-shadow;
-            @include rounded-corners(10px);
+            @include border-radius(10px);
           }
         }
       }

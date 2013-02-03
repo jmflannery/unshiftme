@@ -3,7 +3,7 @@
   @include form-style;
 
   #select_normal_workstation {
-    @include rounded-corners(6px);
+    @include border-radius(6px);
   }
 }
 
