@@ -78,7 +78,7 @@ class UsersController < ApplicationController
 
   def update_password
     @user.updating_password!
-    if @user.update_attributes(remove_old_password_key_from_hash(params[:user]))
+    if @user.update_attributes(remove_current_password_key_from_hash(params[:user]))
       flash[:success] = "Password updated!"
       redirect_to edit_user_path(@user)
     else
@@ -119,7 +119,7 @@ class UsersController < ApplicationController
   end
 
   def authenticate_old_password
-    unless @user.authenticate(params[:user][:old_password])
+    unless @user.authenticate(params[:user][:current_password])
       flash[:error] = "Password update failed."
       render :edit_password
     end

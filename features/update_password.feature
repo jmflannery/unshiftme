@@ -9,9 +9,9 @@ Feature: Update password
     Given I am registered user "jack" logged in with password "secret"
     When I click link "Profile"
     And I click link "Change password"
-    And I fill in "Old password" with "secret"
-    And I fill in "Password" with "secret"
-    And I fill in "Password confirmation" with "secret"
+    And I fill in "Current password" with "secret"
+    And I fill in "New password" with "secret"
+    And I fill in "Confirm new password" with "secret"
     And I press "Update password"
     Then I should see "Password updated!"
 

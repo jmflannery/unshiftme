@@ -16,8 +16,8 @@ module UsersHelper
     params.has_key?("commit") and params["commit"] == "Cancel"
   end
   
-  def remove_old_password_key_from_hash(hash)
-    hash.delete(:old_password) if hash[:old_password]
+  def remove_current_password_key_from_hash(hash)
+    hash.delete(:current_password) if hash[:current_password]
     hash
   end
 end
