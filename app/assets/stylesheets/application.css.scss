@@ -33,6 +33,10 @@ body {
       font-size: 0.8em;
     }
 
+    .link_button {
+      @include link_button_style;
+    }
+
     #header {
       @include header_style;
     }
