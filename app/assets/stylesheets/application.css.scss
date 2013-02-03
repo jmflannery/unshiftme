@@ -6,6 +6,7 @@
 @import "signin_page_style";
 @import "messaging_page";
 @import "edit_profile_page_style";
+@import "change_password_page_style";
 @import "transcripts_page_style";
 @import "transcript_page_style";
 @import "new_transcript_page_style";
@@ -52,6 +53,10 @@ body {
       @include edit_profile_page_style;
     }
 
+    #change_password_page {
+      @include change_password_page_style;
+    }
+
     #transcripts_page {
       @include transcripts_page_style;
     }
@@ -62,10 +67,6 @@ body {
 
     #new_transcript_page {
       @include new_transcript_page_style;
-    }
-
-    #change_password_page {
-      color: $dark-text;
     }
 
     #manage_users_page {
