@@ -29,7 +29,7 @@ describe TranscriptsController do
 
     context "for authenticated admin users" do
 
-      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true) }
+      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true, handle: 'handle') }
       before(:each) { controller.stub!(:current_user).and_return(current_user) }
 
       it "returns http success" do
@@ -167,7 +167,7 @@ describe TranscriptsController do
 
     context "for authenticated admin users" do
 
-      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true) }
+      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true, handle: 'handle') }
       let(:transcript) { stub('transcript', as_json: 'json', name: 'name') }
 
       before do
@@ -212,7 +212,7 @@ describe TranscriptsController do
 
     context "for authenticated admin users" do
 
-      let(:current_user) { stub('current_user', admin?: true) }
+      let(:current_user) { stub('current_user', admin?: true, handle: 'handle') }
       let(:transcripts) { mock_model(Transcript, size: 1, name: 'name') }
 
       before { controller.stub!(:current_user).and_return(current_user) }
