@@ -42,11 +42,12 @@ class UsersController < ApplicationController
   end
 
   def index
+    @title = current_user.handle 
     @users = User.all
   end
 
   def edit
-    @title = "Edit user"
+    @title = current_user.handle
     @td_workstations = Workstation.of_type("td")
     @ops_workstations = Workstation.of_type("ops")
   end
@@ -74,6 +75,7 @@ class UsersController < ApplicationController
   end
 
   def edit_password
+    @title = current_user.handle
   end
 
   def update_password

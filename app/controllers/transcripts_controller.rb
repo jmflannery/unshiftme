@@ -5,7 +5,7 @@ class TranscriptsController < ApplicationController
   before_filter :validate_transcript_attributes, only: [:create]
 
   def new
-    @title = "New Transcript"
+    @title = current_user.handle 
     @transcript = Transcript.new
     @users = User.all_user_names.unshift("")
     @workstations = Workstation.all_short_names.unshift("")
@@ -21,6 +21,7 @@ class TranscriptsController < ApplicationController
   end
 
   def show
+    @title = current_user.handle 
     @user = current_user
     respond_to do |format|
       format.html
@@ -31,7 +32,7 @@ class TranscriptsController < ApplicationController
   end
 
   def index
-    @title = "Transcripts"
+    @title = current_user.handle 
     @user = current_user
     @transcripts = current_user.transcripts
     @transcript_count = @transcripts ? @transcripts.size : 0
