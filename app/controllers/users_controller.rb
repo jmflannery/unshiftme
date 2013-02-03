@@ -57,7 +57,7 @@ class UsersController < ApplicationController
       flash[:success] = "Profile updated!"
       redirect_to @user
     else
-      @title = "Edit user"
+      @title = current_user.handle
       render 'edit'
     end
   end

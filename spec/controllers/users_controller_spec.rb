@@ -188,7 +188,7 @@ describe UsersController do
 
     it "should have the right title" do
       get :edit, :id => user
-      response.body.should have_selector("title", :text => "Edit user")
+      response.body.should have_selector("title", text: user.handle)
     end
 
     it "gets the workstations" do
@@ -215,7 +215,7 @@ describe UsersController do
 
       it "should have the right title" do
         put :update, id: user, user: fail_attr
-        response.body.should have_selector("title", :text => "Edit user")
+        response.body.should have_selector("title", text: user.handle)
       end
     end
 
@@ -443,7 +443,7 @@ describe UsersController do
 
     context "failure" do
      
-      let(:user_hash) {{ old_password: "wrongpassword", password: "barfoo", password_confirmation: "barfoo" }}
+      let(:user_hash) {{ current_password: "wrongpassword", password: "barfoo", password_confirmation: "barfoo" }}
       before { params[:user].merge!(user_hash) }
       
       it "assignes a flash message" do
@@ -462,7 +462,7 @@ describe UsersController do
       let(:user_hash) {{ "password" => "barfoo", "password_confirmation" => "barfoo" }}
       before do
         params[:user].merge!(user_hash)
-        params[:user].merge!("old_password" => "secret")
+        params[:user].merge!("current_password" => "secret")
       end
 
       it "sets the user to updating password" do
@@ -475,8 +475,8 @@ describe UsersController do
         flash[:success].should == "Password updated!"
       end
 
-      it "removes old_password key from the params[:user] hash" do
-        controller.should_receive(:remove_old_password_key_from_hash).with(params[:user])
+      it "removes current_password key from the params[:user] hash" do
+        controller.should_receive(:remove_current_password_key_from_hash).with(params[:user])
         put :update_password, params
       end
 
