@@ -1,0 +1,15 @@
+@mixin edit_profile_page_style {
+  
+  @include form-style;
+
+  #change_password_link {
+    float: right;
+    margin: -12px 5px;
+  }
+
+  a {
+    color: $blue;
+    text-decoration: none;
+  }
+}
+

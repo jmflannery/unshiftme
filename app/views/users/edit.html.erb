@@ -27,7 +27,9 @@
         <%= f.submit "Update" %>
       </div>
     <% end %>
+    <div id="change_password_link">
+      <%= link_to "Change password", edit_password_user_path(@user) %>
+    </div>
   </div>
-  <%= link_to "Change password", edit_password_user_path(@user) %>
 </div>
 
