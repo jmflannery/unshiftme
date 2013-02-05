@@ -1,7 +1,7 @@
 <div id="transcripts_page">
   <div class='center_spot'>
     <div id='controls'>
-      <%= link_to "New Transcript", new_transcript_path(user: @user), class: 'link_button' %>
+      <%= link_to "New Transcript", new_transcript_path(user: current_user), class: 'link_button' %>
     </div>
     <div id="transcripts">
       <p><span id='transcript_count'><%= @transcript_count.to_s %></span> Transcripts.</p>

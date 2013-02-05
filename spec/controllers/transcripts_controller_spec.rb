@@ -230,7 +230,7 @@ describe TranscriptsController do
       end
 
       it "gets current user's transcripts" do
-        current_user.should_receive(:transcripts).and_return(transcripts)
+        current_user.should_receive(:transcripts).twice.and_return(transcripts)
         get :index
       end
 

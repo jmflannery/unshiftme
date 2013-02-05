@@ -33,9 +33,8 @@ class TranscriptsController < ApplicationController
 
   def index
     @title = current_user.handle 
-    @user = current_user
     @transcripts = current_user.transcripts
-    @transcript_count = @transcripts ? @transcripts.size : 0
+    @transcript_count = current_user.transcripts.size
   end
 
   def destroy
