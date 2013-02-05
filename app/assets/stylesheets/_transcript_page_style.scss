@@ -1,6 +1,25 @@
 @mixin transcript_page_style {
 
+  margin: 0 auto;
+  width: 80%;
+
+  #transcripts_link {
+    margin: 8px;
+  }
+
+  #transcript_title {
+    padding: 5px;
+    color: $near-white;
+  }
+
   #messages_section {
+    overflow: auto;
+    padding: 7px;
+    margin: 5px;
+    @include border-radius(4px);
+    background-color: $cdark-grey;
+    @include inset-box-shadow;
     @include messages_style;
   }
 }
+
