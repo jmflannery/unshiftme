@@ -33,6 +33,14 @@ body {
       font-size: 0.8em;
     }
 
+    .bigger {
+      font-size: 1.7em;
+    }
+
+    .bolder {
+      font-weight: bold;
+    }
+
     .link_button {
       @include link_button_style;
     }

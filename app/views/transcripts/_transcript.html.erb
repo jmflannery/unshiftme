@@ -1,5 +1,5 @@
 <li>
-  <%= link_to transcript.name, transcript_path(transcript) %> |
-  <%= link_to 'Edit', '#' %> |
-  <%= link_to 'Delete', '#' %>
+  <%= link_to transcript.name, transcript_path(transcript) %>
+  <span class='bolder'>|</span>
+  <%= link_to 'Delete', '#', class: 'delete_transcript_link' %>
 </li>

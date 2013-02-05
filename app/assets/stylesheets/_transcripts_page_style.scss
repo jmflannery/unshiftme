@@ -11,6 +11,11 @@
 
   #transcripts {
 
+    p {
+      margin: 8px;
+      color: $red;
+    }
+
     ul {
 
       display: inline;
@@ -29,6 +34,15 @@
 
           &:hover {
             color: $blue;
+            @include inset-box-shadow;
+            @include border-radius(8px);
+          }
+        }
+
+        a.delete_transcript_link {
+
+          &:hover {
+            color: $red;
             @include inset-box-shadow;
             @include border-radius(8px);
           }
