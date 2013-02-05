@@ -241,5 +241,68 @@ describe TranscriptsController do
       end
     end
   end
+
+  describe "DELETE destroy" do
+
+    let(:transcript) { mock_model(Transcript) }
+    let(:params) {{ id: transcript, format: :js }}
+
+    context "for unauthenticated users" do
+
+      let(:current_user) { nil }
+      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+
+      it "redirects to the sign_in path'" do
+        delete :destroy, params
+        response.should redirect_to(signin_path)
+      end
+    end
+
+    context "for authenticated non-admin users" do
+
+      let(:current_user) { stub('current_user', id: 1, admin?: false) }
+      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+
+      it "redirects to the sign_in path'" do
+        delete :destroy, params
+        response.should redirect_to(user_path(current_user))
+      end
+    end
+
+    context "for authenticated unauthorized admin users" do
+
+      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true) }
+
+      before do
+        current_user.transcripts.stub!(:find_by_id).and_return(nil)
+        controller.stub!(:current_user).and_return(current_user)
+      end
+
+      it "redirects to the signin_path'" do
+        delete :destroy, params
+        response.should redirect_to(signin_path)
+      end
+    end
+
+    context "for authenticated authorized admin users" do
+
+      let(:current_user) { stub('current_user', transcripts: stub('transcripts').as_null_object, admin?: true) }
+
+      before do
+        current_user.transcripts.stub!(:find_by_id).and_return(transcript)
+        controller.stub!(:current_user).and_return(current_user)
+      end
+
+      it "deletes the transcript" do
+        transcript.should_receive(:destroy).with(no_args)
+        delete :destroy, params
+      end
+
+      it "gets the new transcript count" do
+        current_user.transcripts.should_receive(:size)
+        delete :destroy, params
+      end
+    end
+  end
 end
 

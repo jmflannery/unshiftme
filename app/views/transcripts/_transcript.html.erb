@@ -1,5 +1,6 @@
-<li>
+<%= content_tag "li", id: "transcript-#{transcript.id}" do %>
   <%= link_to transcript.name, transcript_path(transcript) %>
   <span class='bolder'>|</span>
-  <%= link_to 'Delete', '#', class: 'delete_transcript_link' %>
-</li>
+  <%= link_to 'Delete', transcript, :method => :delete, remote: true, class: 'delete_transcript_link' %>
+<% end %>
+

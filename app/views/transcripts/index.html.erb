@@ -4,7 +4,7 @@
       <%= link_to "New Transcript", new_transcript_path(user: @user), class: 'link_button' %>
     </div>
     <div id="transcripts">
-      <p><span class='bigger'><%= @transcript_count.to_s %> </span>Transcripts.</p>
+      <p><span id='transcript_count'><%= @transcript_count.to_s %></span> Transcripts.</p>
       <ul>
         <%= render @transcripts %>
       </ul>

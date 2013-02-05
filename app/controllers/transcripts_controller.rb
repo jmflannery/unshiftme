@@ -1,7 +1,7 @@
 class TranscriptsController < ApplicationController
-  before_filter :authenticate, only: [:new, :create, :show, :index]
-  before_filter :authenticate_admin, only: [:new, :create, :show, :index]
-  before_filter :authorized_user, only: [:show]
+  before_filter :authenticate
+  before_filter :authenticate_admin
+  before_filter :authorized_user, only: [:show, :destroy]
   before_filter :validate_transcript_attributes, only: [:create]
 
   def new
@@ -36,6 +36,11 @@ class TranscriptsController < ApplicationController
     @user = current_user
     @transcripts = current_user.transcripts
     @transcript_count = @transcripts ? @transcripts.size : 0
+  end
+
+  def destroy
+    @transcript.destroy
+    @transcript_count = current_user.transcripts.size
   end
 
   private
