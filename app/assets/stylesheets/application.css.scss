@@ -45,6 +45,11 @@ body {
       @include link_button_style;
     }
 
+    .page_title {
+      padding: 5px;
+      color: $near-white;
+    }
+
     #header {
       @include header_style;
     }
