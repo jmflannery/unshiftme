@@ -2,6 +2,7 @@
   background-color: $cdark-grey;
   @include inset-box-shadow;
   padding: 7px; 
+  margin-bottom: 5px;
 
   #main_menu {
     font-size: .9em;
