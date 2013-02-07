@@ -88,10 +88,7 @@ var build_workstation_buttons = function() {
   var html = "";
   $.get("/workstations.json", function(response) {
     for (var i = 0; i < response.length; i++) {
-      var class_name = "recipient_workstation";
-      if (i == 0) {
-        class_name += " first";
-      }
+      var class_name = "recipient_workstation other";
       var html = "<div id=" + response[i].name + " class='" + class_name + "' >";
       html += "<p>" + response[i].long_name + "</p>";
       if (response[i].user_name && response[i].user_name.length > 0) {
@@ -103,7 +100,7 @@ var build_workstation_buttons = function() {
       var workstation = $(html).data("workstation_id", response[i].id).turnOff().click(toggle_recipient);
       workstation_section.append(workstation);
     }
-    html = "<div id='toggle_all_workstations' class='recipient_workstation last all'><p>Message</br>all</p></div>";
+    html = "<div id='toggle_all_workstations' class='recipient_workstation other last all'><p>Message</br>all</p></div>";
     var toggle_all_button = $(html).click(toggle_all_workstations);
     workstation_section.append(toggle_all_button);
     
@@ -117,7 +114,7 @@ var build_user_workstation_info = function() {
   var user_name = $("#main_menu").attr("class");
   $.get("/users/" + user_name + ".json", function(response) {
     for (var i = 0; i < response.workstations.length; i++) {
-      $("#" + response.workstations[i].name).addClass("mine").removeClass("off");
+      $("#" + response.workstations[i].name).addClass("mine").removeClass("off").removeClass("other");
     }
     for (var i = 0; i < response.recipient_workstations.length; i++) {
       $("#" + response.recipient_workstations[i].name).turnOn().data("recipient_id", response.recipient_workstations[i].recipient_id);
