@@ -5,18 +5,5 @@
   #select_normal_workstation {
     @include border-radius(6px);
   }
-
-  #signin_link {
-
-    float: right;
-    margin: -5px;
-    font-size: 0.9em;
-    color: $grey-lettering;
-
-    a {
-      color: $blue;
-      text-decoration: none;
-    }
-  }
 }
 

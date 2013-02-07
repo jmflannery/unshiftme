@@ -119,6 +119,19 @@
         }
       }
     } // end .actions
+    
+    .cancel_link {
+
+      float: right;
+      margin: -5px;
+      font-size: 0.9em;
+      color: $grey-lettering;
+
+      a {
+        color: $blue;
+        text-decoration: none;
+      }
+    }
   } // end .center_spot
 } // end mixin form-style
 
