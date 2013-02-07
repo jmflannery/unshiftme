@@ -185,13 +185,13 @@ describe Workstation do
     context "when the workstation is a recipient of the given user" do
       let!(:message_route) { FactoryGirl.create(:message_route, user: user, workstation: cusn) }
       it "should have the right view class" do
-        cusn.view_class(user).should == "recipient_workstation on #{message_route.id}"
+        cusn.view_class(user).should == "recipient_workstation other on #{message_route.id}"
       end
     end
     
     context "when the workstation is not a recipient of the given user" do
       it "should have the right view class" do
-        cusn.view_class(user).should == "recipient_workstation off"
+        cusn.view_class(user).should == "recipient_workstation other off"
       end
     end
   end

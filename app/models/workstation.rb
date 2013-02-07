@@ -57,9 +57,9 @@ class Workstation < ActiveRecord::Base
     if user.workstation_ids.include?(id)
       view_class += " mine"
     elsif user.messaging?(self)
-      view_class += " on #{user.message_route_id(self)}"
+      view_class += " other on #{user.message_route_id(self)}"
     else
-      view_class += " off"
+      view_class += " other off"
     end
     view_class
   end
