@@ -52,12 +52,6 @@ namespace :deploy do
     end
   end
   before "deploy", "deploy:check_revision"
-
-  #desc "Start Faye server."
-  #task :start_push_server, roles: :web do
-  #  run "cd #{current_path} && nohup bundle exec rackup private_pub.ru -s thin -E production"
-  #end
-  #after "deploy:symlink_config", "deploy:start_push_server"
 end
 
 namespace :faye do
@@ -70,6 +64,20 @@ namespace :faye do
     run "kill `cat #{faye_pid}` || true"
   end
 end
+
+namespace :faye do
+  desc "Start Faye"
+  task :start do
+    run "cd #{deploy_to}/current && bundle exec rackup #{faye_config} -s thin -E production -D --pid #{faye_pid}"
+  end
+  desc "Stop Faye"
+  task :stop do
+    run "kill `cat #{faye_pid}` || true"
+  end
+end
+
+before 'deploy:update_code', 'faye:stop'
+after 'deploy:finalize_update', 'faye:start'
 
 namespace :rufus do
   desc "start background worker to periodically cleanup inactive users"
@@ -89,5 +97,4 @@ namespace :db do
     run("cd #{deploy_to}/current && /usr/bin/env rake db:workstation:populate RAILS_ENV=production")
   end
 end
-#before 'deploy:update_code', 'faye:stop'
-#after 'deploy:finalize_update', 'faye:start'
+
