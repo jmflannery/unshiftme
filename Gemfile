@@ -1,45 +1,46 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.12'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem 'jquery-rails'
-gem 'pg'
-gem 'therubyracer'
-gem 'bcrypt-ruby', "~> 3.0.1"
-gem "carrierwave"
-gem 'private_pub', "~> 1.0.3"
+gem "jquery-rails", "~> 2.2.1"
+gem "pg", "~> 0.14.1"
+gem "therubyracer", "~> 0.11.4"
+gem "bcrypt-ruby", "~> 3.0.1"
+gem "carrierwave", "~> 0.8.0"
+gem "private_pub", "~> 1.0.3"
 gem "whenever"
 gem "rufus-scheduler"
-gem "jquery-fileupload-rails"
+gem "jquery-fileupload-rails", "~> 0.4.1"
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails', "~> 3.2.5"
-  gem 'coffee-rails', "~> 3.2.2"
-  gem 'uglifier'
-  gem 'compass-rails' 
+  gem "jquery-fileupload-rails", "~> 0.4.1"
+  gem "sass-rails", "~> 3.2.6"
+  gem "coffee-rails", "~> 3.2.2"
+  gem "uglifier", "~> 1.3.0"
+  gem "compass-rails", "~> 1.0.3"
 end
 
 group :development do
   gem 'foreman'
-  gem "annotate", "~> 2.5.0"
-  gem 'better_errors'
-  gem 'binding_of_caller'
+  gem "annotate"
+  gem "better_errors", "~> 0.7.0"
+  gem "binding_of_caller", "~> 0.7.1"
   gem 'meta_request'
 end
 
 group :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
-  gem 'capybara'
-  gem 'cucumber-rails', require: false
+  gem "capybara", "~> 2.0.2"
+  gem "cucumber-rails", "~> 1.3.0"
   #gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
-  gem 'poltergeist'
-  gem 'factory_girl_rails', "~> 3.5.0"
+  gem "poltergeist", "~> 1.1.0"
+  gem 'factory_girl_rails'
   gem 'faker'
   gem 'rb-inotify'
   gem 'libnotify'
@@ -49,13 +50,13 @@ group :test do
 end
 
 # Use unicorn as the production web server
-gem 'unicorn'
+gem "unicorn", "~> 4.6.2"
 
 # Use thin server for Faye/Private_Pub
 gem 'thin'
 
 # Deploy with Capistrano
-gem 'capistrano'
+gem 'capistrano', '~> 2.14.2'
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
