@@ -5,7 +5,7 @@ gem 'rails', '3.2.12'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem "jquery-rails", "~> 2.2.1"
+gem "jquery-rails", "~> 2.0.0"
 gem "pg", "~> 0.14.1"
 gem "therubyracer", "~> 0.11.4"
 gem "bcrypt-ruby", "~> 3.0.1"
@@ -53,10 +53,12 @@ end
 gem "unicorn", "~> 4.6.2"
 
 # Use thin server for Faye/Private_Pub
-gem 'thin'
+gem "thin", "~> 1.5.0"
 
 # Deploy with Capistrano
 gem 'capistrano', '~> 2.14.2'
+
+gem "eventmachine", "~> 1.0.1"
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
