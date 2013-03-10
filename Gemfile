@@ -5,7 +5,7 @@ gem 'rails', '3.2.12'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem "jquery-rails", "~> 2.0.0"
+gem "jquery-rails", "= 2.1.4"
 gem "pg", "~> 0.14.1"
 gem "therubyracer", "~> 0.11.4"
 gem "bcrypt-ruby", "~> 3.0.1"
