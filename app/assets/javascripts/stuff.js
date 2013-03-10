@@ -208,7 +208,7 @@ var toggle_all_workstations = function() {
 // acknowledge (read) message
 ///////////////////////////////////
 
-var read_message = function(message_id) {
+var read_message = function() {
   if ($(this).hasClass("recieved") && $(this).hasClass("unread")) {
     var message_id = $(this).data("message_id");
      
@@ -223,10 +223,6 @@ var read_message = function(message_id) {
     }
   }
 };
-
-$(function() {
-  $("li.message.recieved.unread").click(read_message);
-});
 
 ////////////////////////////////////
 // create a user_name
@@ -334,6 +330,7 @@ $(function() {
 
   // register callback
   PrivatePub.subscribe("/messages/" + user_name, function(data, channel) {
+
     // play tone
     $('#tone')[0].innerHTML = "<embed src=/assets/soft_chime_beep.mp3 hidden=true autostart=true loop=false>";
     //beep();
@@ -341,19 +338,8 @@ $(function() {
     // clear message text field
     $("input#message_content").val("");
 
-    // create the new message html 
-    var html = build_message(data.sender, data.attachment_url, data.chat_message, data.timestamp, "message recieved unread", ""); 
-    
     // display the new message 
-    display_new_message(html, data.message_id);
-
-    // show the sending workstation(s) as recipient(s)
-    for (var i = 0; i < data.recipient_ids.length; i++) {
-      if (data.recipient_ids[i] > 0) {
-        selector = "#" + data.from_workstations[i] + ".recipient_workstation.off";
-        $(selector).turnOn().data("recipient_id", data.recipient_ids[i]);
-      }
-    }
+    display_new_message(Mustache.to_html($('#message_template').html(), data), data.id);
 
     // scroll to last message 
     //if (data.chat_message) {

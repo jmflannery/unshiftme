@@ -5,13 +5,12 @@ class MessagesController < ApplicationController
     @user = current_user
     @message = @user.messages.new(params[:message])
     if @message.save
-      @message.view_class = "message #{@message.id} owner"
-      @message.broadcast
       @message.generate_incoming_receipts
       @message.generate_outgoing_receipt
+      @message.broadcast
     end
   end
-  
+
   def index
     options = {}
     start_time = params.fetch(:start_time){""} 
@@ -21,7 +20,7 @@ class MessagesController < ApplicationController
     messages = current_user.display_messages(options)
     respond_to do |format|
       format.json {
-        render json: messages.as_json
+        render json: messages.map { |msg| MessagePresenter.new(msg, current_user).as_json }
       }
     end
   end

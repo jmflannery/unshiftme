@@ -122,24 +122,17 @@ describe Message do
     let(:user2) { FactoryGirl.create(:user) }
 
     before(:each) do
-      user1.start_job(cusn.abrev)
-      FactoryGirl.create(:message_route, user: user, workstation: cusn)
-      user2.start_job(cuss.abrev)
-      FactoryGirl.create(:message_route, user: user, workstation: cuss)
       subject.save
+      cusn.set_user(user1)
+      FactoryGirl.create(:message_route, user: user, workstation: cusn)
+      cuss.set_user(user2)
+      FactoryGirl.create(:message_route, user: user, workstation: cuss)
     end
 
     it "sends the message to each recipient workstation" do
       recipient_count = user.recipients.size
       PrivatePub.should_receive(:publish_to).exactly(recipient_count).times
       subject.broadcast
-    end
-
-    it "adds the sender's workstation to the recipient list of each of the sender's recipients" do
-      glhs.set_user(user)
-      subject.broadcast
-      user1.recipients[0].id.should == glhs.id
-      user2.recipients[0].id.should == glhs.id
     end
 
     it "does not broadcast a message more than once to a user working multiple jobs" do

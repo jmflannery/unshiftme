@@ -81,10 +81,7 @@ class User < ActiveRecord::Base
     where_clause = "messages.created_at >= ? and messages.created_at <= ?"
     (messages.where(where_clause, start_time, end_time) |
       incoming_messages.where(where_clause, start_time, end_time) |
-      unreceived_workstation_messages(start_time: start_time, end_time: end_time)).
-      sort.reverse.each do |message|
-        message.set_view_class(self)
-      end
+      unreceived_workstation_messages(start_time: start_time, end_time: end_time)).sort.reverse
   end
 
   def unreceived_workstation_messages(options = {})

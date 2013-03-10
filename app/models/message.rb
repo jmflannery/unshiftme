@@ -1,5 +1,4 @@
 class Message < ActiveRecord::Base
-  attr_accessor :view_class
 
   attr_accessible :content, :attachment_id
 
@@ -22,18 +21,6 @@ class Message < ActiveRecord::Base
     created_at <=> other.created_at
   end
 
-  def as_json
-    hash = {}
-    hash[:id] = id
-    hash[:content] = content
-    hash[:created_at] = created_at.strftime("%a %b %e %Y %T")
-    hash[:sender] = sender_handle if sender_handle
-    hash[:attachment_url] = attachment.payload.url if attachment
-    hash[:view_class] = view_class if view_class
-    hash[:readers] = formatted_readers if formatted_readers
-    hash.as_json
-  end
-
   def generate_incoming_receipts(options = {})
     user.recipients.each { |recipient| generate_incoming_receipt(recipient, options) }
   end
@@ -51,24 +38,8 @@ class Message < ActiveRecord::Base
         unless sent_to.include?(recipient.user.id)
           sent_to << recipient.user.id
 
-          new_recip_ids = user.workstation_ids.map do |workstation_id|
-            recip = recipient.user.add_recipient(Workstation.find(workstation_id))
-            recip ? recip.id : 0
-          end
-
-          attachment_url = attachment.payload.url if attachment
-
-          data = { 
-            chat_message: content,
-            sender: user.handle,
-            from_workstations: user.workstation_names,
-            recipient_ids: new_recip_ids,
-            timestamp: created_at.strftime("%a %b %e %Y %T"),
-            message_id: id,
-            attachment_url: attachment_url
-          }
- 
-          PrivatePub.publish_to("/messages/#{recipient.user.user_name}", data)
+          PrivatePub.publish_to("/messages/#{recipient.user.user_name}",
+                                MessagePresenter.new(self, recipient.user).as_json)
         end
       end
     end
@@ -102,16 +73,15 @@ class Message < ActiveRecord::Base
     user_id == user.id
   end
 
-  def set_view_class(user)
+  def generate_view_class(user)
+    view_class = ""
     if sent_by?(user)
-      self.view_class = "message msg-#{id} owner"
-    end
-    
-    if sent_to?(user)
+      view_class = "message msg-#{id} owner"
+    elsif sent_to?(user)
       if was_read_by?(user)
-        self.view_class = "message msg-#{id} recieved read"
-      else
-        self.view_class = "message msg-#{id} recieved unread"
+        view_class = "message msg-#{id} recieved read"
+     else
+        view_class = "message msg-#{id} recieved unread"
       end
     end
   end

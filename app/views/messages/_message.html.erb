@@ -1,5 +1,5 @@
-<% if message.view_class %>
-  <li class="<%= "#{message.view_class}" %>">
+<% if message.generate_view_class(current_user) %>
+  <li class="<%= "#{message.generate_view_class(current_user)}" %>">
 <% else %>
   <li class="message">
 <% end %>
