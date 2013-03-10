@@ -4,6 +4,7 @@
 //= require jquery-fileupload/vendor/tmpl
 //= require private_pub
 //= require pages
+//= require mustache
 //= require_self
 //= require_tree .
 
