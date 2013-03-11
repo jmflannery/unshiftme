@@ -2,7 +2,7 @@
 $("input#message_content").val("");
 
 // display the new message 
-display_new_message("<%= j(render(@message)) %>", <%= @message.id %>);
+display_new_message("<%= j render('message', :mustache => MessagePresenter.new(@message, current_user).as_json ) %>", <%= @message.id %>);
 
 // scroll to last message 
 //<#% unless @message.blank? %>

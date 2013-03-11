@@ -47,16 +47,7 @@
   </div> <!-- end #messages_section -->
 
   <script type='text/html' id='message_template'>
-    <li class='{{view_class}}'>
-      <div class="left-side">
-        <div class="sender"><p>{{sender}}</p></div>
-        <div class="content"><p>{{content}}</p></div>
-      </div>
-      <div class="right-side">
-        <div class="timestamp"><p>{{created_at}}</p></div>
-        <div class="readers"><p>{{readers}}</p></div>
-      </div>
-    </li>
+    <%= render 'messages/message' %>
   </script>
 
 </div> <!-- end #messaging_page -->
