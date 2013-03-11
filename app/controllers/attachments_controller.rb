@@ -11,7 +11,6 @@ class AttachmentsController < ApplicationController
         @message.attach(@attachment)
         @message.generate_outgoing_receipt
         @message.generate_incoming_receipts(attachment: @attachment)
-        @message.set_view_class(current_user)
         @message.broadcast
       end
     end
