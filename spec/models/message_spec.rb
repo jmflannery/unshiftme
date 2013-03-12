@@ -338,44 +338,6 @@ message route to and includes the supplied attachment and workstation's user if 
     end
   end
 
-  describe "#set_view_class" do
-
-    before { subject.save }
-
-    context "for messages created by the given user" do
-      it "sets message view_class attribute to 'message msg-id owner'" do
-        subject.set_view_class(user)
-        subject.view_class.should == "message msg-#{subject.id} owner"
-      end
-    end
-
-    context "for messages recieved and read by the given user" do
-      let(:user1) { FactoryGirl.create(:user) }
-      before do
-        user1.start_job(cusn.abrev)
-        subject.generate_incoming_receipt(cusn)
-        subject.mark_read_by(user1)
-      end
-
-      it "sets message view_class attribute to 'message msg-id recieved read'" do
-        subject.set_view_class(user1)
-        subject.view_class.should == "message msg-#{subject.id} recieved read"
-      end
-    end
-
-    context "for messages recieved and not read by the given user" do
-      let(:user1) { FactoryGirl.create(:user) }
-      before do
-        user1.start_job(cusn.abrev)
-        subject.generate_incoming_receipt(cusn)
-      end
-      it "sets message view_class attribute to 'message msg-id recieved unread'" do
-        subject.set_view_class(user1)
-        subject.view_class.should == "message msg-#{subject.id} recieved unread"
-      end
-    end
-  end
-
   describe "#mark_read_by" do
     
     let(:recipient_user) { FactoryGirl.create(:user) }

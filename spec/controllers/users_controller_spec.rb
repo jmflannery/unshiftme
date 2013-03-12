@@ -129,12 +129,12 @@ describe UsersController do
 
       it "should have the right title" do
         get :show, :id => user
-        response.body.should have_selector("title", content: user.user_name)
+        response.body.should have_selector("li", text: user.user_name)
       end
 
       it "should include the users name" do
         get :show, :id => user
-        response.should have_selector("p", content: user.user_name)
+        response.body.should have_selector("li", text: user.handle)
       end
       
       it "should create a new attachment (for a subsequent create)" do
@@ -333,7 +333,8 @@ describe UsersController do
     end
 
     it "updates the authenticated user's heartbeat timestamp" do
-      before_request = Time.zone.now
+      user.heartbeat = before_request = Time.zone.now
+      sleep 1
       put :heartbeat, params
       user.reload.heartbeat.should > before_request
     end
