@@ -8,8 +8,8 @@ Feature: Register
     Given I am not a registered user
     And I am on the register page
     When I fill in "User name" with ""
-    And I fill in "Password" with ""
-    And I fill in "Password confirmation" with ""
+    And I fill in "user_password" with ""
+    And I fill in "user_password_confirmation" with ""
     And I press "Register"
     Then I should see the register page
   
@@ -23,13 +23,14 @@ Feature: Register
     And I am on the register page
     When I fill in "User name" with "fred"
     And I check workstation "CUS North"
-    And I fill in "Password" with "secret"
-    And I fill in "Password confirmation" with "secret"
+    And I fill in "user_password" with "secret"
+    And I fill in "user_password_confirmation" with "secret"
     And I press "Register"
     Then I should see the sign in page
     And I should see that registration was successful
     When I fill in "User name" with "fred"
     And I tab away
+    And I wait 1 second
     Then I should see that workstation "CUSN" is checked
     And I should see that workstation "CUSS" is not checked
 
