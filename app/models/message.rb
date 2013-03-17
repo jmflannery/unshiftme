@@ -84,6 +84,7 @@ class Message < ActiveRecord::Base
         view_class = "message msg-#{id} recieved unread"
       end
     end
+    view_class
   end
 
   def mark_read_by(user)
