@@ -145,7 +145,7 @@ describe Transcript do
       end_time: subject.end_time.to_s,
       user: transcript_user.id,
       workstation: cusn.id,
-      messages: subject.display_messages
+      messages: subject.display_messages.map { |msg| MessagePresenter.new(msg, transcript_user).as_json(transcript: true) }
     }}
     before do
       subject.update_attribute(:transcript_user, transcript_user)
@@ -157,7 +157,7 @@ describe Transcript do
       context "when transcript_user and transcript_workstation are present" do
 
         it "returns json including the user, workstation, start and end times, and messages" do
-          subject.as_json.should == expected.as_json
+          subject.as_json(user: transcript_user).should == expected.as_json
         end
       end
 
@@ -169,7 +169,7 @@ describe Transcript do
         end
 
         it "returns json including the user, start and end times, and messages" do
-          subject.as_json.should == expected.as_json
+          subject.as_json(user: transcript_user).should == expected.as_json
         end
       end
 
@@ -187,15 +187,5 @@ describe Transcript do
         end
       end
     end
-
-    context "with include_messages: false option" do
-
-      before { expected.delete(:messages) }
-
-      it "returns json including the user, workstation, start and end times" do
-        subject.as_json(include_messages: false).should == expected.as_json
-      end
-    end
   end
 end
-
