@@ -29,7 +29,7 @@ describe TranscriptsController do
 
     context "for authenticated admin users" do
 
-      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true, handle: 'handle') }
+      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true, handle: 'jeff@AML') }
       before(:each) { controller.stub!(:current_user).and_return(current_user) }
 
       it "returns http success" do
@@ -44,7 +44,7 @@ describe TranscriptsController do
 
       it "has the right title" do
         get :new
-        response.body.should have_selector("title", text: "New Transcript")
+        response.body.should have_selector('title', text: 'jeff@AML')
       end
 
       it "gets all workstations abrevs in an Array with a leading empty string" do
@@ -168,7 +168,7 @@ describe TranscriptsController do
     context "for authenticated admin users" do
 
       let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true, handle: 'handle') }
-      let(:transcript) { stub('transcript', as_json: 'json', name: 'name') }
+      let(:transcript) { stub('transcript', as_json: 'json', name: 'name', transcript_user: stub('transcript user')) }
 
       before do
         current_user.transcripts.stub!(:find_by_id).and_return(transcript)
@@ -176,11 +176,8 @@ describe TranscriptsController do
       end
 
       it "renders the transcript as json" do
-        json = stub('json')
-        transcript.should_receive(:as_json).with(no_args).and_return(json)
-        controller.should_receive(:render).with(json: json)
-        # not sure why render is called twice
-        controller.should_receive(:render).with(no_args)
+        transcript.should_receive(:as_json)
+        controller.should_receive(:render).twice
         get :show, id: 1, format: :json
       end
     end
@@ -212,7 +209,7 @@ describe TranscriptsController do
 
     context "for authenticated admin users" do
 
-      let(:current_user) { stub('current_user', admin?: true, handle: 'handle') }
+      let(:current_user) { stub('current_user', admin?: true, handle: 'bob@CUSS') }
       let(:transcripts) { mock_model(Transcript, size: 1, name: 'name') }
 
       before { controller.stub!(:current_user).and_return(current_user) }
@@ -226,7 +223,7 @@ describe TranscriptsController do
       it "has the right title" do
         current_user.stub(:transcripts).and_return(transcripts)
         get :index
-        response.body.should have_selector("title", text: "Transcripts")
+        response.body.should have_selector('title', text: 'bob@CUSS')
       end
 
       it "gets current user's transcripts" do
