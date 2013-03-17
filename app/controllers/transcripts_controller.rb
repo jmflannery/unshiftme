@@ -26,7 +26,7 @@ class TranscriptsController < ApplicationController
     respond_to do |format|
       format.html
       format.json {
-        render json: @transcript.as_json
+        render json: @transcript.as_json(user: @transcript.transcript_user)
       }
     end
   end
