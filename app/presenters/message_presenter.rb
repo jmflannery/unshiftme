@@ -7,7 +7,7 @@ class MessagePresenter
     @user = user
   end
 
-  def as_json
+  def as_json(options = {})
     hash = {}
     hash[:id] = message.id
     hash[:content] = message.content
@@ -15,8 +15,7 @@ class MessagePresenter
     hash[:sender] = message.sender_handle
     hash[:attachment_url] = message.attachment.payload.url if message.attachment
     hash[:view_class] = message.generate_view_class(user)
-    hash[:readers] = message.formatted_readers unless message.sent_to?(user)
+    hash[:readers] = message.formatted_readers unless message.sent_to?(user) and not options[:transcript]
     hash.as_json
   end
 end
-
