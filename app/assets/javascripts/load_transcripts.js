@@ -8,13 +8,7 @@ function load_transcript_messages() {
   $.get("/transcripts/" + ts_page.data("id") + ".json", function(data) {
     hide_message_loading_icon();
     $.each(data.messages, function(index, value) {
-      var html = build_message(value.sender,
-                               value.attachment_id,
-                               value.content,
-                               value.created_at,
-                               value.view_class,
-                               value.readers);
-      display_message(html, value.id);
+      display_message(Mustache.to_html($('#message_template').html(), value), value.id);
     });
   });
 };
