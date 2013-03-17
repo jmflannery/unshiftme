@@ -54,7 +54,7 @@ class Transcript < ActiveRecord::Base
     json[:end_time] = end_time.to_s
     json[:user] = transcript_user_id if transcript_user_id
     json[:workstation] = transcript_workstation_id if transcript_workstation_id
-    json[:messages] = display_messages.map { |msg| MessagePresenter.new(msg, options[:user]).as_json }
+    json[:messages] = display_messages.map { |msg| MessagePresenter.new(msg, options[:user]).as_json(transcript: true) }
     json.as_json
   end
 end
