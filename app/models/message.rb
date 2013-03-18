@@ -31,20 +31,6 @@ class Message < ActiveRecord::Base
                              attachment: options[:attachment])
   end
 
-  def broadcast
-    sent_to = []
-    user.recipients.each do |recipient|
-      if recipient.user
-        unless sent_to.include?(recipient.user.id)
-          sent_to << recipient.user.id
-
-          PrivatePub.publish_to("/messages/#{recipient.user.user_name}",
-                                MessagePresenter.new(self, recipient.user).as_json)
-        end
-      end
-    end
-  end
-
   def generate_outgoing_receipt
     create_outgoing_receipt(user: user, workstations: user.workstation_names)
   end

@@ -116,32 +116,6 @@ describe Message do
     end
   end
 
-  describe "#broadcast" do
-
-    let(:user1) { FactoryGirl.create(:user) }
-    let(:user2) { FactoryGirl.create(:user) }
-
-    before(:each) do
-      subject.save
-      cusn.set_user(user1)
-      FactoryGirl.create(:message_route, user: user, workstation: cusn)
-      cuss.set_user(user2)
-      FactoryGirl.create(:message_route, user: user, workstation: cuss)
-    end
-
-    it "sends the message to each recipient workstation" do
-      recipient_count = user.recipients.size
-      PrivatePub.should_receive(:publish_to).exactly(recipient_count).times
-      subject.broadcast
-    end
-
-    it "does not broadcast a message more than once to a user working multiple jobs" do
-      cuss.set_user(user1)
-      PrivatePub.should_receive(:publish_to).exactly(1).times
-      subject.broadcast
-    end
-  end
-
   describe "#generate_incoming_receipts" do
 
     let(:user1) { FactoryGirl.create(:user, user_name: "fred") }
@@ -156,10 +130,10 @@ describe Message do
     it "generates an incoming receipt for each workstation that the user has a \
 message route to and includes the workstation's user if it has one" do
       subject.generate_incoming_receipts
-      subject.incoming_receipts[0].workstation.should == aml
-      subject.incoming_receipts[0].user.should == nil
-      subject.incoming_receipts[1].workstation.should == cusn
-      subject.incoming_receipts[1].user.should == user1
+      subject.incoming_receipts[0].workstation.should == cusn
+      subject.incoming_receipts[0].user.should == user1
+      subject.incoming_receipts[1].workstation.should == aml
+      subject.incoming_receipts[1].user.should == nil
     end
 
     context "with an optional attachment" do
@@ -169,11 +143,11 @@ message route to and includes the workstation's user if it has one" do
       it "generates an incoming receipt for each workstation that the user has a \
 message route to and includes the supplied attachment and workstation's user if it has one" do
         subject.generate_incoming_receipts(attachment: attachment)
-        subject.incoming_receipts[0].workstation.should == aml
-        subject.incoming_receipts[0].user.should == nil
+        subject.incoming_receipts[0].workstation.should == cusn
+        subject.incoming_receipts[0].user.should == user1
         subject.incoming_receipts[0].attachment.should == attachment
-        subject.incoming_receipts[1].workstation.should == cusn
-        subject.incoming_receipts[1].user.should == user1
+        subject.incoming_receipts[1].workstation.should == aml
+        subject.incoming_receipts[1].user.should == nil
         subject.incoming_receipts[1].attachment.should == attachment
       end
     end

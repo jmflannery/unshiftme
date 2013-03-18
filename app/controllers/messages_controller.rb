@@ -1,4 +1,5 @@
 class MessagesController < ApplicationController
+  include MessagesHelper
   before_filter :authenticate
   
   def create
@@ -7,7 +8,7 @@ class MessagesController < ApplicationController
     if @message.save
       @message.generate_incoming_receipts
       @message.generate_outgoing_receipt
-      @message.broadcast
+      broadcast(@message)
     end
   end
 
