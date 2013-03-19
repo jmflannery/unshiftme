@@ -37,7 +37,7 @@ describe MessagesController do
     context "on successful message save" do
            
       it "broadcasts the message" do
-        controller.should_receive(:broadcast).with(message)
+        Pusher.should_receive(:push_message).with(message)
         xhr :post, :create,  message: attr
       end
 

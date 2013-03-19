@@ -1,5 +1,4 @@
 class AttachmentsController < ApplicationController
-  include MessagesHelper
   before_filter :authenticate   
    
   def create
@@ -12,7 +11,7 @@ class AttachmentsController < ApplicationController
         @message.attach(@attachment)
         @message.generate_outgoing_receipt
         @message.generate_incoming_receipts(attachment: @attachment)
-        broadcast(@message)
+        Pusher.push_message(@message)
       end
     end
   end  
