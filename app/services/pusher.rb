@@ -15,5 +15,14 @@ class Pusher
         end
       end
     end
+
+    def push_readers(message)
+      data = {
+        readers: message.formatted_readers,
+        message: message.id
+      }  
+      message_owner = User.find(message.user_id)
+      PrivatePub.publish_to("/readers/#{message_owner.user_name}", data)
+    end
   end
 end

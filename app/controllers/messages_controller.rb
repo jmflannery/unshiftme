@@ -29,13 +29,7 @@ class MessagesController < ApplicationController
     if Message.exists?(params[:id])
       @message = Message.find(params[:id])
       @message.mark_read_by(current_user)
-
-      data = {
-        readers: @message.formatted_readers,
-        message: @message.id
-      }  
-      message_owner = User.find(@message.user_id)
-      PrivatePub.publish_to("/readers/#{message_owner.user_name}", data)
+      Pusher.push_readers(@message)
     end 
   end
 end
