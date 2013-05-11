@@ -127,27 +127,25 @@ describe Message do
       subject.save
     end
 
-    it "generates an incoming receipt for each workstation that the user has a \
-message route to and includes the workstation's user if it has one" do
+    it "generates an incoming receipt for each recipient of the message user including the workstation's user or nil" do
       subject.generate_incoming_receipts
-      subject.incoming_receipts[0].workstation.should == cusn
-      subject.incoming_receipts[0].user.should == user1
-      subject.incoming_receipts[1].workstation.should == aml
-      subject.incoming_receipts[1].user.should == nil
+      subject.incoming_receipts[0].workstation.should == aml
+      subject.incoming_receipts[0].user.should == nil
+      subject.incoming_receipts[1].workstation.should == cusn
+      subject.incoming_receipts[1].user.should == user1
     end
 
     context "with an optional attachment" do
 
       let(:attachment) { FactoryGirl.create(:attachment) }
 
-      it "generates an incoming receipt for each workstation that the user has a \
-message route to and includes the supplied attachment and workstation's user if it has one" do
+      it "generates an incoming receipt for each recipient of the message user including the attachment" do
         subject.generate_incoming_receipts(attachment: attachment)
-        subject.incoming_receipts[0].workstation.should == cusn
-        subject.incoming_receipts[0].user.should == user1
+        subject.incoming_receipts[0].workstation.should == aml
+        subject.incoming_receipts[0].user.should == nil
         subject.incoming_receipts[0].attachment.should == attachment
-        subject.incoming_receipts[1].workstation.should == aml
-        subject.incoming_receipts[1].user.should == nil
+        subject.incoming_receipts[1].workstation.should == cusn
+        subject.incoming_receipts[1].user.should == user1
         subject.incoming_receipts[1].attachment.should == attachment
       end
     end
