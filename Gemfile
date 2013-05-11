@@ -43,8 +43,6 @@ group :test do
   gem "poltergeist", "~> 1.1.0"
   gem 'factory_girl_rails'
   gem 'faker'
-  gem 'rb-inotify'
-  gem 'libnotify'
   gem 'guard-rspec'
   gem 'launchy'
   gem 'database_cleaner'

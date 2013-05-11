@@ -147,8 +147,6 @@ GEM
     kgio (2.8.0)
     launchy (2.2.0)
       addressable (~> 2.3)
-    libnotify (0.8.0)
-      ffi (>= 1.0.11)
     libv8 (3.11.8.13)
     listen (0.7.3)
     lumberjack (1.0.2)
@@ -212,8 +210,6 @@ GEM
       thor (>= 0.14.6, < 2.0)
     raindrops (0.10.0)
     rake (10.0.3)
-    rb-inotify (0.9.0)
-      ffi (>= 0.5.0)
     rdoc (3.12.2)
       json (~> 1.4)
     ref (1.0.2)
@@ -306,14 +302,12 @@ DEPENDENCIES
   jquery-fileupload-rails (~> 0.4.1)
   jquery-rails (= 2.1.4)
   launchy
-  libnotify
   meta_request
   mustache
   pg (~> 0.14.1)
   poltergeist (~> 1.1.0)
   private_pub (~> 1.0.3)
   rails (= 3.2.12)
-  rb-inotify
   rspec-rails
   rufus-scheduler
   sass-rails (~> 3.2.6)
