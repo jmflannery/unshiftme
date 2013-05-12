@@ -25,16 +25,19 @@
   </div>
 
   <div id="messages_section">
-    <div id="upload_button">
-      <%= image_tag("paperclip.png", id: "attach_button") %>
-    </div>
 
-    <div id="msg_input">
-      <% if signed_in? %>
-        <%= form_for(@message, remote: true, format: :js) do |f| %>
-          <%= f.text_field :content, maxlength: 300 %>
+    <div id="input_section">
+      <div id="upload_button">
+        <%= image_tag("paperclip.png", id: "attach_button") %>
+      </div>
+
+      <div id="msg_input">
+        <% if signed_in? %>
+          <%= form_for(@message, remote: true, format: :js) do |f| %>
+            <%= f.text_field :content, maxlength: 300 %>
+          <% end %>
         <% end %>
-      <% end %>
+      </div>
     </div>
 
     <div id="message_list_section">
