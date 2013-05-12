@@ -5,6 +5,7 @@ tmp/
 .sass-cache/
 .redcar/
 *.swp
+.DS_Store
 
 /config/database.yml
 /public/uploads/attachment/payload
