@@ -22,33 +22,32 @@ img {
   max-width: 100%; 
 }
 
+.smaller {
+  font-size: 0.8em;
+}
+
+.bigger {
+  font-size: 1.7em;
+}
+
+.bolder {
+  font-weight: bold;
+}
+
+.link_button {
+  @include link_button_style;
+}
+
+.page_title {
+  padding: 5px;
+  color: $near-white;
+}
+
 body {
-  margin: 0px;
   background-color: black;
   font-family: sans-serif;
 
   #page {
-
-    .smaller {
-      font-size: 0.8em;
-    }
-
-    .bigger {
-      font-size: 1.7em;
-    }
-
-    .bolder {
-      font-weight: bold;
-    }
-
-    .link_button {
-      @include link_button_style;
-    }
-
-    .page_title {
-      padding: 5px;
-      color: $near-white;
-    }
 
     #header {
       @include header_style;
