@@ -37,10 +37,11 @@ end
 group :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
-  gem "capybara", "~> 2.0.2"
+  gem "capybara", "~> 2.1.0"
   gem "cucumber-rails", "~> 1.3.0"
   #gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
-  gem "poltergeist", "~> 1.1.0"
+  gem "poltergeist", "~> 1.3.0"
+  gem "selenium-webdriver"
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'guard-rspec'
