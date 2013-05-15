@@ -9,7 +9,11 @@ var load_messages = function() {
     hide_message_loading_icon();
 
     $.each(data, function(index, value) {
-      display_message(Mustache.to_html($('#message_template').html(), value), value.id);
+      if (value.attachment_url) {
+        display_message(Mustache.to_html($('#attachment_template').html(), value), value.id);
+      } else {
+        display_message(Mustache.to_html($('#message_template').html(), value), value.id);
+      }
     });
   });
 }

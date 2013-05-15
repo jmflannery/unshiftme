@@ -4,6 +4,5 @@ $('input[type="file"]').val("");
 // hide the file upload form fields
 toggle_upload_section();
 
-// display the new message 
-display_new_message("<%= j(render(@message)) %>", <%= @message.id %>);
-
+// display the new message
+display_new_message("<%= j render('attachment', :mustache => MessagePresenter.new(@message, current_user).as_json) %>", <%= @message.id %>);
