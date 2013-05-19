@@ -24,7 +24,7 @@ describe UsersController do
 
     it "should have the right title" do
       get :new
-      response.body.should have_selector("title", :text => "Register")
+      response.body.should have_title("Register")
     end
 
     it "gets the workstations" do
@@ -48,7 +48,7 @@ describe UsersController do
 
       it "should have the right title" do
         post :create, params
-        response.body.should have_selector("title", :text => "Register")
+        response.body.should have_title("Register")
       end
 
       it "should render the 'new' page" do
@@ -188,7 +188,7 @@ describe UsersController do
 
     it "should have the right title" do
       get :edit, :id => user
-      response.body.should have_selector("title", text: user.handle)
+      response.body.should have_title(user.handle)
     end
 
     it "gets the workstations" do
@@ -215,7 +215,7 @@ describe UsersController do
 
       it "should have the right title" do
         put :update, id: user, user: fail_attr
-        response.body.should have_selector("title", text: user.handle)
+        response.body.should have_title(user.handle)
       end
     end
 

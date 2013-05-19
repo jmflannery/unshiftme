@@ -44,7 +44,7 @@ describe TranscriptsController do
 
       it "has the right title" do
         get :new
-        response.body.should have_selector('title', text: 'jeff@AML')
+        response.body.should have_title('jeff@AML')
       end
 
       it "gets all workstations abrevs in an Array with a leading empty string" do
@@ -223,7 +223,7 @@ describe TranscriptsController do
       it "has the right title" do
         current_user.stub(:transcripts).and_return(transcripts)
         get :index
-        response.body.should have_selector('title', text: 'bob@CUSS')
+        response.body.should have_title('bob@CUSS')
       end
 
       it "gets current user's transcripts" do

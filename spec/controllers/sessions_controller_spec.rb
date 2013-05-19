@@ -21,7 +21,7 @@ describe SessionsController do
 
       it "has the right title" do
         get :new, format: :html
-        response.body.should have_selector("title", :text => "Sign in")
+        response.body.should have_title("Sign in")
       end
 
       it "gets all td and ops workstations" do
