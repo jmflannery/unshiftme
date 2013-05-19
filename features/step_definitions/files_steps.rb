@@ -1,8 +1,7 @@
 When /^I send "(.*?)" to "(.*?)"$/ do |file_name, workstation|
   find("##{workstation}").click
-  click_link 'attach_button'
-  attach_file("attachment_payload", "/home/jack/work/amtrak_messenger/spec/fixtures/files/#{file_name}")
-  click_button "Upload"
+  find('#upload_button').click
+  attach_file("attachment[payload]", "/Users/jack/code/private/amtrak_messenger/spec/fixtures/files/#{file_name}")
 end
 
 Then /^I should see the files page$/ do
