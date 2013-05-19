@@ -19,7 +19,7 @@ var toggle_upload_section = function() {
 $(function() {
   $("#upload").hide();
   $("#upload_close_button").hide();
-  $("form#new_attachment").hide().fileupload();
+  $("form#new_attachment").fileupload();
   $('#attach_button').click(toggle_upload_section)
   $('#upload_xicon').click(toggle_upload_section)
 });

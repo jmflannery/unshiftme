@@ -29,15 +29,18 @@
       #upload_section {
         width: 88%;
         margin: 0 auto;
-        margin-top: -6px;
         margin-bottom: 6px;
-        padding: 4px;
+        padding: 6px;
         border: 2px dashed $grey-lettering;
         background-color: $redish-background;
         @include border-radius(12px);
         height: 100px;
         text-align: center;
         color: $grey-lettering;
+
+        input#attachment_payload {
+          margin-top: 50px;
+        }
       }
     }
   }
