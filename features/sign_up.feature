@@ -29,8 +29,9 @@ Feature: Register
     Then I should see the sign in page
     And I should see that registration was successful
     When I fill in "User name" with "fred"
-    And I tab away
-    And I wait 1 second
+    And I fill in "password" with "secret"
     Then I should see that workstation "CUSN" is checked
     And I should see that workstation "CUSS" is not checked
 
+    When I press "Sign In"
+    Then I should see "fred@CUSN"
