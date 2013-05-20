@@ -107,3 +107,6 @@ Then /^I should not see a button with text "(.*?)"$/ do |text|
   page.should_not have_button text
 end
 
+When /^I switch to the new tab$/ do
+  page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
+end

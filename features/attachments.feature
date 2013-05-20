@@ -1,6 +1,5 @@
 @attachments
 @javascript
-@ignore
 Feature: Attachments
   As a GTM user
   I need to sent and receive files with other employees
@@ -28,8 +27,8 @@ Feature: Attachments
     Then I should see recieved message link "test_file.txt" from workstation "CUSN" user "bill" one time
 
     When I click link "test_file.txt"
+    And I switch to the new tab
     Then I should see "This is just a test, of the Grand Tour emergency broadcast system."
 
     Given I am in bill's browser
     Then I should see workstation "CUSS" user "bob" read this
-
