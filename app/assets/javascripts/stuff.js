@@ -377,7 +377,7 @@ $(function() {
   // register callback
   PrivatePub.subscribe("/readers/" + user_name, function(data, channel) {
     message = findMessage(data.message);
-    $(".right-side .readers", message).html(data.readers);
+    $(".readers", message).html(data.readers);
   });
 });
 
