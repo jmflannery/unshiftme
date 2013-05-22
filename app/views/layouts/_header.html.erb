@@ -3,6 +3,7 @@
     <li id='page_title'><%= @title %></li>
     <% if signed_in? %>
       <li id='messages_button'><%= link_to "Messages", user_path(current_user) %></li>
+      <li id='files_button'><%= link_to "Files", attachments_path %></li>
       <li id='profile_button'><%= link_to "Profile", edit_user_path(current_user) %></li>
       <% if current_user.admin? %>
         <li id='transcripts_button'><%= link_to "Transcripts", transcripts_path %></li>
