@@ -2,60 +2,72 @@ require 'spec_helper'
 
 describe AttachmentsController do
    
-  before(:each) do
-    @base_name = "test_file.txt"
-    @upload_file = fixture_file_upload("/files/" + @base_name, "text/plain")
-  end
+  let(:base_name) { "test_file.txt" }
+  let(:upload_file) { fixture_file_upload("/files/" + base_name, "text/plain") }
 
-  describe "access control" do
+  describe "POST 'create'" do
 
-    it "should deny access to 'create' for non-signed in users" do
-      post :create, :attachment => {:payload => @upload_file}, format: :js 
-      response.should redirect_to(signin_path)
+    let(:params) {{ attachment: { payload: upload_file }, format: :js }}
+
+    context "for unauthenticated users" do
+
+      before { controller.stub!(:current_user).and_return(nil) }
+
+      it "redirects to the sign_in path'" do
+        post :create, params
+        expect(response).to redirect_to(signin_path)
+      end
     end
-  end
-  
-  describe "XHR POST 'create'" do
 
-    before(:each) do
-      @user = test_sign_in(FactoryGirl.create(:user)) 
-    end
-     
-    #describe "failure" do
-    #  it "should not create an attachment" do
-    #    lambda do
-    #      xhr :post, :create, format: :js
-    #    end.should_not change(Attachment, :count)
-    #  end
-    #end
-
-    describe "success" do
+    context "for authenticated users" do
     
-      it "should create an attachment" do
-        lambda do
-          xhr :post, :create, :attachment => {:payload => @upload_file}, format: :js
-        end.should change(Attachment, :count).by(1)
+      let(:current_user) { stub('current_user') }
+      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+ 
+      context "with invalid parameters" do
+
+        let(:message) { stub('message', attachment: nil).as_null_object }
+
+        it "does not push a message" do
+          current_user.stub(:create_attached_message).and_return(message)
+          Pusher.should_not_receive(:push_message)
+          post :create, params
+        end
       end
 
-      it "should create an attachment that belongs to the current user" do
-        xhr :post, :create, :attachment => {:payload => @upload_file}, format: :js
-        assigns(:attachment).user_id.should == @user.id
-      end
+      context "with valid parameters" do
 
-      it "should create a message" do
-        lambda do
-          xhr :post, :create, :attachment => {:payload => @upload_file}, format: :js
-        end.should change(Message, :count).by(1)
-      end  
+        let(:attachment) { stub('attachment') }
+        let(:message) { stub('message', attachment: attachment).as_null_object }
 
-      it "should create a message with the file name as content" do
-        xhr :post, :create, :attachment => {:payload => @upload_file}, format: :js 
-        assigns(:message).content.should == @base_name
-      end
-   
-      it "should link the newly created message and attachment" do
-        xhr :post, :create, :attachment => {:payload => @upload_file}, format: :js
-        assigns(:attachment).message.should == assigns(:message)
+        it "creates a message with attachment belonging to the current user" do
+          current_user.should_receive(:create_attached_message).and_return(message)
+          post :create, params
+        end
+
+        it "attaches attachment to the message" do
+          current_user.stub(:create_attached_message).and_return(message)
+          post :create, params
+          message.attachment.should eq attachment
+        end  
+
+        it "generates the message outgoing receipt" do
+          current_user.stub(:create_attached_message).and_return(message)
+          message.should_receive(:generate_outgoing_receipt)
+          post :create, params
+        end
+
+        it "generates the message incoming receipts" do
+          current_user.stub(:create_attached_message).and_return(message)
+          message.should_receive(:generate_incoming_receipts).with(attachment: attachment)
+          post :create, params
+        end
+
+        it "pushes the message" do
+          current_user.stub(:create_attached_message).and_return(message)
+          Pusher.should_receive(:push_message).with(message)
+          post :create, params
+        end
       end
     end
   end
