@@ -115,6 +115,16 @@ class User < ActiveRecord::Base
     message_route
   end
 
+  def create_attached_message(attachment)
+    message = nil
+    attachment = attachments.build(attachment)
+    if attachment.save
+      message = messages.create(content: attachment.payload_identifier)
+      message.attach(attachment)
+    end
+    message
+  end
+
   def do_heartbeat(time)
     update_attribute(:heartbeat, time)
   end

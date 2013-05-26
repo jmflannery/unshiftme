@@ -658,7 +658,27 @@ describe User do
       end
     end
 
+    describe '#create_attached_message' do
+
+      let(:attachment) { "test_file.txt" }
+      let(:upload_file) { File.new(Rails.root + "spec/fixtures/files/" + attachment) }
+      let(:payload) {{ payload: upload_file }}
+
+      it 'creates a message by the user with the given payload attached' do
+        message = subject.create_attached_message(payload)
+        expect(message.attachment.payload_identifier).to eq attachment
+        expect(message.user_id).to eq subject.id
+        expect(message.attachment.user_id).to eq subject.id
+      end
+
+      it 'creates a message with the attachment identifier as the content' do
+        message = subject.create_attached_message(payload)
+        expect(message.content).to eq attachment
+      end
+    end
+
     describe "#do_heartbeat" do
+
       let(:time) { Time.zone.now }
 
       it "sets the heartbeat attribute to the given time" do
