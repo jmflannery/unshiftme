@@ -9,5 +9,9 @@ class AttachmentsController < ApplicationController
       Pusher.push_message(@message)
     end
   end  
+
+  def index
+    render json: current_user.attachments
+  end
 end
 

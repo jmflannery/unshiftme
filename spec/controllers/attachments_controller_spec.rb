@@ -6,7 +6,7 @@ describe AttachmentsController do
   let(:upload_file) { fixture_file_upload("/files/" + base_name, "text/plain") }
   let(:payload) {{ "payload" => upload_file }}
 
-  describe "POST 'create'" do
+  describe "POST create" do
 
     let(:params) {{ attachment: payload, format: :js }}
 
@@ -63,6 +63,43 @@ describe AttachmentsController do
           Pusher.should_receive(:push_message).with(message)
           post :create, params
         end
+      end
+    end
+  end
+
+  describe 'GET index' do
+
+     context 'for unauthenticated users' do
+
+      let(:current_user) { nil }
+      before { controller.stub!(:current_user).and_return(current_user) }
+
+      it 'redirects to the signin page' do
+        get :index
+        response.should redirect_to(signin_path)
+      end
+    end
+
+    context 'for authenticated users' do
+
+      let(:attr1) {{ payload_identifier: 'CUSS_yard_plan.xls',
+                     payload_url: 'uploads/attachments/CUSS_yard_plan.xls',
+                     id: 22
+      }}
+      let(:attr2) {{ payload_identifier: 'CUSS_yard_plan.xls',
+                     payload_url: 'uploads/attachments/CUSS_yard_plan.xls',
+                     id: 23
+      }}
+      let(:attachment1) { stub('attachment1', as_json: attr1) }
+      let(:attachment2) { stub('attachment2', as_json: attr2) }
+      let(:attachments) { [attachment1, attachment2] }
+
+      let(:current_user) { stub('current_user', attachments: attachments) }
+      before { controller.stub!(:current_user).and_return(current_user) }
+
+      it "renders the current_user's attachments as json" do
+        get :index
+        expect(response.body).to eq(attachments.to_json)
       end
     end
   end
