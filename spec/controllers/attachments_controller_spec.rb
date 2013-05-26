@@ -4,10 +4,11 @@ describe AttachmentsController do
    
   let(:base_name) { "test_file.txt" }
   let(:upload_file) { fixture_file_upload("/files/" + base_name, "text/plain") }
+  let(:payload) {{ "payload" => upload_file }}
 
   describe "POST 'create'" do
 
-    let(:params) {{ attachment: { payload: upload_file }, format: :js }}
+    let(:params) {{ attachment: payload, format: :js }}
 
     context "for unauthenticated users" do
 
@@ -41,15 +42,9 @@ describe AttachmentsController do
         let(:message) { stub('message', attachment: attachment).as_null_object }
 
         it "creates a message with attachment belonging to the current user" do
-          current_user.should_receive(:create_attached_message).and_return(message)
+          current_user.should_receive(:create_attached_message).with(payload).and_return(message)
           post :create, params
         end
-
-        it "attaches attachment to the message" do
-          current_user.stub(:create_attached_message).and_return(message)
-          post :create, params
-          message.attachment.should eq attachment
-        end  
 
         it "generates the message outgoing receipt" do
           current_user.stub(:create_attached_message).and_return(message)
