@@ -5,5 +5,13 @@ class Attachment < ActiveRecord::Base
   has_many :receivers, :through => :incoming_receipts, :source => :workstation
 
   mount_uploader :payload, AttachmentUploader
+
+  def as_json
+    {
+      payload_identifier: payload_identifier,
+      payload_url: payload_url,
+      id: id
+    }
+  end
 end
 
