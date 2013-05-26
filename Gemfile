@@ -26,6 +26,11 @@ group :assets do
   gem "compass-rails", "~> 1.0.3"
 end
 
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+end
+
 group :development do
   gem 'foreman'
   gem "annotate"
@@ -35,14 +40,12 @@ group :development do
 end
 
 group :test do
-  gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem "capybara", "~> 2.1.0"
   gem "cucumber-rails", "~> 1.3.0"
   #gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
   gem "poltergeist", "~> 1.3.0"
   gem "selenium-webdriver"
-  gem 'factory_girl_rails'
   gem 'faker'
   gem 'guard-rspec'
   gem 'launchy'
@@ -52,7 +55,7 @@ end
 # Use unicorn as the production web server
 gem "unicorn", "~> 4.6.2"
 
-# Use thin server for Faye/Private_Pub
+# Use thin server for Faye
 gem "thin", "~> 1.5.0"
 
 # Deploy with Capistrano
