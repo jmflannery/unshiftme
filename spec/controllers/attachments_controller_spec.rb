@@ -115,6 +115,13 @@ describe AttachmentsController do
 
       context "format html" do
 
+        before { current_user.stub!(:handle).and_return('bill@CUSN') }
+
+        it "assigns the current user's handle to @title" do
+          get :index, format: :html
+          expect(assigns(:title)).to eq('bill@CUSN')
+        end
+
         it "renders the index template" do
           get :index, format: :html
           expect(response).to render_template(:index)
