@@ -63,13 +63,19 @@ describe AttachmentsController do
           Pusher.should_receive(:push_message).with(message)
           post :create, params
         end
+
+        it 'renders the create template' do
+          current_user.stub(:create_attached_message).and_return(message)
+          post :create, params
+          expect(response).to render_template(:create)
+        end
       end
     end
   end
 
   describe 'GET index' do
 
-     context 'for unauthenticated users' do
+    context 'for unauthenticated users' do
 
       let(:current_user) { nil }
       before { controller.stub!(:current_user).and_return(current_user) }
@@ -82,24 +88,37 @@ describe AttachmentsController do
 
     context 'for authenticated users' do
 
-      let(:attr1) {{ payload_identifier: 'CUSS_yard_plan.xls',
-                     payload_url: 'uploads/attachments/CUSS_yard_plan.xls',
-                     id: 22
-      }}
-      let(:attr2) {{ payload_identifier: 'CUSS_yard_plan.xls',
-                     payload_url: 'uploads/attachments/CUSS_yard_plan.xls',
-                     id: 23
-      }}
-      let(:attachment1) { stub('attachment1', as_json: attr1) }
-      let(:attachment2) { stub('attachment2', as_json: attr2) }
-      let(:attachments) { [attachment1, attachment2] }
-
-      let(:current_user) { stub('current_user', attachments: attachments) }
+      let(:current_user) { stub('current_user') }
       before { controller.stub!(:current_user).and_return(current_user) }
 
-      it "renders the current_user's attachments as json" do
-        get :index
-        expect(response.body).to eq(attachments.to_json)
+      context "format json" do
+
+        let(:attr1) {{ payload_identifier: 'CUSS_yard_plan.xls',
+                       payload_url: 'uploads/attachments/CUSS_yard_plan.xls',
+                       id: 22
+        }}
+        let(:attr2) {{ payload_identifier: 'CUSS_yard_plan.xls',
+                       payload_url: 'uploads/attachments/CUSS_yard_plan.xls',
+                       id: 23
+        }}
+        let(:attachment1) { stub('attachment1', as_json: attr1) }
+        let(:attachment2) { stub('attachment2', as_json: attr2) }
+        let(:attachments) { [attachment1, attachment2] }
+
+        before { current_user.stub(:attachments).and_return(attachments) }
+
+        it "renders the current_user's attachments as json" do
+          get :index, format: :json
+          expect(response.body).to eq(attachments.to_json)
+        end
+      end
+
+      context "format html" do
+
+        it "renders the index template" do
+          get :index, format: :html
+          expect(response).to render_template(:index)
+        end
       end
     end
   end

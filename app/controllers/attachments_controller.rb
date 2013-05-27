@@ -8,10 +8,14 @@ class AttachmentsController < ApplicationController
       @message.generate_incoming_receipts(attachment: @message.attachment)
       Pusher.push_message(@message)
     end
-  end  
+  end
 
   def index
-    render json: current_user.attachments
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: current_user.attachments
+      }
+    end
   end
 end
-
