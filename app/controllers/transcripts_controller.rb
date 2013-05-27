@@ -5,7 +5,8 @@ class TranscriptsController < ApplicationController
   before_filter :validate_transcript_attributes, only: [:create]
 
   def new
-    @title = current_user.handle 
+    @title = "New Transcript"
+    @handle = current_user.handle 
     @transcript = Transcript.new
     @users = User.all_user_names.unshift("")
     @workstations = Workstation.all_short_names.unshift("")
@@ -21,10 +22,12 @@ class TranscriptsController < ApplicationController
   end
 
   def show
-    @title = current_user.handle 
     @user = current_user
     respond_to do |format|
-      format.html
+      format.html {
+        @title = @transcript.name
+        @handle = current_user.handle 
+      }
       format.json {
         render json: @transcript.as_json(user: @transcript.transcript_user)
       }
@@ -32,7 +35,8 @@ class TranscriptsController < ApplicationController
   end
 
   def index
-    @title = current_user.handle 
+    @handle = current_user.handle 
+    @title = "#{current_user.user_name}'s Transcripts"
     @transcripts = current_user.transcripts
     @transcript_count = current_user.transcripts.size
   end

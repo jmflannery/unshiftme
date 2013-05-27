@@ -29,7 +29,7 @@ describe TranscriptsController do
 
     context "for authenticated admin users" do
 
-      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true, handle: 'jeff@AML') }
+      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true, handle: 'jeff@AML', user_name: 'jeff') }
       before(:each) { controller.stub!(:current_user).and_return(current_user) }
 
       it "returns http success" do
@@ -42,9 +42,14 @@ describe TranscriptsController do
         get :new
       end
 
-      it "has the right title" do
+      it "assigns the page's title to @title" do
         get :new
-        response.body.should have_title('jeff@AML')
+        expect(assigns(:title)).to eq "New Transcript"
+      end
+
+      it "assigns the current user's handle to @handle" do
+        get :new
+        expect(assigns(:handle)).to eq "jeff@AML"
       end
 
       it "gets all workstations abrevs in an Array with a leading empty string" do
@@ -167,18 +172,34 @@ describe TranscriptsController do
 
     context "for authenticated admin users" do
 
-      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true, handle: 'handle') }
-      let(:transcript) { stub('transcript', as_json: 'json', name: 'name', transcript_user: stub('transcript user')) }
+      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true, handle: 'handle', user_name: 'the-name') }
+      let(:transcript) { stub('transcript', as_json: 'json', name: 'name', id: 22, transcript_user: stub('transcript user')) }
 
       before do
         current_user.transcripts.stub!(:find_by_id).and_return(transcript)
         controller.stub!(:current_user).and_return(current_user)
       end
 
-      it "renders the transcript as json" do
-        transcript.should_receive(:as_json)
-        controller.should_receive(:render).twice
-        get :show, id: 1, format: :json
+      context "format json" do
+
+        it "renders the transcript as json" do
+          transcript.should_receive(:as_json)
+          controller.should_receive(:render).twice
+          get :show, id: 1, format: :json
+        end
+      end
+
+      context 'format html' do
+
+        it "assigns the page title to @title" do
+          get :show, id: 1, format: :html
+          expect(assigns(:title)).to eq transcript.name
+        end
+
+        it "assigns the current_user's handle to @handle" do
+          get :show, id: 1, format: :html
+          expect(assigns(:handle)).to eq current_user.handle
+        end
       end
     end
   end
@@ -209,7 +230,7 @@ describe TranscriptsController do
 
     context "for authenticated admin users" do
 
-      let(:current_user) { stub('current_user', admin?: true, handle: 'bob@CUSS') }
+      let(:current_user) { stub('current_user', admin?: true, handle: 'bob@CUSS', user_name: 'bob') }
       let(:transcripts) { mock_model(Transcript, size: 1, name: 'name') }
 
       before { controller.stub!(:current_user).and_return(current_user) }
@@ -220,10 +241,16 @@ describe TranscriptsController do
         response.should be_success
       end
 
-      it "has the right title" do
+      it "assigns the page title to @title" do
         current_user.stub(:transcripts).and_return(transcripts)
         get :index
-        response.body.should have_title('bob@CUSS')
+        expect(assigns(:title)).to eq "#{current_user.user_name}'s Transcripts"
+      end
+
+      it "assigns the current user's handle to @handle" do
+        current_user.stub(:transcripts).and_return(transcripts)
+        get :index
+        expect(assigns(:handle)).to eq current_user.handle
       end
 
       it "gets current user's transcripts" do
