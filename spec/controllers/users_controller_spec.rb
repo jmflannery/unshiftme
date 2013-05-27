@@ -127,14 +127,14 @@ describe UsersController do
         assigns(:user).should == user
       end
 
-      it "should have the right title" do
-        get :show, :id => user
-        response.body.should have_selector("li", text: user.user_name)
+      it "assigns the page title to @title" do
+        get :show, id: user
+        expect(assigns(:title)).to eq "Messages for #{user.handle}"
       end
 
-      it "should include the users name" do
-        get :show, :id => user
-        response.body.should have_selector("li", text: user.handle)
+      it "assigns the user's handle to @handle" do
+        get :show, id: user
+        expect(assigns(:handle)).to eq user.handle
       end
       
       it "should create a new attachment (for a subsequent create)" do

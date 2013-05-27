@@ -30,7 +30,8 @@ class UsersController < ApplicationController
   def show
     respond_to do |format|
       format.html {
-        @title = @user.handle
+        @handle = @user.handle
+        @title = "Messages for #{@user.handle}"
         @message = Message.new
         @attachment = Attachment.new
       }
