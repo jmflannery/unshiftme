@@ -1,6 +1,6 @@
 <div id='main_menu' class='<%= current_user.user_name if signed_in? %>'>
   <ul>
-    <li id='page_title'><%= @title %></li>
+    <li id='page_title'><%= @handle %></li>
     <% if signed_in? %>
       <li id='messages_button'><%= link_to "Messages", user_path(current_user) %></li>
       <li id='files_button'><%= link_to "Files", attachments_path %></li>
