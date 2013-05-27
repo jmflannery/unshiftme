@@ -211,16 +211,11 @@ describe UsersController do
       test_sign_in(user)
     end
 
-    describe "failure" do
+    describe "failure", focus: true do
 
-      it "should render the 'edit' page" do
+      it "should redirect back to 'edit' page" do
         put :update, id: user, user: fail_attr
-        response.should render_template('edit')
-      end
-
-      it "should have the right title" do
-        put :update, id: user, user: fail_attr
-        response.body.should have_title(user.handle)
+        expect(response).to redirect_to edit_user_path(user)
       end
     end
 
