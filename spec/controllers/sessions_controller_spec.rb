@@ -19,9 +19,14 @@ describe SessionsController do
         response.should be_success
       end
 
-      it "has the right title" do
+      it "assigns the page title to @title" do
         get :new, format: :html
-        response.body.should have_title("Sign in")
+        expect(assigns(:title)).to eq "Sign in"
+      end
+
+      it "assigns the page title to @handle" do
+        get :new, format: :html
+        expect(assigns(:handle)).to eq "Sign in"
       end
 
       it "gets all td and ops workstations" do

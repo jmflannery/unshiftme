@@ -4,6 +4,7 @@ class SessionsController < ApplicationController
   def new
     respond_to do |format| 
       format.html {
+        @handle = "Sign in"
         @title = "Sign in"
         @td_workstations = Workstation.of_type("td")
         @ops_workstations = Workstation.of_type("ops")
