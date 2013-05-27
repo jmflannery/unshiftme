@@ -13,7 +13,8 @@ class AttachmentsController < ApplicationController
   def index
     respond_to do |format|
       format.html {
-        @title = current_user.handle
+        @handle = current_user.handle
+        @title = "Files for #{current_user.handle}"
       }
       format.json {
         render json: current_user.attachments

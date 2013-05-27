@@ -117,9 +117,14 @@ describe AttachmentsController do
 
         before { current_user.stub!(:handle).and_return('bill@CUSN') }
 
-        it "assigns the current user's handle to @title" do
+        it "assigns the current user's handle to @handle" do
           get :index, format: :html
-          expect(assigns(:title)).to eq('bill@CUSN')
+          expect(assigns(:handle)).to eq('bill@CUSN')
+        end
+
+        it "assigns the page's title to @title" do
+          get :index, format: :html
+          expect(assigns(:title)).to eq('Files for bill@CUSN')
         end
 
         it "renders the index template" do
