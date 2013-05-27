@@ -48,7 +48,8 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @title = current_user.handle
+    @handle = current_user.handle
+    @title = "Edit #{current_user.user_name}'s Profile"
     @td_workstations = Workstation.of_type("td")
     @ops_workstations = Workstation.of_type("ops")
   end

@@ -186,11 +186,16 @@ describe UsersController do
       response.should be_success
     end
 
-    it "should have the right title" do
-      get :edit, :id => user
-      response.body.should have_title(user.handle)
+    it "assigns the page title to @title" do
+      get :edit, id: user
+      expect(assigns(:title)).to eq "Edit #{user.user_name}'s Profile"
     end
 
+    it "assigns the user's handle to @handle" do
+      get :edit, id: user
+      expect(assigns(:handle)).to eq user.handle
+    end
+      
     it "gets the workstations" do
       td_workstations = stub(Workstation).stub(description: "td")
       ops_workstations = stub(Workstation).stub(description: "ops")
