@@ -22,9 +22,14 @@ describe UsersController do
       response.should be_success
     end
 
-    it "should have the right title" do
+    it "assigns the page title to @title" do
       get :new
-      response.body.should have_title("Register")
+      expect(assigns(:title)).to eq "Register"
+    end
+
+    it "assigns the page title to @handle" do
+      get :new
+      expect(assigns(:handle)).to eq "Register"
     end
 
     it "gets the workstations" do
@@ -211,7 +216,7 @@ describe UsersController do
       test_sign_in(user)
     end
 
-    describe "failure", focus: true do
+    describe "failure" do
 
       it "should redirect back to 'edit' page" do
         put :update, id: user, user: fail_attr
@@ -432,6 +437,16 @@ describe UsersController do
     it "assigns a user variable" do
       get :edit_password, params
       assigns[:user].should == user
+    end
+
+    it "assigns the page title to @handle" do
+      get :edit_password, params
+      expect(assigns(:handle)).to eq user.handle
+    end
+
+    it "assigns the page title to @title" do
+      get :edit_password, params
+      expect(assigns(:title)).to eq "Change #{user.user_name}'s password"
     end
   end
 

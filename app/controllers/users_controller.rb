@@ -9,6 +9,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
+    @handle = "Register"
     @title = "Register"
     @td_workstations = Workstation.of_type("td")
     @ops_workstations = Workstation.of_type("ops")
@@ -76,7 +77,8 @@ class UsersController < ApplicationController
   end
 
   def edit_password
-    @title = current_user.handle
+    @handle = current_user.handle
+    @title = "Change #{current_user.user_name}'s password"
   end
 
   def update_password
