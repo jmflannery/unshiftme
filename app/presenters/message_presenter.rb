@@ -13,7 +13,7 @@ class MessagePresenter
     hash[:content] = message.content
     hash[:created_at] = message.created_at.strftime("%a %b %e %Y %T")
     hash[:sender] = message.sender_handle
-    hash[:attachment_url] = message.attachment.payload.url if message.attachment
+    hash[:attachment_url] = message.attachment.payload_url if message.attachment
     hash[:view_class] = message.generate_view_class(user)
     hash[:readers] = message.formatted_readers unless message.sent_to?(user) and not options[:transcript]
     hash.as_json
