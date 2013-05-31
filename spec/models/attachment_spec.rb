@@ -64,6 +64,38 @@ describe Attachment do
     end
   end
 
+  describe '.for_user' do
+    
+    let(:coworker) { FactoryGirl.create(:user) }
+    let(:sent_attachment) { FactoryGirl.create(:attachment, user: user) }
+    let(:sent_message) { FactoryGirl.create(:message, user: user, attachment: sent_attachment) }
+    let(:received_attachment) { FactoryGirl.create(:attachment, user: coworker) }
+    let(:received_message) { FactoryGirl.create(:message, user: coworker, attachment: received_attachment) }
+    let!(:other_attachment) { FactoryGirl.create(:attachment) }
+
+    before do
+      FactoryGirl.create(:outgoing_receipt, user: user, message: sent_message)
+      FactoryGirl.create(:incoming_receipt, user: coworker, message: sent_message, attachment: sent_attachment)
+
+      FactoryGirl.create(:outgoing_receipt, user: coworker, message: received_message)
+      FactoryGirl.create(:incoming_receipt, user: user, message: received_message, attachment: received_attachment)
+    end
+
+    it "returns all attachments sent by the given user" do
+      expect(Attachment.for_user(user)).to include sent_attachment
+    end
+
+    it "returns all attachments sent to the given user" do
+      expect(Attachment.for_user(user)).to include received_attachment
+    end
+
+    it "returns all attachments sent to the given user's workstations"
+
+    it "does not return return attatchments not sent by or sent to the given user" do
+      expect(Attachment.for_user(user)).not_to include other_attachment
+    end
+  end
+
   describe '#as_json' do
 
     before { subject.save }
