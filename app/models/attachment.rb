@@ -13,5 +13,14 @@ class Attachment < ActiveRecord::Base
       id: id
     }
   end
+
+  def self.for_user(user)
+    irs = IncomingReceipt.where("user_id = ? and attachment_id is not null", user.id)
+    attachments = irs.map { |r| r.attachment }
+    ogs = OutgoingReceipt.where("user_id = ?", user.id)
+    ogs.select! { |r| r.message.attachment }
+    attachments.concat(ogs.map { |r| r.message.attachment })
+    attachments
+  end
 end
 
