@@ -20,21 +20,18 @@ Feature: Messaging
       | bob       |
       | sam       |
     And I am in Bill's browser
-    And I am logged in as "bill" with password "secret" at "CUSN"
-    When I go to the messaging page
+    When I log in as "bill" with password "secret" at "CUSN"
     Then I should not see recieved message "Hi Bill!" from workstation "CUSS" user "bob"
 
     Given I am in Sam's browser
-    And I am logged in as "sam" with password "secret" at "AML"
-    When I go to the messaging page
+    When I log in as "sam" with password "secret" at "AML"
     Then I should not see recieved message "Hi Bill!" from workstation "CUSS" user "bob"
 
     Given I am in Bob's browser
-    And I am logged in as "bob" with password "secret" at "CUSS"
-    When I go to the messaging page
+    When I log in as "bob" with password "secret" at "CUSS"
     And I click "CUSN"
-    And I should see that I am messaging "CUSN"
-    And I fill in "message_content" with "Hi Bill!"
+    Then I should see that I am messaging "CUSN"
+    When I fill in "message_content" with "Hi Bill!"
     And I press the "enter" key
     Then I should see sent message "Hi Bill!" from workstation "CUSS" user "bob" one time
     And I should nothing in the "message_content" text field

@@ -19,8 +19,7 @@ Feature: Workstation Selection
       | user_name |
       | bill      |
 
-    And I am logged in as "bill" with password "secret" at "CUSN"
-    When I go to the messaging page
+    When I log in as "bill" with password "secret" at "CUSN"
     Then I should see each Workstation Toggle Button indicate that I am not messaging that workstation, excluding my own workstation "CUSN"
     And I should see that I am at "CUSN"
    
@@ -45,25 +44,21 @@ Feature: Workstation Selection
       | sam       |
 
     And I am in Bill's browser
-    And I am logged in as "bill" with password "secret" at "CUSN"
-    When I go to the messaging page
+    When I log in as "bill" with password "secret" at "CUSN"
     Then I should see that "bill" is at "CUSN" workstation
     And I should see that "nobody" is at "AML" workstation
 
     Given I am in Sam's browser
-    And I am logged in as "sam" with password "secret" at "AML"
-    When I go to the messaging page
+    When I log in as "sam" with password "secret" at "AML"
     Then I should see that "sam" is at "AML" workstation
     And I should see that "bill" is at "CUSN" workstation
 
     Given I am in Bill's browser
-    When I go to the messaging page
     Then I should see that "sam" is at "AML" workstation
 
     Given I log out
 
     Given I am in Sam's browser
-    When I go to the messaging page
     Then I should see that "sam" is at "AML" workstation
     And I should see that "nobody" is at "CUSN" workstation
 
@@ -81,8 +76,7 @@ Feature: Workstation Selection
     And the following user records
       | user_name |
       | bill      |
-    And I am logged in as "bill" with password "secret" at "CUSN"
-    When I go to the messaging page
+    When I log in as "bill" with password "secret" at "CUSN"
     And I click Message "all"
     Then I should see each Workstation Toggle Button indicate that I am messaging that workstation, excluding my own workstation "CUSN"
     When I click Message "none" 
@@ -105,8 +99,7 @@ Feature: Workstation Selection
     And I am logged in as "bill" with password "secret" at "CUSN,CUSS,AML"
 
     Given I am in joe's browser
-    And I am logged in as "joe" with password "secret" at "YDCTL"
-    When I go to the messaging page
+    When I log in as "joe" with password "secret" at "YDCTL"
     Then I should see that "bill" is at "CUSN,CUSS,AML" workstation
 
     When I click "CUSN"

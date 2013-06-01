@@ -22,8 +22,7 @@ Feature: Messages
       | 1  | Hi Jeff!   | bob  | AML            | t    | 1441.minutes.ago  |
       | 2  | Hello, Bob | jeff | CUSS           | t    | 1430.minutes.ago  |
       | 3  | Whats up?  | bob  | AML            | t    | 1439.minutes.ago  |
-    And I am logged in as "jeff" with password "secret" at "AML"
-    When I go to the messaging page
+    When I log in as "jeff" with password "secret" at "AML"
     Then I should not see received message 1 "Hi Jeff!"
     And I should see sent message 2 "Hello, Bob" from "jeff@AML" one time
     And I should see "bob@CUSS" read message 2
@@ -50,8 +49,7 @@ Feature: Messages
       | 24  | Bye Sam    | bob  | AML            | sam     | 10.minutes.ago |
       | 25  | Anyone??   | bob  | AML            |         | 2.minutes.ago  |
 
-    And I am logged in as "jeff" with password "secret" at "AML"
-    When I go to the messaging page
+    When I log in as "jeff" with password "secret" at "AML"
     Then I should not see message 24 "Bye Sam"
     And I should see unread received message 25 "Anyone??" from "bob@CUSS" one time
     

@@ -33,7 +33,10 @@ Given /^the following messages$/ do |table|
   end
 end
 
-When /^I go to the messaging page$/ do
+When (/^I go to (.*?) messaging page$/) do |user_name|
+  user_name.chomp!("'s")
+  user = User.find_by_user_name(user_name)
+  visit user_path(user)
 end
 
 Then /^I should not see received message (\d+) "(.*?)"$/ do |id, content|
@@ -109,7 +112,7 @@ end
 Then /^I should see sent message link "(.*?)" from workstation "(.*?)" user "(.*?)" one time$/ do |message_content, workstation_abrev, user_name|
   within("li.message.owner") do
     page.should have_selector(".sender p", text: "#{user_name}@#{workstation_abrev}")
-    page.should have_selector(".content a", text: @message)
+    page.should have_selector(".content a", text: message_content, count: 1)
   end
 end
 

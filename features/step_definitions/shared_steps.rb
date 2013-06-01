@@ -12,6 +12,16 @@ Given /^I am logged in as "([^\"]*)" with password "([^\"]*)" at "([^\"]*)"$/ do
   end
 end
 
+When /^I log in as "([^\"]*)" with password "([^\"]*)" at "([^\"]*)"$/ do |username, password, workstations|
+  unless username.blank?
+    visit signin_path
+    fill_in "User name", :with => username
+    fill_in "Password", :with => password
+    workstations.split(",").each { |workstation| check workstation }
+    click_button "Sign In"
+  end
+end
+
 Given /^I am registered user "(.*?)" logged in with password "(.*?)"$/ do |user, password|
   user, workstation = parse_handle(user, password)
   visit signin_path

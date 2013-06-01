@@ -22,8 +22,7 @@ Feature: Attachments
     Then I should see sent message link "test_file.txt" from workstation "CUSN" user "bill" one time
 
     Given I am in bob's browser
-    And I am logged in as "bob" with password "secret" at "CUSS"
-    When I go to the messaging page
+    When I log in as "bob" with password "secret" at "CUSS"
     Then I should see recieved message link "test_file.txt" from workstation "CUSN" user "bill" one time
 
     When I click link "test_file.txt"
