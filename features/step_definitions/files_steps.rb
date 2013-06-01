@@ -5,6 +5,19 @@ When /^I send "(.*?)" to "(.*?)"$/ do |file_name, workstation|
 end
 
 Then /^I should see the files page$/ do
-  page.should have_css("title", content: "Files") 
+  page.should have_css("#files_page") 
 end
 
+Then(/^I should not see a link to "(.*?)"$/) do |file_name|
+  expect(page).not_to have_content file_name
+end
+
+Then(/^I should see a link to "(.*?)"$/) do |file_name|
+  expect(page).to have_content file_name
+end
+
+Then(/^I should not see any files$/) do
+  within("ul#files_list") do
+    expect(page).not_to have_css("li.file")
+  end
+end
