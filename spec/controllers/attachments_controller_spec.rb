@@ -105,7 +105,7 @@ describe AttachmentsController do
         let(:attachment2) { stub('attachment2', as_json: attr2) }
         let(:attachments) { [attachment1, attachment2] }
 
-        before { current_user.stub(:attachments).and_return(attachments) }
+        before { Attachment.stub(:for_user).with(current_user).and_return(attachments) }
 
         it "renders the current_user's attachments as json" do
           get :index, format: :json
