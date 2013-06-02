@@ -339,7 +339,8 @@ $(function() {
     $("input#message_content").val("");
 
     // display the new message 
-    display_new_message(Mustache.to_html($('#message_template').html(), data), data.id);
+    var template = data.attachment_url ? '#attachment_template' : '#message_template';
+    display_new_message(Mustache.to_html($(template).html(), data), data.id);
 
     // scroll to last message 
     //if (data.chat_message) {
