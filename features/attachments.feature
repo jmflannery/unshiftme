@@ -16,13 +16,18 @@ Feature: Attachments
       | CUS North | CUSN  | td       | 1       |
       | CUS South | CUSS  | td       | 2       |
     And I am in bill's browser
-    And I am logged in as "bill" with password "secret" at "CUSN"
+    When I log in as "bill" with password "secret" at "CUSN"
+    Then I should see that I have no messages
 
+    Given I am in bob's browser
+    When I log in as "bob" with password "secret" at "CUSS"
+    Then I should see that I have no messages
+
+    Given I am in bill's browser
     When I send "test_file.txt" to "CUSS"
     Then I should see sent message link "test_file.txt" from workstation "CUSN" user "bill" one time
 
     Given I am in bob's browser
-    When I log in as "bob" with password "secret" at "CUSS"
     Then I should see recieved message link "test_file.txt" from workstation "CUSN" user "bill" one time
 
     When I click link "test_file.txt"

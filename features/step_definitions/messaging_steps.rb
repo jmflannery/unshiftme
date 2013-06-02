@@ -204,3 +204,8 @@ Given /^I log out$/ do
   click_link "Sign out"
 end
 
+Then(/^I should see that I have no messages$/) do
+  within("ul#message_list") do
+    expect(page).not_to have_css("li.message")
+  end
+end
