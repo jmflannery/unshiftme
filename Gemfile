@@ -42,7 +42,7 @@ end
 group :test do
   gem 'shoulda-matchers'
   gem "capybara", "~> 2.1.0"
-  gem "cucumber-rails", "~> 1.3.0"
+  gem "cucumber-rails", "~> 1.3.0", require: false
   #gem 'capybara', :git => 'https://github.com/jnicklas/capybara.git'
   gem "poltergeist", "~> 1.3.0"
   gem "selenium-webdriver"
