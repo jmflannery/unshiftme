@@ -64,6 +64,29 @@ describe Attachment do
     end
   end
 
+  describe "outgoing_receipt/sender association" do
+
+    before { subject.save }
+    let(:sender) { FactoryGirl.create(:user) }
+    let!(:outgoing_receipt) { subject.create_outgoing_receipt(user: sender) }
+
+    it "has one outgoing_receipt" do
+      expect(subject).to have_one :outgoing_receipt
+    end
+
+    it "has one sender" do
+      expect(subject).to have_one :sender
+    end
+
+    it "associates the correct outgoing_receipt" do
+      expect(subject.outgoing_receipt).to eq outgoing_receipt
+    end
+
+    it "associates the correct user as the sender" do
+      expect(subject.sender).to eq sender
+    end
+  end
+
   describe '.for_user' do
     
     let(:coworker) { FactoryGirl.create(:user) }

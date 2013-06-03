@@ -3,6 +3,8 @@ class Attachment < ActiveRecord::Base
   belongs_to :message
   has_many :incoming_receipts
   has_many :receivers, :through => :incoming_receipts, :source => :workstation
+  has_one :outgoing_receipt
+  has_one :sender, through: :outgoing_receipt, source: :user
 
   mount_uploader :payload, AttachmentUploader
 
