@@ -10,6 +10,7 @@ describe OutgoingReceipt do
 
   it { should belong_to(:message) }
   it { should belong_to(:user) }
+  it { should belong_to(:attachment) }
 
   #it { should_not allow_mass_assignment_of(:workstation_id) }
   
