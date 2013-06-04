@@ -74,17 +74,17 @@ describe Attachment do
       expect(subject).to have_one :outgoing_receipt
     end
 
-    it "has one sender" do
-      expect(subject).to have_one :sender
-    end
+     it "has one sender" do
+       expect(subject).to have_one :sender
+     end
 
-    it "associates the correct outgoing_receipt" do
-      expect(subject.outgoing_receipt).to eq outgoing_receipt
-    end
+     it "associates the correct outgoing_receipt" do
+       expect(subject.outgoing_receipt).to eq outgoing_receipt
+     end
 
-    it "associates the correct user as the sender" do
-      expect(subject.sender).to eq sender
-    end
+     it "associates the the correct user as the sender" do
+       expect(subject.sender).to eq sender
+     end
   end
 
   describe '.for_user' do
@@ -99,8 +99,8 @@ describe Attachment do
     let!(:other_attachment) { FactoryGirl.create(:attachment) }
 
     before(:each) do
-      FactoryGirl.create(:outgoing_receipt, user: user, message: sent_message)
-      FactoryGirl.create(:incoming_receipt, user: coworker, message: sent_message, attachment: sent_attachment)
+      FactoryGirl.create(:outgoing_receipt, user: user, message: sent_message, attachment: sent_attachment)
+      FactoryGirl.create(:incoming_receipt, user: coworker, message: sent_message, attachment: sent_attachment, workstation: nil)
 
       FactoryGirl.create(:outgoing_receipt, user: coworker, message: received_message)
       FactoryGirl.create(:incoming_receipt, user: user, message: received_message, attachment: received_attachment)

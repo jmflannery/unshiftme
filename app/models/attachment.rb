@@ -17,12 +17,11 @@ class Attachment < ActiveRecord::Base
   end
 
   def self.for_user(user)
-    attachments = Attachment.joins(:incoming_receipts).where(
+    attachments = []
+    attachments.concat(Attachment.joins(:incoming_receipts).where(
       "incoming_receipts.user_id = ? or incoming_receipts.workstation_id in (?)",
-      user.id, user.workstation_ids)
-    ogs = OutgoingReceipt.where("user_id = ?", user.id)
-    ogs.select! { |r| r.message.attachment }
-    attachments.concat(ogs.map { |r| r.message.attachment })
+      user.id, user.workstation_ids))
+    attachments.concat(Attachment.joins(:outgoing_receipt).where("outgoing_receipts.user_id = ?", user.id))
     attachments
   end
 end
