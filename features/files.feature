@@ -7,6 +7,7 @@ Feature: Files
   in a seperate view from the messages
   So I can still find them later
 
+  @files1
   Scenario: Visit the Files page and see the files that I sent and were sent to me
     Given the following user records
       | user_name | id |
