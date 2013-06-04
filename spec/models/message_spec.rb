@@ -240,6 +240,17 @@ describe Message do
         subject.outgoing_receipt.workstations.should == []
       end
     end
+
+    context "with an optional attachment" do
+
+      let(:attachment) { FactoryGirl.create(:attachment) }
+      before { subject.attach(attachment) }
+
+      it "includes the attachment in the incoming receipt" do
+        subject.generate_outgoing_receipt
+        expect(subject.outgoing_receipt.attachment).to eq attachment
+      end
+    end
   end
 
   describe "#sender_handle" do
