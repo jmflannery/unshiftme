@@ -129,23 +129,24 @@ describe Message do
 
     it "generates an incoming receipt for each recipient of the message user including the workstation's user or nil" do
       subject.generate_incoming_receipts
-      subject.incoming_receipts[0].workstation.should == aml
-      subject.incoming_receipts[0].user.should == nil
-      subject.incoming_receipts[1].workstation.should == cusn
-      subject.incoming_receipts[1].user.should == user1
+      subject.incoming_receipts[0].workstation.should == cusn
+      subject.incoming_receipts[0].user.should == user1
+      subject.incoming_receipts[1].workstation.should == aml
+      subject.incoming_receipts[1].user.should == nil
     end
 
-    context "with an optional attachment" do
+    context "when the message has an attaachment" do
 
       let(:attachment) { FactoryGirl.create(:attachment) }
+      before { subject.attach(attachment) }
 
       it "generates an incoming receipt for each recipient of the message user including the attachment" do
-        subject.generate_incoming_receipts(attachment: attachment)
-        subject.incoming_receipts[0].workstation.should == aml
-        subject.incoming_receipts[0].user.should == nil
+        subject.generate_incoming_receipts
+        subject.incoming_receipts[0].workstation.should == cusn
+        subject.incoming_receipts[0].user.should == user1
         subject.incoming_receipts[0].attachment.should == attachment
-        subject.incoming_receipts[1].workstation.should == cusn
-        subject.incoming_receipts[1].user.should == user1
+        subject.incoming_receipts[1].workstation.should == aml
+        subject.incoming_receipts[1].user.should == nil
         subject.incoming_receipts[1].attachment.should == attachment
       end
     end
@@ -153,7 +154,7 @@ describe Message do
 
   describe "#generate_incoming_receipt" do
 
-    let(:user1) { FactoryGirl.create(:user, user_name: "herman") }
+    let(:user1) { FactoryGirl.create(:user) }
     before { subject.save }
 
     context "when the supplied workstation has no controlling user" do
@@ -162,6 +163,7 @@ describe Message do
         subject.generate_incoming_receipt(aml)
         subject.incoming_receipts[0].workstation.should == aml
         subject.incoming_receipts[0].user.should == nil
+        subject.incoming_receipts[0].attachment.should == nil
       end
     end 
 
@@ -173,44 +175,35 @@ describe Message do
         subject.generate_incoming_receipt(cusn)
         subject.incoming_receipts[0].workstation.should == cusn
         subject.incoming_receipts[0].user.should == user1
+        subject.incoming_receipts[0].attachment.should == nil
       end
     end
 
-    context "with an optional user argument" do
+    context "when the message has an attachment" do
 
-      let(:user2) { FactoryGirl.create(:user) }
-
-      context "when the supplied workstation has no controlling user" do
-
-        it "creates an incoming receipt for the message with the supplied workstation and user" do
-          subject.generate_incoming_receipt(aml, user: user2)
-          subject.incoming_receipts[0].workstation.should == aml
-          subject.incoming_receipts[0].user.should == user2
-        end
-      end 
-
-      context "when the recipient workstation has a controlling user" do
-
-        before { cusn.set_user(user1) }
-
-        it "creates an incoming receipt for the message with the supplied workstation and user" do
-          subject.generate_incoming_receipt(cusn, user: user2)
-          subject.incoming_receipts[0].workstation.should == cusn
-          subject.incoming_receipts[0].user.should == user2
-        end
-      end
-    end
-
-    context "with an attachment option" do
-
-      before { cusn.set_user(user1) }
       let(:attachment) { FactoryGirl.create(:attachment) }
+      before do
+        subject.attach(attachment)
+        cusn.set_user(user1)
+      end
 
-      it "creates an incoming receipt for the message with the supplied attachment, workstation, and controlling user" do
-        subject.generate_incoming_receipt(cusn, attachment: attachment)
+      it "creates an incoming receipt for the message with the supplied workstation and it's controlling user, and the attachment" do
+        subject.generate_incoming_receipt(cusn)
+        subject.incoming_receipts[0].attachment.should == attachment
         subject.incoming_receipts[0].workstation.should == cusn
         subject.incoming_receipts[0].user.should == user1
-        subject.incoming_receipts[0].attachment.should == attachment
+      end
+    end
+
+    context 'when an optional user is supplied' do
+
+      let(:user2) { FactoryGirl.create(:user) }
+      before { cusn.set_user(user1) }
+
+      it "creates an incoming receipt for the message with the supplied user, instead of the workstation's user" do
+        subject.generate_incoming_receipt(cusn, user: user2)
+        subject.incoming_receipts[0].workstation.should == cusn
+        subject.incoming_receipts[0].user.should == user2
       end
     end
   end
@@ -267,7 +260,7 @@ describe Message do
     end
   end
 
-  describe "attach" do
+  describe "#attach" do
 
     let(:attachment) { FactoryGirl.create(:attachment) }
 

@@ -54,7 +54,7 @@ describe AttachmentsController do
 
         it "generates the message incoming receipts" do
           current_user.stub(:create_attached_message).and_return(message)
-          message.should_receive(:generate_incoming_receipts).with(attachment: attachment)
+          message.should_receive(:generate_incoming_receipts)
           post :create, params
         end
 

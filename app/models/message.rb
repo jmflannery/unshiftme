@@ -21,14 +21,14 @@ class Message < ActiveRecord::Base
     created_at <=> other.created_at
   end
 
-  def generate_incoming_receipts(options = {})
-    user.recipients.each { |recipient| generate_incoming_receipt(recipient, options) }
+  def generate_incoming_receipts
+    user.recipients.each { |recipient| generate_incoming_receipt(recipient) }
   end
 
   def generate_incoming_receipt(workstation, options = {})
     incoming_receipts.create(workstation: workstation,
                              user: options[:user] || workstation.user,
-                             attachment: options[:attachment])
+                             attachment: self.attachment)
   end
 
   def generate_outgoing_receipt
