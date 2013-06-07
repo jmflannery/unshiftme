@@ -15,6 +15,7 @@ gem "whenever"
 gem "rufus-scheduler"
 gem "jquery-fileupload-rails", "~> 0.4.1"
 gem "mustache"
+gem "font-awesome-rails"
 
 # Gems used only for assets and not required
 # in production environments by default.
