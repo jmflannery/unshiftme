@@ -3,13 +3,21 @@
     <i id='home-icon' class="icon-bullhorn icon-large"></i>
     <li id='page_title'><%= @handle %></li>
     <% if signed_in? %>
-      <li id='messages_button'><%= link_to "Messages", user_path(current_user) %></li>
-      <li id='files_button'><%= link_to "Files", attachments_path %></li>
+      <li id='messages_button'>
+        <%= link_to user_path(current_user) do %>
+          <i class='icon-comments'></i> Messages
+        <% end %>
+      </li>
+      <li id='files_button'>
+        <%= link_to attachments_path do %>
+          <i class='icon-folder-open'></i> Files
+        <% end %>
+      </li>
       <li id='profile_button'><%= link_to "Profile", edit_user_path(current_user) %></li>
       <% if current_user.admin? %>
         <li id='transcripts_button'><%= link_to "Transcripts", transcripts_path %></li>
         <li id='manage_users_button'><%= link_to "Manage Users", users_path %></li>
-      <% end %> 
+      <% end %>
       <li id='sign_out_button'><%= link_to "Sign out", signout_path %></li>
     <% end %>
   </ul>
