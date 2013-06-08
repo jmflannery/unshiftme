@@ -13,12 +13,28 @@
           <i class='icon-folder-open'></i> Files
         <% end %>
       </li>
-      <li id='profile_button'><%= link_to "Profile", edit_user_path(current_user) %></li>
+      <li id='profile_button'>
+        <%= link_to edit_user_path(current_user) do %>
+          <i class='icon-user'></i> Profile
+        <% end %>
+      </li>
       <% if current_user.admin? %>
-        <li id='transcripts_button'><%= link_to "Transcripts", transcripts_path %></li>
-        <li id='manage_users_button'><%= link_to "Manage Users", users_path %></li>
+        <li id='transcripts_button'>
+          <%= link_to transcripts_path do %>
+            <i class='icon-search'></i> Transcripts
+          <% end %>
+        </li>
+        <li id='manage_users_button'>
+          <%= link_to users_path do %>
+            <i class='icon-group'></i> Manage Users
+          <% end %>
+        </li>
       <% end %>
-      <li id='sign_out_button'><%= link_to "Sign out", signout_path %></li>
+      <li id='sign_out_button'>
+        <%= link_to signout_path do %>
+          <i class='icon-signout'></i> Sign out
+        <% end %>
+      </li>
     <% end %>
   </ul>
 </div>
