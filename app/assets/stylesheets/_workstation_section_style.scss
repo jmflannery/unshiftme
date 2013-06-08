@@ -12,6 +12,7 @@
 
   #recipient_workstation_selection {
 
+    font-weight: bold;
     background-color: $cdark-grey;
     @include inset-box-shadow;
     @include border-radius(6px);
@@ -21,7 +22,7 @@
       padding: 5px;
       text-align: center;
       cursor: pointer;
-      @include text-style;
+      color: $white-text;
       border-bottom: $cgrey dotted 1px;
     }
       

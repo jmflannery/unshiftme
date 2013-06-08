@@ -1,12 +1,18 @@
 @mixin header_style {
-  background-color: $cdark-grey;
+  background-color: $sgrey;
   @include inset-box-shadow;
-  padding: 7px; 
+  padding: 7px;
   margin-bottom: 5px;
 
   #main_menu {
 
     ul {
+
+      #home-icon {
+        font-size: 1.1em;
+        color: $red;
+        margin-right: 4px;
+      }
 
       li.current {
         a {
@@ -21,7 +27,7 @@
         a {
           text-decoration: none;
           padding: 3px 6px 3px 6px;
-          @include text-style;
+          color: $white-text;
 
           &:hover, &:focus {
             @include outset-inset-box-shadow;
@@ -31,10 +37,10 @@
       }
 
       li#page_title {
-        font-weight: bold;
-        font-size: 1.2em;
+        font-size: 1.4em;
         text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.2);
         padding-right: 20px;
+        font-weight: bold;
         color: $red;
       }
 
