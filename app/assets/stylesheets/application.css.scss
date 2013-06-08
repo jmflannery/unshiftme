@@ -19,6 +19,10 @@
 @import "compass/css3/text-shadow";
 @import "font-awesome";
 
+@include font-face('Roboto Slab',
+    font-files('RobotoSlab-Regular.ttf'
+));
+
 img {
   max-width: 100%; 
 }
@@ -46,7 +50,7 @@ img {
 
 body {
   background-color: black;
-  font-family: sans-serif;
+  font-family: 'Roboto Slab', san-serif;
 
   #page {
 
