@@ -8,13 +8,8 @@
 
     ul {
 
-      #home-icon {
-        font-size: 1.1em;
-        color: $red;
-        margin-right: 4px;
-      }
-
       li.current {
+
         a {
           @include outset-inset-box-shadow;
           @include border-radius(10px);
@@ -23,6 +18,7 @@
 
       li {
         display: inline;
+        margin-left: 12px;
 
         a {
           text-decoration: none;
@@ -37,7 +33,7 @@
       }
 
       li#page_title {
-        font-size: 1.4em;
+        font-size: 1.5em;
         text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.2);
         padding-right: 20px;
         font-weight: bold;
@@ -49,11 +45,9 @@
         a {
           &:hover, &:focus {
             color: $red;
-            //background: rgba(240, 8, 7, 0.4); 
           }
         }
       }
     }
   }
 }
-

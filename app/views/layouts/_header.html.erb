@@ -1,7 +1,8 @@
 <div id='main_menu' class='<%= current_user.user_name if signed_in? %>'>
   <ul>
-    <i id='home-icon' class="icon-bullhorn icon-large"></i>
-    <li id='page_title'><%= @handle %></li>
+    <li id='page_title'>
+      <i class="icon-bullhorn"></i> <%= @handle %>
+    </li>
     <% if signed_in? %>
       <li id='messages_button'>
         <%= link_to user_path(current_user) do %>
