@@ -24,7 +24,7 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by_user_name(params[:user_name])
     if user && user.authenticate(params[:password])
-      parse_params_for_workstations(params) do |workstation|
+      each_workstation_in(params) do |workstation|
         workstation.set_user(user)
       end
       sign_in user
@@ -35,7 +35,6 @@ class SessionsController < ApplicationController
       redirect_to user
     else
       flash.now[:error] = "Invalid name and/or password"
-      @title = "Sign in"
       redirect_to new_session_path
     end
   end

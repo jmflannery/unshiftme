@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   include UsersHelper
-  include WorkstationsHelper
 
   before_filter :authenticate, only: [:show, :index, :edit, :update, :destroy, :edit_password, :update_password, :heartbeat, :promote]
   before_filter :correct_user, only: [:show, :edit, :update, :edit_password, :update_password]
@@ -118,11 +117,6 @@ class UsersController < ApplicationController
     redirect_to root_path unless current_user?(@user)
   end
 
-  def merge_workstation_parameters
-    new_params = merge_workstation_params(params)
-    params = new_params
-  end
-
   def authenticate_old_password
     unless @user.authenticate(params[:user][:current_password])
       flash[:error] = "Password update failed."
@@ -130,4 +124,3 @@ class UsersController < ApplicationController
     end
   end
 end
-

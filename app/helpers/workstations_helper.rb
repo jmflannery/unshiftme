@@ -1,6 +1,6 @@
 module WorkstationsHelper
 
-  def parse_params_for_workstations(params)
+  def each_workstation_in(params)
     workstations = []
     params.each_pair do |key, val|
       if val == "1"
@@ -13,11 +13,4 @@ module WorkstationsHelper
     end
     workstations
   end
-
-  def merge_workstation_params(params_hash)
-    workstations = parse_params_for_workstations(params_hash)
-    params_hash[:user][:normal_workstations] = workstations if params_hash.has_key?(:user)
-    params_hash
-  end
 end
-

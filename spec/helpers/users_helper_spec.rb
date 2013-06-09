@@ -86,4 +86,17 @@ describe "UsersHelper" do
       remove_current_password_key_from_hash(params_wo_currentpassword).should == params_wo_currentpassword
     end
   end
+
+  describe "#merge_workstation_parameters" do
+    
+    let!(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN") }
+    let!(:aml) { FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML") }
+    let(:params) { { user: { user_name: "Mit" }, a_key: "a value", "CUSN" => "1", "AML" => "1", another_key: "another value" } }
+
+    it "merges the normal workstations array into the params[:user] hash" do
+      merged_params = merge_workstation_parameters
+      merged_params[:user].should have_key :normal_workstations
+      merged_params[:user][:normal_workstations].should == %w(CUSN AML)
+    end
+  end
 end

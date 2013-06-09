@@ -1,4 +1,5 @@
 module UsersHelper
+  include WorkstationsHelper
   
   def promoting_user_admin_status?
     params["user"]["admin"] and params["user"]["admin"] == "1"
@@ -20,5 +21,10 @@ module UsersHelper
     hash.delete(:current_password) if hash[:current_password]
     hash
   end
-end
 
+  def merge_workstation_parameters
+    workstations = each_workstation_in(params)
+    params[:user][:normal_workstations] = workstations if params.has_key?(:user)
+    params
+  end
+end

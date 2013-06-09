@@ -55,12 +55,12 @@ describe SessionsController do
         @attr = { user_name: "XXX", password: "invalid" }
       end
   
-      it "re-renders the new page" do
+      it "redirects to the new page" do
         post :create, @attr
         response.should redirect_to new_session_path
       end
   
-      it "has a flash.now message" do
+      it "sets the flash.now message" do
         post :create, @attr
         flash.now[:error].should =~ /invalid/i
       end
@@ -68,20 +68,28 @@ describe SessionsController do
   
     describe "with valid email and password" do
   
-      before(:each) do
-        @user = FactoryGirl.create(:user)
-        @attr = { user_name: @user.user_name, password: @user.password }
+      let!(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
+      let!(:cuss) { FactoryGirl.create(:workstation, name: "CUS South", abrev: "CUSS", job_type: "td") }
+      let(:user) { FactoryGirl.create(:user) }
+      let(:attr) {{ user_name: user.user_name, password: user.password }}
+
+      it "parses the params for workstation strings" do
+        attr.merge!(controller: "sessions", action: "create").stringify_keys!
+        controller.should_receive(:each_workstation_in).with(attr).and_yield(cusn).and_yield(cuss)
+        cusn.should_receive(:set_user).with(user)
+        cuss.should_receive(:set_user).with(user)
+        post :create, attr
       end
   
       it "signs the user in" do
-        post :create, @attr
-        controller.current_user.should == @user
+        post :create, attr
+        controller.current_user.should == user
         controller.should be_signed_in
       end
   
       it "redirects to the user show page" do
-        post :create, @attr
-        response.should redirect_to(user_path(@user))
+        post :create, attr
+        response.should redirect_to(user_path(user))
       end
     end
   end

@@ -103,7 +103,7 @@ describe UsersController do
       end
 
       it "merges the workstation params into the params[:users] hash" do
-        controller.should_receive(:merge_workstation_params).with(params)
+        controller.should_receive(:merge_workstation_parameters)
         put :create, params
       end
 
@@ -242,7 +242,7 @@ describe UsersController do
       end
 
       it "merges the workstation params into the params[:users] hash" do
-        controller.should_receive(:merge_workstation_params).with(params)
+        controller.should_receive(:merge_workstation_parameters)
         put :update, params
       end
 
@@ -562,4 +562,3 @@ describe UsersController do
     end
   end
 end
-
