@@ -34,6 +34,15 @@ var on_transcript_page = function() {
   return on_page; 
 };
 
+// on files page?
+var on_files_page = function() {
+  var on_page = false;
+  if ($("#files_page").length > 0) {
+    on_page = true;
+  }
+  return on_page; 
+};
+
 // on new transcript page?
 var on_new_transcript_page = function() {
   var on_page = false;
@@ -64,6 +73,7 @@ var on_files_page = function() {
 var signed_in = function() {
   var signed_in = false;
   if (on_messaging_page() ||
+      on_files_page() ||
       on_profile_page() ||
       on_transcript_page() ||
       on_transcripts_page() ||
@@ -73,4 +83,3 @@ var signed_in = function() {
   }
   return signed_in;
 };
-

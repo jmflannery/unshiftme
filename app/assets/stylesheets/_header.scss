@@ -8,11 +8,11 @@
 
     ul {
 
-      li.current {
+      li.active {
 
         a {
           @include outset-inset-box-shadow;
-          @include border-radius(10px);
+          @include border-radius(23px);
         }
       }
 
@@ -27,7 +27,7 @@
 
           &:hover, &:focus {
             @include outset-inset-box-shadow;
-            @include border-radius(10px);
+            @include border-radius(23px);
           }
         }
       }
