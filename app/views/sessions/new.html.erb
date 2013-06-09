@@ -15,10 +15,12 @@
 
       <div id="select_workstation">
         <div id="td_workstations">
-          <%= render collection: @td_workstations, partial: 'workstations/workstation' if @td_workstations %>
+          <%= render collection: @td_workstations,
+                     partial: 'workstations/workstation_checkbox' %>
         </div>
         <div id="ops_workstations">
-          <%= render collection: @ops_workstations, partial: 'workstations/workstation' if @ops_workstations %>
+          <%= render collection: @ops_workstations,
+                     partial: 'workstations/workstation_checkbox' %>
         </div>
       </div>
 
@@ -29,4 +31,3 @@
     <div class="cancel_link">New User? <%= link_to "Register here", register_path %></div>
   </div>
 </div>
-

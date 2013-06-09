@@ -21,10 +21,12 @@
       <div id="select_normal_workstation">
         Workstation(s) <span class="smaller">(optional)</span>
         <div id="td_workstations">
-          <%= render collection: @td_workstations, partial: 'workstations/workstation' if @td_workstations %>
+          <%= render collection: @td_workstations,
+                     partial: 'workstations/workstation_checkbox' %>
         </div>
         <div id="ops_workstations">
-          <%= render collection: @ops_workstations, partial: 'workstations/workstation' if @ops_workstations %>
+          <%= render collection: @ops_workstations,
+                     partial: 'workstations/workstation_checkbox' %>
         </div>
       </div>
 
