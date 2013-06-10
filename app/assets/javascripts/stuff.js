@@ -92,9 +92,9 @@ var build_workstation_buttons = function() {
       var html = "<div id=" + response[i].name + " class='" + class_name + "' >";
       html += "<p>" + response[i].long_name + "</p>";
       if (response[i].user_name && response[i].user_name.length > 0) {
-        html += "<p><span id=user_at_" + response[i].name + ">(" + response[i].user_name + ")</span></p>";
+        html += "<p class='user'>(" + response[i].user_name + ")</p>"
       } else {
-        html += "<p><span id=user_at_" + response[i].name + ">(vacant)</span></p>"
+        html += "<p class='user'>(vacant)</p>"
       }
       html += "</div>";
       var workstation = $(html).data("workstation_id", response[i].id).turnOff().click(toggle_recipient);
@@ -360,10 +360,10 @@ $(function() {
   // register callback
   PrivatePub.subscribe("/workstations/" + user_name, function(data, channel) {
     var workstations = data.workstations.split(",");
-    for (var i = 0; i < workstations.length; i++) {
-      var selector = "#user_at_" + workstations[i];
-      $(selector).html("(" + data.name + ")");
-    }
+    workstations.forEach(function(workstation) {
+      var el = $("#recipient_workstation_selection #" + workstation);
+      el.children("p.user").html("(" + data.name + ")");
+    });
   });
 });
 
