@@ -120,3 +120,7 @@ end
 When /^I switch to the new tab$/ do
   page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
 end
+
+When(/^save and open page$/) do
+  save_and_open_page
+end
