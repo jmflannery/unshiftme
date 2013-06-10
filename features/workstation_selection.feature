@@ -28,6 +28,7 @@ Feature: Workstation Selection
     When I click on each button
     Then I should see each Workstation Toggle Button indicate that I am not messaging that workstation, excluding my own workstation "CUSN"
 
+  @workstation_selection2
   Scenario: I should see who is currently at each workstation in real time
             as users are signing in and signing out
     Given the following workstation records
