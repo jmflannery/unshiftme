@@ -57,6 +57,10 @@
     <%= render 'attachments/attachment' %>
   </script>
 
+  <script type='text/html' id='workstation_template'>
+    <%= render 'workstations/workstation' %>
+  </script>
+
 </div> <!-- end #messaging_page -->
 
 <%= subscribe_to "/messages/#{@user.user_name}" %> 

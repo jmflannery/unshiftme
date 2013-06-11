@@ -28,6 +28,8 @@ class Workstation < ActiveRecord::Base
         user = User.find(workstation.user_id)
         hash[:user_id] = user.id
         hash[:user_name] = user.user_name
+      else
+        hash[:user_name] = 'vacant'
       end
       array << hash
     end

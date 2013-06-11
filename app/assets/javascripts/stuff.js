@@ -85,22 +85,13 @@ var build_workstation_buttons = function() {
   hide_workstation_selection();
   show_workstation_loading_icon();
   var workstation_section = $('#recipient_workstation_selection');
-  var html = "";
-  $.get("/workstations.json", function(response) {
-    for (var i = 0; i < response.length; i++) {
-      var class_name = "recipient_workstation other";
-      var html = "<div id=" + response[i].name + " class='" + class_name + "' >";
-      html += "<p>" + response[i].long_name + "</p>";
-      if (response[i].user_name && response[i].user_name.length > 0) {
-        html += "<p class='user'>(" + response[i].user_name + ")</p>"
-      } else {
-        html += "<p class='user'>(vacant)</p>"
-      }
-      html += "</div>";
-      var workstation = $(html).data("workstation_id", response[i].id).turnOff().click(toggle_recipient);
+  $.getJSON("/workstations", function(response) {
+    $.each(response, function(index, value) {
+      var html = Mustache.to_html($('#workstation_template').html(), value);   
+      var workstation = $(html).data("workstation_id", value.id).turnOff().click(toggle_recipient);
       workstation_section.append(workstation);
-    }
-    html = "<div id='toggle_all_workstations' class='recipient_workstation other last all'><p>Message</br>all</p></div>";
+    });
+    var html = "<div id='toggle_all_workstations' class='recipient_workstation other last all'><p>Message</br>all</p></div>";
     var toggle_all_button = $(html).click(toggle_all_workstations);
     workstation_section.append(toggle_all_button);
     
