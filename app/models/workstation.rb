@@ -18,22 +18,15 @@ class Workstation < ActiveRecord::Base
   end
 
   def self.as_json
-    array = []
-    ordered.each do |workstation|
-      hash = {}
-      hash[:id] = workstation.id
-      hash[:long_name] = workstation.name
-      hash[:name] = workstation.abrev
-      if User.exists?(workstation.user_id)
-        user = User.find(workstation.user_id)
-        hash[:user_id] = user.id
-        hash[:user_name] = user.user_name
-      else
-        hash[:user_name] = 'vacant'
-      end
-      array << hash
+    ordered.map do |ws|
+      {
+        id: ws.id,
+        abrev: ws.abrev,
+        name: ws.name,
+        user_id: ws.user ? ws.user.id : nil,
+        user_name: ws.user ? ws.user.user_name : 'vacant'
+      }
     end
-    array.to_json
   end
 
   def self.all_short_names

@@ -196,45 +196,41 @@ describe Workstation do
     end
   end
 
-  describe "class method" do
+  describe ".as_json" do
 
-    describe "as_json" do
-
-      let(:user1) { FactoryGirl.create(:user, user_name: "pricilla") }
-      before(:each) do
-        user.start_jobs([cusn.abrev, aml.abrev])
-        user1.start_job([cuss.abrev])
-        user.add_recipient(cuss)
-        array = []
-        Workstation.ordered.each do |workstation|
-          hash = {}
-          hash[:id] = workstation.id
-          hash[:long_name] = workstation.name
-          hash[:name] = workstation.abrev
-          if User.exists?(workstation.user_id)
-            user = User.find(workstation.user_id)
-            hash[:user_id] = user.id
-            hash[:user_name] = user.user_name
-          end
-          array << hash
-        end
-        @expected = array.to_json
+    let(:user1) { FactoryGirl.create(:user, user_name: "pricilla") }
+    let(:expected) {
+      Workstation.ordered.map do |ws|
+        {
+          id: ws.id,
+          abrev: ws.abrev,
+          name: ws.name,
+          user_id: ws.user ? ws.user.id : nil,
+          user_name: ws.user ? ws.user.user_name : 'vacant'
+        }
       end
+    }
 
-      it "should return json information of all of the desks" do
-        Workstation.as_json.should == @expected
-      end
+    before(:each) do
+      cusn.set_user(user)
+      aml.set_user(user)
+      cuss.set_user(user1)
     end
 
-    describe "all_short_names" do
-      it "should return a list of all the workstation abrevs of all workstations in the system" do
-        Workstation.all_short_names.should include cusn.abrev
-        Workstation.all_short_names.should include cuss.abrev
-        Workstation.all_short_names.should include aml.abrev
-        Workstation.all_short_names.should include ydctl.abrev
-        Workstation.all_short_names.should include ydmstr.abrev
-        Workstation.all_short_names.should include glhs.abrev
-      end
+    it "returns all the workstations as json" do
+      expect(Workstation.as_json).to eq expected
+    end
+  end
+
+  describe ".all_short_names" do
+
+    it "should return a list of all the workstation abrevs" do
+      Workstation.all_short_names.should include cusn.abrev
+      Workstation.all_short_names.should include cuss.abrev
+      Workstation.all_short_names.should include aml.abrev
+      Workstation.all_short_names.should include ydctl.abrev
+      Workstation.all_short_names.should include ydmstr.abrev
+      Workstation.all_short_names.should include glhs.abrev
     end
   end
 end
