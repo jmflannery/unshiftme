@@ -51,36 +51,25 @@ $.fn.onOrOff = function() {
 };
 
 $.fn.turnOn = function() {
+  $(this).find('.icon').show();
   if ($(this).hasClass("off")) {
     $(this).removeClass("off")
   }
   $(this).addClass("on");
 
   return this;
-}
+};
 
 $.fn.turnOff = function() {
+  $(this).find('.icon').hide();
   if ($(this).hasClass("on")) {
     $(this).removeClass("on")
   }
   $(this).addClass("off");
  
   return this;
-}
-
-$.fn.toggleOnOff = function() {
-  if ($(this).hasClass("off")) {
-    $(this).removeClass("off")
-    $(this).addClass("on")
-  } else if ($(this).hasClass("on")) {
-    $(this).removeClass("on")
-    $(this).addClass("off")
-  }
-  
-  return this;
-}
+};
 
 $.fn.read = function() {
   $(this).removeClass('unread').addClass('read');
 }
-

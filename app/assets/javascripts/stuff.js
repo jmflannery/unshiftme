@@ -353,7 +353,7 @@ $(function() {
     var workstations = data.workstations.split(",");
     workstations.forEach(function(workstation) {
       var el = $("#recipient_workstation_selection #" + workstation);
-      el.children("p.user").html("(" + data.name + ")");
+      el.find("p.user").html("(" + data.name + ")");
     });
   });
 });
