@@ -5,6 +5,7 @@
 @import "register_page_style";
 @import "signin_page_style";
 @import "messaging_page";
+@import "files_page";
 @import "edit_profile_page_style";
 @import "change_password_page_style";
 @import "transcripts_page_style";
@@ -68,6 +69,10 @@ body {
 
     #messaging_page {
       @include messaging_page;
+    }
+
+    #files_page {
+      @include files_page;
     }
 
     #edit_profile_page {

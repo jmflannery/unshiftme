@@ -1,0 +1,26 @@
+@mixin files_page {
+
+  @include form_style;
+
+  ul#files_list {
+
+    li.file {
+
+      padding: 5px;
+
+      a {
+        color: $white-text;
+        text-decoration: none;
+
+        i {
+          font-size: 1.2em;
+          margin-right: 6px;
+        }
+
+        &:hover {
+          color: $cool_blue;
+        }
+      }
+    }
+  }
+}
