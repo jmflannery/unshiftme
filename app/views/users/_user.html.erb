@@ -10,7 +10,9 @@
   <% end %>
   </div>
   <div id='delete'>
-  <%= link_to 'Delete User', user, :method => :delete, remote: true %>
+  <%= link_to user, :method => :delete, remote: true do %>
+    <i class='icon-trash'></i> Delete User
+  <% end %>
   </div>
 </li> 
 

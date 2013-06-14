@@ -55,9 +55,9 @@
           a {
             color: $red;
             background-color: $near-white;
-            border: $red solid 2px;
+            border: $red solid 3px;
             font-weight: bold;
-            padding: 1px;
+            padding: 3px;
             @include border-radius(4px);
             text-decoration: none;
 
