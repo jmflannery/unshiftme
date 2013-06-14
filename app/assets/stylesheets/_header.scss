@@ -13,6 +13,7 @@
         a {
           @include outset-inset-box-shadow;
           @include border-radius(23px);
+          background-color: $fgrey;
         }
       }
 
@@ -28,6 +29,8 @@
           &:hover, &:focus {
             @include outset-inset-box-shadow;
             @include border-radius(23px);
+            color: $cool_blue;
+            background-color: $fgrey;
           }
         }
       }

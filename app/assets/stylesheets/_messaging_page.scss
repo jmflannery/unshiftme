@@ -57,7 +57,7 @@
         position: absolute;
         top: 10px;
         left: -1px;
-        color: $light-grey;
+        color: $white-text;
         font-size: .88em;
         -webkit-transition-property: font-size;
         -webkit-transition-duration: 0.3s;
@@ -79,7 +79,7 @@
           font-size: 1.4em;
           color: $near-white;
           border: none;
-          background: $cgrey;
+          background: $fgrey;
           background-size: 3%;
           margin: 8px 8px 8px -10px;
           @include border-radius(6px);
@@ -99,7 +99,7 @@
       padding: 7px;
       margin: 5px 5px 4px -10px;
       @include border-radius(4px);
-      background-color: $cdark-grey;
+      background-color: $fgrey;
       @include inset-box-shadow;
       clear: both;
 

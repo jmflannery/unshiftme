@@ -13,7 +13,7 @@
   #recipient_workstation_selection {
 
     font-weight: bold;
-    background-color: $sgrey;
+    background-color: $fgrey;
     @include inset-box-shadow;
     @include border-radius(6px);
         
@@ -68,6 +68,7 @@
     }
 
     .all {
+      font-size: 0.8em;
     }
   }
 }
