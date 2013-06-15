@@ -1,0 +1,48 @@
+@import "colors";
+@import "compass/reset";
+
+.link_button, #header, #upload, #workstation_section, #input_section {
+  display: none;
+}
+
+#page_title {
+  margin: 12px 0px;
+  text-align: center;
+}
+
+ul#message_list {
+  border-top: solid 1px $blackish;
+  list-style: none;
+
+  li {
+    border-bottom: solid 1px $blackish;
+
+    .top {
+      font-weight: bold;
+      font-size: .9em;
+      margin-bottom: 5px;
+
+      .sender {
+        width: 60%;
+        float: left;
+      }
+
+      .right {
+        width: 40%;
+        float: right;
+        text-align: right;
+
+        .readers {
+          padding: 0px;
+          font-size: 0.8em;
+        }
+      }
+    }
+
+    .content {
+      clear: both;
+      padding: 8px 0px;
+      font-size: 1.2em;
+    }
+  }
+}
