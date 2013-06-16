@@ -10,18 +10,18 @@ describe WorkstationsController do
   let!(:glhs) { FactoryGirl.create(:workstation, name: "Glasshouse", abrev: "GLHS", job_type: "ops") }
 
   describe "GET 'index'" do
-    context "format json" do 
 
-      it "is returns http success" do
-        get :index, format: :json
-        response.should be_success
-      end
+    it "is returns http success" do
+      get :index
+      expect(response).to be_success
+    end
 
-      it "returns all Workstations json" do
-        get :index, format: :json
-        response.body.should == Workstation.as_json
-      end
+    it "renders all Workstations as json" do
+      json = stub('json')
+      Workstation.should_receive(:as_json).and_return(json)
+      controller.should_receive(:render).with(json: json)
+      controller.should_receive(:render)
+      get :index
     end
   end 
 end
-
