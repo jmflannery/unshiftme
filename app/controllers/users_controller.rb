@@ -43,7 +43,8 @@ class UsersController < ApplicationController
   end
 
   def index
-    @title = current_user.handle 
+    @handle = current_user.handle
+    @title = "Manage Users"
     @users = User.all
   end
 

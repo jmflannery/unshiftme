@@ -174,6 +174,16 @@ describe UsersController do
       get :index
     end
 
+    it "assigns the page title to @title" do
+      get :index
+      expect(assigns(:title)).to eq "Manage Users"
+    end
+
+    it "assigns the user's handle to @handle" do
+      get :index
+      expect(assigns(:handle)).to eq user.handle
+    end
+      
     it "renders the index template" do
       get :index
       response.should render_template(:index)
