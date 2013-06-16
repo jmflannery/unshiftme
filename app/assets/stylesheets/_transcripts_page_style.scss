@@ -37,7 +37,7 @@
           font-weight: normal;
 
           &:hover {
-            color: $blue;
+            color: $cool_blue;
             @include inset-box-shadow;
             @include border-radius(8px);
           }
