@@ -138,19 +138,6 @@ class User < ActiveRecord::Base
     delete_all_message_routes
   end
 
-  def remove_stale_recipients
-    stale_recipients = []
-    self.recipients.each do |recipient|
-      r_user = User.find_by_id(Workstation.find(recipient.workstation_id).user_id)
-      if r_user.heartbeat < Time.now - IDLE_TIME
-        stale_recipients << recipient 
-        r_user.set_offline
-      end
-    end
-    self.recipients = self.recipients - stale_recipients
-    self.save validate: false
-  end
-
   def start_job(abrev)
     workstation = Workstation.find_by_abrev(abrev)
     workstation.set_user(self) if workstation
