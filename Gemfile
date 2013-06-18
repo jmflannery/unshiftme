@@ -11,7 +11,7 @@ gem "therubyracer", "~> 0.11.4"
 gem "bcrypt-ruby", "~> 3.0.1"
 gem "carrierwave", "~> 0.8.0"
 gem "private_pub", "~> 1.0.3"
-gem "whenever"
+gem "whenever", require: false
 gem "rufus-scheduler"
 gem "jquery-fileupload-rails", "~> 0.4.1"
 gem "mustache"
