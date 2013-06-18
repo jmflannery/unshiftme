@@ -20,8 +20,8 @@
 @import "compass/css3/text-shadow";
 @import "font-awesome";
 
-@include font-face('Roboto Slab',
-    font-files('RobotoSlab-Regular.ttf'
+@include font-face('Raleway',
+    font-files('Raleway-Regular.ttf'
 ));
 
 img {
@@ -51,7 +51,7 @@ img {
 
 body {
   background-color: black;
-  font-family: 'Roboto Slab', san-serif;
+  font-family: 'Raleway', san-serif;
 
   #page {
 
