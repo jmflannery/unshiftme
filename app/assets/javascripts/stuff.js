@@ -342,7 +342,8 @@ $(function() {
     //beep();
 
     // clear message text field
-    $("input#message_content").val("");
+    // no don't do that
+    //$("input#message_content").val("");
 
     // display the new message 
     var template = data.attachment_url ? '#attachment_template' : '#message_template';
