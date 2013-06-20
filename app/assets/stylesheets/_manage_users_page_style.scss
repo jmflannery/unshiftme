@@ -4,66 +4,100 @@
 
   section#user_list {
 
-    width: 40%;
+    width: 98%;
     margin: 0 auto;
 
-    ul#user_list {
+    #outer {
+      width: 70%;
+      margin: 0 auto;
+      font-size: 1.2em;
+      padding: 5px;
 
-      li {
-        padding: 5px;
-        @include background(linear-gradient(top, $real-lite-grey, $near-white));
-        margin: 8px;
-        height: 30px;
-        width: 100%;
-        @include border-radius(8px);
-        @include inset-box-shadow;
+      #page_title {
+        width: 50%;
+        margin: 0px;
+        display: inline;
+      }
 
-        #name {
-          width: 15%;
-          float: left;
-          padding: 5px;
+      #new_user {
+        float: right;
+        width: 40%;
+        text-align: right;
 
-          p {
-            color: $dark-text;
-            font-weight: bold;
-            font-size: 1.3em;
-            @include border-radius(4px);
+        a {
+          color: $white_text;
+          text-decoration: none;
+
+          &:hover {
+            color: $cool_blue;
           }
         }
+      }
+    }
 
-        #promote {
-          width: 30%;
-          float: left;
+    #users {
 
-          form {
-            width: 150px;
-            text-align: center;
-            @include inset-box-shadow;
-            background-color: $cgrey;
-            color: $near-white;
-            padding: 2px;
-            @include border-radius(4px);
+      width: 70%;
+      margin: 0 auto;
+
+      ul#user_list {
+
+        li {
+          padding: 8px;
+          @include background(linear-gradient(top, $real-lite-grey, $near-white));
+          margin: 8px;
+          height: 30px;
+          width: 100%;
+          @include border-radius(8px);
+          @include inset-box-shadow;
+
+          #name {
+            width: 30%;
+            float: left;
+            padding: 5px;
+
+            p {
+              color: $dark-text;
+              font-weight: bold;
+              font-size: 1.3em;
+              @include border-radius(4px);
+            }
           }
-        }
 
-        #delete {
-          float: right;
-          text-align: center;
-          padding-right: 16px;
-          padding-top: 8px;
+          #promote {
+            width: 30%;
+            float: left;
 
-          a {
-            color: $red;
-            background-color: $near-white;
-            border: $red solid 3px;
-            font-weight: bold;
-            padding: 3px;
-            @include border-radius(4px);
-            text-decoration: none;
-
-            &:hover {
+            form {
+              width: 150px;
+              text-align: center;
+              @include inset-box-shadow;
+              background-color: $cgrey;
               color: $near-white;
-              background-color: $red;
+              padding: 4px;
+              @include border-radius(4px);
+            }
+          }
+
+          #delete {
+            float: right;
+            text-align: center;
+            padding-right: 16px;
+            padding-top: 5px;
+
+            a {
+              color: $red;
+              background-color: $near-white;
+              border: $red solid 3px;
+              font-weight: bold;
+              padding: 3px;
+              @include border-radius(8px);
+              text-decoration: none;
+
+              &:hover {
+                color: $near-white;
+                background-color: $red;
+              }
             }
           }
         }

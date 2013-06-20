@@ -120,16 +120,16 @@
       }
     } // end .actions
     
-    .cancel_link {
+    #cancel_link {
 
       float: right;
-      margin: -5px;
-      font-size: 0.9em;
-      color: $grey-lettering;
+      margin: -10px;
 
       a {
-        color: $blue;
+        color: $cool_blue;
         text-decoration: none;
+        font-size: 1.2em;
+        font-weight: bold;
       }
     }
   } // end .center_spot

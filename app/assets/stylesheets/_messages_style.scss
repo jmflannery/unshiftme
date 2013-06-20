@@ -16,10 +16,11 @@
       @include border-radius(6px);
     
       .top {
+        font-family: sans-serif;
         font-weight: bold;
         font-size: .9em;
         margin-bottom: 5px;
-        @include text-shadow(0px 1px 1px rgba(255, 255, 255, 0.6));
+        //@include text-shadow(0px 1px 1px rgba(255, 255, 255, 0.6));
 
         .sender {
           width: 70%;

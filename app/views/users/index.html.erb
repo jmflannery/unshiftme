@@ -1,9 +1,14 @@
 <div id="manage_users_page">
   <section id='user_list'>
-  <div class='page_title'>Grand Tour Messenger Users:</div>
-    <ul id='user_list'>
-      <%= render @users %>
-    </ul>
+    <div id='outer'>
+      <div id='page_title'>Grand Tour Messenger Users:</div>
+      <div id='new_user'><%= link_to 'Register a new user', register_path %></div>
+    </div>
+    <div id='users'>
+      <ul id='user_list'>
+        <%= render @users %>
+      </ul>
+    </div>
   </section>
 </div>
 

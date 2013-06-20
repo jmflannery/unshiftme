@@ -99,7 +99,7 @@ describe UsersController do
 
       it "should display a flash message" do
         post :create, params
-        flash[:success].should eql("Registration was successful! Sign in now to access Messenger.")
+        flash[:success].should eql("Registration of #{user.user_name} successful! Sign in now to access Messenger.")
       end
 
       it "merges the workstation params into the params[:users] hash" do

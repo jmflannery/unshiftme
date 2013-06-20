@@ -17,12 +17,13 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     if @user.save
-      flash[:success] = "Registration was successful! Sign in now to access Messenger."
-      redirect_to signin_path
+      flash[:success] = "Registration of #{@user.user_name} was successful!"
+      redirect_to users_path
     else
       @td_workstations = Workstation.of_type("td")
       @ops_workstations = Workstation.of_type("ops")
       @title = "Register"
+      @handle = "Register"
       render 'new'
     end
   end
