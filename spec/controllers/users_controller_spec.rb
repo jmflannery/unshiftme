@@ -69,15 +69,13 @@ describe UsersController do
     end
 
     describe "success" do
+
       let!(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN") }
       let!(:aml) { FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML") }
       let(:params) {{ 
-        "id" => user.user_name,
         "user" => success_attr,
         "CUSN" => "1",
         "AML" => "1",
-        "controller" => "users",
-        "action" => "create" 
       }}
       let(:normal_workstations) { %w( CUSN AML) }
       
@@ -94,12 +92,12 @@ describe UsersController do
 
       it "should redirect to the sign in page" do
         post :create, params
-        response.should redirect_to(signin_path)
+        response.should redirect_to(users_path)
       end
 
       it "should display a flash message" do
         post :create, params
-        flash[:success].should eql("Registration of #{user.user_name} successful! Sign in now to access Messenger.")
+        flash[:success].should eql("Registration of #{success_attr["user_name"]} was successful!")
       end
 
       it "merges the workstation params into the params[:users] hash" do
@@ -212,8 +210,8 @@ describe UsersController do
     end
       
     it "gets the workstations" do
-      td_workstations = stub(Workstation).stub(description: "td")
-      ops_workstations = stub(Workstation).stub(description: "ops")
+      td_workstations = double(Workstation).stub(description: "td")
+      ops_workstations = double(Workstation).stub(description: "ops")
       Workstation.should_receive(:of_type).with("td").and_return(td_workstations)
       Workstation.should_receive(:of_type).with("ops").and_return(ops_workstations)
       get :edit, :id => user
