@@ -130,7 +130,7 @@ class User < ActiveRecord::Base
   end
 
   def set_online
-    do_heartbeat(Time.now)
+    do_heartbeat(Time.zone.now)
   end
 
   def set_offline

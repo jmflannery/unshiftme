@@ -689,19 +689,17 @@ describe User do
 
     describe "set_online" do
 
-      before(:each) do
-        @time = Time.now
-        subject.set_online
-      end
-
       it "sets the user's heartbeat time to the current time" do
-        subject.reload.heartbeat.should > @time
+        now = Time.zone.now
+        Time.zone.stub(:now).and_return(now)
+        subject.set_online
+        subject.heartbeat.should == now
       end
     end
 
     describe "set_offline" do
 
-      before do 
+      before do
         subject.set_online
         subject.start_job(cusn.abrev)
         subject.add_recipient(cuss)
