@@ -30,8 +30,8 @@ describe SessionsController do
       end
 
       it "gets all td and ops workstations" do
-        td_workstations = stub(Workstation).stub(description: "td")
-        ops_workstations = stub(Workstation).stub(description: "ops")
+        td_workstations = double(Workstation).stub(description: "td")
+        ops_workstations = double(Workstation).stub(description: "ops")
         Workstation.should_receive(:of_type).with("td").and_return(td_workstations)
         Workstation.should_receive(:of_type).with("ops").and_return(ops_workstations)
         get :new, format: :html

@@ -8,7 +8,7 @@ describe TranscriptsController do
     context "for unauthenticated users" do
 
       let(:current_user) { nil }
-      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+      before(:each) { controller.stub(:current_user).and_return(current_user) }
 
       it "redirects to the sign_in path'" do
         get :new
@@ -18,8 +18,8 @@ describe TranscriptsController do
 
     context "for non-admin users" do
 
-      let(:current_user) { stub('current_user', admin?: false) }
-      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+      let(:current_user) { double('current_user', admin?: false) }
+      before(:each) { controller.stub(:current_user).and_return(current_user) }
 
       it "redirects to the sign_in path'" do
         get :new
@@ -29,8 +29,8 @@ describe TranscriptsController do
 
     context "for authenticated admin users" do
 
-      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true, handle: 'jeff@AML', user_name: 'jeff') }
-      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+      let(:current_user) { double('current_user', transcripts: double('transcripts'), admin?: true, handle: 'jeff@AML', user_name: 'jeff') }
+      before(:each) { controller.stub(:current_user).and_return(current_user) }
 
       it "returns http success" do
         get :new
@@ -53,14 +53,14 @@ describe TranscriptsController do
       end
 
       it "gets all workstations abrevs in an Array with a leading empty string" do
-        workstations = stub('workstations').as_null_object
+        workstations = double('workstations').as_null_object
         Workstation.should_receive(:all_short_names).and_return(workstations)
         workstations.should_receive(:unshift).with("")
         get :new
       end
 
       it "gets all User names in an Array with a leading empty string" do
-        users = stub('users').as_null_object
+        users = double('users').as_null_object
         User.should_receive(:all_user_names).and_return(users)
         users.should_receive(:unshift).with("")
         get :new
@@ -73,7 +73,7 @@ describe TranscriptsController do
     context "for unauthenticated users" do
 
       let(:current_user) { nil }
-      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+      before(:each) { controller.stub(:current_user).and_return(current_user) }
 
       it "redirects to the sign_in path'" do
         post :create, transcript: {}
@@ -83,8 +83,8 @@ describe TranscriptsController do
 
     context "for non-admin users" do
 
-      let(:current_user) { stub('current_user', admin?: false) }
-      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+      let(:current_user) { double('current_user', admin?: false) }
+      before(:each) { controller.stub(:current_user).and_return(current_user) }
 
       it "redirects to the sign_in path'" do
         post :create, transcript: {}
@@ -94,12 +94,12 @@ describe TranscriptsController do
 
     context "for authenticated admin users" do
 
-      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true) }
-      let(:transcript) { stub('transcript', save: nil) }
+      let(:current_user) { double('current_user', transcripts: double('transcripts'), admin?: true) }
+      let(:transcript) { double('transcript', save: nil) }
 
       before(:each) do
-        controller.stub!(:current_user).and_return(current_user)
-        User.stub(:find_by_user_name).and_return(stub('transcript_user', id: 1))
+        controller.stub(:current_user).and_return(current_user)
+        User.stub(:find_by_user_name).and_return(double('transcript_user', id: 1))
       end
 
       it "builds a transcript" do
@@ -136,7 +136,7 @@ describe TranscriptsController do
     context "for unauthenticated users" do
 
       let(:current_user) { nil }
-      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+      before(:each) { controller.stub(:current_user).and_return(current_user) }
 
       it "redirects to the sign_in path'" do
         get :show, id: 1
@@ -146,8 +146,8 @@ describe TranscriptsController do
 
     context "for non-admin users" do
 
-      let(:current_user) { stub('current_user', admin?: false) }
-      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+      let(:current_user) { double('current_user', admin?: false) }
+      before(:each) { controller.stub(:current_user).and_return(current_user) }
 
       it "redirects to the sign_in path'" do
         get :show, id: 1
@@ -157,11 +157,11 @@ describe TranscriptsController do
 
     context "for unauthorized users" do
 
-      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true) }
+      let(:current_user) { double('current_user', transcripts: double('transcripts'), admin?: true) }
 
       before do
-        current_user.transcripts.stub!(:find_by_id).and_return(nil)
-        controller.stub!(:current_user).and_return(current_user)
+        current_user.transcripts.stub(:find_by_id).and_return(nil)
+        controller.stub(:current_user).and_return(current_user)
       end
 
       it "redirects to the signin_path'" do
@@ -172,12 +172,12 @@ describe TranscriptsController do
 
     context "for authenticated admin users" do
 
-      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true, handle: 'handle', user_name: 'the-name') }
-      let(:transcript) { stub('transcript', as_json: 'json', name: 'name', id: 22, transcript_user: stub('transcript user')) }
+      let(:current_user) { double('current_user', transcripts: double('transcripts'), admin?: true, handle: 'handle', user_name: 'the-name') }
+      let(:transcript) { double('transcript', as_json: 'json', name: 'name', id: 22, transcript_user: double('transcript user')) }
 
       before do
-        current_user.transcripts.stub!(:find_by_id).and_return(transcript)
-        controller.stub!(:current_user).and_return(current_user)
+        current_user.transcripts.stub(:find_by_id).and_return(transcript)
+        controller.stub(:current_user).and_return(current_user)
       end
 
       context "format json" do
@@ -209,7 +209,7 @@ describe TranscriptsController do
     context "for unauthenticated users" do
 
       let(:current_user) { nil }
-      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+      before(:each) { controller.stub(:current_user).and_return(current_user) }
 
       it "redirects to the sign_in path'" do
         get :index
@@ -219,8 +219,8 @@ describe TranscriptsController do
 
     context "for non-admin users" do
 
-      let(:current_user) { stub('current_user', admin?: false) }
-      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+      let(:current_user) { double('current_user', admin?: false) }
+      before(:each) { controller.stub(:current_user).and_return(current_user) }
 
       it "redirects to the sign_in path'" do
         get :index
@@ -230,10 +230,10 @@ describe TranscriptsController do
 
     context "for authenticated admin users" do
 
-      let(:current_user) { stub('current_user', admin?: true, handle: 'bob@CUSS', user_name: 'bob') }
+      let(:current_user) { double('current_user', admin?: true, handle: 'bob@CUSS', user_name: 'bob') }
       let(:transcripts) { mock_model(Transcript, size: 1, name: 'name') }
 
-      before { controller.stub!(:current_user).and_return(current_user) }
+      before { controller.stub(:current_user).and_return(current_user) }
 
       it "returns http success" do
         current_user.stub(:transcripts).and_return(transcripts)
@@ -274,7 +274,7 @@ describe TranscriptsController do
     context "for unauthenticated users" do
 
       let(:current_user) { nil }
-      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+      before(:each) { controller.stub(:current_user).and_return(current_user) }
 
       it "redirects to the sign_in path'" do
         delete :destroy, params
@@ -284,8 +284,8 @@ describe TranscriptsController do
 
     context "for authenticated non-admin users" do
 
-      let(:current_user) { stub('current_user', id: 1, admin?: false) }
-      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+      let(:current_user) { double('current_user', id: 1, admin?: false) }
+      before(:each) { controller.stub(:current_user).and_return(current_user) }
 
       it "redirects to the sign_in path'" do
         delete :destroy, params
@@ -295,11 +295,11 @@ describe TranscriptsController do
 
     context "for authenticated unauthorized admin users" do
 
-      let(:current_user) { stub('current_user', transcripts: stub('transcripts'), admin?: true) }
+      let(:current_user) { double('current_user', transcripts: double('transcripts'), admin?: true) }
 
       before do
-        current_user.transcripts.stub!(:find_by_id).and_return(nil)
-        controller.stub!(:current_user).and_return(current_user)
+        current_user.transcripts.stub(:find_by_id).and_return(nil)
+        controller.stub(:current_user).and_return(current_user)
       end
 
       it "redirects to the signin_path'" do
@@ -310,11 +310,11 @@ describe TranscriptsController do
 
     context "for authenticated authorized admin users" do
 
-      let(:current_user) { stub('current_user', transcripts: stub('transcripts').as_null_object, admin?: true) }
+      let(:current_user) { double('current_user', transcripts: double('transcripts').as_null_object, admin?: true) }
 
       before do
-        current_user.transcripts.stub!(:find_by_id).and_return(transcript)
-        controller.stub!(:current_user).and_return(current_user)
+        current_user.transcripts.stub(:find_by_id).and_return(transcript)
+        controller.stub(:current_user).and_return(current_user)
       end
 
       it "deletes the transcript" do

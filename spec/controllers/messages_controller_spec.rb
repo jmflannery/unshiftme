@@ -88,7 +88,7 @@ describe MessagesController do
       end
       
       it "returns the messages as json" do
-        messages = mock("messages").as_null_object
+        messages = double("messages").as_null_object
         User.any_instance.stub(:display_messages).with({}).and_return(messages)
         messages.should_receive(:as_json)
         get :index, prm

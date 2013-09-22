@@ -12,7 +12,7 @@ describe AttachmentsController do
 
     context "for unauthenticated users" do
 
-      before { controller.stub!(:current_user).and_return(nil) }
+      before { controller.stub(:current_user).and_return(nil) }
 
       it "redirects to the sign_in path'" do
         post :create, params
@@ -22,12 +22,12 @@ describe AttachmentsController do
 
     context "for authenticated users" do
     
-      let(:current_user) { stub('current_user') }
-      before(:each) { controller.stub!(:current_user).and_return(current_user) }
+      let(:current_user) { double('current_user') }
+      before(:each) { controller.stub(:current_user).and_return(current_user) }
  
       context "with invalid parameters" do
 
-        let(:message) { stub('message', attachment: nil).as_null_object }
+        let(:message) { double('message', attachment: nil).as_null_object }
 
         it "does not push a message" do
           current_user.stub(:create_attached_message).and_return(message)
@@ -38,8 +38,8 @@ describe AttachmentsController do
 
       context "with valid parameters" do
 
-        let(:attachment) { stub('attachment') }
-        let(:message) { stub('message', attachment: attachment).as_null_object }
+        let(:attachment) { double('attachment') }
+        let(:message) { double('message', attachment: attachment).as_null_object }
 
         it "creates a message with attachment belonging to the current user" do
           current_user.should_receive(:create_attached_message).with(payload).and_return(message)
@@ -78,7 +78,7 @@ describe AttachmentsController do
     context 'for unauthenticated users' do
 
       let(:current_user) { nil }
-      before { controller.stub!(:current_user).and_return(current_user) }
+      before { controller.stub(:current_user).and_return(current_user) }
 
       it 'redirects to the signin page' do
         get :index
@@ -88,8 +88,8 @@ describe AttachmentsController do
 
     context 'for authenticated users' do
 
-      let(:current_user) { stub('current_user') }
-      before { controller.stub!(:current_user).and_return(current_user) }
+      let(:current_user) { double('current_user') }
+      before { controller.stub(:current_user).and_return(current_user) }
 
       context "format json" do
 
@@ -101,8 +101,8 @@ describe AttachmentsController do
                        payload_url: 'uploads/attachments/CUSS_yard_plan.xls',
                        id: 23
         }}
-        let(:attachment1) { stub('attachment1', as_json: attr1) }
-        let(:attachment2) { stub('attachment2', as_json: attr2) }
+        let(:attachment1) { double('attachment1', as_json: attr1) }
+        let(:attachment2) { double('attachment2', as_json: attr2) }
         let(:attachments) { [attachment1, attachment2] }
 
         before { Attachment.stub(:for_user).with(current_user).and_return(attachments) }
@@ -115,7 +115,7 @@ describe AttachmentsController do
 
       context "format html" do
 
-        before { current_user.stub!(:handle).and_return('bill@CUSN') }
+        before { current_user.stub(:handle).and_return('bill@CUSN') }
 
         it "assigns the current user's handle to @handle" do
           get :index, format: :html

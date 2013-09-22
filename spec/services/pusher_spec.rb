@@ -4,11 +4,11 @@ describe Pusher do
 
   describe ".push_message" do
 
-    let(:recipient1) { stub('recipient1', user: stub('user', id: 1, user_name: 'bob')) }
-    let(:recipient2) { stub('recipient2', user: stub('user', id: 2, user_name: 'jeff')) }
+    let(:recipient1) { double('recipient1', user: double('user', id: 1, user_name: 'bob')) }
+    let(:recipient2) { double('recipient2', user: double('user', id: 2, user_name: 'jeff')) }
     let(:recipients) { [recipient1, recipient2] }
-    let(:user) { stub('User', recipients: recipients) }
-    let(:message) { stub('Message', user: user) }
+    let(:user) { double('User', recipients: recipients) }
+    let(:message) { double('Message', user: user) }
 
     it "pushes the message to each recipient workstation" do
       recipient_count = user.recipients.size
@@ -18,7 +18,7 @@ describe Pusher do
     end
 
     it "does not push a message more than once to a user working multiple jobs" do
-      user.stub!(recipients: [recipient1, recipient1])
+      user.stub(recipients: [recipient1, recipient1])
       MessagePresenter.should_receive(:new).exactly(1).times
       PrivatePub.should_receive(:publish_to).exactly(1).times
       Pusher.push_message(message)

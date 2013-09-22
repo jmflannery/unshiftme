@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe MessagePresenter do
 
-  let(:message) { stub('message',
+  let(:message) { double('message',
                        id: 22,
                        content: 'Hey Ya!',
                        created_at: 2.hours.ago,
@@ -10,11 +10,11 @@ describe MessagePresenter do
                        attachment: nil,
                        formatted_readers: 'jeff@AML read this.')
   }
-  let(:user) { stub('user') }
+  let(:user) { double('user') }
 
   before do
-    message.stub!(:generate_view_class).with(user).and_return('message msg-22 recieved read')
-    message.stub!(:sent_to?).with(user).and_return(false)
+    message.stub(:generate_view_class).with(user).and_return('message msg-22 recieved read')
+    message.stub(:sent_to?).with(user).and_return(false)
   end
 
   subject { MessagePresenter.new(message, user) }
@@ -36,7 +36,7 @@ describe MessagePresenter do
 
     context 'when the message was sent to the user' do
 
-      before { message.stub!(:sent_to?).with(user).and_return(true) }
+      before { message.stub(:sent_to?).with(user).and_return(true) }
 
       it 'does not include the :readers key in the json' do
         subject.as_json.should == expected.reject { |key, value| key == :readers }.as_json

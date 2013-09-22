@@ -17,7 +17,7 @@ describe WorkstationsController do
     end
 
     it "renders all Workstations as json" do
-      json = stub('json')
+      json = double('json')
       Workstation.should_receive(:as_json).and_return(json)
       controller.should_receive(:render).with(json: json)
       controller.should_receive(:render)
