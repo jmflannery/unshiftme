@@ -323,7 +323,8 @@ describe User do
     describe "handle" do
 
       before do
-        subject.start_jobs(["CUSN", "AML"])
+        cusn.set_user(subject)
+        aml.set_user(subject)
       end
 
       it "returns a string in the format user_name@workstation,workstation" do
@@ -335,8 +336,9 @@ describe User do
       
       let(:user1) { FactoryGirl.create(:user, user_name: "Jimbo") }
       before(:each) do
-        @user.start_jobs([cusn.abrev, aml.abrev])
-        user1.start_job(cuss.abrev)
+        cusn.set_user(@user)
+        aml.set_user(@user)
+        cuss.set_user(user1)
         recipient = @user.add_recipient(cuss)
         @expected = { id: @user.id,
                       user_name: "smith",
@@ -512,28 +514,16 @@ describe User do
         end
       end
     end
-    
-    describe "start_jobs" do
-    
-      it "assignes the jobs to the user" do
-        subject.start_jobs([cusn.abrev, aml.abrev])
-        Workstation.find_by_abrev("CUSN").user_id.should == subject.id  
-        Workstation.find_by_abrev("AML").user_id.should == subject.id  
-      end
-    end
-
-    describe "start_job" do
-
-      it "assignes the job to the user" do
-        subject.start_job(cusn.abrev)
-        Workstation.find_by_abrev("CUSN").user_id.should == subject.id  
-      end
-    end
 
     describe "workstation_ids" do
 
-      context "when the user is controlling one or more workstations (by calling start_job or start_jobs)" do
-        before { subject.start_jobs(["CUSN", "AML"]) }
+      context "when the user is controlling one or more workstations" do
+
+        before do
+          cusn.set_user(subject)
+          aml.set_user(subject)
+        end
+
         it "returns a list of all the workstation id's under the control of the user" do
           subject.workstation_ids.should == [Workstation.find_by_abrev("CUSN").id, Workstation.find_by_abrev("AML").id]
         end
@@ -546,14 +536,20 @@ describe User do
     
     describe "workstation_names" do
 
-      context "when the user is controlling one or more workstations (by calling start_job or start_jobs)" do
-        before { subject.start_jobs(["CUSN", "AML"]) }
+      context "when the user is controlling one or more workstations" do
+
+        before do
+          cusn.set_user(subject)
+          aml.set_user(subject)
+        end
+
         it "returns a list of all of the user's workstation names" do
           subject.workstation_names.should == ["CUSN", "AML"]
         end
       end
 
       context "when the user is not controlling any workstations" do
+
         it "returns an empty list" do
           subject.workstation_names.should == []
         end
@@ -562,8 +558,13 @@ describe User do
 
     describe "workstation_names_str" do
 
-      context "when the user is controlling one or more workstations (by calling start_job or start_jobs)" do
-        before { subject.start_jobs(["CUSN", "AML"]) }
+      context "when the user is controlling one or more workstations" do
+
+        before do
+          cusn.set_user(subject)
+          aml.set_user(subject)
+        end
+
         it "returns a list of all of the user's workstation names as a string seperated by commas" do
           subject.workstation_names_str.should == "CUSN,AML"
         end
@@ -578,7 +579,10 @@ describe User do
 
     describe "leave_workstation" do
 
-      before(:each) { subject.start_jobs(["CUSN", "AML"]) }
+      before do
+        cusn.set_user(subject)
+        aml.set_user(subject)
+      end
 
       it "relinqishes control of all workstations belonging to the given user" do
         subject.leave_workstation
@@ -701,7 +705,7 @@ describe User do
 
       before do
         subject.set_online
-        subject.start_job(cusn.abrev)
+        cusn.set_user(subject)
         subject.add_recipient(cuss)
         subject.set_offline
       end

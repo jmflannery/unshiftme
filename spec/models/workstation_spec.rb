@@ -89,7 +89,8 @@ describe Workstation do
 
       before(:each) do
         @user = FactoryGirl.create(:user)
-        @user.start_jobs([cusn.abrev, aml.abrev])
+        cusn.set_user(@user)
+        aml.set_user(@user)
       end
       
       it "returns a list of all Workstations belonging to the given user" do
@@ -176,7 +177,7 @@ describe Workstation do
   describe "#view_class" do
 
     context "when the workstation is owned by the given user" do
-      before { user.start_job(cusn.abrev) }
+      before { cusn.set_user(user) }
       it "should have the right view class" do
         cusn.view_class(user).should == "recipient_workstation mine"
       end

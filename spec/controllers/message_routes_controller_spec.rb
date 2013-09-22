@@ -48,7 +48,9 @@ describe MessageRoutesController do
         let(:recip_user) { FactoryGirl.create(:user) }
         before(:each) do
           test_sign_in(user)
-          recip_user.start_jobs([cusn.abrev, cuss.abrev, aml.abrev])
+          cusn.set_user(recip_user)
+          cuss.set_user(recip_user)
+          aml.set_user(recip_user)
         end
 
         it "creates a recipient for each workstation controlled by the recipient_user" do

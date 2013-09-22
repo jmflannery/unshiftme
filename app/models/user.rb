@@ -138,17 +138,6 @@ class User < ActiveRecord::Base
     delete_all_message_routes
   end
 
-  def start_job(abrev)
-    workstation = Workstation.find_by_abrev(abrev)
-    workstation.set_user(self) if workstation
-  end
-   
-  def start_jobs(abrevs)
-    abrevs.each do |abrev|
-      start_job(abrev)
-    end
-  end
-
   def workstation_names
     self.workstations.map { |workstation| workstation.abrev }
   end

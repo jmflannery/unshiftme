@@ -122,7 +122,7 @@ describe MessagesController do
     let(:message) { sender.messages.create!(attr) }
     let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
     before(:each) do
-      user.start_job(cusn.abrev)
+      cusn.set_user(user)
       test_sign_in(user)
     end
 
