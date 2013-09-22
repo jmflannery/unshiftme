@@ -80,3 +80,7 @@ end
 Then /^I should not be working any workstations$/ do
   Workstation.all.each { |workstation| workstation.user_id.should_not == @user.id }
 end
+
+Then /^I should see that registration of "(.*?)" was successful$/ do |name|
+  expect(page).to have_content("Registration of #{name} was successful!")
+end

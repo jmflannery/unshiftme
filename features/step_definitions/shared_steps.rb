@@ -40,6 +40,16 @@ Given /^I am registered user "(.*?)" logged in to "(.*?)" in with password "(.*?
   click_button "Sign In"
 end
 
+Given /^I am registered non-admin user "(.*?)" logged in with password "(.*?)"$/ do |name, pwd|
+  FactoryGirl.create(:user)
+  user = FactoryGirl.create(:user, user_name: name, password: pwd, password_confirmation: pwd, admin: false)
+  visit signin_path
+  fill_in "User name", :with => user.user_name
+  fill_in "Password", :with => pwd
+  #check workstation.abrev if workstation
+  click_button "Sign In"
+end
+
 def parse_handle(user_handle, password)
   handle = user_handle.split('@')
   if handle.size == 2
@@ -66,6 +76,9 @@ Given /^the following (.+) records?$/ do |factory, table|
   end
   @test_records ||= Hash.new()
   @test_records[factory.to_sym] = records unless @test_records.has_key?(factory.to_sym)
+end
+
+When /^I visit the messaging page$/ do
 end
 
 When /^I press the "(.*?)" key$/ do |key|
@@ -115,6 +128,10 @@ end
 
 Then /^I should not see a button with text "(.*?)"$/ do |text|
   page.should_not have_button text
+end
+
+Then /^I should not see a link with text "(.*?)"$/ do |text|
+  page.should_not have_link text
 end
 
 When /^I switch to the new tab$/ do

@@ -1,3 +1,7 @@
+Then /^I should should see the Manage Users Page$/ do
+  expect(page).to have_content "Grand Tour Messenger Users:"
+end
+
 Then /^I should see user records for "(.*?)"$/ do |user_names|
   user_names.split(",").each do |user_name|
     within("li.#{user_name}") do
