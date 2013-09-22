@@ -4,13 +4,13 @@
 
 @mixin workstation_section_style {
 
-  #workstation_loading_icon {
+  #loading {
     width: 40px;
     margin: 0 auto;
     padding-top: 20px;
   }
 
-  #recipient_workstation_selection {
+  #workstations {
 
     font-weight: bold;
     background-color: $fgrey;

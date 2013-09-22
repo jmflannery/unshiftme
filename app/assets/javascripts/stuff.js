@@ -76,63 +76,11 @@ $(function() {
   }
 });
 
-/////////////////////////////////////////
-// create the workstation html elements
-/////////////////////////////////////////
-
-// get the workstation data
-var build_workstation_buttons = function() {
-  hide_workstation_selection();
-  show_workstation_loading_icon();
-  var workstation_section = $('#recipient_workstation_selection');
-  $.getJSON("/workstations", function(response) {
-    $.each(response, function(index, value) {
-      var html = Mustache.to_html($('#workstation_template').html(), value);   
-      var workstation = $(html).data("workstation_id", value.id).turnOff().click(toggle_recipient);
-      workstation_section.append(workstation);
-    });
-    var html = "<div id='toggle_all_workstations' class='recipient_workstation other last'><p id='msg_all_btn'></p></div>";
-    var toggle_all_button = $(html).click(toggle_all_workstations);
-    workstation_section.append(toggle_all_button);
-    
-    build_user_workstation_info();
-  });
-};
-
-// get the user data
-var build_user_workstation_info = function() {
-  var workstation_section = $('#recipient_workstation_selection');
-  var user_name = $("#main_menu").attr("class");
-  $.get("/users/" + user_name + ".json", function(response) {
-    var msg_all_btn_text = "";
-    var msg_all_btn_class = "";
-    for (var i = 0; i < response.workstations.length; i++) {
-      $("#" + response.workstations[i].name).addClass("mine").removeClass("off").removeClass("other");
-    }
-    for (var i = 0; i < response.recipient_workstations.length; i++) {
-      $("#" + response.recipient_workstations[i].name).turnOn().data("recipient_id", response.recipient_workstations[i].recipient_id);
-    }
-
-    // temporary. This should not be hardcoded
-    var workstation_count = 6;
-
-    if (response.recipient_workstations.length == 6) {
-      msg_all_btn_text = "Message</br>none";
-      msg_all_btn_class = "none";
-    } else {
-      msg_all_btn_text = "Message</br>all";
-      msg_all_btn_class = "all";
-    }
-    $("p#msg_all_btn").html(msg_all_btn_text).parent().addClass(msg_all_btn_class);
-
-    hide_workstation_loading_icon();
-    show_workstation_selection();
-  });
-};
-
+// RecipientDashboard
 $(function() {
   if (on_messaging_page()) {
-    build_workstation_buttons();
+    var recipient_dashboard = new RecipientDashboard('#recipient_selection_section');
+    recipient_dashboard.build();
   }
 });
 
@@ -309,23 +257,6 @@ var hide_message_loading_icon = function() {
   $('#message_loading_icon').hide();
 }
 
-// workstations
-var show_workstation_loading_icon = function() {
-  $('#workstation_loading_icon').show();
-}
-
-var hide_workstation_loading_icon = function() {
-  $('#workstation_loading_icon').hide();
-}
-
-var show_workstation_selection = function() {
-  $('#recipient_workstation_selection').show();
-}
-
-var hide_workstation_selection = function() {
-  $('#recipient_workstation_selection').hide();
-}
-
 ///////////////////////////////////////////////
 // message recieve handler 
 ///////////////////////////////////////////////
@@ -367,7 +298,7 @@ $(function() {
   PrivatePub.subscribe("/workstations/" + user_name, function(data, channel) {
     var workstations = data.workstations.split(",");
     workstations.forEach(function(workstation) {
-      var el = $("#recipient_workstation_selection #" + workstation);
+      var el = $("#recipient_selection_section #" + workstation);
       el.find("p.user").html("(" + data.name + ")");
     });
   });
