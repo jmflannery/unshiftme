@@ -19,6 +19,7 @@
 @import "compass/css3/border-radius";
 @import "compass/css3/text-shadow";
 @import "font-awesome";
+@import "jquery.ui.all";
 
 @include font-face('Raleway',
     font-files('Raleway-Regular.ttf'
@@ -69,6 +70,13 @@ body {
 
     #messaging_page {
       @include messaging_page;
+
+      #volume_slider {
+        background-color: $white-text;
+        padding: 8px;
+        position: absolute;
+        z-index: 1;
+      }
     }
 
     #files_page {
