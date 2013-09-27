@@ -5,6 +5,7 @@
 @import "register_page_style";
 @import "signin_page_style";
 @import "messaging_page";
+@import "volume_slider_style";
 @import "files_page";
 @import "edit_profile_page_style";
 @import "change_password_page_style";
@@ -72,10 +73,7 @@ body {
       @include messaging_page;
 
       #volume_slider {
-        background-color: $white-text;
-        padding: 8px;
-        position: absolute;
-        z-index: 1;
+        @include volume_slider_style;
       }
     }
 

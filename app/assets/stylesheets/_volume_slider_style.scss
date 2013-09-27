@@ -1,0 +1,7 @@
+@mixin volume_slider_style {
+
+  background-color: $white-text;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+}

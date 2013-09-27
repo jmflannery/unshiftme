@@ -5,8 +5,6 @@ var VolumeSlider = function(slider, button) {
   this.$volume_slider.append(this.$slider);
   this.bindEvents();
   this.$volume_slider.hide();
-  this.white_text = '#d4d4d4';
-  this.cool_blue = '#4F00FF';
 };
 
 VolumeSlider.prototype = {
@@ -21,21 +19,26 @@ VolumeSlider.prototype = {
 
   showVolume: function(e) {
     e.preventDefault();
-    //this.$volume_button.css({ color: this.cool_blue });
-    if (this.$volume_slider.is(':hidden')) {
-      this.$volume_slider.css({ left: this.leftPosition(), top: this.topPosition() });
-      this.$volume_slider.show();
-    }
+    this.$volume_button.addClass('active');
+    this.setSliderPosition();
+    this.$volume_slider.show();
   },
 
   hideVolume: function(e) {
     e.preventDefault();
-    //this.$volume_button.css({ color: this.white_text });
+    this.$volume_button.removeClass('active');
     this.$volume_slider.hide();
   },
 
+  setSliderPosition: function() {
+    this.$volume_slider.css({
+      'left': this.leftPosition(),
+      'top': this.topPosition(),
+    });
+  },
+
   topPosition: function() {
-    return this.$volume_button.position().top + this.$volume_button.height();
+    return this.$volume_button.position().top + this.$volume_button.height() + 10;
   },
 
   leftPosition: function() {
