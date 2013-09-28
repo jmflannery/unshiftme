@@ -4,4 +4,12 @@
   padding: 8px;
   position: absolute;
   z-index: 1;
+
+  #tooltip {
+    position: inherit;
+    left: 35px;
+    background-color: $blackish;
+    color: $white-text;
+    padding: 4px;
+  }
 }
