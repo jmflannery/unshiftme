@@ -81,7 +81,3 @@ VolumeSlider.prototype = {
     return this.$volume_button.position().left;
   }
 };
-
-$(function() {
-  new VolumeSlider('#volume_slider', '#volume_button').setup();
-});

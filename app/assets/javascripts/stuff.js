@@ -265,15 +265,15 @@ $(function() {
   // store the current user's name
   user_name = $("#main_menu").attr("class");
 
+  new VolumeSlider('#volume_slider', '#volume_button').setup();
+
+  var beeper = new Beeper('audio', '#slider');
+
   // register callback
   PrivatePub.subscribe("/messages/" + user_name, function(data, channel) {
 
     // play tone
-    beep();
-
-    // clear message text field
-    // no don't do that
-    //$("input#message_content").val("");
+    beeper.beep();
 
     // display the new message 
     var template = data.attachment_url ? '#attachment_template' : '#message_template';
