@@ -16,7 +16,9 @@ var VolumeSlider = function(slider, button) {
     range: "min",
     value: this.INITIAL_VOLUME,
 
-    start: function() {
+    start: function(event, ui) {
+      var value = this.$slider.slider('value');
+      this.$tooltip.css('bottom', value).text(ui.value);
       this.$tooltip.fadeIn('fast');
     }.bind(this),
 
@@ -26,9 +28,9 @@ var VolumeSlider = function(slider, button) {
       this.setVolumeIcon(ui.value);
     }.bind(this),
 
-    stop: function() {
+    stop: function(event, ui) {
       this.$tooltip.fadeOut('fast');
-    }.bind(this),
+    }.bind(this)
   };
 };
 
