@@ -17,6 +17,7 @@ gem "jquery-fileupload-rails", "~> 0.4.1"
 gem "mustache"
 gem "font-awesome-rails"
 gem "jquery-ui-rails"
+gem "active_model_serializers", "~> 0.8.1"
 
 # Gems used only for assets and not required
 # in production environments by default.
