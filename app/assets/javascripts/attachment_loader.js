@@ -1,5 +1,5 @@
-var load_attachments = function() {
-  $.getJSON("/attachments", function(data) {
+var load_attachments = function(username) {
+  $.getJSON("/users/" + username + "/attachments", function(data) {
     $.each(data, function(index, value) {
       var li = "<li class='file'>";
       li += "<a href='" + value.payload_url + "' target='_blank'>";
@@ -13,6 +13,7 @@ var load_attachments = function() {
 
 $(function() {
   if (on_files_page()) {
-    load_attachments();
+    var user_name = $("#main_menu").attr("class");
+    load_attachments(user_name);
   }
 });

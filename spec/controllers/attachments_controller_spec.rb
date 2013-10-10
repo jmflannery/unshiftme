@@ -2,94 +2,115 @@ require 'spec_helper'
 
 describe AttachmentsController do
    
-  let(:base_name) { "test_file.txt" }
-  let(:upload_file) { fixture_file_upload("/files/" + base_name, "text/plain") }
+  let(:upload_file) { fixture_file_upload("/files/test_file.txt", "text/plain") }
   let(:payload) {{ "payload" => upload_file }}
+  let(:user) { double('user', { user_name: 'jack', to_param: 'jack' }) }
 
   describe "POST create" do
 
-    let(:params) {{ attachment: payload, format: :js }}
+    let(:params) {{ user_id: user, attachment: payload, format: :js }}
 
-    context "for unauthenticated users" do
-
-      before { controller.stub(:current_user).and_return(nil) }
-
-      it "redirects to the sign_in path'" do
-        post :create, params
-        expect(response).to redirect_to(signin_path)
-      end
-    end
-
-    context "for authenticated users" do
+    context "for authenticated and authorized users" do
     
-      let(:current_user) { double('current_user') }
-      before(:each) { controller.stub(:current_user).and_return(current_user) }
+      before(:each) { controller.stub(:current_user).and_return(user) }
  
-      context "with invalid parameters" do
-
-        let(:message) { double('message', attachment: nil).as_null_object }
-
-        it "does not push a message" do
-          current_user.stub(:create_attached_message).and_return(message)
-          Pusher.should_not_receive(:push_message)
-          post :create, params
-        end
-      end
-
       context "with valid parameters" do
 
         let(:attachment) { double('attachment') }
-        let(:message) { double('message', attachment: attachment).as_null_object }
+        let(:message) {
+          double('message',
+            attachment: attachment,
+            generate_outgoing_receipt: nil,
+            generate_incoming_receipts: nil
+          ) 
+        }
 
-        it "creates a message with attachment belonging to the current user" do
-          current_user.should_receive(:create_attached_message).with(payload).and_return(message)
+        before do
+          User.stub(:find_by_user_name).with(user.user_name).and_return(user)
+          user.stub(:create_attached_message).and_return(message)
+          Pusher.stub(:push_message).with(message)
+        end
+
+        it "creates a message with attachment belonging to the given user" do
+          user.should_receive(:create_attached_message).with(payload).and_return(message)
           post :create, params
         end
 
         it "generates the message outgoing receipt" do
-          current_user.stub(:create_attached_message).and_return(message)
           message.should_receive(:generate_outgoing_receipt)
           post :create, params
         end
 
         it "generates the message incoming receipts" do
-          current_user.stub(:create_attached_message).and_return(message)
           message.should_receive(:generate_incoming_receipts)
           post :create, params
         end
 
         it "pushes the message" do
-          current_user.stub(:create_attached_message).and_return(message)
           Pusher.should_receive(:push_message).with(message)
           post :create, params
         end
 
         it 'renders the create template' do
-          current_user.stub(:create_attached_message).and_return(message)
           post :create, params
           expect(response).to render_template(:create)
         end
+      end
+
+      context "with invalid parameters" do
+
+        let(:message) { double('message', attachment: nil) }
+
+        before { user.stub(:create_attached_message).and_return(message) }
+
+        it "does not push a message" do
+          Pusher.should_not_receive(:push_message)
+          post :create, params
+        end
+      end
+    end
+
+    context "for unauthorized users" do
+
+      before { controller.stub(:current_user).and_return(double('unauthorized user')) }
+
+      it "redirects to the sign_in page" do
+        post :create, params
+        expect(response).to redirect_to(signin_path)
+      end
+
+      it "renders a flash message" do
+        post :create, params
+        expect(flash[:notice]).to eq "Not Authorized"
+      end
+    end
+
+    context "for unauthenticated users" do
+
+      before { controller.stub(:current_user).and_return(nil) }
+
+      it "redirects to the sign_in page" do
+        post :create, params
+        expect(response).to redirect_to(signin_path)
+      end
+
+      it "renders a flash message" do
+        get :index, user_id: user
+        expect(flash[:notice]).to eq 'Please sign in to access this page.'
       end
     end
   end
 
   describe 'GET index' do
 
-    context 'for unauthenticated users' do
+    context 'for authenticated and authorized users' do
 
-      let(:current_user) { nil }
-      before { controller.stub(:current_user).and_return(current_user) }
+      let(:user) { double('user', user_name: 'jack', to_param: 'jack') }
 
-      it 'redirects to the signin page' do
-        get :index
-        response.should redirect_to(signin_path)
+      before do
+        controller.stub(:current_user).and_return(user)
+        User.stub(:find_by_user_name).with(user.user_name).and_return(user)
       end
-    end
-
-    context 'for authenticated users' do
-
-      let(:current_user) { double('current_user') }
-      before { controller.stub(:current_user).and_return(current_user) }
 
       context "format json" do
 
@@ -105,32 +126,69 @@ describe AttachmentsController do
         let(:attachment2) { double('attachment2', as_json: attr2) }
         let(:attachments) { [attachment1, attachment2] }
 
-        before { Attachment.stub(:for_user).with(current_user).and_return(attachments) }
+        before do
+          Attachment.stub(:for_user).with(user).and_return(attachments)
+        end
 
-        it "renders the current_user's attachments as json" do
-          get :index, format: :json
+        it "renders the user's attachments as json" do
+          get :index, user_id: user, format: :json
           expect(response.body).to eq(attachments.to_json)
         end
       end
 
       context "format html" do
 
-        before { current_user.stub(:handle).and_return('bill@CUSN') }
+        before do
+          user.stub(:handle).and_return('bill@CUSN')
+        end
 
         it "assigns the current user's handle to @handle" do
-          get :index, format: :html
+          get :index, user_id: user, format: :html
           expect(assigns(:handle)).to eq('bill@CUSN')
         end
 
         it "assigns the page's title to @title" do
-          get :index, format: :html
+          get :index, user_id: user, format: :html
           expect(assigns(:title)).to eq('Files for bill@CUSN')
         end
 
         it "renders the index template" do
-          get :index, format: :html
+          get :index, user_id: user, format: :html
           expect(response).to render_template(:index)
         end
+      end
+    end
+
+    context 'for unauthorized users' do
+
+      before do
+        controller.stub(:current_user).and_return(double('unauthorized user'))
+        User.stub(:find_by_user_name).with(user.user_name).and_return(user)
+      end
+
+      it "redirects to the signin page" do
+        get :index, user_id: user
+        expect(response).to redirect_to signin_path
+      end
+
+      it "renders a flash message" do
+        get :index, user_id: user
+        expect(flash[:notice]).to eq 'Not Authorized'
+      end
+    end
+
+    context 'for unauthenticated users' do
+
+      before { controller.stub(:current_user).and_return(nil) }
+
+      it 'redirects to the signin page' do
+        get :index, user_id: 'user'
+        response.should redirect_to(signin_path)
+      end
+
+      it "renders a flash message" do
+        get :index, user_id: user
+        expect(flash[:notice]).to eq 'Please sign in to access this page.'
       end
     end
   end

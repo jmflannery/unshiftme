@@ -9,7 +9,7 @@
       
       <div id="upload_section">
         <p>Drag files</br>here</p>
-        <%= form_for @attachment, html: {multipart: true}, remote: true, format: :js do |f| %>
+        <%= form_for [@user, @attachment], html: {multipart: true}, remote: true, format: :js do |f| %>
           <%= f.file_field :payload %>
         <% end %>
       </div>
