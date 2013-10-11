@@ -37,8 +37,8 @@ class UsersController < ApplicationController
         @attachment = Attachment.new
       }
       format.json {
-        user = User.find_by_user_name(params[:id]) if params[:id]
-        render json: user.as_json
+        user = User.find_by_user_name(params[:id])
+        render json: user
       }
     end
   end

@@ -197,32 +197,6 @@ describe Workstation do
     end
   end
 
-  describe ".as_json" do
-
-    let(:user1) { FactoryGirl.create(:user, user_name: "pricilla") }
-    let(:expected) {
-      Workstation.ordered.map do |ws|
-        {
-          id: ws.id,
-          abrev: ws.abrev,
-          name: ws.name,
-          user_id: ws.user ? ws.user.id : nil,
-          user_name: ws.user ? ws.user.user_name : 'vacant'
-        }
-      end
-    }
-
-    before(:each) do
-      cusn.set_user(user)
-      aml.set_user(user)
-      cuss.set_user(user1)
-    end
-
-    it "returns all the workstations as json" do
-      expect(Workstation.as_json).to eq expected
-    end
-  end
-
   describe ".all_short_names" do
 
     it "should return a list of all the workstation abrevs" do

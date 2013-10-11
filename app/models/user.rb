@@ -60,17 +60,6 @@ class User < ActiveRecord::Base
     User.all.map { |user| user.user_name } 
   end
 
-  def as_json
-    json = {}
-    json[:id] = id
-    json[:user_name] = user_name
-    json[:workstations] = workstation_names.map { |name| {name: name} }
-    json[:recipient_workstations] = message_routes.map do |route|
-      { name: Workstation.find(route.workstation_id).abrev, recipient_id: route.id }
-    end
-    json.to_json
-  end
-
   def handle
     "#{user_name}@#{workstation_names_str}"
   end

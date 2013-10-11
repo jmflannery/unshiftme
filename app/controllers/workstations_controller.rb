@@ -1,7 +1,7 @@
 class WorkstationsController < ApplicationController
 
   def index
-    render json: Workstation.as_json
+    render json: Workstation.all
   end
 end
 

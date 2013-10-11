@@ -1,18 +1,3 @@
-# == Schema Information
-#
-# Table name: users
-#
-#  id              :integer         not null, primary key
-#  name            :string(255)
-#  full_name       :string(255)
-#  email           :string(255)
-#  created_at      :datetime
-#  updated_at      :datetime
-#  password_digest :string(255)
-#  recipient_id    :integer
-#  heartbeat       :datetime
-#
-
 require 'spec_helper'
 
 describe User do
@@ -329,26 +314,6 @@ describe User do
 
       it "returns a string in the format user_name@workstation,workstation" do
         subject.handle.should == "smith@CUSN,AML"
-      end
-    end
-
-    describe "#as_json" do
-      
-      let(:user1) { FactoryGirl.create(:user, user_name: "Jimbo") }
-      before(:each) do
-        cusn.set_user(@user)
-        aml.set_user(@user)
-        cuss.set_user(user1)
-        recipient = @user.add_recipient(cuss)
-        @expected = { id: @user.id,
-                      user_name: "smith",
-                      workstations: [{name: "CUSN"}, {name: "AML"}],
-                      recipient_workstations: [{ name: "CUSS", recipient_id: recipient.id }]
-        }.to_json
-      end
-
-      it "returns the user's info as json" do
-        @user.as_json.should == @expected
       end
     end
 

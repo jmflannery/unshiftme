@@ -17,18 +17,6 @@ class Workstation < ActiveRecord::Base
     save
   end
 
-  def self.as_json
-    ordered.map do |ws|
-      {
-        id: ws.id,
-        abrev: ws.abrev,
-        name: ws.name,
-        user_id: ws.user ? ws.user.id : nil,
-        user_name: ws.user ? ws.user.user_name : 'vacant'
-      }
-    end
-  end
-
   def self.all_short_names
     Workstation.all.map { |workstation| workstation.abrev }
   end
