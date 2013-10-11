@@ -125,16 +125,4 @@ describe Attachment do
       expect(Attachment.for_user(user)).not_to include other_attachment
     end
   end
-
-  describe '#as_json' do
-
-    before { subject.save }
-
-    it 'returns the attachment as a hash' do
-      expect(subject.as_json).to eq({ payload_identifier: 'test_file.txt',
-                                      payload_url: '/uploads/attachment/payload/1/test_file.txt',
-                                      id: subject.id 
-      })
-    end
-  end
 end

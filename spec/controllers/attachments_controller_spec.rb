@@ -132,7 +132,7 @@ describe AttachmentsController do
 
         it "renders the user's attachments as json" do
           get :index, user_id: user, format: :json
-          expect(response.body).to eq(attachments.to_json)
+          expect(response.body).to eq ({ "attachments" => attachments }.to_json)
         end
       end
 

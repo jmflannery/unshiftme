@@ -17,7 +17,7 @@ class AttachmentsController < ApplicationController
         @title = "Files for #{@user.handle}"
       }
       format.json {
-        render json: Attachment.for_user(@user).as_json
+        render json: Attachment.for_user(@user)
       }
     end
   end

@@ -8,14 +8,6 @@ class Attachment < ActiveRecord::Base
 
   mount_uploader :payload, AttachmentUploader
 
-  def as_json
-    {
-      payload_identifier: payload_identifier,
-      payload_url: payload_url,
-      id: id
-    }
-  end
-
   def self.for_user(user)
     attachments = []
     attachments.concat(Attachment.joins(:incoming_receipts).where(
