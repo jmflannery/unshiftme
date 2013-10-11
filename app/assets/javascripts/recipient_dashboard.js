@@ -21,7 +21,7 @@ RecipientDashboard.prototype = {
   build: function() {
     var self = this;
     $.getJSON("/workstations", function(response) {
-      $.each(response, function(index, value) {
+      $.each(response.workstations, function(index, value) {
         var html = Mustache.to_html($('#workstation_template').html(), value);   
         var $workstation = $(html).data("workstation_id", value.id).turnOff().click(toggle_recipient);
         self.$workstations.append($workstation);

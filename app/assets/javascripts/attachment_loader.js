@@ -1,6 +1,6 @@
 var load_attachments = function(username) {
   $.getJSON("/users/" + username + "/attachments", function(data) {
-    $.each(data, function(index, value) {
+    $.each(data.attachments, function(index, value) {
       var li = "<li class='file'>";
       li += "<a href='" + value.payload_url + "' target='_blank'>";
       li += "<i class='icon-file'></i>";

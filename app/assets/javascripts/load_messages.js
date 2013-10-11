@@ -8,7 +8,7 @@ var load_messages = function() {
   $.getJSON("/messages", function(data) {
     hide_message_loading_icon();
 
-    $.each(data, function(index, value) {
+    $.each(data.messages, function(index, value) {
       if (value.attachment_url) {
         display_message(Mustache.to_html($('#attachment_template').html(), value), value.id);
       } else {
