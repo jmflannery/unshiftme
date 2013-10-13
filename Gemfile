@@ -19,6 +19,7 @@ gem "mustache"
 gem "font-awesome-rails"
 gem "jquery-ui-rails"
 gem "active_model_serializers", "~> 0.8.1"
+gem "compass", "~> 0.12.2"
 gem "compass-rails", "~> 1.0.3"
 
 # Gems used only for assets and not required

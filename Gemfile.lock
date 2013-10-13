@@ -300,6 +300,7 @@ DEPENDENCIES
   capybara (~> 2.1.0)
   carrierwave (~> 0.9.0)
   coffee-rails (~> 3.2.2)
+  compass (~> 0.12.2)
   compass-rails (~> 1.0.3)
   cucumber-rails (~> 1.4.0)
   database_cleaner
