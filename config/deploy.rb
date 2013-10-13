@@ -2,6 +2,7 @@ require "bundler/capistrano"
 
 server "162.243.41.168", :web, :app, :db, primary: true
 
+set :port, 22000
 set :application, "amtrak_messenger"
 set :user, "deployer"
 set :deploy_to, "/home/#{user}/apps/#{application}"
@@ -56,17 +57,6 @@ end
 namespace :faye do
   desc "Start Faye"
   task :start do
-    run "cd #{deploy_to}/current && bundle exec rackup #{faye_config} -s thin -E production -D"
-  end
-  desc "Stop Faye"
-  task :stop do
-    run "kill `cat #{faye_pid}` || true"
-  end
-end
-
-namespace :faye do
-  desc "Start Faye"
-  task :start do
     run "cd #{deploy_to}/current && bundle exec rackup #{faye_config} -s thin -E production -D --pid #{faye_pid}"
   end
   desc "Stop Faye"
@@ -75,8 +65,8 @@ namespace :faye do
   end
 end
 
-before 'deploy:update_code', 'faye:stop'
-after 'deploy:finalize_update', 'faye:start'
+# before 'deploy:update_code', 'faye:stop'
+# after 'deploy:finalize_update', 'faye:start'
 
 namespace :rufus do
   desc "start background worker to periodically cleanup inactive users"
