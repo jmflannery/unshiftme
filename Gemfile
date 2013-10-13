@@ -7,6 +7,7 @@ gem 'rails', '3.2.12'
 
 gem "jquery-rails", "~> 3.0.4"
 gem "pg", "~> 0.17.0"
+gem "libv8"
 gem "therubyracer", "~> 0.12.0"
 gem "bcrypt-ruby", "~> 3.0.0"
 gem "carrierwave", "~> 0.9.0"
