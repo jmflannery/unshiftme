@@ -78,12 +78,12 @@ end
 namespace :db do
   desc "Reset production database"
   task :reset do
-    run("cd #{deploy_to}/current && /usr/bin/env rake db:reset RAILS_ENV=production")
+    run("cd #{deploy_to}/current && /usr/bin/env bundle exec rake db:reset RAILS_ENV=production")
   end
 
   desc "Load the workstation data into the database"
   task :load_workstations do
-    run("cd #{deploy_to}/current && /usr/bin/env rake db:workstation:populate RAILS_ENV=production")
+    run("cd #{deploy_to}/current && /usr/bin/env bundle exec rake db:workstation:populate RAILS_ENV=production")
   end
 end
 
