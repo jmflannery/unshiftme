@@ -22,13 +22,18 @@ describe AttachmentsController do
             attachment: attachment,
             generate_outgoing_receipt: nil,
             generate_incoming_receipts: nil
-          ) 
+          )
         }
 
         before do
           User.stub(:find_by_user_name).with(user.user_name).and_return(user)
           user.stub(:create_attached_message).and_return(message)
           Pusher.stub(:push_message).with(message)
+        end
+
+        it "finds the correct user" do
+          User.should_receive(:find_by_user_name).with(user.user_name).and_return(user)
+          post :create, params
         end
 
         it "creates a message with attachment belonging to the given user" do
