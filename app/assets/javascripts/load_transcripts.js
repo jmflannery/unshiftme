@@ -5,7 +5,9 @@
 function load_transcript_messages() {
   show_message_loading_icon();
   var ts_page = $('#transcript_page');
-  $.get("/transcripts/" + ts_page.data("id") + ".json", function(data) {
+  var user_name = $("#main_menu").attr("class");
+  var url = "/users/" + user_name + "/transcripts/" + ts_page.data("id") + ".json";
+  $.get(url, function(data) {
     hide_message_loading_icon();
     $.each(data.messages, function(index, value) {
       if (value.attachment_url) {

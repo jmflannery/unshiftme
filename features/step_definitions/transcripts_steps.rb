@@ -1,5 +1,6 @@
-When /^I go to the transcript listing page$/ do
-  visit transcripts_path 
+When(/^I go to "(.*?)" transcript listing page$/) do |arg1|
+  user = arg1.chomp("'s")
+  visit user_transcripts_path(user)
 end
 
 Then /^I should see the Transcripts page$/ do

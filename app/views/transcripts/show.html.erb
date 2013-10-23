@@ -1,6 +1,6 @@
 <%= content_tag "div", id: "transcript_page", data: { id: @transcript.id } do %>
   <div id='transcripts_link'>
-    <%= link_to "All Transcripts", transcripts_path, class: 'link_button' %>
+    <%= link_to "All Transcripts", user_transcripts_path(current_user), class: 'link_button' %>
   </div>
   <div id='page_title'><%= @transcript.name %></div>
   <div id="messages_section">

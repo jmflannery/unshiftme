@@ -60,7 +60,7 @@ Feature: Transcripts
       | id | user_id | transcript_user_id | transcript_workstation_id | start_time       | end_time         | 
       | 1  | 1       | 2                  | 0                         | 2012-06-22 18:12 | 2012-06-22 18:15 |
     And I am logged in as "bill" with password "secret" at ""
-    When I go to the transcript listing page
+    When I go to "bill's" transcript listing page
     Then I should see the Transcripts page
     And I should see that I have 1 Transcripts
     And I should see "Transcript for jeff from Jun 22 2012 18:12 to Jun 22 2012 18:15"

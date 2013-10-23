@@ -3,7 +3,7 @@
   <h2>Create a new Transcript</h2>
 
   <div class="center_spot">
-    <%= form_for(@transcript) do |f|  %>
+    <%= form_for [@user, @transcript] do |f|  %>
       <div class="field">
         <%= f.label :transcript_workstation_id %>
         <%= f.select :transcript_workstation_id, @workstations %>
@@ -28,6 +28,6 @@
         <%= f.submit "Create Transcript" %>
       </div>
     <% end %>
-    <div id='cancel_link'><%= link_to "Cancel", transcripts_path %></div>
+    <div id='cancel_link'><%= link_to "Cancel", user_transcripts_path(@user) %></div>
   </div>
 </div>
