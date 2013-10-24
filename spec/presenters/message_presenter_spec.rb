@@ -31,7 +31,7 @@ describe MessagePresenter do
     }}
 
     it 'returns the message as json in the context of the user' do
-      subject.as_json.should == expected.as_json
+      subject.as_json.should == expected
     end
 
     context 'when the message was sent to the user' do
@@ -39,13 +39,13 @@ describe MessagePresenter do
       before { message.stub(:sent_to?).with(user).and_return(true) }
 
       it 'does not include the :readers key in the json' do
-        subject.as_json.should == expected.reject { |key, value| key == :readers }.as_json
+        subject.as_json.should == expected.reject { |key, value| key == :readers }
       end
 
       context 'when the :transcript option is given' do
 
         it 'does include the :readers key in the json' do
-          subject.as_json(transcript: true).should == expected.as_json
+          subject.as_json(transcript: true).should == expected
         end
       end
     end

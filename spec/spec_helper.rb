@@ -48,6 +48,10 @@ RSpec.configure do |config|
     user
   end
 
+  def mock_sign_in(user)
+    controller.stub(:current_user).and_return(user)
+  end
+
   def request_send_message(message)
     fill_in "message_content", :with => message
     click_button "Send"

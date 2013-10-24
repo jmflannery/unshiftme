@@ -1,13 +1,33 @@
 class MessagePresenter
 
-  attr_reader :message, :user
+  attr_reader :messages, :user
 
-  def initialize(message, user)
-    @message = message
+  def initialize(messages, user)
+    @messages = messages
     @user = user
   end
 
   def as_json(options = {})
+    if messages.respond_to?(:map)
+      array_as_json(options)
+    else
+      message_as_json(options)
+    end
+  end
+
+  def array_as_json(options = {})
+    messages.map do |message|
+      single_message_as_json(message, options)
+    end
+  end
+
+  def message_as_json(options = {})
+    single_message_as_json(messages, options)
+  end
+
+  private
+
+  def single_message_as_json(message, options = {})
     hash = {}
     hash[:id] = message.id
     hash[:content] = message.content
@@ -16,6 +36,6 @@ class MessagePresenter
     hash[:attachment_url] = message.attachment.payload_url if message.attachment
     hash[:view_class] = message.generate_view_class(user)
     hash[:readers] = message.formatted_readers unless message.sent_to?(user) and not options[:transcript]
-    hash.as_json
+    hash
   end
 end

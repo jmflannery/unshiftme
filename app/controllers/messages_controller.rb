@@ -12,22 +12,12 @@ class MessagesController < ApplicationController
   end
 
   def index
-    options = {}
-    start_time = params.fetch(:start_time){""} 
-    end_time = params.fetch(:end_time){""}
-    options[:start_time] = Time.parse(start_time) unless start_time.blank?
-    options[:end_time] = Time.parse(end_time) unless end_time.blank?
-    messages = current_user.display_messages(options)
-    respond_to do |format|
-      format.json {
-        render json: messages.map { |msg| MessagePresenter.new(msg, current_user).as_json }
-      }
-    end
+    render json: MessagePresenter.new(current_user.display_messages, current_user).as_json
   end
 
   def update
-    if Message.exists?(params[:id])
-      @message = Message.find(params[:id])
+    @message = Message.find_by_id(params[:id])
+    if @message
       @message.mark_read_by(current_user)
       Pusher.push_readers(@message)
     end 

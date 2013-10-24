@@ -1,139 +1,164 @@
 require 'spec_helper'
 
 describe MessagesController do
-  render_views
 
-  let(:user) { FactoryGirl.create(:user, user_name: "jack") }
-  let(:attr) { { :content => "i like turtles" } }
+  let(:user) { double('user', user_name: "jack") }
 
-  describe "access control" do
-
-    it "should deny access to 'create' for non-signed in users" do
-      post :create, :message => attr
-      response.should redirect_to(signin_path)
-    end
-
-    let(:message) { user.messages.create(attr) }
-    it "should deny access to 'update' for non-signed in users" do
-      put :update, id: message.id, format: :js, remote: true
-      response.should redirect_to(signin_path)
-    end
-  end
-  
   describe "POST create" do
 
-    let(:attr) { { "content" => "i like turtles" } }
-    let(:message) { mock_model(Message).as_null_object }
+    let(:message) { double('message',
+      generate_incoming_receipts: true,
+      generate_outgoing_receipt: true)
+    }
+    let(:attr) {{ "content" => "i like turtles" }}
+    let(:params) {{ message: attr, format: :js }}
+
     before(:each) do
-      test_sign_in(user)
-      Message.stub(:new).and_return(message)
+      user.stub(messages: double('user messages'))
+      user.messages.stub(:new).with(params[:message]).and_return(message)
+      Pusher.stub(:push_message).with(message)
     end
 
-    it "creates a new message" do
-      Message.should_receive(:new).with(attr, {}).and_return(message)
-      xhr :post, :create,  message: attr
+    context "with an authenticated user" do
+       
+      before(:each) { mock_sign_in(user) }
+
+      it "builds and saves a new message" do
+        user.messages.should_receive(:new).with(params[:message]).and_return(message)
+        message.should_receive(:save)
+        post :create, params
+      end
+      
+      context "on save success" do
+
+        before(:each) { message.stub(save: true) }
+             
+        it "generates the message's incoming receipts" do
+          message.should_receive(:generate_incoming_receipts)
+          post :create, params
+        end
+
+        it "generates the messages outgoing receipt" do
+          message.should_receive(:generate_outgoing_receipt)
+          post :create, params
+        end
+
+        it "broadcasts the message" do
+          Pusher.should_receive(:push_message).with(message)
+          post :create, params
+        end
+      end
+
+      context "on save failure" do
+
+        before(:each) { message.stub(save: false) }
+
+        it "does not generate reciepts or push the message" do
+          message.should_not_receive(:generate_incoming_receipts)
+          message.should_not_receive(:generate_outgoing_receipt)
+          Pusher.should_not_receive(:push_message).with(message)
+          post :create, params
+        end
+      end
     end
-    
-    context "on successful message save" do
-           
-      it "broadcasts the message" do
-        Pusher.should_receive(:push_message).with(message)
-        xhr :post, :create,  message: attr
-      end
 
-      it "sets the message's receivers" do
-        message.should_receive(:generate_incoming_receipts)
-        xhr :post, :create,  message: attr
-      end
+    context "with an unauthenticated user" do
 
-      it "sets the message's sending workstations" do
-        message.should_receive(:generate_outgoing_receipt)
-        xhr :post, :create,  message: attr
+      it "redirects to the signin path" do
+        post :create, params
+        expect(response).to redirect_to signin_path
       end
     end
   end
 
   describe "GET index" do
     
-    let(:st) { "2012-09-19 02:16:00 -0400" }
-    let(:et) { "2012-09-19 04:20:00 -0400" }
-    let(:start_time) { Time.parse(st) }
-    let(:end_time) { Time.parse(et) }
-    let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN") }
-    before(:each) { cusn.set_user(user) }
+    let(:params) {{ format: :json }}
 
-    context "with an unauthenticated user" do
-      let(:prm) {{ format: :json }}
-
-      it "redirects to the signin path" do
-        get :index, prm 
-        response.should redirect_to signin_path
-      end
-    end
-    
     context "with an authenticated user" do
-      before { test_sign_in(user) }
-      let(:messages) { double("messages").as_null_object }
-      let(:prm) {{ format: :json }}
 
-      it "returns HTTP success" do
-        get :index, prm 
-        response.should be_success
+      let(:messages) { double('messages') }
+      let(:json) { double('json') }
+      let(:presenter) { double('Message Presenter') }
+      before do
+        mock_sign_in(user)
+        user.stub(:display_messages).with(no_args).and_return(messages)
+        MessagePresenter.stub(:new).with(messages, user).and_return(presenter)
+        presenter.stub(:as_json).and_return(json)
       end
-      
-      it "gets the current user's messages" do
-        messages = double("messages").as_null_object
-        User.any_instance.should_receive(:display_messages).with({}).and_return(messages)
-        get :index, prm
+
+      it "gets the current_users messages" do
+        user.should_receive(:display_messages).with(no_args).and_return(messages)
+        get :index, params
       end
       
       it "returns the messages as json" do
-        messages = double("messages").as_null_object
-        User.any_instance.stub(:display_messages).with({}).and_return(messages)
-        messages.should_receive(:as_json)
-        get :index, prm
+        MessagePresenter.should_receive(:new).with(messages, user).and_return(presenter)
+        presenter.should_receive(:as_json).and_return(json)
+        controller.should_receive(:render).with(json: json)
+        controller.should_receive(:render)
+        get :index, params
       end
+    end
 
-      context "with a supplied start time" do
-        before { prm.merge!(start_time: st) }
+    context "with an unauthenticated user" do
 
-        it "gets the current user's messages starting with supplied time" do
-          messages = double("messages").as_null_object
-          User.any_instance.should_receive(:display_messages).with(start_time: start_time).and_return(messages)
-          get :index, prm
-        end
-      end
-
-      context "with a supplied start and end time" do
-        before { prm.merge!(start_time: st, end_time: et) }
-
-        it "gets the current user's messages between the two supplied times" do
-          messages = double("messages").as_null_object
-          User.any_instance.should_receive(:display_messages).with(start_time: start_time, end_time: end_time).and_return(messages)
-          get :index, prm
-        end
+      it "redirects to the signin path" do
+        get :index, params
+        expect(response).to redirect_to signin_path
       end
     end
   end
 
-  describe "PUT 'update'" do
+  describe "PUT update" do
 
-    let(:sender) { FactoryGirl.create(:user) }
-    let(:message) { sender.messages.create!(attr) }
-    let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
-    before(:each) do
-      cusn.set_user(user)
-      test_sign_in(user)
+    let(:message) { double('message', id: '22') }
+    let(:params) {{ id: message.id, format: :js, remote: true }}
+
+
+    context "for authenticated users" do
+
+      before(:each) { mock_sign_in(user) }
+
+      context "when message exists" do
+
+        before(:each) do
+          Message.stub(:find_by_id).with(message.id).and_return(message)
+          message.stub(:mark_read_by).with(user)
+          Pusher.stub(:push_readers).with(message)
+        end
+
+        it "marks the message acknowledged by the current user" do
+          message.should_receive(:mark_read_by).with(user)
+          put :update, params
+        end
+
+        it "pushes the acknowledgment to the message owner" do
+          Pusher.should_receive(:push_readers).with(message)
+          put :update, params
+        end
+      end
+
+      context "when message does not exist" do
+
+        before(:each) do
+          Message.stub(:find_by_id).with(message.id).and_return(nil)
+        end
+
+        it "does not mark the message acknowledged and push the acknowledgement" do
+          message.should_not_receive(:mark_read_by).with(user)
+          Pusher.should_not_receive(:push_readers).with(message)
+          put :update, params
+        end
+      end
     end
 
-    it "is successful" do
-      put :update, id: message.id, format: :jd, remote: true
-      response.should be_success
-    end
+    context "for unauthenticated users" do
 
-    it "marks the message read by the current user" do
-      put :update, id: message.id, format: :jd, remote: true
-      message.reload.readers.should include user
+      it "redirects to the signin path" do
+        put :update, params
+        expect(response).to redirect_to signin_path
+      end
     end
   end
 end
