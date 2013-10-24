@@ -12,7 +12,7 @@ class MessagesController < ApplicationController
   end
 
   def index
-    render json: MessagePresenter.new(current_user.display_messages, current_user).as_json
+    render json: current_user.display_messages
   end
 
   def update

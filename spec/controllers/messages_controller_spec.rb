@@ -78,14 +78,7 @@ describe MessagesController do
     context "with an authenticated user" do
 
       let(:messages) { double('messages') }
-      let(:json) { double('json') }
-      let(:presenter) { double('Message Presenter') }
-      before do
-        mock_sign_in(user)
-        user.stub(:display_messages).with(no_args).and_return(messages)
-        MessagePresenter.stub(:new).with(messages, user).and_return(presenter)
-        presenter.stub(:as_json).and_return(json)
-      end
+      before { mock_sign_in(user) }
 
       it "gets the current_users messages" do
         user.should_receive(:display_messages).with(no_args).and_return(messages)
@@ -93,9 +86,8 @@ describe MessagesController do
       end
       
       it "returns the messages as json" do
-        MessagePresenter.should_receive(:new).with(messages, user).and_return(presenter)
-        presenter.should_receive(:as_json).and_return(json)
-        controller.should_receive(:render).with(json: json)
+        user.stub(:display_messages).with(no_args).and_return(messages)
+        controller.should_receive(:render).with(json: messages)
         controller.should_receive(:render)
         get :index, params
       end
