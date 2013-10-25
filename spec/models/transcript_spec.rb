@@ -12,7 +12,6 @@ describe Transcript do
 
   it { should respond_to(:user_id) }
   it { should respond_to(:transcript_user_id) }
-  it { should respond_to(:transcript_workstation_id) }
   it { should respond_to(:start_time) }
   it { should respond_to(:end_time) }
 
@@ -20,7 +19,6 @@ describe Transcript do
 
   it { should belong_to(:user) }
   it { should belong_to(:transcript_user) }
-  it { should belong_to(:transcript_workstation) }
 
   describe "when start_time is not present" do
     before { @transcript.start_time = nil }
@@ -85,41 +83,13 @@ describe Transcript do
 
   describe "#name" do
 
-    context "when transcript_user and transcript_workstation are present" do
-      let(:transcript_user) { FactoryGirl.create(:user, user_name: "jack") }
-      let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
-      before do 
-        subject.update_attribute(:transcript_user_id, transcript_user.id)
-        subject.update_attribute(:transcript_workstation_id, cusn.id)
-      end
-
-      it "returns the full name of the transcript" do
-        subject.name.should == "Transcript for CUSN jack from Jun 22 2012 16:30 to Jun 22 2012 17:15"
-      end
+    let(:transcript_user) { FactoryGirl.create(:user, user_name: "jack") }
+    before do 
+      subject.update_attribute(:transcript_user_id, transcript_user.id)
     end
 
-    context "when only transcript_user is present" do
-      let(:transcript_user) { FactoryGirl.create(:user, user_name: "jack") }
-      before do 
-        subject.update_attribute(:transcript_user_id, transcript_user.id)
-        subject.update_attribute(:transcript_workstation_id, 0)
-      end
-
-      it "returns the full name of the transcript excluding transcript workstation" do
-        subject.name.should == "Transcript for jack from Jun 22 2012 16:30 to Jun 22 2012 17:15"
-      end
-    end
-
-    context "when only transcript_workstation is present" do
-      let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
-      before do 
-        subject.update_attribute(:transcript_workstation_id, cusn.id)
-        subject.update_attribute(:transcript_user_id, 0)
-      end
-
-      it "returns the full name of the transcript excluding transcript user" do
-        subject.name.should == "Transcript for CUSN from Jun 22 2012 16:30 to Jun 22 2012 17:15"
-      end
+    it "returns the full name of the transcript" do
+      subject.name.should == "Transcript for jack from Jun 22 2012 16:30 to Jun 22 2012 17:15"
     end
   end
 
@@ -139,53 +109,18 @@ describe Transcript do
   
     let(:transcript_user) { FactoryGirl.create(:user, user_name: "jack") }
     let!(:message) { FactoryGirl.create(:message, content: "holla", user: transcript_user, created_at: "2012-06-22 17:01") }
-    let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
     let(:expected) {{
       start_time: subject.start_time.to_s,
       end_time: subject.end_time.to_s,
       user: transcript_user.id,
-      workstation: cusn.id,
       messages: subject.display_messages.map { |msg| MessagePresenter.new(msg, transcript_user).as_json(transcript: true) }
     }}
     before do
       subject.update_attribute(:transcript_user, transcript_user)
-      subject.update_attribute(:transcript_workstation, cusn)
     end
 
-    context "with no supplied options" do
-
-      context "when transcript_user and transcript_workstation are present" do
-
-        it "returns json including the user, workstation, start and end times, and messages" do
-          subject.as_json(user: transcript_user).should == expected.as_json
-        end
-      end
-
-      context "when only transcript_user is present" do
-
-        before do
-          subject.update_attribute(:transcript_workstation, nil)
-          expected.delete(:workstation)
-        end
-
-        it "returns json including the user, start and end times, and messages" do
-          subject.as_json(user: transcript_user).should == expected.as_json
-        end
-      end
-
-      context "when only transcript_workstation is present" do
-
-        before do
-          pending
-          subject.update_attribute(:transcript_user, nil)
-          expected.delete(:user)
-        end
-
-        it "returns json including the workstation, start and end times" do
-          pending
-          subject.as_json.should == expected.as_json
-        end
-      end
+    it "returns json including the user, start and end times, and messages" do
+      subject.as_json(user: transcript_user).should == expected.as_json
     end
   end
 end

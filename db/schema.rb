@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130603201236) do
+ActiveRecord::Schema.define(:version => 20131025005839) do
 
   create_table "acknowledgements", :force => true do |t|
     t.integer  "user_id"
@@ -78,9 +78,8 @@ ActiveRecord::Schema.define(:version => 20130603201236) do
     t.integer  "transcript_user_id"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
-    t.integer  "transcript_workstation_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   create_table "users", :force => true do |t|

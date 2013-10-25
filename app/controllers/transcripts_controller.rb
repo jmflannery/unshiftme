@@ -13,7 +13,7 @@ class TranscriptsController < ApplicationController
   end
 
   def create
-    @transcript = current_user.transcripts.build(@attrs)
+    @transcript = current_user.transcripts.build(params[:transcript])
     if @transcript.save
       redirect_to user_transcript_path(current_user, @transcript)
     else
@@ -71,21 +71,11 @@ class TranscriptsController < ApplicationController
   end
 
   def validate_transcript_attributes
-    @attrs = params[:transcript]
-    user = User.find_by_user_name(@attrs[:transcript_user_id]) if @attrs[:transcript_user_id]
-    workstation = Workstation.find_by_abrev(@attrs[:transcript_workstation_id]) if @attrs[:transcript_workstation_id]
+    user = User.find_by_user_name(params[:transcript][:transcript_user_id])
     if user
-      @attrs.merge!({transcript_user_id: user.id})
+      params[:transcript].merge!({transcript_user_id: user.id})
     else
-      @attrs.delete(:transcript_user_id)
-    end
-    if workstation
-      @attrs.merge!({transcript_workstation_id: workstation.id})
-    else
-      @attrs.delete(:transcript_workstation_id)
-    end
-    unless user or workstation
-      flash[:notice] = "Must choose a User or Workstation"
+      flash[:notice] = "Must choose a User"
       redirect_to new_user_transcript_path(current_user)
     end
   end

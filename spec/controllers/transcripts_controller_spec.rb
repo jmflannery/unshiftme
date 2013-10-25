@@ -146,15 +146,16 @@ describe TranscriptsController do
 
       let(:transcript) { double('transcript', save: nil) }
       before(:each) do
+        User.stub(:find_by_user_name).with(user.user_name).and_return(user)
         user.stub(admin?: true)
         controller.stub(:current_user).and_return(user)
-        User.stub(:find_by_user_name).with(user.user_name).and_return(user)
       end
 
       context "with a transcript user given" do
 
         before(:each) do
           params.merge!(transcript: { transcript_user_id: 'bob' })
+          User.stub(:find_by_user_name).with(user.user_name).and_return(user)
         end
 
         it "builds a transcript" do
@@ -185,7 +186,11 @@ describe TranscriptsController do
         end
       end
 
-      context "without a transcript user or workstation given" do
+      context "without a transcript user" do
+
+        before(:each) do
+          User.stub(:find_by_user_name).with(nil).and_return(nil)
+        end
 
         it "redirects back to the new transcript path" do
           post :create, params
@@ -194,7 +199,7 @@ describe TranscriptsController do
 
         it "has a flash message" do
           post :create, params
-          expect(flash[:notice]).to eq "Must choose a User or Workstation"
+          expect(flash[:notice]).to eq "Must choose a User"
         end
       end
     end
