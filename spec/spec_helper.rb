@@ -62,18 +62,5 @@ RSpec.configure do |config|
 
     yield
   end 
-
-  # Configuration for databse cleaner
-  config.before(:each) do
-    DatabaseCleaner.strategy = :truncation
-  end
-  
-  config.before(:each) do
-    DatabaseCleaner.start
-  end
-  
-  config.after(:each) do
-    DatabaseCleaner.clean
-  end
 end
 
