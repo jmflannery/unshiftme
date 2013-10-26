@@ -3,7 +3,7 @@ require 'spec_helper'
 describe UsersController do
   render_views
 
-  let!(:user) { FactoryGirl.create(:user, user_name: 'hova') }
+  let!(:user) { FactoryGirl.create(:user, user_name: 'hova', id: 202) }
   let(:success_attr) {{
     "user_name" => "fuzbar",
     "password" => "foobar",
@@ -155,7 +155,7 @@ describe UsersController do
 
       it "should return the correct user id" do
         get :show, id: user, format: :json
-        response.body.should == '{"user":{"id":1,"user_name":"hova","workstations":[],"message_routes":[]}}'
+        response.body.should == '{"user":{"id":202,"user_name":"hova","workstations":[],"message_routes":[]}}'
       end
     end
   end

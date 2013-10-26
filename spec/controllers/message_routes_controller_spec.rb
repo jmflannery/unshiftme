@@ -3,7 +3,7 @@ require 'spec_helper'
 describe MessageRoutesController do  
   render_views
   
-  let(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
+  let!(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
   let(:cuss) { FactoryGirl.create(:workstation, name: "CUS South", abrev: "CUSS", job_type: "td") }
   let(:aml) { FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AMl", job_type: "td") }
   let(:ydctl) { FactoryGirl.create(:workstation, name: "Yard Control", abrev: "YDCTL", job_type: "ops") }
