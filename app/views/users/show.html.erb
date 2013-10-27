@@ -39,7 +39,7 @@
 
       <div id="msg_input">
         <% if signed_in? %>
-          <%= form_for(@message, remote: true, format: :js) do |f| %>
+          <%= form_for([current_user, @message], remote: true, format: :js) do |f| %>
             <%= f.text_field :content, maxlength: 300 %>
           <% end %>
         <% end %>

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe MessagesController do
 
-  let(:user) { double('user', user_name: "jack") }
+  let(:user) { double('user', user_name: 'jack', to_param: 'jack') }
 
   describe "POST create" do
 
@@ -11,7 +11,7 @@ describe MessagesController do
       generate_outgoing_receipt: true)
     }
     let(:attr) {{ "content" => "i like turtles" }}
-    let(:params) {{ message: attr, format: :js }}
+    let(:params) {{ message: attr, user_id: user, format: :js }}
 
     before(:each) do
       user.stub(messages: double('user messages'))
@@ -73,7 +73,7 @@ describe MessagesController do
 
   describe "GET index" do
     
-    let(:params) {{ format: :json }}
+    let(:params) {{ user_id: user, format: :json }}
 
     context "with an authenticated user" do
 
@@ -105,7 +105,7 @@ describe MessagesController do
   describe "PUT update" do
 
     let(:message) { double('message', id: '22') }
-    let(:params) {{ id: message.id, format: :js, remote: true }}
+    let(:params) {{ id: message.id, user_id: user, format: :js, remote: true }}
 
 
     context "for authenticated users" do

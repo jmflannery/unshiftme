@@ -5,7 +5,8 @@
 var load_messages = function() {
   show_message_loading_icon();
 
-  $.getJSON("/messages", function(data) {
+  var user_name = $("#main_menu").attr("class");
+  $.getJSON("/users/" + user_name + "/messages", function(data) {
     hide_message_loading_icon();
 
     $.each(data.messages, function(index, value) {
