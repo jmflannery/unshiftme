@@ -31,6 +31,9 @@ $(function() {
       var message_loader = new MessageLoader(username);
       message_loader.loadMessages();
 
+      var receiver = new MessageReceiver(username);
+      receiver.subscribe();
+
       break;
   }
 });

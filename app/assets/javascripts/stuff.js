@@ -148,35 +148,6 @@ $(function() {
 //});
 
 ///////////////////////////////////////////////
-// message recieve handler 
-///////////////////////////////////////////////
-
-$(function() {
-  // store the current user's name
-  user_name = $("#main_menu").attr("class");
-
-  new VolumeSlider('#volume_slider', '#volume_button').setup();
-
-  var beeper = new Beeper('audio', '#slider');
-
-  // register callback
-  PrivatePub.subscribe("/messages/" + user_name, function(data, channel) {
-
-    // play tone
-    beeper.beep();
-
-    // display the new message 
-    var template = data.attachment_url ? '#attachment_template' : '#message_template';
-    display_new_message(Mustache.to_html($(template).html(), data), data.id);
-
-    // scroll to last message 
-    //if (data.chat_message) {
-    //  $('#messages_section').scrollTo("max");
-    //}
-  });
-});
-
-///////////////////////////////////////////////
 // user signin/signout handler
 ///////////////////////////////////////////////
 
