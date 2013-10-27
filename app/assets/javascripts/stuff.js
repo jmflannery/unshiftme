@@ -136,31 +136,3 @@ $(function() {
     $("input#YDMSTR").removeAttr("checked");
   });
 });
-
-///////////////////////////////////
-// show the most recent message
-///////////////////////////////////
-
-//$(function() {
-//  if ($("#messages_section").length > 0) {  
-//    $('#messages_section').scrollTo("max");
-//  }
-//});
-
-///////////////////////////////////////////////
-// user signin/signout handler
-///////////////////////////////////////////////
-
-$(function() {
-  // store the current user's name
-  user_name = $("#main_menu").attr("class");
-
-  // register callback
-  PrivatePub.subscribe("/workstations/" + user_name, function(data, channel) {
-    var workstations = data.workstations.split(",");
-    workstations.forEach(function(workstation) {
-      var el = $("#recipient_selection_section #" + workstation);
-      el.find("p.user").html("(" + data.name + ")");
-    });
-  });
-});

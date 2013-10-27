@@ -38,7 +38,8 @@ $(function() {
           var notifier = new Notifier(this.current_user);
 
           notifier.subscribe('messages', Notifications.messageReceivedHandler.bind(this));
-          notifier.subscribe('readers', Notifications.acknowledgementReceivedHandler.bind(this));
+          notifier.subscribe('readers', Notifications.acknowledgementReceivedHandler);
+          notifier.subscribe('workstations', Notifications.workstationUserChangedHandler);
 
           break;
       }

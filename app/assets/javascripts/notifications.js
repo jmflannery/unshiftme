@@ -10,5 +10,13 @@ var Notifications = {
   acknowledgementReceivedHandler: function(data, channel) {
     var message = findMessage(data.message);
     $(".readers", message).html(data.readers);
+  },
+
+  workstationUserChangedHandler: function(data, channel) {
+    var workstations = data.workstations.split(",");
+    workstations.forEach(function(workstation) {
+      var el = $("#recipient_selection_section #" + workstation);
+      el.find("p.user").html("(" + data.name + ")");
+    });
   }
 };
