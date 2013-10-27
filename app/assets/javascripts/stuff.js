@@ -18,32 +18,16 @@ var findMessage = function(message_id) {
 
 $(function() {
   user_name = $("#main_menu").attr("class");
-  
 });
 
-////////////////////////////////////////
-// Calculate Height
-////////////////////////////////////////
 
-// calculate_message_section_height
-// resize the '#message_list_section' to be 68% of the window
-var calculate_message_section_height = function() {
-  height = $(window).outerHeight(true);
-  outer_height = (height * 80) / 100;
-  inner_height = (outer_height * 80) / 100;
-  $('#content').height(outer_height);
-  $('#message_list_section').height(inner_height);
-  //$('#messages_section').scrollTo("max");
+var show_message_loading_icon = function() {
+  $('#message_loading_icon').show();
 };
 
-// resize on page load
-$(calculate_message_section_height);
-
-// resize on each browser resize by the user
-$(function() {
-  $(window).resize(calculate_message_section_height);
-});
-
+var hide_message_loading_icon = function() {
+  $('#message_loading_icon').hide();
+};
 ////////////////////////////////////////
 // auto select jobs on signin page
 ////////////////////////////////////////
@@ -73,14 +57,6 @@ $(function() {
         });
       }
     });
-  }
-});
-
-// RecipientDashboard
-$(function() {
-  if (on_messaging_page()) {
-    var recipient_dashboard = new RecipientDashboard('#recipient_selection_section');
-    recipient_dashboard.build();
   }
 });
 
@@ -170,19 +146,6 @@ $(function() {
 //    $('#messages_section').scrollTo("max");
 //  }
 //});
-
-///////////////////////////////////////////////
-// Loading icon
-///////////////////////////////////////////////
-
-// messages
-var show_message_loading_icon = function() {
-  $('#message_loading_icon').show();
-}
-
-var hide_message_loading_icon = function() {
-  $('#message_loading_icon').hide();
-}
 
 ///////////////////////////////////////////////
 // message recieve handler 

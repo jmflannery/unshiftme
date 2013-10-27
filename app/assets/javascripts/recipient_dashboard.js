@@ -1,5 +1,6 @@
-var RecipientDashboard = function(parent) {
+var RecipientDashboard = function(parent, username) {
   this.$parent = $(parent);
+  this.username = username;
   this.$loading = this.$parent.find('#loading');
   this.$workstations = this.$parent.find('#workstations');
   this.setup();
@@ -33,9 +34,8 @@ RecipientDashboard.prototype = {
   },
 
   build_user_workstation_info: function() {
-    var user_name = $("#main_menu").attr("class");
     var self = this;
-    $.getJSON("/users/" + user_name, function(response) {
+    $.getJSON("/users/" + this.username, function(response) {
       var msg_all_btn_text = "";
       var msg_all_btn_class = "";
 

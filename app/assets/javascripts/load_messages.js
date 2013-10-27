@@ -1,27 +1,30 @@
-///////////////////////////////////////////////
-// Load messages
-///////////////////////////////////////////////
+MessageLoader = function(username) {
+  this.username = username;
+};
 
-var load_messages = function() {
-  show_message_loading_icon();
+MessageLoader.prototype = {
 
-  var user_name = $("#main_menu").attr("class");
-  $.getJSON("/users/" + user_name + "/messages", function(data) {
-    hide_message_loading_icon();
+  loadMessages: function() {
+    this.show_message_loading_icon();
 
-    $.each(data.messages, function(index, value) {
-      if (value.attachment_url) {
-        display_message(Mustache.to_html($('#attachment_template').html(), value), value.id);
-      } else {
-        display_message(Mustache.to_html($('#message_template').html(), value), value.id);
-      }
-    });
-  });
-}
+    $.getJSON("/users/" + this.user_name + "/messages", function(data) {
+      this.hide_message_loading_icon();
 
-$(function() {
-  if (on_messaging_page()) {
-    load_messages();
+      $.each(data.messages, function(index, value) {
+        if (value.attachment_url) {
+          display_message(Mustache.to_html($('#attachment_template').html(), value), value.id);
+        } else {
+          display_message(Mustache.to_html($('#message_template').html(), value), value.id);
+        }
+      });
+    }.bind(this));
+  },
+
+  show_message_loading_icon: function() {
+    $('#message_loading_icon').show();
+  },
+
+  hide_message_loading_icon: function() {
+    $('#message_loading_icon').hide();
   }
-});
-
+};
