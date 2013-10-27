@@ -164,19 +164,3 @@ $(function() {
     });
   });
 });
-
-///////////////////////////////////////////////
-// message read handler
-///////////////////////////////////////////////
-
-$(function() {
-  // store the current user's name
-  user_name = $("#main_menu").attr("class");
-
-  // register callback
-  PrivatePub.subscribe("/readers/" + user_name, function(data, channel) {
-    message = findMessage(data.message);
-    $(".readers", message).html(data.readers);
-  });
-});
-

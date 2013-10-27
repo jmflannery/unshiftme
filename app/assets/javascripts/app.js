@@ -31,8 +31,11 @@ $(function() {
       var message_loader = new MessageLoader(username);
       message_loader.loadMessages();
 
-      var receiver = new MessageReceiver(username);
-      receiver.subscribe();
+      var msg_receiver = new MessageReceiver(username);
+      msg_receiver.subscribe();
+
+      var ack_receiver = new AcknowledgementReceiver(username);
+      ack_receiver.subscribe();
 
       break;
   }
