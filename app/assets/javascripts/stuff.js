@@ -2,24 +2,6 @@
 // Find a message list element by message id
 ///////////////////////////////////////////////
 
-var findMessage = function(message_id) {
-  var message = 0;
-  $("#message_list li.message").each(function(index) {
-    if ($(this).data("message_id") == message_id) {
-      message = $(this);
-    }
-  });
-  return message;
-}
-
-////////////////////////////////////////
-// Get the user's id
-////////////////////////////////////////
-
-$(function() {
-  user_name = $("#main_menu").attr("class");
-});
-
 
 var show_message_loading_icon = function() {
   $('#message_loading_icon').show();

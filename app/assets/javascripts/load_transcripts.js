@@ -11,9 +11,9 @@ function load_transcript_messages() {
     hide_message_loading_icon();
     $.each(data.messages, function(index, value) {
       if (value.attachment_url) {
-        display_message(Mustache.to_html($('#attachment_template').html(), value), value.id);
+        MessageUtils.display_message(Mustache.to_html($('#attachment_template').html(), value), value.id);
       } else {
-        display_message(Mustache.to_html($('#message_template').html(), value), value.id);
+        MessageUtils.display_message(Mustache.to_html($('#message_template').html(), value), value.id);
       }
     });
   });

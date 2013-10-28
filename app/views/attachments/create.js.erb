@@ -5,4 +5,4 @@ $('input[type="file"]').val("");
 toggle_upload_section();
 
 // display the new message
-display_new_message("<%= j render('attachment', :mustache => MessagePresenter.new(@message, current_user).as_json) %>", <%= @message.id %>);
+MessageUtils.display_new_message("<%= j render('attachment', :mustache => MessagePresenter.new(@message, current_user).as_json) %>", <%= @message.id %>);
