@@ -54,6 +54,12 @@ $(function() {
           attachment_loader.load_attachments();
 
           break;
+        case 'signin':
+        case 'root':
+
+          WorkstationAutoSelect.setup();
+
+          break;
       };
     }
   };
