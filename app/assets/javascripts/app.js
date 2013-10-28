@@ -60,6 +60,12 @@ $(function() {
         case 'root':
 
           WorkstationAutoSelect.setup();
+          WorkstationRadioButtons.initialize();
+
+          break;
+        case 'register':
+
+          WorkstationRadioButtons.initialize();
 
           break;
       };
