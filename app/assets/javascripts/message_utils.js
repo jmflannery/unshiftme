@@ -28,5 +28,13 @@ var MessageUtils = {
       }
     });
     return message;
+  },
+
+  show_message_loading_icon: function() {
+    $('#message_loading_icon').show();
+  },
+
+  hide_message_loading_icon: function() {
+    $('#message_loading_icon').hide();
   }
 };

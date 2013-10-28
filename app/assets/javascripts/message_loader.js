@@ -5,10 +5,10 @@ MessageLoader = function(username) {
 MessageLoader.prototype = {
 
   loadMessages: function() {
-    this.show_message_loading_icon();
+    MessageUtils.show_message_loading_icon();
 
     $.getJSON("/users/" + this.user_name + "/messages", function(data) {
-      this.hide_message_loading_icon();
+      MessageUtils.hide_message_loading_icon();
 
       $.each(data.messages, function(index, value) {
         if (value.attachment_url) {
@@ -18,13 +18,5 @@ MessageLoader.prototype = {
         }
       });
     }.bind(this));
-  },
-
-  show_message_loading_icon: function() {
-    $('#message_loading_icon').show();
-  },
-
-  hide_message_loading_icon: function() {
-    $('#message_loading_icon').hide();
   }
 };

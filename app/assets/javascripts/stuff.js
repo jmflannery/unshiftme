@@ -1,15 +1,3 @@
-///////////////////////////////////////////////
-// Find a message list element by message id
-///////////////////////////////////////////////
-
-
-var show_message_loading_icon = function() {
-  $('#message_loading_icon').show();
-};
-
-var hide_message_loading_icon = function() {
-  $('#message_loading_icon').hide();
-};
 ////////////////////////////////////////
 // auto select jobs on signin page
 ////////////////////////////////////////

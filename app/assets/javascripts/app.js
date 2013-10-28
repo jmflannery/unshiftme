@@ -42,7 +42,13 @@ $(function() {
           notifier.subscribe('workstations', Notifications.workstationUserChangedHandler);
 
           break;
-      }
+        case 'transcript':
+
+          var transcript_loader = new TranscriptLoader(this.current_user);
+          transcript_loader.load_transcript();
+
+          break;
+      };
     }
   };
 
