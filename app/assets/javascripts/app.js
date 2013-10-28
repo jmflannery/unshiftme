@@ -48,6 +48,12 @@ $(function() {
           transcript_loader.load_transcript();
 
           break;
+        case 'files':
+
+          var attachment_loader = new AttachmentsLoader(this.current_user);
+          attachment_loader.load_attachments();
+
+          break;
       };
     }
   };
