@@ -1,14 +1,14 @@
-$(function() {
-  $('#main_menu li.active').removeClass('active');
-  if (on_messaging_page()) {
-    $('#main_menu li#messages_button').addClass('active');
-  } else if (on_files_page()) {
-    $('#main_menu li#files_button').addClass('active');
-  } else if (on_profile_page()) {
-    $('#main_menu li#profile_button').addClass('active');
-  } else if (on_transcript_page() || on_transcripts_page() || on_new_transcript_page()) {
-    $('#main_menu li#transcripts_button').addClass('active');
-  } else if (on_manage_users_page()) {
-    $('#main_menu li#manage_users_button').addClass('active');
+HeaderNav = {
+
+  initialize: function(header_tag, current_page) {
+    $(header_tag + ' li.active').removeClass('active');
+
+    if (current_page.match(/transcript/)) {
+      current_page = 'transcripts';
+    } else if (current_page.match(/profile/) || current_page.match(/password/)) {
+      current_page = 'profile';
+    }
+
+    $(header_tag + ' li#' + current_page + '_button').addClass('active');
   }
-});
+};

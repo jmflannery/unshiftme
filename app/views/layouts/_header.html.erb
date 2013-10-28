@@ -4,7 +4,7 @@
       <i class="icon-bullhorn"></i> <%= @handle %>
     </li>
     <% if signed_in? %>
-      <li id='messages_button'>
+      <li id='messaging_button'>
         <%= link_to user_path(current_user) do %>
           <i class='icon-comments'></i> Messages
         <% end %>

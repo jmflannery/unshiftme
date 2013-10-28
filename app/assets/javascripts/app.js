@@ -10,7 +10,7 @@ $(function() {
       "transcripts": /^\/users\/\w+\/transcripts$/,
       "new-transcript": /^\/users\/\w+\/transcripts\/new$/,
       "transcript": /^\/users\/\w+\/transcripts\/\d+$/,
-      "users": /^\/users$/, // BUG: router.currentUser() will be ''
+      "manage_users": /^\/users$/, // BUG: router.currentUser() will be ''
       "register": /^\/register$/,
       "signin": /^\/signin$/,
       "root": /^\/$/
@@ -20,6 +20,8 @@ $(function() {
       this.router = new Router(this.pages);
       this.current_page = this.router.currentPage();
       this.current_user = this.router.currentUser();
+
+      HeaderNav.initialize("#main_menu", this.current_page);
 
       switch (this.current_page) {
         case "messaging":
