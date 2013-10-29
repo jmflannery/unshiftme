@@ -36,6 +36,7 @@ $(function() {
 
           var message_loader = new MessageLoader(this.current_user);
           message_loader.loadMessages();
+          message_loader.addAcknowledgementClickHandlers();
 
           var notifier = new Notifier(this.current_user);
 

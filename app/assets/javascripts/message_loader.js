@@ -18,5 +18,26 @@ MessageLoader.prototype = {
         }
       });
     }.bind(this));
+  },
+
+  acknowledgeMessage: function() {
+    var self = this;
+    if ($(this).hasClass("recieved") && $(this).hasClass("unread")) {
+      var message_id = $(this).data("message_id");
+
+      if (message_id) {
+        $.ajax({
+          type: "PUT",
+          url: "/users/" + self.username + "/messages/" + message_id,
+          success: function(response) {
+            response;
+          }
+        });
+      }
+    }
+  },
+
+  addAcknowledgementClickHandlers: function() {
+    $('ul#message_list').on('click', 'li', this.acknowledgeMessage);
   }
 };
