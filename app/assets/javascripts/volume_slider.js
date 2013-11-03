@@ -76,10 +76,10 @@ VolumeSlider.prototype = {
   },
 
   topPosition: function() {
-    return this.$volume_button.position().top + this.$volume_button.height() + 10;
+    return this.$volume_button.offset().top + this.$volume_button.height() + 16;
   },
 
   leftPosition: function() {
-    return this.$volume_button.position().left;
+    return this.$volume_button.offset().left;
   }
 };

@@ -20,11 +20,11 @@
 @import "compass/css3/border-radius";
 @import "compass/css3/text-shadow";
 @import "font-awesome";
-@import "jquery.ui.all";
+@import "jquery.ui.slider";
 
 @include font-face('Raleway',
-    font-files('Raleway-Regular.ttf'
-));
+    font-files('Raleway-Regular.ttf')
+);
 
 img {
   max-width: 100%; 
@@ -128,4 +128,16 @@ body {
       }
     } // end #error_explanation
   } // end #page
+
+  // jquery ui volume slider
+  .ui-slider .ui-slider-handle {
+    @include border-radius(23px);
+    cursor: pointer;
+    outline: none;
+    margin-left: -4px;
+  }
+  .ui-slider {
+    width: 4px;
+    margin: 5px;
+  }
 } // end body
