@@ -1,7 +1,7 @@
 @transcripts
 @javascript
 Feature: Transcripts
-  A Transcript is an exact copy of a previous Messenger session
+  A Transcript is an exact copy of a previous Unshift.me session
 
   @transcripts1
   Scenario: Creating new transcripts

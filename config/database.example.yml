@@ -1,7 +1,23 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: unshiftme_development
+  pool: 5
+  username: unshiftme
+  password: secret
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: unshiftme_test
+  pool: 5
+  username: unshiftme
+  password: secret
+
 production:
   adapter: postgresql
   encoding: unicode
-  database: amtrak_messenger_production
+  database: unshiftme_production
   pool: 5
-  username: jack
-  password: jack
+  username: unshiftme
+  password: secret

@@ -1,7 +1,7 @@
 @sign_in
 Feature: Sign in
   As a registered user
-  I want to sign in to Messenger
+  I want to sign in to Unshift.me
   So I can send and recieve messages
 
   Scenario: Login Failure

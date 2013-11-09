@@ -1,6 +1,6 @@
 @register
 Feature: Register
-  As an Amtrak Chicago Control Center Admin
+  As an Admin user
   I need to register users with GTM
   So they can sign in and send and recieve messages
 

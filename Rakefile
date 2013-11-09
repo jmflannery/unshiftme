@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-AmtrakMessenger::Application.load_tasks
+Unshiftme::Application.load_tasks

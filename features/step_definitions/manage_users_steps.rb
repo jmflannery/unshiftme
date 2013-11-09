@@ -1,5 +1,5 @@
 Then /^I should should see the Manage Users Page$/ do
-  expect(page).to have_content "Grand Tour Messenger Users:"
+  expect(page).to have_content "Unshift.me Users:"
 end
 
 Then /^I should see user records for "(.*?)"$/ do |user_names|

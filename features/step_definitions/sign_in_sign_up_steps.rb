@@ -53,7 +53,7 @@ Given /^I am on the register page$/ do
 end
 
 Then /^I should see that registration was successful$/ do
-  page.should have_content("Registration was successful! Sign in now to access Messenger.")
+  page.should have_content("Registration was successful! Sign in now to access Unshift.me.")
 end
 
 Then /^I should see that workstation "(.*?)" is checked$/ do |workstation_abrev|

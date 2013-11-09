@@ -1,4 +1,4 @@
-AmtrakMessenger::Application.routes.draw do
+Unshiftme::Application.routes.draw do
   root :to => "sessions#new"
 
   resources :users do

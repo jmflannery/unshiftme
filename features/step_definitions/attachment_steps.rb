@@ -8,6 +8,6 @@ Then /^I should see the attachement upload section$/ do
 end
 
 When /^I attach file "(.*?)"$/ do |file_name|
-  attach_file("attachment_payload", "/home/jack/work/amtrak_messenger/spec/fixtures/files/#{file_name}")
+  attach_file("attachment_payload", "/home/jack/work/unshiftme/spec/fixtures/files/#{file_name}")
 end
 

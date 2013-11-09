@@ -18,7 +18,7 @@ Feature: Managing users
       | CCC  | CCC   |
     And I am logged in as "bill" with password "secret" at "CCC"
     When I click link "Manage Users"
-    Then I should see "Grand Tour Messenger Users:"
+    Then I should see "Unshift.me Users:"
     And I should see user records for "bill,bob,jeff,mike,vernice"
     And I should see that user "bill" is an admin user
     And I should see that users "bob,jeff,mike,vernice" are not admin users

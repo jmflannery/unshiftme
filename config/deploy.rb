@@ -3,7 +3,7 @@ require "bundler/capistrano"
 server "162.243.41.168", :web, :app, :db, primary: true
 
 set :port, 22000
-set :application, "amtrak_messenger"
+set :application, "unshiftme"
 set :user, "deployer"
 set :deploy_to, "/home/#{user}/apps/#{application}"
 set :deploy_via, :remote_cache
