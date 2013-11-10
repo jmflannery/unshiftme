@@ -25,8 +25,6 @@ gem "uglifier", "~> 2.3.1"
 gem "mustache"
 gem "active_model_serializers", "~> 0.8.1"
 
-gem "protected_attributes"
-
 group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
