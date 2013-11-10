@@ -1,7 +1,5 @@
 class Transcript < ActiveRecord::Base
 
-  attr_accessible :transcript_user_id, :start_time, :end_time
-
   belongs_to :user
   belongs_to :transcript_user, class_name: User
    

@@ -13,7 +13,7 @@ class TranscriptsController < ApplicationController
   end
 
   def create
-    @transcript = current_user.transcripts.build(params[:transcript])
+    @transcript = current_user.transcripts.build(transcript_params)
     if @transcript.save
       redirect_to user_transcript_path(current_user, @transcript)
     else
@@ -46,6 +46,10 @@ class TranscriptsController < ApplicationController
   end
 
   private
+
+  def transcript_params
+    params.require(:transcript).permit(:transcript_user_id, :start_time, :end_time)
+  end
 
   def authorize_user
     @user = User.find_by_user_name(params[:user_id])
