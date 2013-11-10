@@ -1,6 +1,4 @@
 class Workstation < ActiveRecord::Base
-  attr_accessible :name, :abrev, :job_type, :user_id
-
   belongs_to :user
   has_many :message_routes
   has_many :senders, :through => :message_routes, :source => :user
