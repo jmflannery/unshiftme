@@ -500,11 +500,6 @@ describe UsersController do
         flash[:success].should == "Password updated!"
       end
 
-      it "removes current_password key from the params[:user] hash" do
-        controller.should_receive(:remove_current_password_key_from_hash).with(params[:user])
-        put :update_password, params
-      end
-
       it "updates the user" do
         User.any_instance.should_receive(:update_attributes).with(user_hash)
         put :update_password, params

@@ -73,30 +73,17 @@ describe "UsersHelper" do
     end
   end
 
-  describe "#remove_current_password_key_from_hash" do
-
-    let(:params) {{ current_password: "eddienyc", password: "krotchpotato", password_confirmation: "krotchpotato" }}
-    let(:params_wo_currentpassword) {{ password: "krotchpotato", password_confirmation: "krotchpotato" }}
-
-    it "removes the key :current_password from the supplied hash" do
-      remove_current_password_key_from_hash(params).should == params_wo_currentpassword
-    end
-
-    it "returns the supplied hash if :current_password is not found" do
-      remove_current_password_key_from_hash(params_wo_currentpassword).should == params_wo_currentpassword
-    end
-  end
-
   describe "#merge_workstation_parameters" do
     
     let!(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN") }
     let!(:aml) { FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML") }
-    let(:params) { { user: { user_name: "Mit" }, a_key: "a value", "CUSN" => "1", "AML" => "1", another_key: "another value" } }
+    let(:user_params) {{ user_name: "Mit" }}
+    let(:params) {{ user: user_params, a_key: "a value", "CUSN" => "1", "AML" => "1", another_key: "another value" }}
 
     it "merges the normal workstations array into the params[:user] hash" do
       merged_params = merge_workstation_parameters
-      merged_params[:user].should have_key :normal_workstations
-      merged_params[:user][:normal_workstations].should == %w(CUSN AML)
+      merged_params.should have_key :normal_workstations
+      merged_params[:normal_workstations].should == %w(CUSN AML)
     end
   end
 end

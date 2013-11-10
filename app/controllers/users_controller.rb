@@ -15,7 +15,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(params[:user])
+    @user = User.new(@user_params)
     if @user.save
       flash[:success] = "Registration of #{@user.user_name} was successful!"
       redirect_to users_path
@@ -57,7 +57,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @user.update(params[:user])
+    if @user.update(@user_params)
       flash[:success] = "Profile updated!"
       redirect_to @user
     else
@@ -84,7 +84,7 @@ class UsersController < ApplicationController
 
   def update_password
     @user.updating_password!
-    if @user.update_attributes(remove_current_password_key_from_hash(params[:user]))
+    if @user.update_attributes(user_params)
       flash[:success] = "Password updated!"
       redirect_to edit_user_path(@user)
     else
@@ -124,5 +124,9 @@ class UsersController < ApplicationController
       flash[:error] = "Password update failed."
       render :edit_password
     end
+  end
+
+  def user_params
+    params.require(:user).permit(:user_name, :password, :password_confirmation, :normal_workstations, :admin)
   end
 end

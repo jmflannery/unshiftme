@@ -17,14 +17,10 @@ module UsersHelper
     params.has_key?("commit") and params["commit"] == "Cancel"
   end
   
-  def remove_current_password_key_from_hash(hash)
-    hash.delete(:current_password) if hash[:current_password]
-    hash
-  end
-
   def merge_workstation_parameters
+    @user_params = user_params
     workstations = each_workstation_in(params)
-    params[:user][:normal_workstations] = workstations if params.has_key?(:user)
-    params
+    @user_params[:normal_workstations] = workstations
+    @user_params
   end
 end
