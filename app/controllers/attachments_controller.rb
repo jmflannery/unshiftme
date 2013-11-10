@@ -2,7 +2,7 @@ class AttachmentsController < ApplicationController
   before_filter :authenticate, :authorize
    
   def create
-    @message = @user.create_attached_message(params[:attachment])
+    @message = @user.create_attached_message(attachment_params)
     if @message and @message.attachment
       @message.generate_outgoing_receipt
       @message.generate_incoming_receipts
@@ -23,6 +23,10 @@ class AttachmentsController < ApplicationController
   end
 
   private
+
+  def attachment_params
+    params.require(:attachment).permit(:payload)
+  end
 
   def authorize
     @user = User.find_by_user_name(params[:user_id])
