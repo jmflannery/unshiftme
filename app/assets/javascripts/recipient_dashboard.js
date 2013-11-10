@@ -44,7 +44,9 @@ RecipientDashboard.prototype = {
       });
 
       $.each(response.user.message_routes, function(index, value) {
-        $("#" + value.workstation.abrev).turnOn().data("data-recipient-id", value.id);
+        if (value.workstation) {
+          $("#" + value.workstation.abrev).turnOn().data("data-recipient-id", value.id);
+        }
       });
 
       // bug - hard coded 6, need to subtract the number of workstations

@@ -1,43 +1,42 @@
 <div id='main_menu' class='<%= current_user.user_name if signed_in? %>'>
   <ul>
     <li id='page_title'>
-      <i class="icon-bullhorn"></i> <%= @handle %>
+      <i class="fa fa-bullhorn"></i> <%= @handle %>
     </li>
     <% if signed_in? %>
       <li id='messaging_button'>
         <%= link_to user_path(current_user) do %>
-          <i class='icon-comments'></i> Messages
+          <i class='fa fa-comments'></i> Messages
         <% end %>
       </li>
       <li id='files_button'>
         <%= link_to user_attachments_path(current_user) do %>
-          <i class='icon-folder-open'></i> Files
+          <i class='fa fa-folder-open'></i> Files
         <% end %>
       </li>
       <li id='profile_button'>
         <%= link_to edit_user_path(current_user) do %>
-          <i class='icon-user'></i> Profile
+          <i class='fa fa-user'></i> Profile
         <% end %>
       </li>
       <% if current_user.admin? %>
         <li id='transcripts_button'>
           <%= link_to user_transcripts_path(current_user) do %>
-            <i class='icon-search'></i> Transcripts
+            <i class='fa fa-search'></i> Transcripts
           <% end %>
         </li>
         <li id='manage_users_button'>
           <%= link_to users_path do %>
-            <i class='icon-group'></i> Manage Users
+            <i class='fa fa-group'></i> Manage Users
           <% end %>
         </li>
       <% end %>
       <li id='sign_out_button'>
         <%= link_to signout_path do %>
-          <i class='icon-signout'></i> Sign out
+          <i class='fa fa-sign-out'></i> Sign out
         <% end %>
       </li>
       <li id='volume_button'>
-        <i class='icon-volume-up'></i>
       </li>
     <% end %>
   </ul>

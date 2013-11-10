@@ -11,7 +11,7 @@ class Transcript < ActiveRecord::Base
   #validate :acceptable_start_date
   #validate :acceptable_end_date
   
-  default_scope order: 'created_at DESC'
+  default_scope -> { order('created_at DESC') }
   scope :for_user, lambda { |user_id| where("user_id = ?", user_id) }
 
   def acceptable_start_date

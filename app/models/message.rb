@@ -15,7 +15,7 @@ class Message < ActiveRecord::Base
   validates :content, :presence => true, :length => { :maximum => 300 }
   validates :user_id, :presence => true
 
-  default_scope order("created_at DESC")
+  default_scope -> { order("messages.created_at DESC") }
   
   def <=>(other)
     created_at <=> other.created_at

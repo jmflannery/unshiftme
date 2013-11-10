@@ -176,7 +176,7 @@ describe TranscriptsController do
 
         context "save success" do
 
-          before { transcript.stub(save: true, to_param: 32) }
+          before { transcript.stub(save: true, to_param: '32') }
 
           it "redirects to the transcript_path(transcript) path" do
             user.transcripts.stub(:build).and_return(transcript)

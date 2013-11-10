@@ -60,11 +60,11 @@ VolumeSlider.prototype = {
 
   setVolumeIcon: function(val) {
     if (val >= 50) {
-      this.$volume_button.html("<i class='icon-volume-up'></i>");
+      this.$volume_button.html("<i class='fa fa-volume-up'></i>");
     } else if (val >= 1 && val < 50) {
-      this.$volume_button.html("<i class='icon-volume-down'></i>");
+      this.$volume_button.html("<i class='fa fa-volume-down'></i>");
     } else if (val == 0) {
-      this.$volume_button.html("<i class='icon-volume-off'></i>");
+      this.$volume_button.html("<i class='fa fa-volume-off'></i>");
     }
   },
 

@@ -163,12 +163,13 @@ describe UsersController do
   describe "GET index" do
     
     before(:each) do
-      test_sign_in(user)
+      mock_sign_in(user)
     end
 
     it "finds all of the users" do
-      users = mock_model(User)
+      users = double('users')
       User.should_receive(:all).and_return(users)
+      controller.should_receive(:render)
       get :index
     end
 

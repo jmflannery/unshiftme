@@ -13,7 +13,7 @@ var heartbeat = function() {
   user_name = $("#main_menu").attr("class");
   
   $.ajax( {
-    type: "PUT",
+    type: "PATCH",
     url: "/users/" + user_name + "/heartbeat.js",
     success: function(response) {
       response;

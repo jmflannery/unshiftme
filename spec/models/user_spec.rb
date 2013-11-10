@@ -27,8 +27,8 @@ describe User do
   it { should be_valid }
 
   it { should validate_presence_of(:user_name) }
-  it { should validate_uniqueness_of(:user_name) }
-  it { should validate_presence_of(:password) }
+  it { subject.save; should validate_uniqueness_of(:user_name) }
+  #it { should validate_presence_of(:password) }
   it { should validate_presence_of(:password_confirmation) }
   
   it { should have_secure_password }
