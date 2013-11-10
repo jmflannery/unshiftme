@@ -3,7 +3,7 @@ class MessagesController < ApplicationController
   
   def create
     @user = current_user
-    @message = @user.messages.new(params[:message])
+    @message = @user.messages.new(message_params)
     if @message.save
       @message.generate_incoming_receipts
       @message.generate_outgoing_receipt
@@ -21,6 +21,12 @@ class MessagesController < ApplicationController
       @message.mark_read_by(current_user)
       Pusher.push_readers(@message)
     end 
+  end
+
+  private
+
+  def message_params
+    params.require(:message).permit(:content)
   end
 end
 

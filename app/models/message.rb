@@ -1,7 +1,5 @@
 class Message < ActiveRecord::Base
 
-  attr_accessible :content, :attachment_id
-
   serialize :read_by
   
   belongs_to :user
