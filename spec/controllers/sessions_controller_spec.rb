@@ -68,29 +68,30 @@ describe SessionsController do
   
     describe "with valid email and password" do
   
-      let!(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN", job_type: "td") }
-      let!(:cuss) { FactoryGirl.create(:workstation, name: "CUS South", abrev: "CUSS", job_type: "td") }
+      let(:cusn) { double('CUSN') }
+      let(:cuss) { double('CUSS') }
       let(:user) { FactoryGirl.create(:user) }
-      let(:attr) {{ user_name: user.user_name, password: user.password }}
+      let(:attr) {{ user_name: user.user_name, password: user.password, user: { normal_workstations: %w(CUSN CUSS) } }}
 
-      it "parses the params for workstation strings" do
-        attr.merge!(controller: "sessions", action: "create").stringify_keys!
-        controller.should_receive(:each_workstation_in).with(attr).and_yield(cusn).and_yield(cuss)
+      it "signs the user in" do
+        post :create, attr
+        expect(controller.current_user).to eq user
+        expect(controller).to be_signed_in
+      end
+  
+      it "redirects to the user show page" do
+        post :create, attr
+        expect(response).to redirect_to(user_path(user))
+      end
+
+      it "sets the authenticated user as the user of the given workstations" do
+        Workstation.stub(:find_by_abrev).with("CUSN").and_return(cusn)
+        Workstation.stub(:find_by_abrev).with("CUSS").and_return(cuss)
         cusn.should_receive(:set_user).with(user)
         cuss.should_receive(:set_user).with(user)
         post :create, attr
       end
   
-      it "signs the user in" do
-        post :create, attr
-        controller.current_user.should == user
-        controller.should be_signed_in
-      end
-  
-      it "redirects to the user show page" do
-        post :create, attr
-        response.should redirect_to(user_path(user))
-      end
     end
   end
   

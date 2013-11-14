@@ -129,10 +129,10 @@ describe Message do
 
     it "generates an incoming receipt for each recipient of the message user including the workstation's user or nil" do
       subject.generate_incoming_receipts
-      subject.incoming_receipts[0].workstation.should == aml
-      subject.incoming_receipts[0].user.should == nil
-      subject.incoming_receipts[1].workstation.should == cusn
-      subject.incoming_receipts[1].user.should == user1
+      subject.incoming_receipts[0].workstation.should == cusn
+      subject.incoming_receipts[0].user.should == user1
+      subject.incoming_receipts[1].workstation.should == aml
+      subject.incoming_receipts[1].user.should == nil
     end
 
     context "when the message has an attaachment" do
@@ -142,11 +142,11 @@ describe Message do
 
       it "generates an incoming receipt for each recipient of the message user including the attachment" do
         subject.generate_incoming_receipts
-        subject.incoming_receipts[0].workstation.should == aml
-        subject.incoming_receipts[0].user.should == nil
+        subject.incoming_receipts[0].workstation.should == cusn
+        subject.incoming_receipts[0].user.should == user1
         subject.incoming_receipts[0].attachment.should == attachment
-        subject.incoming_receipts[1].workstation.should == cusn
-        subject.incoming_receipts[1].user.should == user1
+        subject.incoming_receipts[1].workstation.should == aml
+        subject.incoming_receipts[1].user.should == nil
         subject.incoming_receipts[1].attachment.should == attachment
       end
     end

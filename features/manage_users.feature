@@ -14,8 +14,8 @@ Feature: Managing users
       | mike      | false |
       | vernice   | fasle |
     And the following workstation records
-      | name | abrev |
-      | CCC  | CCC   |
+      | name | abrev | job_type |
+      | CCC  | CCC   | ops  |
     And I am logged in as "bill" with password "secret" at "CCC"
     When I click link "Manage Users"
     Then I should see "Unshift.me Users:"

@@ -8,6 +8,7 @@ describe UsersController do
     "user_name" => "fuzbar",
     "password" => "foobar",
     "password_confirmation" => "foobar",
+    "normal_workstations" => %w(CUSN AML)
   }}
   let(:fail_attr) {{
     "user_name" => "",
@@ -70,14 +71,8 @@ describe UsersController do
 
     describe "success" do
 
-      let!(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN") }
-      let!(:aml) { FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML") }
-      let(:params) {{ 
-        "user" => success_attr,
-        "CUSN" => "1",
-        "AML" => "1",
-      }}
-      let(:normal_workstations) { %w( CUSN AML) }
+      let(:params) {{ user: success_attr }}
+      let(:normal_workstations) { %w(CUSN AML) }
       
       it "should create a user" do
         lambda do
@@ -98,11 +93,6 @@ describe UsersController do
       it "should display a flash message" do
         post :create, params
         flash[:success].should eql("Registration of #{success_attr["user_name"]} was successful!")
-      end
-
-      it "merges the workstation params into the params[:users] hash" do
-        controller.should_receive(:merge_workstation_parameters)
-        put :create, params
       end
 
       it "sets the user's normal_workstations attribute, given valid parameters" do
@@ -237,35 +227,20 @@ describe UsersController do
 
       let(:params) {{ 
         "id" => user.user_name,
-        "user" => success_attr,
-        "CUSN" => "1",
-        "AML" => "1",
-        "controller" => "users",
-        "action" => "update" 
+        "user" => success_attr
       }}
-      let(:normal_workstations) { %w( CUSN AML) }
-
-      before(:each) do
-        FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN")
-        FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML")
-      end
-
-      it "merges the workstation params into the params[:users] hash" do
-        controller.should_receive(:merge_workstation_parameters)
-        put :update, params
-      end
+      let(:normal_workstations) { %w(CUSN AML) }
 
       it "should change the user's attributes" do
         put :update, params
         user.reload
         user.user_name.should == success_attr["user_name"]
-        user.normal_workstations.should == normal_workstations
+        user.normal_workstations.should == %w(CUSN AML)
       end
 
       it "should redirect to the user show page" do
         put :update, params
-        user.reload
-        response.should redirect_to(user_path(user))
+        response.should redirect_to(user_path(user.reload))
       end
 
       it "should have a flash message" do

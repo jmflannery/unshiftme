@@ -3,7 +3,6 @@ class UsersController < ApplicationController
 
   before_filter :authenticate, only: [:show, :index, :edit, :update, :destroy, :edit_password, :update_password, :heartbeat, :promote]
   before_filter :correct_user, only: [:show, :edit, :update, :edit_password, :update_password]
-  before_filter :merge_workstation_parameters, only: [:create, :update]
   before_filter :authenticate_old_password, only: [:update_password]
 
   def new
@@ -15,7 +14,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(@user_params)
+    @user = User.new(user_params)
     if @user.save
       flash[:success] = "Registration of #{@user.user_name} was successful!"
       redirect_to users_path
@@ -57,7 +56,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @user.update(@user_params)
+    if @user.update(user_params)
       flash[:success] = "Profile updated!"
       redirect_to @user
     else
@@ -127,6 +126,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:user_name, :password, :password_confirmation, :normal_workstations, :admin)
+    params.require(:user).permit(:user_name, :password, :password_confirmation, :admin, :normal_workstations => [])
   end
 end

@@ -2,6 +2,7 @@
 @import "fonts";
 @import "header";
 @import "style_mixins";
+@import "normal_workstation_selection";
 @import "register_page_style";
 @import "signin_page_style";
 @import "messaging_page";
@@ -50,6 +51,8 @@ img {
   padding: 5px;
   color: $near-white;
 }
+
+@include normal_workstation_selection;
 
 body {
   background-color: black;

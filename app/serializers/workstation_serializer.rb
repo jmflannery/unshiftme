@@ -1,5 +1,5 @@
 class WorkstationSerializer < ActiveModel::Serializer
-  attributes :id, :abrev, :name, :user
+  attributes :id, :abrev, :name, :user, :job_type
 
   def user
     if object.user_id && object.user_id > 0

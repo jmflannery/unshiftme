@@ -1,0 +1,26 @@
+@mixin normal_workstation_selection {
+    
+  #select_normal_workstations {
+    display: table;
+    @include border-radius(6px);
+
+    .label {
+      display: table-row;
+    }
+
+    #td_workstations {
+      display: table-cell;
+      padding-top: 8px;
+      padding-right: 30px;
+    }
+
+    #ops_workstations {
+      display: table-cell;
+      padding-top: 8px;
+    }
+
+    input[type='checkbox'] {
+      margin-bottom: 4px;
+    }
+  }
+}

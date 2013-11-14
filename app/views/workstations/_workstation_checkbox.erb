@@ -1,3 +1,10 @@
-<% is_normal_ws = @user.normal_workstations.include?(workstation_checkbox.abrev) if @user and @user.normal_workstations %>
-<%= check_box_tag(workstation_checkbox.abrev, "1", is_normal_ws) %>
-<%= label_tag(workstation_checkbox.abrev, workstation_checkbox.description) %>
+<% if @user and @user.normal_workstations %>
+  <% normal_ws = @user.normal_workstations.include?(workstation_checkbox.abrev) %>
+<% end %>
+<div>
+  <%= check_box_tag(workstation_checkbox.abrev,
+                    workstation_checkbox.abrev,
+                    normal_ws,
+                    name: 'user[normal_workstations][]') %>
+  <%= label_tag(workstation_checkbox.abrev, workstation_checkbox.description) %>
+</div>

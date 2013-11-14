@@ -18,8 +18,8 @@
         <%= f.password_field :password_confirmation %>
       </div>
 
-      <div id="select_normal_workstation">
-        Workstation(s) <span class="smaller">(optional)</span>
+      <div id="select_normal_workstations">
+        <div class="label">Workstation(s) <span class="smaller">(optional)</span></div>
         <div id="td_workstations">
           <%= render collection: @td_workstations,
                      partial: 'workstations/workstation_checkbox' %>

@@ -9,8 +9,8 @@
         <%= f.text_field :user_name %>
       </div>
 
-      <div id="select_normal_workstation">
-        Normal Workstation(s)
+      <div id="select_normal_workstations">
+        <div class="label">Normal Workstation(s)</div>
         <div id="td_workstations">
           <%= render collection: @td_workstations, 
                      partial: 'workstations/workstation_checkbox',

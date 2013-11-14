@@ -1,9 +1,5 @@
 @mixin register_page_style {
 
   @include form-style;
-
-  #select_normal_workstation {
-    @include border-radius(6px);
-  }
 }
 

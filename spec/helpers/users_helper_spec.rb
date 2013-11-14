@@ -72,18 +72,4 @@ describe "UsersHelper" do
       deletion_cancelled?.should be_true
     end
   end
-
-  describe "#merge_workstation_parameters" do
-    
-    let!(:cusn) { FactoryGirl.create(:workstation, name: "CUS North", abrev: "CUSN") }
-    let!(:aml) { FactoryGirl.create(:workstation, name: "AML / NOL", abrev: "AML") }
-    let(:user_params) {{ user_name: "Mit" }}
-    let(:params) {{ user: user_params, a_key: "a value", "CUSN" => "1", "AML" => "1", another_key: "another value" }}
-
-    it "merges the normal workstations array into the params[:user] hash" do
-      merged_params = merge_workstation_parameters
-      merged_params.should have_key :normal_workstations
-      merged_params[:normal_workstations].should == %w(CUSN AML)
-    end
-  end
 end

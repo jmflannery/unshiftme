@@ -24,8 +24,11 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by_user_name(params[:user_name])
     if user && user.authenticate(params[:password])
-      each_workstation_in(params) do |workstation|
-        workstation.set_user(user)
+      if params[:user]
+        params[:user][:normal_workstations].each do |workstation_abrev|
+          workstation = Workstation.find_by_abrev(workstation_abrev)
+          workstation.set_user(user) if workstation
+        end
       end
       sign_in user
 
